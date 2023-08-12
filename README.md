@@ -10,8 +10,9 @@ yarn create next-app -e https://github.com/nextui-org/next-app-template
 
 ## ESLint & Prettier
 ```
-yarn add -D eslint eslint-plugin-import eslint-config-prettier
+yarn add -D eslint eslint-plugin-import eslint-config-prettier @typescript-eslint/eslint-plugin
 yarn add -D prettier prettier-plugin-tailwindcss eslint-plugin-prettier @trivago/prettier-plugin-sort-imports
+yarn add -D eslint-plugin-react eslint-plugin-react-hooks
 ```
 
 ## `.vscode/settings.json`

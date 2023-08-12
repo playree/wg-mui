@@ -1,6 +1,10 @@
 {
   "extends": [
+    "eslint:recommended",
     "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "next/core-web-vitals",

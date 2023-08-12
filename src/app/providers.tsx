@@ -1,5 +1,6 @@
 'use client'
 
+import { AuthProps, AuthProvider } from '@/components/nextuikit/auth'
 import { NextUIProvider } from '@nextui-org/system'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { ThemeProviderProps } from 'next-themes/dist/types'
@@ -10,10 +11,17 @@ export interface ProvidersProps {
   themeProps?: ThemeProviderProps
 }
 
+const authProps: AuthProps = {
+  whiteList: [],
+  requireAdminList: [],
+}
+
 export function Providers({ children, themeProps }: ProvidersProps) {
   return (
     <NextUIProvider>
-      <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+      <NextThemesProvider {...themeProps}>
+        <AuthProvider authProps={authProps}>{children}</AuthProvider>
+      </NextThemesProvider>
     </NextUIProvider>
   )
 }

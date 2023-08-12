@@ -27,6 +27,7 @@
     "framer-motion": "^10.12.16",
     "intl-messageformat": "^10.1.0",
     "next": "13.4.9",
+    "next-auth": "^4.23.0",
     "next-themes": "^0.2.1",
     "postcss": "8.4.24",
     "react": "18.2.0",
@@ -40,11 +41,14 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
     "eslint": "^8.46.0",
     "eslint-config-next": "13.4.4",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-react": "^7.33.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.0.1",
     "prettier-plugin-tailwindcss": "^0.4.1"
   }
