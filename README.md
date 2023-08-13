@@ -31,7 +31,8 @@ yarn add -D eslint-plugin-react eslint-plugin-react-hooks
 ```json
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", ".*Styles*"]
 }
 ```
 
@@ -83,7 +84,7 @@ trim_trailing_whitespace = false
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-  "pluginSearchDirs": false
+  "tailwindFunctions": ["clsx"]
 }
 ```
 
