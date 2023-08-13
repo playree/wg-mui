@@ -12,7 +12,7 @@ export interface ProvidersProps {
 }
 
 const authProps: AuthProps = {
-  whiteList: [],
+  whiteList: ['/auth/signin', '/docs'],
   requireAdminList: [],
 }
 

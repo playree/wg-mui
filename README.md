@@ -90,7 +90,7 @@ trim_trailing_whitespace = false
 ## Prisma
 
 ```sh
-yarn add -D prisma
+yarn add -D prisma ts-node
 yarn add @prisma/client
 yarn prisma init --datasource-provider sqlite
 ```
@@ -104,7 +104,13 @@ yarn prisma init --datasource-provider sqlite
     "generate": "prisma generate",
     "seed": "prisma db seed",
     "studio": "prisma studio"
-  }
+  },
+  "prisma": {
+    "seed": "ts-node --compilerOptions {\"isolatedModules\":false,\"module\":\"commonjs\"} ./prisma/seed.ts"
+  },
+  "exclude": [
+    "./prisma/seed.ts"
+  ]
 }
 ```
 
