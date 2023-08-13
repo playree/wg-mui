@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css}'"
+    "prettier": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css}'",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate",
+    "seed": "prisma db seed",
+    "studio": "prisma studio"
   },
   "dependencies": {
     "@nextui-org/button": "2.0.9",
@@ -20,6 +24,7 @@
     "@nextui-org/switch": "2.0.9",
     "@nextui-org/system": "2.0.5",
     "@nextui-org/theme": "2.0.4",
+    "@prisma/client": "^5.1.1",
     "@react-aria/ssr": "^3.7.1",
     "@react-aria/visually-hidden": "^3.8.3",
     "autoprefixer": "10.4.14",
@@ -50,6 +55,7 @@
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.0.1",
-    "prettier-plugin-tailwindcss": "^0.5.2"
+    "prettier-plugin-tailwindcss": "^0.5.2",
+    "prisma": "^5.1.1"
   }
 }

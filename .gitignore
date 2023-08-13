@@ -37,3 +37,7 @@ next-env.d.ts
 
 # vscode
 /.vscode
+
+# sqlite
+*.sqlite
+*.sqlite-journal

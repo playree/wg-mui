@@ -1,3 +1,15 @@
+- [WireGuard Managenent UI](#wireguard-managenent-ui)
+- [develop](#develop)
+  - [ESLint \& Prettier](#eslint--prettier)
+    - [`.vscode/settings.json`](#vscodesettingsjson)
+    - [`.editorconfig`](#editorconfig)
+    - [`.eslintrc.json`](#eslintrcjson)
+    - [`prettierrc`](#prettierrc)
+  - [Prisma](#prisma)
+    - [`.vscode/settings.json`](#vscodesettingsjson-1)
+  - [Upgrade](#upgrade)
+
+
 # WireGuard Managenent UI
 
 # develop
@@ -15,7 +27,7 @@ yarn add -D prettier prettier-plugin-tailwindcss eslint-plugin-prettier @trivago
 yarn add -D eslint-plugin-react eslint-plugin-react-hooks
 ```
 
-## `.vscode/settings.json`
+### `.vscode/settings.json`
 ```json
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -23,7 +35,7 @@ yarn add -D eslint-plugin-react eslint-plugin-react-hooks
 }
 ```
 
-## `.editorconfig`
+### `.editorconfig`
 ```ini
 root = true
 
@@ -41,7 +53,7 @@ max_line_length = 0
 trim_trailing_whitespace = false
 ```
 
-## `.eslintrc.json`
+### `.eslintrc.json`
 ```json
 {
   "extends": [
@@ -57,7 +69,7 @@ trim_trailing_whitespace = false
 }
 ```
 
-## `prettierrc`
+### `prettierrc`
 ```json
 {
   "trailingComma": "all",
@@ -72,6 +84,27 @@ trim_trailing_whitespace = false
   "importOrderSortSpecifiers": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "pluginSearchDirs": false
+}
+```
+
+## Prisma
+
+```sh
+yarn add -D prisma
+yarn add @prisma/client
+yarn prisma init --datasource-provider sqlite
+```
+
+### `.vscode/settings.json`
+
+```json
+{
+  "scripts": {
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate",
+    "seed": "prisma db seed",
+    "studio": "prisma studio"
+  }
 }
 ```
 
