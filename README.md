@@ -4,12 +4,12 @@
 
 Create a Next.js project pre-configured with NextUI
 
-```
+```sh
 yarn create next-app -e https://github.com/nextui-org/next-app-template
 ```
 
 ## ESLint & Prettier
-```
+```sh
 yarn add -D eslint eslint-plugin-import eslint-config-prettier @typescript-eslint/eslint-plugin
 yarn add -D prettier prettier-plugin-tailwindcss eslint-plugin-prettier @trivago/prettier-plugin-sort-imports
 yarn add -D eslint-plugin-react eslint-plugin-react-hooks
@@ -45,7 +45,10 @@ trim_trailing_whitespace = false
 ```json
 {
   "extends": [
+    "eslint:recommended",
     "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "next/core-web-vitals",
@@ -70,4 +73,10 @@ trim_trailing_whitespace = false
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "pluginSearchDirs": false
 }
+```
+
+## Upgrade
+
+```sh
+yarn upgrade --latest
 ```

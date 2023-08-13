@@ -1,4 +1,5 @@
-import { DiscordIcon, GithubIcon, HeartFilledIcon, Logo, SearchIcon, TwitterIcon } from '@/components/icons'
+import { GithubIcon, HeartFilledIcon, Logo, SearchIcon } from '@/components/icons'
+import { SignOutLink } from '@/components/nextuikit/auth/ui'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { siteConfig } from '@/config/site'
 import { Button } from '@nextui-org/button'
@@ -67,15 +68,7 @@ export const Navbar = () => {
 
       <NavbarContent className='hidden basis-1/5 sm:flex sm:basis-full' justify='end'>
         <NavbarItem className='hidden gap-2 sm:flex'>
-          <Link isExternal href={siteConfig.links.twitter} aria-label='Twitter'>
-            <TwitterIcon className='text-default-500' />
-          </Link>
-          <Link isExternal href={siteConfig.links.discord} aria-label='Discord'>
-            <DiscordIcon className='text-default-500' />
-          </Link>
-          <Link isExternal href={siteConfig.links.github} aria-label='Github'>
-            <GithubIcon className='text-default-500' />
-          </Link>
+          <SignOutLink />
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className='hidden lg:flex'>{searchInput}</NavbarItem>

@@ -12,6 +12,7 @@ export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }
   const router = useRouter()
   const pathname = usePathname()
   const requireAuth = !authProps.whiteList.includes(pathname)
+  console.debug('pathname:', pathname)
 
   useEffect(() => {
     console.debug('requireAuth: ', requireAuth, status)
