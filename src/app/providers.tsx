@@ -1,6 +1,6 @@
 'use client'
 
-import { AuthProps, AuthProvider } from '@/components/nextuikit/auth'
+import { AuthProps, AuthProvider } from '@/components/nextekit/auth'
 import { NextUIProvider } from '@nextui-org/system'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { ThemeProviderProps } from 'next-themes/dist/types'

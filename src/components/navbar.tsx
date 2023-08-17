@@ -1,5 +1,5 @@
 import { GithubIcon, HeartFilledIcon, Logo, SearchIcon } from '@/components/icons'
-import { SignOutLink } from '@/components/nextuikit/auth/ui'
+import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { siteConfig } from '@/config/site'
 import { Button } from '@nextui-org/button'
@@ -18,6 +18,8 @@ import {
 import { link as linkStyles } from '@nextui-org/theme'
 import clsx from 'clsx'
 import NextLink from 'next/link'
+
+import { LangSwitch } from './lang-switch'
 
 export const Navbar = () => {
   const searchInput = (
@@ -70,6 +72,7 @@ export const Navbar = () => {
         <NavbarItem className='hidden gap-2 sm:flex'>
           <SignOutLink />
           <ThemeSwitch />
+          <LangSwitch />
         </NavbarItem>
         <NavbarItem className='hidden lg:flex'>{searchInput}</NavbarItem>
         <NavbarItem className='hidden md:flex'>
