@@ -1,16 +1,18 @@
 'use client'
 
+import { useLocale } from '@/locale/client'
+import { localeConfig } from '@/locale/config'
 import { Button } from '@nextui-org/button'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/dropdown'
 import { FC, useMemo, useState } from 'react'
 
-import { getCookie, getCookies } from './nextekit/cookie/client'
+import { setCookie } from './nextekit/cookie/client'
 
 export const LangSwitch: FC = () => {
-  const [selectedKeys] = useState(new Set(['ja' || '']))
+  const { locale, setLocale } = useLocale()
+  const [selectedKeys, setSelectedKeys] = useState(new Set([locale]))
   const selectedValue = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
-  console.debug('getCookies:', getCookies())
-  console.debug('getCookie:', getCookie('key1'))
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -22,12 +24,17 @@ export const LangSwitch: FC = () => {
         disallowEmptySelection
         selectionMode='single'
         selectedKeys={selectedKeys}
-        onSelectionChange={(keys) => {
-          console.log('keys:', keys)
+        onAction={(key) => {
+          const keyString = key.toString()
+          console.log('key:', key)
+          setSelectedKeys(new Set([keyString]))
+          setCookie(localeConfig.cookie.name, keyString, { maxAge: localeConfig.cookie.maxAge })
+          setLocale(keyString)
         }}
       >
-        <DropdownItem key='ja'>ja</DropdownItem>
-        <DropdownItem key='en'>en</DropdownItem>
+        {localeConfig.locales.map((locale) => {
+          return <DropdownItem key={locale}>{locale}</DropdownItem>
+        })}
       </DropdownMenu>
     </Dropdown>
   )
