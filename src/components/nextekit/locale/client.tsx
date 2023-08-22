@@ -2,19 +2,19 @@
 
 import { FC, createContext, useCallback, useContext, useState } from 'react'
 
-import { localeConfig } from './config'
-import { LocaleItem, locales } from './locales'
+import { LocaleConfig } from './types'
 
 type LocaleContextType = {
   locale: string
   setLocale: (locale: string) => void
-  t: (item: LocaleItem) => string
+  t: (item: string) => string
 }
 
 const LocaleContext = createContext<LocaleContextType>({} as LocaleContextType)
 
-const useLocaleContext = (): LocaleContextType => {
-  const [locale, setLocale] = useState(localeConfig.locales[0])
+const useLocaleContext = (localeConfig: LocaleConfig): LocaleContextType => {
+  const { locales, resources } = localeConfig
+  const [locale, setLocale] = useState(locales[0])
 
   return {
     locale,
@@ -22,19 +22,19 @@ const useLocaleContext = (): LocaleContextType => {
       setLocale(current)
     }, []),
     t: useCallback(
-      (item: LocaleItem) => {
-        if (locales[item]) {
-          return locales[item][locale as 'en' | 'ja'] || ''
+      (item) => {
+        if (resources[locale]) {
+          return resources[locale][item] || ''
         }
         return ''
       },
-      [locale],
+      [locale, resources],
     ),
   }
 }
 
-export const LocaleProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
-  const ctx = useLocaleContext()
+export const LocaleProvider: FC<{ children: React.ReactNode; config: LocaleConfig }> = ({ children, config }) => {
+  const ctx = useLocaleContext(config)
   return <LocaleContext.Provider value={ctx}>{children}</LocaleContext.Provider>
 }
 

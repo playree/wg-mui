@@ -1,7 +1,8 @@
 'use client'
 
 import { AuthProps, AuthProvider } from '@/components/nextekit/auth'
-import { LocaleProvider } from '@/locale/client'
+import { LocaleProvider } from '@/components/nextekit/locale/client'
+import { localeConfig } from '@/locale/config'
 import { NextUIProvider } from '@nextui-org/system'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { ThemeProviderProps } from 'next-themes/dist/types'
@@ -22,7 +23,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <NextUIProvider>
       <NextThemesProvider {...themeProps}>
         <AuthProvider authProps={authProps}>
-          <LocaleProvider>{children}</LocaleProvider>
+          <LocaleProvider config={localeConfig}>{children}</LocaleProvider>
         </AuthProvider>
       </NextThemesProvider>
     </NextUIProvider>

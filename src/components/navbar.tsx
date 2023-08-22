@@ -2,6 +2,7 @@ import { GithubIcon, HeartFilledIcon, Logo, SearchIcon } from '@/components/icon
 import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { siteConfig } from '@/config/site'
+import { localeConfig } from '@/locale/config'
 import { Button } from '@nextui-org/button'
 import { Input } from '@nextui-org/input'
 import { Kbd } from '@nextui-org/kbd'
@@ -72,7 +73,7 @@ export const Navbar = () => {
         <NavbarItem className='hidden gap-2 sm:flex'>
           <SignOutLink />
           <ThemeSwitch />
-          <LangSwitch />
+          <LangSwitch localeConfig={localeConfig} />
         </NavbarItem>
         <NavbarItem className='hidden lg:flex'>{searchInput}</NavbarItem>
         <NavbarItem className='hidden md:flex'>

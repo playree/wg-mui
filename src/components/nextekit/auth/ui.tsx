@@ -1,9 +1,10 @@
 'use client'
 
 import { ArrowRightOnRectangleIcon } from '@/components/icons'
-import { useLocale } from '@/locale/client'
 import { Link } from '@nextui-org/link'
 import { signOut } from 'next-auth/react'
+
+import { useLocale } from '../locale/client'
 
 export const SignOutLink = () => {
   const { t } = useLocale()

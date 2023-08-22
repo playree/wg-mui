@@ -1,14 +1,14 @@
 'use client'
 
-import { useLocale } from '@/locale/client'
-import { localeConfig } from '@/locale/config'
 import { Button } from '@nextui-org/button'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/dropdown'
 import { FC, useMemo, useState } from 'react'
 
 import { setCookie } from './nextekit/cookie/client'
+import { useLocale } from './nextekit/locale/client'
+import { LocaleConfig } from './nextekit/locale/types'
 
-export const LangSwitch: FC = () => {
+export const LangSwitch: FC<{ localeConfig: LocaleConfig }> = ({ localeConfig }) => {
   const { locale, setLocale } = useLocale()
   const [selectedKeys, setSelectedKeys] = useState(new Set([locale]))
   const selectedValue = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
