@@ -38,4 +38,11 @@ export const LocaleProvider: FC<{ children: React.ReactNode; config: LocaleConfi
   return <LocaleContext.Provider value={ctx}>{children}</LocaleContext.Provider>
 }
 
-export const useLocale = () => useContext(LocaleContext)
+export const useLocale = <T extends string = string>() => {
+  const { locale, setLocale, t } = useContext(LocaleContext)
+  return {
+    locale,
+    setLocale,
+    t: t as (item: T) => string,
+  }
+}
