@@ -14,17 +14,7 @@
     "studio": "prisma studio"
   },
   "dependencies": {
-    "@nextui-org/button": "2.0.9",
-    "@nextui-org/code": "2.0.7",
-    "@nextui-org/dropdown": "^2.0.12",
-    "@nextui-org/input": "2.0.11",
-    "@nextui-org/kbd": "2.0.8",
-    "@nextui-org/link": "2.0.9",
-    "@nextui-org/navbar": "2.0.9",
-    "@nextui-org/snippet": "2.0.10",
-    "@nextui-org/switch": "2.0.9",
-    "@nextui-org/system": "2.0.5",
-    "@nextui-org/theme": "2.0.4",
+    "@nextui-org/react": "^2.1.5",
     "@prisma/client": "^5.1.1",
     "@react-aria/ssr": "^3.7.1",
     "@react-aria/visually-hidden": "^3.8.3",

@@ -3,7 +3,7 @@
 import { AuthProps, AuthProvider } from '@/components/nextekit/auth'
 import { LocaleProvider } from '@/components/nextekit/locale/client'
 import { localeConfig } from '@/locale/config'
-import { NextUIProvider } from '@nextui-org/system'
+import { NextUIProvider } from '@nextui-org/react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { ThemeProviderProps } from 'next-themes/dist/types'
 import * as React from 'react'
