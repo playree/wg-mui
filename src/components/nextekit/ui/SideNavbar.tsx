@@ -42,7 +42,7 @@ export const SideNavbar: FC<{ children: ReactNode; menu: ReactNode; className?: 
           setIsOpen(true)
         }}
       >
-        <Bars3BottomLeftIcon className='h-6' />
+        <Bars3BottomLeftIcon size={18} />
       </button>
 
       <nav // サイドメニュー
