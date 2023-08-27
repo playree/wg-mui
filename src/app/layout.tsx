@@ -4,9 +4,22 @@ import { siteConfig } from '@/config/site'
 import '@/styles/globals.css'
 import clsx from 'clsx'
 import { Metadata } from 'next'
+import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
 
 import { Menu } from './menu'
 import { Providers } from './providers'
+
+const NotoSansJp = Noto_Sans_JP({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-noto-sans-jp',
+})
+
+const RobotoMono = Roboto_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-roboto-mono',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -27,9 +40,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang='ja' suppressHydrationWarning>
+    <html lang='ja' className={`${NotoSansJp.variable} ${RobotoMono.variable}`} suppressHydrationWarning>
       <head />
-      <body className={clsx('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+      <body className={clsx('font-noto min-h-screen bg-background antialiased', fontSans.variable)}>
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
           <div className='relative flex h-screen flex-col'>
             <SideNavbar menu={<Menu />} className='bg-white dark:bg-black'>
