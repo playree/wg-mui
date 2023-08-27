@@ -13,7 +13,6 @@ module.exports = {
       fontFamily: {
         noto: [
           'var(--font-noto-sans-jp)',
-          '-apple-system',
           'BlinkMacSystemFont',
           'Roboto',
           'Segoe UI',

@@ -8,13 +8,13 @@ import { setCookie } from './nextekit/cookie/client'
 import { useLocale } from './nextekit/locale/client'
 import { LocaleConfig } from './nextekit/locale/types'
 
-export const LangSwitch: FC<{ localeConfig: LocaleConfig }> = ({ localeConfig }) => {
+export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string }> = ({ localeConfig, className }) => {
   const { locale, setLocale } = useLocale()
   const [selectedKeys, setSelectedKeys] = useState(new Set([locale]))
   const selectedValue = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
 
   return (
-    <Dropdown>
+    <Dropdown className={className}>
       <DropdownTrigger>
         <Button variant='bordered'>{`lang: ${selectedValue}`}</Button>
       </DropdownTrigger>

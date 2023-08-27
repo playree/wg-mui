@@ -32,7 +32,8 @@ yarn add -D eslint-plugin-react eslint-plugin-react-hooks
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "tailwindCSS.classAttributes": ["class", "className", "classNames", "ngClass", ".*Styles*", ".*Styles:.*"]
+  "tailwindCSS.classAttributes": ["class", "className", "classNames", "ngClass", ".*Styles*", ".*Styles:.*"],
+  "tailwindCSS.experimental.classRegex": ["tv\\(([^)]*)\\)"]
 }
 ```
 
