@@ -1,10 +1,9 @@
 import { SideNavbar } from '@/components/nextekit/ui/SideNavbar'
-import { fontSans } from '@/config/fonts'
 import { siteConfig } from '@/config/site'
 import '@/styles/globals.css'
-import clsx from 'clsx'
 import { Metadata } from 'next'
 import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
+import { twMerge } from 'tailwind-merge'
 
 import { Menu } from './menu'
 import { Providers } from './providers'
@@ -42,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang='ja' className={`${NotoSansJp.variable} ${RobotoMono.variable}`} suppressHydrationWarning>
       <head />
-      <body className={clsx('font-noto min-h-screen bg-background antialiased', fontSans.variable)}>
+      <body className={twMerge('min-h-screen bg-background font-noto antialiased')}>
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
           <div className='relative flex h-screen flex-col'>
             <SideNavbar menu={<Menu />} className='bg-white dark:bg-black'>
