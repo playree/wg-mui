@@ -1,9 +1,7 @@
 import { checkPassword } from '@/helpers/password'
-import { PrismaClient } from '@prisma/client'
+import { prisma } from '@/helpers/prisma'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-
-const prisma = new PrismaClient()
 
 const authOptions: NextAuthOptions = {
   providers: [

@@ -6,7 +6,7 @@
     - [`.eslintrc.json`](#eslintrcjson)
     - [`prettierrc`](#prettierrc)
   - [Prisma](#prisma)
-    - [`.vscode/settings.json`](#vscodesettingsjson-1)
+    - [`package.json`](#packagejson)
   - [Upgrade](#upgrade)
 
 
@@ -33,7 +33,7 @@ yarn add -D eslint-plugin-react eslint-plugin-react-hooks
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "tailwindCSS.classAttributes": ["class", "className", "classNames", "ngClass", ".*Styles*", ".*Styles:.*"],
-  "tailwindCSS.experimental.classRegex": ["tv\\(([^)]*)\\)"]
+  "tailwindCSS.experimental.classRegex": [["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]]
 }
 ```
 
@@ -85,7 +85,7 @@ trim_trailing_whitespace = false
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-  "tailwindFunctions": ["clsx"]
+  "tailwindFunctions": ["clsx", "tv", "twMerge", "twJoin"]
 }
 ```
 
@@ -97,7 +97,7 @@ yarn add @prisma/client
 yarn prisma init --datasource-provider sqlite
 ```
 
-### `.vscode/settings.json`
+### `package.json`
 
 ```json
 {
