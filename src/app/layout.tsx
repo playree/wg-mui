@@ -1,11 +1,9 @@
-import { SideNavbar } from '@/components/nextekit/ui/SideNavbar'
 import { siteConfig } from '@/config/site'
 import '@/styles/globals.css'
 import { Metadata } from 'next'
 import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
 import { twMerge } from 'tailwind-merge'
 
-import { Menu } from './menu'
 import { Providers } from './providers'
 
 const NotoSansJp = Noto_Sans_JP({
@@ -43,11 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head />
       <body className={twMerge('min-h-screen bg-background font-noto antialiased')}>
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
-          <div className='relative flex h-screen flex-col'>
-            <SideNavbar menu={<Menu />} className='bg-white dark:bg-black'>
-              {children}
-            </SideNavbar>
-          </div>
+          <div className='relative flex h-screen flex-col'>{children}</div>
         </Providers>
       </body>
     </html>

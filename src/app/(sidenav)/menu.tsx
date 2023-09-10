@@ -58,6 +58,9 @@ export const Menu: FC = () => {
         <Accordion selectionMode='multiple' itemClasses={accordionStyles} defaultSelectedKeys='all' showDivider={false}>
           <AccordionItem isCompact={true} title={t('group_user')}>
             <div className='mx-2'>
+              <MenuButton to='/' text={t('menu_dashboard')} icon={<Squares2x2Icon size={20} />} />
+            </div>
+            <div className='mx-2'>
               <MenuButton to='/about' text={t('menu_dashboard')} icon={<Squares2x2Icon size={20} />} />
             </div>
           </AccordionItem>
