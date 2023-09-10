@@ -1,6 +1,6 @@
-import { useLocale } from '@/components/nextekit/locale/client'
+import { useLocale as ul } from '@/components/nextekit/locale/client'
 
-export type LocaleItem =
+export type LocaleItemBase =
   | 'menu_dashboard'
   | 'menu_users'
   | 'menu_settings'
@@ -37,4 +37,25 @@ export type LocaleItem =
   | 'msg_user_update_notice'
   | 'msg_common_error'
 
-export const useLocaleW = () => useLocale<LocaleItem>()
+export type LocaleItemError =
+  | '@required_field'
+  | '@invalid_username'
+  | '@invalid_email'
+  | '@invalid_password'
+  | '@invalid_username_or_password'
+export const el = (item: LocaleItemError) => item
+
+export type LocaleItem = LocaleItemBase | LocaleItemError
+export const useLocale = () => {
+  const ulItem = ul<LocaleItem>()
+  const fet = (fieldError?: { message?: string }) => {
+    if (fieldError) {
+      return ulItem.t(fieldError.message as LocaleItem)
+    }
+    return undefined
+  }
+  return {
+    ...ulItem,
+    fet,
+  }
+}

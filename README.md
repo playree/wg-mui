@@ -7,6 +7,7 @@
     - [`prettierrc`](#prettierrc)
   - [Prisma](#prisma)
     - [`package.json`](#packagejson)
+  - [Form](#form)
   - [Upgrade](#upgrade)
 
 
@@ -114,6 +115,12 @@ yarn prisma init --datasource-provider sqlite
     "./prisma/seed.ts"
   ]
 }
+```
+
+## Form
+
+```sh
+yarn add react-hook-form @hookform/resolvers zod
 ```
 
 ## Upgrade

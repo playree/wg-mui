@@ -27,9 +27,9 @@ const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  // pages: {
-  //   signIn: '/auth/signin',
-  // },
+  pages: {
+    signIn: '/auth/signin',
+  },
   callbacks: {
     async signIn(param) {
       console.debug('signIn:', param)

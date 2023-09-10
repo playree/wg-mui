@@ -35,4 +35,10 @@ export const en: Record<LocaleItem, string> = {
   msg_user_update_complete: 'User update is complete.',
   msg_user_update_notice: 'Notice of user update',
   msg_common_error: 'An error has occurred',
+
+  '@required_field': 'Required field',
+  '@invalid_username': '4 or more alphanumeric characters (.-_)',
+  '@invalid_password': '8 characters or more',
+  '@invalid_email': 'Invalid email format',
+  '@invalid_username_or_password': 'Incorrect username or password',
 }

@@ -5,7 +5,7 @@ import { LangSwitch } from '@/components/lang-switch'
 import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { textStyles } from '@/components/styles'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { useLocaleW } from '@/locale'
+import { useLocale } from '@/locale'
 import { localeConfig } from '@/locale/config'
 import { Accordion, AccordionItem, AccordionItemProps, Button } from '@nextui-org/react'
 import NextLink from 'next/link'
@@ -36,7 +36,7 @@ export const MenuButton: FC<{
 }
 
 export const Menu: FC = () => {
-  const { t } = useLocaleW()
+  const { t } = useLocale()
   return (
     <div>
       <div // テーマ・言語

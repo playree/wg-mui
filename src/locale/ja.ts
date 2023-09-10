@@ -35,4 +35,10 @@ export const ja: Record<LocaleItem, string> = {
   msg_user_update_complete: 'ユーザーの更新が完了しました。',
   msg_user_update_notice: 'ユーザー更新のお知らせ',
   msg_common_error: 'エラーが発生しました',
+
+  '@required_field': '必須入力項目',
+  '@invalid_username': '半角英数記号(.-_)4文字以上',
+  '@invalid_password': '8文字以上',
+  '@invalid_email': 'Eメールフォーマットが不正',
+  '@invalid_username_or_password': 'ユーザー名またはパスワードが間違っています',
 }
