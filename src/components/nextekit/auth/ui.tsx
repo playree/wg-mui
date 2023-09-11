@@ -6,7 +6,7 @@ import { signOut } from 'next-auth/react'
 import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-const ArrowRightOnRectangleIcon: React.FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+const ArrowRightOnRectangleIcon: React.FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'

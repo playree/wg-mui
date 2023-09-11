@@ -1,5 +1,5 @@
 import { SessionProvider, signIn, useSession } from 'next-auth/react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import React, { FC, useEffect } from 'react'
 
 export type AuthProps = {
@@ -9,7 +9,6 @@ export type AuthProps = {
 
 export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }> = ({ children, authProps }) => {
   const { status, data: session } = useSession()
-  const router = useRouter()
   const pathname = usePathname()
   const requireAuth = !authProps.whiteList.includes(pathname)
   console.debug('pathname:', pathname)
@@ -35,7 +34,7 @@ export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }
   if (status === 'authenticated') {
     if (authProps.requireAdminList.includes(pathname) && !session.user.isAdmin) {
       // 管理者権限が不足
-      router.replace('/')
+      signIn()
       return <></>
     }
     return children

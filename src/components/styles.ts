@@ -1,5 +1,11 @@
 import { tv } from 'tailwind-variants'
 
+export const iconSizes = {
+  sm: 16,
+  md: 20,
+  lg: 24,
+}
+
 export const textStyles = tv({
   base: 'text-black dark:text-white',
 })

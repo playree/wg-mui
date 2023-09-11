@@ -1,7 +1,7 @@
 import { IconSvgProps } from '@/types'
 import React, { FC } from 'react'
 
-export const UserCircleIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+export const UserCircleIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'
@@ -20,7 +20,7 @@ export const UserCircleIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, .
   </svg>
 )
 
-export const Squares2x2Icon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+export const Squares2x2Icon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'
@@ -39,7 +39,7 @@ export const Squares2x2Icon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, .
   </svg>
 )
 
-export const UsersIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+export const UsersIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'
@@ -54,7 +54,7 @@ export const UsersIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...pro
   </svg>
 )
 
-export const Cog6ToothIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+export const Cog6ToothIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'
@@ -74,7 +74,7 @@ export const Cog6ToothIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ..
   </svg>
 )
 
-export const EyeSlashIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+export const EyeSlashIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'
@@ -93,7 +93,7 @@ export const EyeSlashIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...
   </svg>
 )
 
-export const EyeIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+export const EyeIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'
@@ -113,7 +113,7 @@ export const EyeIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props
   </svg>
 )
 
-export const ArrowLeftOnRectangleIcon: FC<IconSvgProps> = ({ size = 24, strokeWidth = 2, ...props }) => (
+export const ArrowLeftOnRectangleIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg
     fill='none'
     stroke='currentColor'

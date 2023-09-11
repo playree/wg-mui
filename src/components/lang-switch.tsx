@@ -8,15 +8,19 @@ import { setCookie } from './nextekit/cookie/client'
 import { useLocale } from './nextekit/locale/client'
 import { LocaleConfig } from './nextekit/locale/types'
 
-export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string }> = ({ localeConfig, className }) => {
+export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; size?: 'sm' | 'md' | 'lg' }> = ({
+  localeConfig,
+  className,
+  size = 'md',
+}) => {
   const { locale, setLocale } = useLocale()
   const [selectedKeys, setSelectedKeys] = useState(new Set([locale]))
   const selectedValue = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
 
   return (
-    <Dropdown className={className}>
+    <Dropdown className={className} size={size}>
       <DropdownTrigger>
-        <Button variant='bordered'>{`lang: ${selectedValue}`}</Button>
+        <Button size={size} variant='bordered' className={className}>{`lang: ${selectedValue}`}</Button>
       </DropdownTrigger>
       <DropdownMenu
         aria-label='Select Lang'
@@ -26,7 +30,6 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string }> 
         selectedKeys={selectedKeys}
         onAction={(key) => {
           const keyString = key.toString()
-          console.log('key:', key)
           setSelectedKeys(new Set([keyString]))
           setCookie(localeConfig.cookie.name, keyString, { maxAge: localeConfig.cookie.maxAge })
           setLocale(keyString)

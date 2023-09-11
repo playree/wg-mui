@@ -4,10 +4,11 @@ import { Cog6ToothIcon, Squares2x2Icon, UsersIcon } from '@/components/icons'
 import { LangSwitch } from '@/components/lang-switch'
 import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { textStyles } from '@/components/styles'
-import { ThemeSwitch } from '@/components/theme-switch'
+import { ThemeSwitchList } from '@/components/theme-switch'
 import { useLocale } from '@/locale'
 import { localeConfig } from '@/locale/config'
-import { Accordion, AccordionItem, AccordionItemProps, Button } from '@nextui-org/react'
+import { Accordion, AccordionItem, AccordionItemProps, Button, Card, CardBody } from '@nextui-org/react'
+import { useSession } from 'next-auth/react'
 import NextLink from 'next/link'
 import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -37,37 +38,39 @@ export const MenuButton: FC<{
 
 export const Menu: FC = () => {
   const { t } = useLocale()
+  const { data: session } = useSession()
   return (
     <div>
+      <Card>
+        <CardBody>{session?.user.name}</CardBody>
+      </Card>
       <div // テーマ・言語
         className='flex p-2'
       >
-        <ThemeSwitch className='mr-2' />
-        <LangSwitch localeConfig={localeConfig} />
+        <ThemeSwitchList size='sm' className='mr-2' />
+        <LangSwitch localeConfig={localeConfig} size='sm' />
       </div>
 
       <div // サインアウト
         className='flex p-2'
       >
-        <SignOutLink className={twMerge(textStyles(), 'text-sm')} iconSize={20}>
-          {t('menu_signout')}
-        </SignOutLink>
+        <SignOutLink className={twMerge(textStyles(), 'text-sm')}>{t('menu_signout')}</SignOutLink>
       </div>
 
       <div className='mt-2'>
         <Accordion selectionMode='multiple' itemClasses={accordionStyles} defaultSelectedKeys='all' showDivider={false}>
           <AccordionItem isCompact={true} title={t('group_user')}>
             <div className='mx-2'>
-              <MenuButton to='/' text={t('menu_dashboard')} icon={<Squares2x2Icon size={20} />} />
+              <MenuButton to='/' text={t('menu_dashboard')} icon={<Squares2x2Icon />} />
             </div>
             <div className='mx-2'>
-              <MenuButton to='/about' text={t('menu_dashboard')} icon={<Squares2x2Icon size={20} />} />
+              <MenuButton to='/about' text={t('menu_dashboard')} icon={<Squares2x2Icon />} />
             </div>
           </AccordionItem>
           <AccordionItem isCompact={true} title={t('group_admin')}>
             <div className='mx-2'>
-              <MenuButton to='/users' text={t('menu_users')} icon={<UsersIcon size={20} />} />
-              <MenuButton to='/settings' text={t('menu_settings')} icon={<Cog6ToothIcon size={20} />} />
+              <MenuButton to='/users' text={t('menu_users')} icon={<UsersIcon />} />
+              <MenuButton to='/settings' text={t('menu_settings')} icon={<Cog6ToothIcon />} />
             </div>
           </AccordionItem>
         </Accordion>

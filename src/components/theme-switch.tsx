@@ -1,12 +1,16 @@
 'use client'
 
 import { MoonFilledIcon, SunFilledIcon } from '@/components/icons'
+import { Button } from '@nextui-org/button'
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/dropdown'
 import { SwitchProps, useSwitch } from '@nextui-org/switch'
 import { useIsSSR } from '@react-aria/ssr'
 import { VisuallyHidden } from '@react-aria/visually-hidden'
-import clsx from 'clsx'
 import { useTheme } from 'next-themes'
-import { FC } from 'react'
+import { FC, useMemo, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
+
+import { iconSizes } from './styles'
 
 export interface ThemeSwitchProps {
   className?: string
@@ -30,7 +34,7 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
   return (
     <Component
       {...getBaseProps({
-        className: clsx('cursor-pointer px-px transition-opacity hover:opacity-80', className, classNames?.base),
+        className: twMerge('cursor-pointer px-px transition-opacity hover:opacity-80', className, classNames?.base),
       })}
     >
       <VisuallyHidden>
@@ -39,17 +43,12 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
       <div
         {...getWrapperProps()}
         className={slots.wrapper({
-          class: clsx(
+          class: twMerge(
             [
-              'h-auto w-auto',
-              'bg-transparent',
-              'rounded-lg',
+              'mx-0 h-auto w-auto rounded-lg bg-transparent px-0 pt-px',
               'flex items-center justify-center',
               'group-data-[selected=true]:bg-transparent',
               '!text-default-500',
-              'pt-px',
-              'px-0',
-              'mx-0',
             ],
             classNames?.wrapper,
           ),
@@ -58,5 +57,57 @@ export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => 
         {!isSelected || isSSR ? <SunFilledIcon size={22} /> : <MoonFilledIcon size={22} />}
       </div>
     </Component>
+  )
+}
+
+export const ThemeSwitchList: FC<{ className?: string; size?: 'sm' | 'md' | 'lg' }> = ({ className, size = 'md' }) => {
+  const iconSize = iconSizes[size]
+  const { theme, setTheme, systemTheme } = useTheme()
+  const [selectedKeys, setSelectedKeys] = useState(new Set([theme || 'system']))
+  const selectedValue = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
+
+  const lightIcon = <SunFilledIcon size={iconSize} />
+  const darkIcon = <MoonFilledIcon size={iconSize} />
+  const systemIcon = systemTheme === 'dark' ? darkIcon : lightIcon
+  let selectIcon = systemIcon
+  switch (theme) {
+    case 'light':
+      selectIcon = lightIcon
+      break
+    case 'dark':
+      selectIcon = darkIcon
+      break
+  }
+
+  return (
+    <Dropdown className={className} size={size}>
+      <DropdownTrigger>
+        <Button size={size} variant='bordered' startContent={selectIcon} className={className}>
+          {selectedValue === 'system' ? 'auto' : selectedValue}
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu
+        aria-label='Select Theme'
+        variant='flat'
+        disallowEmptySelection
+        selectionMode='single'
+        selectedKeys={selectedKeys}
+        onAction={(key) => {
+          const keyString = key.toString()
+          setSelectedKeys(new Set([keyString]))
+          setTheme(keyString)
+        }}
+      >
+        <DropdownItem key='system' startContent={systemIcon}>
+          auto
+        </DropdownItem>
+        <DropdownItem key='light' startContent={lightIcon}>
+          light
+        </DropdownItem>
+        <DropdownItem key='dark' startContent={darkIcon}>
+          dark
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   )
 }
