@@ -4,4 +4,7 @@ export const authProps: AuthProps = {
   targetAuth: {
     exclude: ['/auth/signin', '/open'],
   },
+  targetAdmin: {
+    require: ['/admin/:path'],
+  },
 }

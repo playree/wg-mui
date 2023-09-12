@@ -1,4 +1,5 @@
 import { SessionProvider, signIn, useSession } from 'next-auth/react'
+import DefaultErrorPage from 'next/error'
 import { usePathname } from 'next/navigation'
 import React, { FC, useEffect } from 'react'
 
@@ -36,8 +37,7 @@ export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }
   if (status === 'authenticated') {
     if (matchCondition(pathname, authProps.targetAdmin) && !session.user.isAdmin) {
       // 管理者権限が不足
-      signIn()
-      return <></>
+      return <DefaultErrorPage statusCode={403} />
     }
     return children
   }
