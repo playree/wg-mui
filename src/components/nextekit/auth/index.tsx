@@ -2,16 +2,18 @@ import { SessionProvider, signIn, useSession } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import React, { FC, useEffect } from 'react'
 
+import { MatchCondition, matchCondition } from './util'
+
 export type AuthProps = {
-  whiteList: string[]
-  requireAdminList: string[]
+  targetAuth?: MatchCondition
+  targetAdmin?: MatchCondition
 }
 
 export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }> = ({ children, authProps }) => {
   const { status, data: session } = useSession()
   const pathname = usePathname()
-  const requireAuth = !authProps.whiteList.includes(pathname)
-  console.debug('pathname:', pathname)
+  const requireAuth = matchCondition(pathname, authProps.targetAuth)
+  console.debug('auth:handle:', pathname, requireAuth)
 
   useEffect(() => {
     console.debug('requireAuth: ', requireAuth, status)
@@ -32,7 +34,7 @@ export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }
   }
 
   if (status === 'authenticated') {
-    if (authProps.requireAdminList.includes(pathname) && !session.user.isAdmin) {
+    if (matchCondition(pathname, authProps.targetAdmin) && !session.user.isAdmin) {
       // 管理者権限が不足
       signIn()
       return <></>

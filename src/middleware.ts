@@ -1,31 +1,17 @@
+import { matchCondition } from '@/components/nextekit/auth/util'
+import { match } from '@/components/nextekit/utils'
 import acceptLanguageParser from 'accept-language-parser'
 import { type NextRequestWithAuth, withAuth } from 'next-auth/middleware'
 import { type NextFetchEvent, NextResponse } from 'next/server'
-import { pathToRegexp } from 'path-to-regexp'
 
+import { authProps } from './config/auth'
 import { localeConfig } from './locale/config'
-
-const matchers = {
-  locale: ['/((?!api/).*)'],
-}
-
-const match = (matcher: string[], path: string) => {
-  for (const regex of matcher) {
-    const regexp = pathToRegexp(regex)
-    if (regexp.exec(path)) {
-      return true
-    }
-  }
-  return false
-}
 
 const middlewareWithAuth = withAuth(
   (request) => {
-    console.debug('mw:', request.url, request.method)
-
     // Locale
-    if (match(matchers.locale, request.url)) {
-      console.debug('locale:')
+    if (match(request.url, ['/((?!api/).*)'])) {
+      console.debug('mw:locale')
       if (request.method.toUpperCase() === 'GET') {
         if (!request.cookies.has(localeConfig.cookie.name)) {
           const detectedLang =
@@ -54,7 +40,12 @@ const middlewareWithAuth = withAuth(
 )
 
 export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) => {
-  return middlewareWithAuth(request, event)
+  console.debug('mw:', request.url, request.method)
+  if (matchCondition(request.nextUrl.pathname, authProps.targetAuth)) {
+    console.debug('mw:auth')
+    return middlewareWithAuth(request, event)
+  }
+  return NextResponse.next()
 }
 
 export const config = {
@@ -65,6 +56,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - xxx.xxx (file)
      */
-    '/((?!_next/static|_next/image|.*\\.).*)',
+    '/((?!_next/static|_next/image|api/auth/|.*\\.).*)',
   ],
 }

@@ -64,13 +64,16 @@ export const Menu: FC = () => {
               <MenuButton to='/' text={t('menu_dashboard')} icon={<Squares2x2Icon />} />
             </div>
             <div className='mx-2'>
-              <MenuButton to='/about' text={t('menu_dashboard')} icon={<Squares2x2Icon />} />
+              <MenuButton to='/about' text='about' icon={<Squares2x2Icon />} />
+            </div>
+            <div className='mx-2'>
+              <MenuButton to='/open' text='open' icon={<Squares2x2Icon />} />
             </div>
           </AccordionItem>
           <AccordionItem isCompact={true} title={t('group_admin')}>
             <div className='mx-2'>
-              <MenuButton to='/users' text={t('menu_users')} icon={<UsersIcon />} />
-              <MenuButton to='/settings' text={t('menu_settings')} icon={<Cog6ToothIcon />} />
+              <MenuButton to='/admin/users' text={t('menu_users')} icon={<UsersIcon />} />
+              <MenuButton to='/admin/settings' text={t('menu_settings')} icon={<Cog6ToothIcon />} />
             </div>
           </AccordionItem>
         </Accordion>
