@@ -7,14 +7,14 @@ import { localeConfig } from '@/locale/config'
 import { NextUIProvider } from '@nextui-org/react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { ThemeProviderProps } from 'next-themes/dist/types'
-import * as React from 'react'
+import { FC, ReactNode } from 'react'
 
 export interface ProvidersProps {
-  children: React.ReactNode
+  children: ReactNode
   themeProps?: ThemeProviderProps
 }
 
-export function Providers({ children, themeProps }: ProvidersProps) {
+export const Providers: FC<ProvidersProps> = ({ children, themeProps }) => {
   return (
     <NextUIProvider>
       <NextThemesProvider {...themeProps}>

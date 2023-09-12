@@ -40,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='ja' className={`${NotoSansJp.variable} ${RobotoMono.variable}`} suppressHydrationWarning>
       <head />
       <body className={twMerge('min-h-screen bg-background font-noto antialiased')}>
-        <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
+        <Providers themeProps={{ attribute: 'class' }}>
           <div className='relative flex h-screen flex-col'>{children}</div>
         </Providers>
       </body>

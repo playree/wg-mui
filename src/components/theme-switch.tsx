@@ -7,7 +7,7 @@ import { SwitchProps, useSwitch } from '@nextui-org/switch'
 import { useIsSSR } from '@react-aria/ssr'
 import { VisuallyHidden } from '@react-aria/visually-hidden'
 import { useTheme } from 'next-themes'
-import { FC, useMemo, useState } from 'react'
+import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { iconSizes } from './styles'
@@ -64,20 +64,35 @@ export const ThemeSwitchList: FC<{ className?: string; size?: 'sm' | 'md' | 'lg'
   const iconSize = iconSizes[size]
   const { theme, setTheme, systemTheme } = useTheme()
   const [selectedKeys, setSelectedKeys] = useState(new Set([theme || 'system']))
-  const selectedValue = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
 
-  const lightIcon = <SunFilledIcon size={iconSize} />
-  const darkIcon = <MoonFilledIcon size={iconSize} />
-  const systemIcon = systemTheme === 'dark' ? darkIcon : lightIcon
-  let selectIcon = systemIcon
-  switch (theme) {
-    case 'light':
-      selectIcon = lightIcon
-      break
-    case 'dark':
-      selectIcon = darkIcon
-      break
-  }
+  const lightIcon = useMemo(() => <SunFilledIcon size={iconSize} />, [iconSize])
+  const darkIcon = useMemo(() => <MoonFilledIcon size={iconSize} />, [iconSize])
+  const [systemIcon, setSystemIcon] = useState<ReactNode>()
+  const [selectIcon, setSelectIcon] = useState<ReactNode>()
+  const [selectedValue, setSelectedValue] = useState('Loading')
+
+  useEffect(() => {
+    setSystemIcon(systemTheme === 'dark' ? darkIcon : lightIcon)
+  }, [darkIcon, lightIcon, systemTheme])
+
+  useEffect(() => {
+    console.debug('theme:', theme)
+    switch (theme) {
+      case 'system':
+        setSelectIcon(systemIcon)
+        break
+      case 'light':
+        setSelectIcon(lightIcon)
+        break
+      case 'dark':
+        setSelectIcon(darkIcon)
+        break
+    }
+  }, [darkIcon, lightIcon, systemIcon, theme])
+
+  useEffect(() => {
+    setSelectedValue(Array.from(selectedKeys).join(', ').replaceAll('_', ' '))
+  }, [selectedKeys])
 
   return (
     <Dropdown className={className} size={size}>
