@@ -63,7 +63,7 @@
     "ts-node": "^10.9.1"
   },
   "prisma": {
-    "seed": "ts-node --compilerOptions {\"isolatedModules\":false,\"module\":\"commonjs\"} ./prisma/seed.ts"
+    "seed": "ts-node -P tsconfig.nonext.json ./prisma/seed.ts"
   },
   "exclude": [
     "./prisma/seed.ts"
