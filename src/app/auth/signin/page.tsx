@@ -49,8 +49,11 @@ const SignIn: FC = () => {
   }
 
   return (
-    <Card className='max-w-md'>
-      <CardHeader>{t('item_signin')}</CardHeader>
+    <Card className='m-auto w-full max-w-md'>
+      <CardHeader>
+        <ArrowLeftOnRectangleIcon className='mr-2' />
+        {t('item_signin')}
+      </CardHeader>
       <CardBody>
         {isAuthNg && <Message variant='error'>{t('@invalid_username_or_password')}</Message>}
         <form className={gridStyles()} onSubmit={handleSubmit(onSubmit)}>
