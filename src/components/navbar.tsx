@@ -71,7 +71,7 @@ export const Navbar = () => {
 
       <NavbarContent className='hidden basis-1/5 sm:flex sm:basis-full' justify='end'>
         <NavbarItem className='hidden gap-2 sm:flex'>
-          <SignOutLink />
+          <SignOutLink>test</SignOutLink>
           <ThemeSwitch />
           <LangSwitch localeConfig={localeConfig} />
         </NavbarItem>

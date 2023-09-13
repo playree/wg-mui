@@ -32,7 +32,7 @@ const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn(param) {
-      console.debug('signIn:', param)
+      console.debug('callbacks:signIn:', param)
       return true
     },
     async session({ token, session }) {

@@ -14,14 +14,13 @@ export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }
   const { status, data: session } = useSession()
   const pathname = usePathname()
   const requireAuth = matchCondition(pathname, authProps.targetAuth)
-  console.debug('auth:handle:', pathname, requireAuth)
 
   useEffect(() => {
-    console.debug('requireAuth: ', requireAuth, status)
+    console.debug('requireAuth: ', pathname, requireAuth, status)
     if (requireAuth && status === 'unauthenticated') {
       signIn()
     }
-  }, [requireAuth, status])
+  }, [pathname, requireAuth, status])
 
   useEffect(() => {
     if (session) {

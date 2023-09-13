@@ -10,7 +10,7 @@ import { Button } from '@nextui-org/button'
 import { Card, CardBody, CardHeader } from '@nextui-org/card'
 import { Input } from '@nextui-org/input'
 import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { FC, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
@@ -18,10 +18,9 @@ const SignIn: FC = () => {
   const { t, fet } = useLocale()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl')
-  const router = useRouter()
+  const error = searchParams.get('error')
   console.debug('callbackUrl:', callbackUrl)
 
-  const [isAuthNg, setIsAuthNg] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
 
@@ -33,18 +32,11 @@ const SignIn: FC = () => {
 
   const onSubmit: SubmitHandler<TypeSignin> = async (data) => {
     console.debug('SignIn:submit:', data)
-    setIsAuthNg(false)
     await signIn('credentials', {
-      redirect: false,
+      redirect: true,
+      callbackUrl: callbackUrl || '/',
       username: data.username,
       password: data.password,
-    }).then((res) => {
-      console.log('signIn:', res)
-      if (res?.error) {
-        setIsAuthNg(true)
-      } else {
-        router.push(callbackUrl || '/')
-      }
     })
   }
 
@@ -55,7 +47,7 @@ const SignIn: FC = () => {
         {t('item_signin')}
       </CardHeader>
       <CardBody>
-        {isAuthNg && <Message variant='error'>{t('@invalid_username_or_password')}</Message>}
+        {error && <Message variant='error'>{t('@invalid_username_or_password')}</Message>}
         <form className={gridStyles()} onSubmit={handleSubmit(onSubmit)}>
           <div className='col-span-12 p-2'>
             <Input
