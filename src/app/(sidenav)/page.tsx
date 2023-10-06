@@ -1,11 +1,6 @@
-import { GithubIcon } from '@/components/icons'
 import { subtitle, title } from '@/components/primitives'
-import { siteConfig } from '@/config/site'
 import { Code } from '@nextui-org/code'
-import { Link } from '@nextui-org/link'
 import { Snippet } from '@nextui-org/snippet'
-import { button as buttonStyles } from '@nextui-org/theme'
-import NextLink from 'next/link'
 
 export default function Home() {
   return (
@@ -16,26 +11,6 @@ export default function Home() {
         <br />
         <h1 className={title()}>websites regardless of your design experience.</h1>
         <h2 className={subtitle({ class: 'mt-4' })}>Beautiful, fast and modern React UI library.</h2>
-      </div>
-
-      <div className='flex gap-3'>
-        <Link
-          isExternal
-          as={NextLink}
-          href={siteConfig.links.docs}
-          className={buttonStyles({ color: 'primary', radius: 'full', variant: 'shadow' })}
-        >
-          Documentation
-        </Link>
-        <Link
-          isExternal
-          as={NextLink}
-          className={buttonStyles({ variant: 'bordered', radius: 'full' })}
-          href={siteConfig.links.github}
-        >
-          <GithubIcon size={20} />
-          GitHub
-        </Link>
       </div>
 
       <div className='mt-8'>
