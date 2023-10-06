@@ -1,4 +1,3 @@
-import { siteConfig } from '@/config/site'
 import '@/styles/globals.css'
 import { Metadata } from 'next'
 import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
@@ -20,10 +19,10 @@ const RobotoMono = Roboto_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: 'WireGuard Managenent UI',
+    template: `%s - WG MUI`,
   },
-  description: siteConfig.description,
+  description: 'WireGuard Managenent UI',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: 'white' },
     { media: '(prefers-color-scheme: dark)', color: 'black' },

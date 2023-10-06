@@ -10,7 +10,7 @@ export type AuthProps = {
   targetAdmin?: MatchCondition
 }
 
-export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }> = ({ children, authProps }) => {
+const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }> = ({ children, authProps }) => {
   const { status, data: session } = useSession()
   const pathname = usePathname()
   const requireAuth = matchCondition(pathname, authProps.targetAuth)
@@ -28,13 +28,13 @@ export const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }
     }
   }, [session])
 
-  if (!requireAuth) {
+  if (status !== 'loading' && !requireAuth) {
     // 認証不要
     return children
   }
 
   if (status === 'authenticated') {
-    if (matchCondition(pathname, authProps.targetAdmin) && !session.user.isAdmin) {
+    if (matchCondition(pathname, authProps.targetAdmin) && !session.user?.isAdmin) {
       // 管理者権限が不足
       return <DefaultErrorPage statusCode={403} />
     }
