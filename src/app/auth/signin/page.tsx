@@ -51,6 +51,7 @@ const SignIn: FC = () => {
         <form className={gridStyles()} onSubmit={handleSubmit(onSubmit)}>
           <div className='col-span-12 p-2'>
             <Input
+              autoFocus
               type='text'
               label={t('item_username')}
               variant='bordered'
