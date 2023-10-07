@@ -70,7 +70,8 @@ export const Menu: FC = () => {
               <MenuButton to='/open' text='open' icon={<Squares2x2Icon />} />
             </div>
           </AccordionItem>
-          <AccordionItem isCompact={true} title={t('group_admin')}>
+
+          <AccordionItem isCompact={true} title={t('group_admin')} hidden={!session?.user.isAdmin}>
             <div className='mx-2'>
               <MenuButton to='/admin/users' text={t('menu_users')} icon={<UsersIcon />} />
               <MenuButton to='/admin/settings' text={t('menu_settings')} icon={<Cog6ToothIcon />} />

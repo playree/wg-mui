@@ -40,7 +40,7 @@ const middlewareWithAuth = withAuth(
 )
 
 export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) => {
-  console.debug('mw:', request.url, request.method)
+  console.debug('mw:start:', request.url, request.method)
   if (matchCondition(request.nextUrl.pathname, authProps.targetAuth)) {
     console.debug('mw:auth')
     return middlewareWithAuth(request, event)
