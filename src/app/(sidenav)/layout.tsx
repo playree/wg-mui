@@ -1,4 +1,4 @@
-import { SideNavbar } from '@/components/nextekit/ui/SideNavbar'
+import { SideNavbar } from '@/components/nextekit/ui/side-navbar'
 import { FC, ReactNode } from 'react'
 
 import { Menu } from './menu'

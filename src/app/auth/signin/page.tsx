@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon } from '@/components/icons'
-import { Message } from '@/components/nextekit/ui/Message'
+import { Message } from '@/components/nextekit/ui/message'
 import { gridStyles } from '@/components/styles'
 import { Signin, scSignin } from '@/helpers/schema'
 import { useLocale } from '@/locale'
