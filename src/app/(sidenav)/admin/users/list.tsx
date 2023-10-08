@@ -1,6 +1,8 @@
 import { prisma } from '@/helpers/prisma'
 import { FC, use } from 'react'
 
+import { UserListClient } from './list-client'
+
 const getUserList = () => {
   console.debug('call getUserList')
   return prisma.user.getAllList()
@@ -8,11 +10,5 @@ const getUserList = () => {
 
 export const UserList: FC = () => {
   const userList = use(getUserList())
-  return (
-    <>
-      {userList.map((user) => (
-        <p key={user.id}>{user.name}</p>
-      ))}
-    </>
-  )
+  return <UserListClient userList={userList} />
 }
