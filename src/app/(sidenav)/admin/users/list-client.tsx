@@ -1,22 +1,19 @@
 'use client'
 
+import type { TypeUser } from '@/helpers/schema'
+import { useLocale } from '@/locale'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import { FC } from 'react'
 
 export const UserListClient: FC<{
-  userList: {
-    id: string
-    name: string
-    isNotInit: boolean
-    isAdmin: boolean
-    updatedAt: Date
-    createdAt: Date
-  }[]
+  userList: TypeUser[]
 }> = ({ userList }) => {
+  const { t } = useLocale()
+
   return (
     <Table aria-label='user list'>
       <TableHeader>
-        <TableColumn>NAME</TableColumn>
+        <TableColumn>{t('item_username')}</TableColumn>
       </TableHeader>
       <TableBody items={userList}>
         {(user) => (

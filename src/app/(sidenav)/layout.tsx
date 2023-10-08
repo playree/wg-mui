@@ -6,7 +6,7 @@ import { Menu } from './menu'
 const SideNavLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <SideNavbar menu={<Menu />} className='bg-white dark:bg-black'>
-      {children}
+      <div className='mx-auto max-w-3xl'>{children}</div>
     </SideNavbar>
   )
 }

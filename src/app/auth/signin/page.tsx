@@ -3,7 +3,7 @@
 import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon } from '@/components/icons'
 import { Message } from '@/components/nextekit/ui/Message'
 import { gridStyles } from '@/components/styles'
-import { TypeSignin, scSignin } from '@/helpers/schema'
+import { Signin, scSignin } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react'
@@ -26,16 +26,16 @@ const SignIn: FC = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<TypeSignin>({ resolver: zodResolver(scSignin), mode: 'onChange' })
+  } = useForm<Signin>({ resolver: zodResolver(scSignin), mode: 'onChange' })
 
-  const onSubmit: SubmitHandler<TypeSignin> = async (data) => {
+  const onSubmit: SubmitHandler<Signin> = async (data) => {
     console.debug('SignIn:submit:', data)
     await signIn('credentials', {
       redirect: false,
       username: data.username,
       password: data.password,
     }).then((res) => {
-      console.log('signIn:', res)
+      console.debug('signIn:', res)
       if (!res?.error) {
         router.push(callbackUrl as string)
       } else {
