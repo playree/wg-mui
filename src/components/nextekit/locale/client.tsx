@@ -7,7 +7,7 @@ import { LocaleConfig } from './types'
 type LocaleContextType = {
   locale: string
   setLocale: (locale: string) => void
-  t: (item: string) => string
+  t: (item: string, values?: { [key: string]: string | number | null | undefined }) => string
 }
 
 const LocaleContext = createContext<LocaleContextType>({} as LocaleContextType)
@@ -22,9 +22,14 @@ const useLocaleContext = (localeConfig: LocaleConfig): LocaleContextType => {
       setLocale(current)
     }, []),
     t: useCallback(
-      (item) => {
+      (item, values) => {
         if (resources[locale]) {
-          return resources[locale][item] || ''
+          const template = resources[locale][item] || ''
+          return !values
+            ? template
+            : new Function(...Object.keys(values), `return \`${template}\`;`)(
+                ...Object.values(values).map((value) => value ?? ''),
+              )
         }
         return ''
       },
@@ -43,6 +48,6 @@ export const useLocale = <T extends string = string>() => {
   return {
     locale,
     setLocale,
-    t: t as (item: T) => string,
+    t: t as (item: T, values?: { [key: string]: string | number | null | undefined }) => string,
   }
 }

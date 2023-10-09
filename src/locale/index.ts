@@ -34,10 +34,7 @@ export type LocaleItemBase =
   | 'item_delete_confirm'
   | 'item_confirmed'
   | 'msg_password_confirm'
-  | 'msg_user_add_complete'
-  | 'msg_user_add_notice'
-  | 'msg_user_update_complete'
-  | 'msg_user_update_notice'
+  | 'msg_user_delete'
   | 'msg_common_error'
 
 export type LocaleItemError =

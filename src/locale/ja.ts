@@ -33,10 +33,7 @@ export const ja: Record<LocaleItem, string> = {
   item_delete_confirm: '削除確認',
   item_confirmed: '確認した',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
-  msg_user_add_complete: 'ユーザーの追加が完了しました。',
-  msg_user_add_notice: 'ユーザー登録のお知らせ',
-  msg_user_update_complete: 'ユーザーの更新が完了しました。',
-  msg_user_update_notice: 'ユーザー更新のお知らせ',
+  msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',
 
   '@required_field': '必須入力項目',

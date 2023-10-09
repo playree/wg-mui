@@ -33,10 +33,7 @@ export const en: Record<LocaleItem, string> = {
   item_delete_confirm: 'Delete confirmation',
   item_confirmed: 'Confirmed',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
-  msg_user_add_complete: 'User addition is complete.',
-  msg_user_add_notice: 'Notice of user registration',
-  msg_user_update_complete: 'User update is complete.',
-  msg_user_update_notice: 'Notice of user update',
+  msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',
 
   '@required_field': 'Required field',

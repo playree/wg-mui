@@ -220,7 +220,7 @@ export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
           <>
             <ModalHeader className='flex flex-col gap-1'>{t('item_delete_confirm')}</ModalHeader>
             <ModalBody className='gap-0'>
-              削除てすと
+              <div className='whitespace-pre-wrap'>{t('msg_user_delete', { username: target?.name })}</div>
               <Checkbox className='mt-4' onChange={() => setAgree(!isAgree)} isSelected={isAgree}>
                 {t('item_confirmed')}
               </Checkbox>
