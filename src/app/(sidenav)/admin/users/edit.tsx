@@ -88,6 +88,7 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { update: () => void }>
                         onChange={onChange}
                         value={value}
                         autoComplete='username'
+                        isRequired
                       />
                     )}
                   />
@@ -114,6 +115,7 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { update: () => void }>
                         errorMessage={fet(errors.password)}
                         onChange={onChange}
                         value={value}
+                        isRequired
                       />
                     )}
                   />
