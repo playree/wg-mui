@@ -31,6 +31,8 @@ export type LocaleItemBase =
   | 'item_generate'
   | 'item_generate'
   | 'item_action'
+  | 'item_delete_confirm'
+  | 'item_confirmed'
   | 'msg_password_confirm'
   | 'msg_user_add_complete'
   | 'msg_user_add_notice'

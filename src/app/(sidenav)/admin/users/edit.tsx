@@ -3,8 +3,8 @@
 import { CheckIcon, EyeIcon, EyeSlashIcon, UserPlusIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
-import { CreateUser, scCreateUser } from '@/helpers/schema'
-import { sleep } from '@/helpers/sleep'
+import { CreateUser, TypeUser, scCreateUser } from '@/helpers/schema'
+import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -22,12 +22,12 @@ import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createUser } from './server-action'
+import { createUser, deleteUser } from './server-action'
 
 // ユーザー管理
 
 /** 作成モーダル */
-export const EditModal: FC<Omit<ModalProps, 'children'> & { update: () => void }> = (props) => {
+const CreateUserModal: FC<Omit<ModalProps, 'children'> & { update: () => void }> = (props) => {
   const { update, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
@@ -66,7 +66,7 @@ export const EditModal: FC<Omit<ModalProps, 'children'> & { update: () => void }
               console.debug('create:submit:', req)
               setLoading(true)
               await createUser(req)
-              await sleep(500)
+              await intervalOperation()
               setLoading(false)
               update()
               onClose()
@@ -168,7 +168,8 @@ export const EditModal: FC<Omit<ModalProps, 'children'> & { update: () => void }
   )
 }
 
-export const UserAdd: FC = () => {
+/** ユーザー作成ボタン */
+export const CreateUserButtonWithModal: FC = () => {
   const { t } = useLocale()
   const editModal = useDisclosure()
   const router = useRouter()
@@ -184,7 +185,7 @@ export const UserAdd: FC = () => {
       >
         <UserPlusIcon />
       </ExButton>
-      <EditModal
+      <CreateUserModal
         size='xl'
         isOpen={editModal.isOpen}
         onOpenChange={editModal.onOpenChange}
@@ -195,5 +196,62 @@ export const UserAdd: FC = () => {
         }}
       />
     </>
+  )
+}
+
+/** 削除モーダル */
+export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeUser; update: () => void }> = (
+  props,
+) => {
+  const { target, update, ...nextProps } = props
+  const { t } = useLocale()
+  const [isAgree, setAgree] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(false)
+    setAgree(false)
+  }, [props.isOpen])
+
+  return (
+    <Modal {...nextProps}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className='flex flex-col gap-1'>{t('item_delete_confirm')}</ModalHeader>
+            <ModalBody className='gap-0'>
+              削除てすと
+              <Checkbox className='mt-4' onChange={() => setAgree(!isAgree)} isSelected={isAgree}>
+                {t('item_confirmed')}
+              </Checkbox>
+            </ModalBody>
+            <ModalFooter>
+              <ExButton color='danger' onPress={onClose}>
+                {t('item_cancel')}
+              </ExButton>
+              <ExButton
+                variant='solid'
+                startContent={isLoading ? undefined : <CheckIcon />}
+                isDisabled={!isAgree}
+                isLoading={isLoading}
+                onPress={async () => {
+                  console.debug('delete:submit:', target)
+                  if (target) {
+                    setLoading(true)
+                    await deleteUser(target.id)
+                    await intervalOperation()
+                    setLoading(false)
+                    update()
+                    onClose()
+                  }
+                }}
+              >
+                {t('item_ok')}
+              </ExButton>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   )
 }

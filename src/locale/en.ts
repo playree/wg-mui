@@ -30,6 +30,8 @@ export const en: Record<LocaleItem, string> = {
   item_isadmin: 'Is Administrater',
   item_generate: 'Generate',
   item_action: 'Action',
+  item_delete_confirm: 'Delete confirmation',
+  item_confirmed: 'Confirmed',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_add_complete: 'User addition is complete.',
   msg_user_add_notice: 'Notice of user registration',

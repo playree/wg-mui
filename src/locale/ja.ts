@@ -30,6 +30,8 @@ export const ja: Record<LocaleItem, string> = {
   item_isadmin: '管理者権限',
   item_generate: '自動生成',
   item_action: '操作',
+  item_delete_confirm: '削除確認',
+  item_confirmed: '確認した',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_add_complete: 'ユーザーの追加が完了しました。',
   msg_user_add_notice: 'ユーザー登録のお知らせ',
