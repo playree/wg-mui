@@ -1,9 +1,15 @@
 import { UsersIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
+import { Metadata } from 'next'
 import { FC, Suspense } from 'react'
 
 import { CreateUserButtonWithModal } from './edit'
 import { UserList } from './list'
+
+export const dynamic = 'force-dynamic'
+export const metadata: Metadata = {
+  title: 'ユーザー管理',
+}
 
 const UsersPage: FC = () => {
   return (
