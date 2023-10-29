@@ -11,14 +11,16 @@ export const prisma = new PrismaClient().$extends({
           select: { id: true, name: true, isNotInit: true, isAdmin: true, updatedAt: true, createdAt: true },
         })
       },
-      createUser(data: CreateUser) {
+      async createUser(data: CreateUser) {
         const { password, ...input } = data
-        return prisma.user.create({
+        // passwordHashは返却から除外
+        const { passwordHash: _, ...user } = await prisma.user.create({
           data: {
             ...input,
             passwordHash: hashPassword(password),
           },
         })
+        return user
       },
     },
   },

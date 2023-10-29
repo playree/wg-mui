@@ -23,10 +23,6 @@ export const metadata: Metadata = {
     template: `%s - WG MUI`,
   },
   description: 'WireGuard Managenent UI',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'white' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon-16x16.png',

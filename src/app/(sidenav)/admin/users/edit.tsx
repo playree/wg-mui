@@ -22,13 +22,13 @@ import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createUser, deleteUser } from './server-action'
+import { createUser, deleteUser } from './server-actions'
 
 // ユーザー管理
 
 /** 作成モーダル */
-const CreateUserModal: FC<Omit<ModalProps, 'children'> & { update: () => void }> = (props) => {
-  const { update, ...nextProps } = props
+const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }> = (props) => {
+  const { updated, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
@@ -68,7 +68,7 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { update: () => void }>
               await createUser(req)
               await intervalOperation()
               setLoading(false)
-              update()
+              updated()
               onClose()
             })}
           >
@@ -193,7 +193,7 @@ export const CreateUserButtonWithModal: FC = () => {
         onOpenChange={editModal.onOpenChange}
         isDismissable={false}
         scrollBehavior='outside'
-        update={() => {
+        updated={() => {
           router.refresh()
         }}
       />
@@ -202,10 +202,10 @@ export const CreateUserButtonWithModal: FC = () => {
 }
 
 /** 削除モーダル */
-export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeUser; update: () => void }> = (
+export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeUser; updated: () => void }> = (
   props,
 ) => {
-  const { target, update, ...nextProps } = props
+  const { target, updated, ...nextProps } = props
   const { t } = useLocale()
   const [isAgree, setAgree] = useState(false)
   const [isLoading, setLoading] = useState(false)
@@ -243,7 +243,7 @@ export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
                     await deleteUser(target.id)
                     await intervalOperation()
                     setLoading(false)
-                    update()
+                    updated()
                     onClose()
                   }
                 }}

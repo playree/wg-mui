@@ -41,3 +41,12 @@ next-env.d.ts
 # sqlite
 *.sqlite
 *.sqlite-journal
+
+# yarn
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

@@ -70,7 +70,7 @@ export const UserListClient: FC<{
         isDismissable={false}
         scrollBehavior='outside'
         target={targetDetele}
-        update={() => {
+        updated={() => {
           router.refresh()
         }}
         onClose={() => setTargetDelete(undefined)}

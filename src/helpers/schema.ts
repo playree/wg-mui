@@ -34,7 +34,6 @@ export type CreateUser = z.infer<typeof scCreateUser>
 
 // ユーザー更新
 export const scUpdateUser = z.object({
-  id: zUUID,
   name: zUsername,
   password: zPassword.optional(),
   isAdmin: z.boolean(),
@@ -43,4 +42,4 @@ export const scUpdateUser = z.object({
 export type UpdateUser = z.infer<typeof scUpdateUser>
 
 // ユーザー
-export type TypeUser = Omit<UpdateUser, 'password'> & { createdAt: Date; updatedAt: Date }
+export type TypeUser = Omit<UpdateUser, 'password'> & { id: string; createdAt: Date; updatedAt: Date }
