@@ -12,7 +12,7 @@ Next.jsの最新機能を率先して利用して開発しています。
 
 # モジュール構成
 
-- [Next.js](https://nextjs.org/) v13.5.x \
+- [Next.js](https://nextjs.org/) v14.0.x \
   出来るだけ最新機能を利用して開発しています。
   - Using App Router
   - Using Server Components
