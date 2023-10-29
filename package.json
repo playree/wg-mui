@@ -12,7 +12,7 @@
     "generate": "prisma generate",
     "seed": "prisma db seed",
     "studio": "prisma studio",
-    "postinstall": "cpx -u '.sample/.**/*' '.' && cpx -u '.sample/.*' '.'"
+    "devinit": "cpx -u '.sample/.**/*' '.' && cpx -u '.sample/.*' '.'"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",

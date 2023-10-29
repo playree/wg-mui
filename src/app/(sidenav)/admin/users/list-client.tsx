@@ -8,16 +8,28 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDis
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 
-import { DeleteUserModal } from './edit'
+import { DeleteUserModal, UpdateUserModal } from './edit'
 
 export const UserListClient: FC<{
   userList: TypeUser[]
 }> = ({ userList }) => {
   const { t } = useLocale()
   const router = useRouter()
+
+  const updateModal = useDisclosure()
+  const openUpdateModal = updateModal.onOpen
+  const [targetUpdate, setTargetUpdate] = useState<TypeUser>()
+
   const [targetDetele, setTargetDelete] = useState<TypeUser>()
   const deleteModal = useDisclosure()
   const openDeleteModal = deleteModal.onOpen
+
+  useEffect(() => {
+    console.debug('targetUpdate:', targetUpdate)
+    if (targetUpdate) {
+      openUpdateModal()
+    }
+  }, [openUpdateModal, targetUpdate])
 
   useEffect(() => {
     console.debug('targetDetele:', targetDetele)
@@ -43,7 +55,7 @@ export const UserListClient: FC<{
                   color='primary'
                   tooltip='編集'
                   onPress={() => {
-                    //
+                    setTargetUpdate(user)
                   }}
                 >
                   <PencilSquareIcon />
@@ -63,6 +75,18 @@ export const UserListClient: FC<{
           )}
         </TableBody>
       </Table>
+      <UpdateUserModal
+        size='xl'
+        isOpen={updateModal.isOpen}
+        onOpenChange={updateModal.onOpenChange}
+        isDismissable={false}
+        scrollBehavior='outside'
+        target={targetUpdate}
+        updated={() => {
+          router.refresh()
+        }}
+        onClose={() => setTargetUpdate(undefined)}
+      />
       <DeleteUserModal
         size='xl'
         isOpen={deleteModal.isOpen}

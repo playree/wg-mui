@@ -32,13 +32,14 @@ export const en: Record<LocaleItem, string> = {
   item_action: 'Action',
   item_delete_confirm: 'Delete confirmation',
   item_confirmed: 'Confirmed',
+  item_change_password: 'Change password',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',
 
   '@required_field': 'Required field',
   '@invalid_username': '4 or more alphanumeric characters (.-_)',
-  '@invalid_password': '8 characters or more',
+  '@invalid_password': '8 or more alphanumeric characters',
   '@invalid_email': 'Invalid email format',
   '@invalid_username_or_password': 'Incorrect username or password',
 }

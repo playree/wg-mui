@@ -32,13 +32,14 @@ export const ja: Record<LocaleItem, string> = {
   item_action: '操作',
   item_delete_confirm: '削除確認',
   item_confirmed: '確認した',
+  item_change_password: 'パスワード変更',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)4文字以上',
-  '@invalid_password': '8文字以上',
+  '@invalid_password': '半角英数記号8文字以上',
   '@invalid_email': 'Eメールフォーマットが不正',
   '@invalid_username_or_password': 'ユーザー名またはパスワードが間違っています',
 }

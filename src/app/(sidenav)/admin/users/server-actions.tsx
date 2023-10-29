@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/helpers/prisma'
-import { CreateUser } from '@/helpers/schema'
+import { CreateUser, UpdateUser } from '@/helpers/schema'
 
 export const getUserList = async () => {
   console.debug('getUserList:in:')
@@ -14,6 +14,13 @@ export const createUser = async (data: CreateUser) => {
   console.debug('createUser:in:', data)
   const user = await prisma.user.createUser(data)
   console.debug('createUser:out:', user)
+  return user
+}
+
+export const updateUser = async (id: string, data: UpdateUser) => {
+  console.debug('updateUser:in:', data)
+  const user = await prisma.user.updateUser(id, data)
+  console.debug('updateUser:out:', user)
   return user
 }
 

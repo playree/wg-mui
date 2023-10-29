@@ -1,18 +1,26 @@
 import { el } from '@/locale'
 import { z } from 'zod'
 
-// const convUndefined = <T>(value: T): T | undefined => {
-//   return value || undefined
-// }
+const convUndefined = <T>(value: T): T | undefined => {
+  return value || undefined
+}
 
 const convNull = <T>(value: T): T | null => {
   return value || null
 }
 
+const reHalfString = /^[a-zA-Z0-9!-/:-@¥[-`{-~ ]*$/
+
 export const zUUID = z.string().uuid()
 export const zUsername = z.string().min(4, el('@invalid_username'))
 export const zUsernameConfirm = z.string().min(1, el('@required_field'))
-export const zPassword = z.string().min(8, el('@invalid_password'))
+export const zPassword = z.string().min(8, el('@invalid_password')).regex(reHalfString, el('@invalid_password'))
+export const zPasswordUpdate = z
+  .string()
+  .min(8, el('@invalid_password'))
+  .regex(reHalfString, el('@invalid_password'))
+  .or(z.string().length(0))
+  .transform(convUndefined)
 export const zPasswordConfirm = z.string().min(1, el('@required_field'))
 export const zEmail = z.string().email('@invalid_email').or(z.string().length(0)).transform(convNull)
 
@@ -28,16 +36,16 @@ export const scCreateUser = z.object({
   name: zUsername,
   password: zPassword,
   isAdmin: z.boolean(),
-  email: zEmail.optional(),
+  email: zEmail,
 })
 export type CreateUser = z.infer<typeof scCreateUser>
 
 // ユーザー更新
 export const scUpdateUser = z.object({
   name: zUsername,
-  password: zPassword.optional(),
+  password: zPasswordUpdate,
   isAdmin: z.boolean(),
-  email: zEmail.optional(),
+  email: zEmail,
 })
 export type UpdateUser = z.infer<typeof scUpdateUser>
 

@@ -33,6 +33,7 @@ export type LocaleItemBase =
   | 'item_action'
   | 'item_delete_confirm'
   | 'item_confirmed'
+  | 'item_change_password'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
