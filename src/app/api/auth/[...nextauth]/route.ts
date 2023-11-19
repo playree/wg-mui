@@ -35,17 +35,29 @@ const authOptions: NextAuthOptions = {
       console.debug('callbacks:signIn:', param)
       return true
     },
-    async session({ token, session }) {
+    async jwt({ token }) {
       if (token.sub) {
         const user = await prisma.user.findUnique({ where: { id: token.sub } })
         if (user) {
-          session.user.id = user.id
-          session.user.name = user.name
-          session.user.isNotInit = user.isNotInit
-          session.user.isAdmin = user.isAdmin
-          session.user.email = user.email
-          console.debug('session.user:', session.user)
+          token.name = user.name
+          token.isAdmin = user.isAdmin
+          token.isNotInit = user.isNotInit
+          token.email = user.email
+          console.debug('set token:', token)
+        } else {
+          token.sub = undefined
         }
+      }
+      return token
+    },
+    async session({ token, session }) {
+      if (token.sub) {
+        session.user.id = token.sub
+        session.user.name = token.name
+        session.user.isNotInit = token.isNotInit
+        session.user.isAdmin = token.isAdmin
+        session.user.email = token.email
+        console.debug('set session:', session.user)
       }
       return session
     },

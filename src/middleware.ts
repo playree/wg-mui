@@ -36,7 +36,19 @@ const middlewareWithAuth = withAuth(
       }
     }
   },
-  { pages: { signIn: '/auth/signin' } },
+  {
+    pages: { signIn: '/auth/signin' },
+    callbacks: {
+      authorized({ req, token }) {
+        // 管理者権限の確認
+        if (matchCondition(req.nextUrl.pathname, authProps.targetAdmin)) {
+          console.log('check admin:', token)
+          return token?.isAdmin === true
+        }
+        return true
+      },
+    },
+  },
 )
 
 export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) => {
