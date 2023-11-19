@@ -2,6 +2,7 @@
 
 import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
+import { OnOffChip } from '@/components/nextekit/ui/chip'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from '@nextui-org/react'
@@ -43,12 +44,16 @@ export const UserListClient: FC<{
       <Table aria-label='user list'>
         <TableHeader>
           <TableColumn>{t('item_username')}</TableColumn>
+          <TableColumn>{t('item_isadmin')}</TableColumn>
           <TableColumn>{t('item_action')}</TableColumn>
         </TableHeader>
         <TableBody items={userList}>
           {(user) => (
             <TableRow key={user.id}>
               <TableCell>{user.name}</TableCell>
+              <TableCell>
+                <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
+              </TableCell>
               <TableCell>
                 <ExButton
                   isIconOnly

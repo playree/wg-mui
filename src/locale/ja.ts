@@ -31,7 +31,7 @@ export const ja: Record<LocaleItem, string> = {
   item_generate: '自動生成',
   item_action: '操作',
   item_delete_confirm: '削除確認',
-  item_confirmed: '確認した',
+  item_confirmed: '確認しました',
   item_change_password: 'パスワード変更',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
