@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import { FC, Suspense } from 'react'
 
 import { CreateUserButtonWithModal } from './edit'
-import { UserList } from './list'
+import { UserListClient } from './list-client'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ const UsersPage: FC = () => {
 
       <div className='flex min-h-[200px] w-full'>
         <Suspense fallback={<Loading />}>
-          <UserList />
+          <UserListClient />
         </Suspense>
       </div>
     </div>

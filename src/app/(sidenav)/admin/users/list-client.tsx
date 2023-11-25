@@ -3,19 +3,27 @@
 import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
+import { sortFunction } from '@/components/nextekit/ui/sort'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from '@nextui-org/react'
-import { useRouter } from 'next/navigation'
+import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 
 import { DeleteUserModal, UpdateUserModal } from './edit'
+import { getUserList } from './server-actions'
 
-export const UserListClient: FC<{
-  userList: TypeUser[]
-}> = ({ userList }) => {
+export const UserListClient: FC = () => {
   const { t } = useLocale()
-  const router = useRouter()
+
+  const list = useAsyncList({
+    async load() {
+      return {
+        items: await getUserList(),
+      }
+    },
+    sort: sortFunction,
+  })
 
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
@@ -41,13 +49,17 @@ export const UserListClient: FC<{
 
   return (
     <>
-      <Table aria-label='user list'>
+      <Table aria-label='user list' sortDescriptor={list.sortDescriptor} onSortChange={list.sort}>
         <TableHeader>
-          <TableColumn>{t('item_username')}</TableColumn>
-          <TableColumn>{t('item_isadmin')}</TableColumn>
+          <TableColumn key='name' allowsSorting>
+            {t('item_username')}
+          </TableColumn>
+          <TableColumn key='isAdmin' allowsSorting>
+            {t('item_isadmin')}
+          </TableColumn>
           <TableColumn>{t('item_action')}</TableColumn>
         </TableHeader>
-        <TableBody items={userList}>
+        <TableBody items={list.items}>
           {(user) => (
             <TableRow key={user.id}>
               <TableCell>{user.name}</TableCell>
@@ -88,7 +100,7 @@ export const UserListClient: FC<{
         scrollBehavior='outside'
         target={targetUpdate}
         updated={() => {
-          router.refresh()
+          list.reload()
         }}
         onClose={() => setTargetUpdate(undefined)}
       />
@@ -100,7 +112,7 @@ export const UserListClient: FC<{
         scrollBehavior='outside'
         target={targetDetele}
         updated={() => {
-          router.refresh()
+          list.reload()
         }}
         onClose={() => setTargetDelete(undefined)}
       />
