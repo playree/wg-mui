@@ -1,13 +1,21 @@
 'use client'
 
 import { PencilSquareIcon, TrashIcon } from '@/components/icons'
+import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
-import { sortFunction } from '@/components/nextekit/ui/sort'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, useDisclosure } from '@nextui-org/react'
-import { useAsyncList } from '@react-stately/data'
+import {
+  Pagination,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  useDisclosure,
+} from '@nextui-org/react'
 import { FC, useEffect, useState } from 'react'
 
 import { DeleteUserModal, UpdateUserModal } from './edit'
@@ -16,14 +24,7 @@ import { getUserList } from './server-actions'
 export const UserListClient: FC = () => {
   const { t } = useLocale()
 
-  const list = useAsyncList({
-    async load() {
-      return {
-        items: await getUserList(),
-      }
-    },
-    sort: sortFunction,
-  })
+  const list = usePageingList({ load: getUserList })
 
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
@@ -49,7 +50,24 @@ export const UserListClient: FC = () => {
 
   return (
     <>
-      <Table aria-label='user list' sortDescriptor={list.sortDescriptor} onSortChange={list.sort}>
+      <Table
+        aria-label='user list'
+        sortDescriptor={list.sortDescriptor}
+        onSortChange={list.onSortChange}
+        bottomContent={
+          <div className='flex w-full justify-center'>
+            <Pagination
+              isCompact
+              showControls
+              showShadow
+              color='secondary'
+              page={list.page}
+              total={list.total}
+              onChange={list.onPageChange}
+            />
+          </div>
+        }
+      >
         <TableHeader>
           <TableColumn key='name' allowsSorting>
             {t('item_username')}
