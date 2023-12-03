@@ -4,9 +4,11 @@ import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
+import { gridStyles } from '@/components/styles'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
+  Input,
   Pagination,
   Table,
   TableBody,
@@ -17,6 +19,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { FC, useEffect, useState } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 import { DeleteUserModal, UpdateUserModal } from './edit'
 import { getUserList } from './server-actions'
@@ -24,7 +27,16 @@ import { getUserList } from './server-actions'
 export const UserListClient: FC = () => {
   const { t } = useLocale()
 
-  const list = usePageingList({ load: getUserList })
+  const list = usePageingList({
+    load: getUserList,
+    filter: {
+      init: { free: '' },
+      proc: (item, filters) => {
+        return item.name.indexOf(filters.free) > -1
+      },
+    },
+  })
+  const [filterText, setFilterText] = useState('')
 
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
@@ -50,66 +62,80 @@ export const UserListClient: FC = () => {
 
   return (
     <>
-      <Table
-        aria-label='user list'
-        sortDescriptor={list.sortDescriptor}
-        onSortChange={list.onSortChange}
-        bottomContent={
-          <div className='flex w-full justify-center'>
-            <Pagination
-              isCompact
-              showControls
-              showShadow
-              color='secondary'
-              page={list.page}
-              total={list.total}
-              onChange={list.onPageChange}
-            />
-          </div>
-        }
-      >
-        <TableHeader>
-          <TableColumn key='name' allowsSorting>
-            {t('item_username')}
-          </TableColumn>
-          <TableColumn key='isAdmin' allowsSorting>
-            {t('item_isadmin')}
-          </TableColumn>
-          <TableColumn>{t('item_action')}</TableColumn>
-        </TableHeader>
-        <TableBody items={list.items}>
-          {(user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>
-                <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
-              </TableCell>
-              <TableCell>
-                <ExButton
-                  isIconOnly
-                  color='primary'
-                  tooltip='編集'
-                  onPress={() => {
-                    setTargetUpdate(user)
-                  }}
-                >
-                  <PencilSquareIcon />
-                </ExButton>
-                <ExButton
-                  isIconOnly
-                  color='danger'
-                  tooltip='削除'
-                  onPress={() => {
-                    setTargetDelete(user)
-                  }}
-                >
-                  <TrashIcon />
-                </ExButton>
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+      <div className={twMerge(gridStyles(), 'w-full')}>
+        <div className='col-span-6'>
+          <Input
+            type='text'
+            value={filterText}
+            onChange={(el) => {
+              setFilterText(el.target.value)
+              list.setFilters({ free: el.target.value })
+            }}
+          />
+        </div>
+        <div className='col-span-12'>
+          <Table
+            aria-label='user list'
+            sortDescriptor={list.sortDescriptor}
+            onSortChange={list.onSortChange}
+            bottomContent={
+              <div className='flex w-full justify-center'>
+                <Pagination
+                  isCompact
+                  showControls
+                  showShadow
+                  color='secondary'
+                  page={list.page}
+                  total={list.total}
+                  onChange={list.onPageChange}
+                />
+              </div>
+            }
+          >
+            <TableHeader>
+              <TableColumn key='name' allowsSorting>
+                {t('item_username')}
+              </TableColumn>
+              <TableColumn key='isAdmin' allowsSorting>
+                {t('item_isadmin')}
+              </TableColumn>
+              <TableColumn>{t('item_action')}</TableColumn>
+            </TableHeader>
+            <TableBody items={list.items}>
+              {(user) => (
+                <TableRow key={user.id}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>
+                    <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
+                  </TableCell>
+                  <TableCell>
+                    <ExButton
+                      isIconOnly
+                      color='primary'
+                      tooltip='編集'
+                      onPress={() => {
+                        setTargetUpdate(user)
+                      }}
+                    >
+                      <PencilSquareIcon />
+                    </ExButton>
+                    <ExButton
+                      isIconOnly
+                      color='danger'
+                      tooltip='削除'
+                      onPress={() => {
+                        setTargetDelete(user)
+                      }}
+                    >
+                      <TrashIcon />
+                    </ExButton>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
       <UpdateUserModal
         size='xl'
         isOpen={updateModal.isOpen}
