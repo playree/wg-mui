@@ -45,6 +45,8 @@ export type LocaleItemError =
   | '@invalid_email'
   | '@invalid_password'
   | '@invalid_username_or_password'
+  | '@invalid_username_or_password'
+  | '@already_exists'
 export const el = (item: LocaleItemError) => item
 
 export type LocaleItem = LocaleItemBase | LocaleItemError

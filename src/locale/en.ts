@@ -43,4 +43,5 @@ export const en: Record<LocaleItem, string> = {
   '@invalid_password': '8 or more alphanumeric characters',
   '@invalid_email': 'Invalid email format',
   '@invalid_username_or_password': 'Incorrect username or password',
+  '@already_exists': 'Already exists',
 }

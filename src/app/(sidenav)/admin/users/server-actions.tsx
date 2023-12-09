@@ -27,5 +27,14 @@ export const updateUser = async (id: string, data: UpdateUser) => {
 export const deleteUser = async (id: string) => {
   console.debug('deleteUser:in:', id)
   await prisma.user.delete({ where: { id } })
+  console.debug('deleteUser:out:')
   return
+}
+
+export const existsUserName = async (name: string) => {
+  console.debug('existsUser:in:', name)
+  const user = await prisma.user.findUnique({ where: { name } })
+  const exists = !!user
+  console.debug('existsUser:out:', exists)
+  return exists
 }

@@ -43,4 +43,5 @@ export const ja: Record<LocaleItem, string> = {
   '@invalid_password': '半角英数記号8文字以上',
   '@invalid_email': 'Eメールフォーマットが不正',
   '@invalid_username_or_password': 'ユーザー名またはパスワードが間違っています',
+  '@already_exists': '既に存在しています',
 }

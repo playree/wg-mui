@@ -22,7 +22,7 @@ import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createUser, deleteUser, updateUser } from './server-actions'
+import { createUser, deleteUser, existsUserName, updateUser } from './server-actions'
 
 // ユーザー管理
 
@@ -39,6 +39,7 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
     control,
     handleSubmit,
     formState: { errors },
+    setError,
     reset,
   } = useForm<CreateUser>({
     resolver: zodResolver(scCreateUser),
@@ -65,11 +66,18 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
             onSubmit={handleSubmit(async (req) => {
               console.debug('create:submit:', req)
               setLoading(true)
-              await createUser(req)
-              await intervalOperation()
+
+              // nameの重複チェック
+              if (await existsUserName(req.name)) {
+                // 重複チェックエラー
+                setError('name', { message: '@already_exists' })
+              } else {
+                await createUser(req)
+                await intervalOperation()
+                updated()
+                onClose()
+              }
               setLoading(false)
-              updated()
-              onClose()
             })}
           >
             <ModalHeader className='flex flex-col gap-1'>{t('item_user_create')}</ModalHeader>
