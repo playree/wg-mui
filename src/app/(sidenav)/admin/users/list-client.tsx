@@ -32,7 +32,7 @@ export const UserListClient: FC = () => {
     filter: {
       init: { free: '' },
       proc: (item, filters) => {
-        return item.name.indexOf(filters.free) > -1
+        return filters.free ? item.name.indexOf(filters.free) > -1 : true
       },
     },
   })
@@ -67,6 +67,8 @@ export const UserListClient: FC = () => {
           <Input
             type='text'
             value={filterText}
+            label={t('item_username')}
+            placeholder={t('msg_enter_search_word')}
             onChange={(el) => {
               setFilterText(el.target.value)
               list.setFilters({ free: el.target.value })

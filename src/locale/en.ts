@@ -36,6 +36,7 @@ export const en: Record<LocaleItem, string> = {
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',
+  msg_enter_search_word: 'Enter search word',
 
   '@required_field': 'Required field',
   '@invalid_username': '4 or more alphanumeric characters (.-_)',

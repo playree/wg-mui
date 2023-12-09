@@ -37,6 +37,7 @@ export type LocaleItemBase =
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
+  | 'msg_enter_search_word'
 
 export type LocaleItemError =
   | '@required_field'
