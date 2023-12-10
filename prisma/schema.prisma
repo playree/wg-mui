@@ -19,4 +19,27 @@ model User {
   email        String?  @unique
   updatedAt    DateTime @updatedAt
   createdAt    DateTime @default(now())
+
+  // Relation
+  userLabelList UserLabel[]
+}
+
+model Label {
+  id            String      @id @default(uuid())
+  name          String      @unique
+  explanation   String
+  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
+  userLabelList UserLabel[]
+}
+
+model UserLabel {
+  id        String   @id @default(uuid())
+  userId    String
+  lablelId  String
+  createdAt DateTime @default(now())
+
+  // Relation
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [lablelId], references: [id], onDelete: Cascade)
 }
