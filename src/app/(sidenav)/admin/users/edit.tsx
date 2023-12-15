@@ -195,6 +195,7 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
     handleSubmit,
     setValue,
     formState: { errors },
+    setError,
     reset,
   } = useForm<UpdateUser>({
     resolver: zodResolver(scUpdateUser),
@@ -232,11 +233,18 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
               console.debug('update:submit:', req)
               if (target) {
                 setLoading(true)
-                await updateUser(target.id, req)
-                await intervalOperation()
+
+                // nameの重複チェック
+                if (await existsUserName(req.name)) {
+                  // 重複チェックエラー
+                  setError('name', { message: '@already_exists' })
+                } else {
+                  await updateUser(target.id, req)
+                  await intervalOperation()
+                  updated()
+                  onClose()
+                }
                 setLoading(false)
-                updated()
-                onClose()
               }
             })}
           >
