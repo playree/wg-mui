@@ -3,9 +3,8 @@
 import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
-import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles } from '@/components/styles'
-import type { TypeUser } from '@/helpers/schema'
+import type { TypeLabel } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
   Input,
@@ -21,14 +20,19 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { DeleteUserModal, UpdateUserModal } from './edit'
-import { getUserList } from './server-actions'
+import { DeleteLabelModal, EditLabelModal } from './edit'
+import { getLabelList } from './server-actions'
 
-export const UserListClient: FC = () => {
+export const LabelsTitle: FC = () => {
+  const { t } = useLocale()
+  return <span className='mr-8 text-lg'>{t('menu_labels')}</span>
+}
+
+export const LabelListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: getUserList,
+    load: () => getLabelList('count'),
     filter: {
       init: { free: '' },
       proc: (item, filters) => {
@@ -40,9 +44,9 @@ export const UserListClient: FC = () => {
 
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
-  const [targetUpdate, setTargetUpdate] = useState<TypeUser>()
+  const [targetUpdate, setTargetUpdate] = useState<TypeLabel>()
 
-  const [targetDetele, setTargetDelete] = useState<TypeUser>()
+  const [targetDelete, setTargetDelete] = useState<TypeLabel>()
   const deleteModal = useDisclosure()
   const openDeleteModal = deleteModal.onOpen
 
@@ -54,11 +58,11 @@ export const UserListClient: FC = () => {
   }, [openUpdateModal, targetUpdate])
 
   useEffect(() => {
-    console.debug('targetDetele:', targetDetele)
-    if (targetDetele) {
+    console.debug('targetDelete:', targetDelete)
+    if (targetDelete) {
       openDeleteModal()
     }
-  }, [openDeleteModal, targetDetele])
+  }, [openDeleteModal, targetDelete])
 
   return (
     <>
@@ -67,7 +71,7 @@ export const UserListClient: FC = () => {
           <Input
             type='text'
             value={filterText}
-            label={t('item_username')}
+            label={t('item_label_name')}
             placeholder={t('msg_enter_search_word')}
             onChange={(el) => {
               setFilterText(el.target.value)
@@ -77,7 +81,7 @@ export const UserListClient: FC = () => {
         </div>
         <div className='col-span-12'>
           <Table
-            aria-label='user list'
+            aria-label='label list'
             sortDescriptor={list.sortDescriptor}
             onSortChange={list.onSortChange}
             bottomContent={
@@ -96,27 +100,23 @@ export const UserListClient: FC = () => {
           >
             <TableHeader>
               <TableColumn key='name' allowsSorting>
-                {t('item_username')}
+                {t('item_label_name')}
               </TableColumn>
-              <TableColumn key='isAdmin' allowsSorting>
-                {t('item_isadmin')}
-              </TableColumn>
+              <TableColumn>{t('item_explanation')}</TableColumn>
               <TableColumn>{t('item_action')}</TableColumn>
             </TableHeader>
             <TableBody items={list.items}>
-              {(user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>
-                    <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
-                  </TableCell>
+              {(label) => (
+                <TableRow key={label.id}>
+                  <TableCell>{label.name}</TableCell>
+                  <TableCell>{label.explanation}</TableCell>
                   <TableCell>
                     <ExButton
                       isIconOnly
                       color='primary'
                       tooltip='編集'
                       onPress={() => {
-                        setTargetUpdate(user)
+                        setTargetUpdate(label)
                       }}
                     >
                       <PencilSquareIcon />
@@ -126,7 +126,7 @@ export const UserListClient: FC = () => {
                       color='danger'
                       tooltip='削除'
                       onPress={() => {
-                        setTargetDelete(user)
+                        setTargetDelete(label)
                       }}
                     >
                       <TrashIcon />
@@ -138,7 +138,7 @@ export const UserListClient: FC = () => {
           </Table>
         </div>
       </div>
-      <UpdateUserModal
+      <EditLabelModal
         size='xl'
         isOpen={updateModal.isOpen}
         onOpenChange={updateModal.onOpenChange}
@@ -150,13 +150,13 @@ export const UserListClient: FC = () => {
         }}
         onClose={() => setTargetUpdate(undefined)}
       />
-      <DeleteUserModal
+      <DeleteLabelModal
         size='xl'
         isOpen={deleteModal.isOpen}
         onOpenChange={deleteModal.onOpenChange}
         isDismissable={false}
         scrollBehavior='outside'
-        target={targetDetele}
+        target={targetDelete}
         updated={() => {
           list.reload()
         }}

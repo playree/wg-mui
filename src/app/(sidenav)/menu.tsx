@@ -1,6 +1,6 @@
 'use client'
 
-import { Cog6ToothIcon, Squares2x2Icon, UsersIcon } from '@/components/icons'
+import { Cog6ToothIcon, Squares2x2Icon, TagIcon, UsersIcon } from '@/components/icons'
 import { LangSwitch } from '@/components/lang-switch'
 import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { textStyles } from '@/components/styles'
@@ -74,6 +74,7 @@ export const Menu: FC = () => {
           <AccordionItem isCompact={true} title={t('group_admin')} hidden={!session?.user.isAdmin}>
             <div className='mx-2'>
               <MenuButton to='/admin/users' text={t('menu_users')} icon={<UsersIcon />} />
+              <MenuButton to='/admin/labels' text={t('menu_labels')} icon={<TagIcon />} />
               <MenuButton to='/admin/settings' text={t('menu_settings')} icon={<Cog6ToothIcon />} />
             </div>
           </AccordionItem>

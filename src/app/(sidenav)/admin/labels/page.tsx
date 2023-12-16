@@ -3,29 +3,29 @@ import { Loading } from '@/components/nextekit/ui/loading'
 import { Metadata } from 'next'
 import { FC, Suspense } from 'react'
 
-import { UserListClient, UsersTitle } from './client'
-import { CreateUserButtonWithModal } from './edit'
+import { LabelListClient, LabelsTitle } from './client'
+import { CreateLabelButtonWithModal } from './edit'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
-  title: 'Users',
+  title: 'Labels',
 }
 
-const UsersPage: FC = () => {
+const LabelsPage: FC = () => {
   return (
     <div>
       <div className='mb-2 flex items-center pl-8 lg:pl-0'>
         <UsersIcon className='mr-2' />
-        <UsersTitle />
-        <CreateUserButtonWithModal />
+        <LabelsTitle />
+        <CreateLabelButtonWithModal />
       </div>
 
       <div className='flex min-h-[200px] w-full'>
         <Suspense fallback={<Loading />}>
-          <UserListClient />
+          <LabelListClient />
         </Suspense>
       </div>
     </div>
   )
 }
-export default UsersPage
+export default LabelsPage

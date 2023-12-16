@@ -3,6 +3,7 @@ import { useLocale as ul } from '@/components/nextekit/locale/client'
 export type LocaleItemBase =
   | 'menu_dashboard'
   | 'menu_users'
+  | 'menu_labels'
   | 'menu_settings'
   | 'menu_locale'
   | 'menu_theme'
@@ -34,6 +35,10 @@ export type LocaleItemBase =
   | 'item_delete_confirm'
   | 'item_confirmed'
   | 'item_change_password'
+  | 'item_label_create'
+  | 'item_label_update'
+  | 'item_label_name'
+  | 'item_explanation'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
@@ -46,6 +51,8 @@ export type LocaleItemError =
   | '@invalid_password'
   | '@invalid_username_or_password'
   | '@invalid_username_or_password'
+  | '@invalid_label_name'
+  | '@invalid_explanation'
   | '@already_exists'
 export const el = (item: LocaleItemError) => item
 

@@ -1,7 +1,9 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 
 import { hashPassword } from './password'
 import { CreateUser, UpdateUser } from './schema'
+
+export type AllOrCount = 'all' | 'count'
 
 export const prisma = new PrismaClient().$extends({
   model: {
@@ -17,6 +19,7 @@ export const prisma = new PrismaClient().$extends({
             updatedAt: true,
             createdAt: true,
           },
+          orderBy: { createdAt: 'asc' },
         })
       },
       async createUser(data: CreateUser) {
@@ -41,6 +44,20 @@ export const prisma = new PrismaClient().$extends({
           },
         })
         return user
+      },
+    },
+    label: {
+      getAllList(withUser?: AllOrCount) {
+        const include: Prisma.LabelInclude | undefined = withUser
+          ? {
+              userLabelList: withUser === 'all',
+              _count: withUser === 'count' ? { select: { userLabelList: true } } : undefined,
+            }
+          : undefined
+        return prisma.label.findMany({
+          orderBy: { createdAt: 'asc' },
+          include,
+        })
       },
     },
   },
