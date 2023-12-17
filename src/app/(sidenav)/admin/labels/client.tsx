@@ -4,6 +4,7 @@ import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { dayformat } from '@/helpers/day'
 import type { TypeLabel } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
@@ -33,6 +34,9 @@ export const LabelListClient: FC = () => {
 
   const list = usePageingList({
     load: () => getLabelList('count'),
+    sort: {
+      init: { column: 'updatedAt', direction: 'descending' },
+    },
     filter: {
       init: { free: '' },
       proc: (item, filters) => {
@@ -107,6 +111,9 @@ export const LabelListClient: FC = () => {
                 {t('item_label_name')}
               </TableColumn>
               <TableColumn>{t('item_explanation')}</TableColumn>
+              <TableColumn key='updatedAt' allowsSorting>
+                {t('item_updated_at')}
+              </TableColumn>
               <TableColumn>{t('item_action')}</TableColumn>
             </TableHeader>
             <TableBody items={list.items}>
@@ -114,6 +121,7 @@ export const LabelListClient: FC = () => {
                 <TableRow key={label.id}>
                   <TableCell>{label.name}</TableCell>
                   <TableCell>{label.explanation}</TableCell>
+                  <TableCell>{dayformat(label.updatedAt, 'jp-simple')}</TableCell>
                   <TableCell>
                     <ExButton
                       isIconOnly

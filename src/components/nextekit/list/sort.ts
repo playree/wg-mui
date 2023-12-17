@@ -1,6 +1,9 @@
 import { SortDescriptor } from '@nextui-org/react'
+import { AsyncListLoadFunction } from '@react-stately/data'
 
-export const sortFunction = async <T extends Record<string, unknown>>({
+export const sortFunction: AsyncListLoadFunction<Record<string, unknown>, string> = async <
+  T extends Record<string, unknown>,
+>({
   items,
   sortDescriptor: { column, direction },
 }: {
@@ -19,11 +22,15 @@ export const sortFunction = async <T extends Record<string, unknown>>({
           cmp = acol < bcol ? -1 : 1
         }
         // number
-        if (typeof acol === 'number' && typeof bcol === 'number') {
+        else if (typeof acol === 'number' && typeof bcol === 'number') {
           cmp = acol < bcol ? -1 : 1
         }
         // boolean
-        if (typeof acol === 'boolean' && typeof bcol === 'boolean') {
+        else if (typeof acol === 'boolean' && typeof bcol === 'boolean') {
+          cmp = acol < bcol ? -1 : 1
+        }
+        // Date
+        else if (acol instanceof Date && bcol instanceof Date) {
           cmp = acol < bcol ? -1 : 1
         }
       }

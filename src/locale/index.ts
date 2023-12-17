@@ -39,6 +39,7 @@ export type LocaleItemBase =
   | 'item_label_update'
   | 'item_label_name'
   | 'item_explanation'
+  | 'item_updated_at'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'

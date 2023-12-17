@@ -5,6 +5,7 @@ import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles } from '@/components/styles'
+import { dayformat } from '@/helpers/day'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
@@ -34,6 +35,9 @@ export const UserListClient: FC = () => {
 
   const list = usePageingList({
     load: getUserList,
+    sort: {
+      init: { column: 'updatedAt', direction: 'descending' },
+    },
     filter: {
       init: { free: '' },
       proc: (item, filters) => {
@@ -110,6 +114,9 @@ export const UserListClient: FC = () => {
               <TableColumn key='isAdmin' allowsSorting>
                 {t('item_isadmin')}
               </TableColumn>
+              <TableColumn key='updatedAt' allowsSorting>
+                {t('item_updated_at')}
+              </TableColumn>
               <TableColumn>{t('item_action')}</TableColumn>
             </TableHeader>
             <TableBody items={list.items}>
@@ -119,6 +126,7 @@ export const UserListClient: FC = () => {
                   <TableCell>
                     <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
                   </TableCell>
+                  <TableCell>{dayformat(user.updatedAt, 'jp-simple')}</TableCell>
                   <TableCell>
                     <ExButton
                       isIconOnly

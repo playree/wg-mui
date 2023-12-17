@@ -1,4 +1,5 @@
-import { useAsyncList } from '@react-stately/data'
+import { SortDescriptor } from '@nextui-org/react'
+import { AsyncListLoadFunction, useAsyncList } from '@react-stately/data'
 import { useMemo, useState } from 'react'
 
 import { sortFunction } from './sort'
@@ -6,24 +7,35 @@ import { sortFunction } from './sort'
 export const usePageingList = <T extends Record<string, unknown>[], F extends Record<string, string>>({
   load,
   filter,
+  sort,
+  rowsPerPage = 10,
 }: {
   load: () => Promise<T>
   filter?: {
     init: F
     proc: (item: T[0], filters: F) => boolean
   }
+  sort?: {
+    init?: SortDescriptor
+    proc?: AsyncListLoadFunction<Record<string, unknown>, string>
+  }
+  rowsPerPage?: number
 }) => {
-  const rowsPerPage = 10
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(1)
+  const sortFunc = sort?.proc || sortFunction
+
   const list = useAsyncList({
-    async load() {
+    async load({ sortDescriptor, selectedKeys, signal }) {
       const items = await load()
-      return {
-        items,
+      console.debug('sortDescriptor:', sortDescriptor)
+      if (sortDescriptor) {
+        return sortFunc({ items, sortDescriptor, selectedKeys, signal })
       }
+      return { items }
     },
-    sort: sortFunction,
+    sort: sortFunc,
+    initialSortDescriptor: sort?.init,
   })
 
   const [filters, setFilters] = useState(filter?.init)
@@ -41,7 +53,7 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
 
     setTotal(Math.ceil(tmpList.length / rowsPerPage))
     return tmpList.slice(start, end) as T
-  }, [filterState, filters, list.items, page])
+  }, [filterState, filters, list.items, page, rowsPerPage])
 
   return {
     items,

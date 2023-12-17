@@ -38,6 +38,7 @@ export const en: Record<LocaleItem, string> = {
   item_label_update: 'Update Label',
   item_label_name: 'Label name',
   item_explanation: 'Explanation',
+  item_updated_at: 'Updated at',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',
