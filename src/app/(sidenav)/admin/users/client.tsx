@@ -108,16 +108,18 @@ export const UserListClient: FC = () => {
             }
           >
             <TableHeader>
-              <TableColumn key='name' allowsSorting>
+              <TableColumn key='name' minWidth={120} allowsSorting>
                 {t('item_username')}
               </TableColumn>
-              <TableColumn key='isAdmin' allowsSorting>
+              <TableColumn key='isAdmin' width={120} allowsSorting>
                 {t('item_isadmin')}
               </TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
               </TableColumn>
-              <TableColumn>{t('item_action')}</TableColumn>
+              <TableColumn width={120} align='center'>
+                {t('item_action')}
+              </TableColumn>
             </TableHeader>
             <TableBody items={list.items}>
               {(user) => (
@@ -126,7 +128,9 @@ export const UserListClient: FC = () => {
                   <TableCell>
                     <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
                   </TableCell>
-                  <TableCell>{dayformat(user.updatedAt, 'jp-simple')}</TableCell>
+                  <TableCell>
+                    <div className='text-xs'>{dayformat(user.updatedAt, 'jp-simple')}</div>
+                  </TableCell>
                   <TableCell>
                     <ExButton
                       isIconOnly
