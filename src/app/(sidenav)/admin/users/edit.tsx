@@ -18,7 +18,6 @@ import {
   ModalProps,
   useDisclosure,
 } from '@nextui-org/react'
-import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -361,20 +360,12 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
 }
 
 /** ユーザー作成ボタン */
-export const CreateUserButtonWithModal: FC = () => {
+export const CreateUserButtonWithModal: FC<{ updated: () => void }> = ({ updated }) => {
   const { t } = useLocale()
   const editModal = useDisclosure()
-  const router = useRouter()
   return (
     <>
-      <ExButton
-        isIconOnly
-        color='primary'
-        tooltip={t('item_user_create')}
-        onPress={() => {
-          editModal.onOpen()
-        }}
-      >
+      <ExButton isIconOnly color='primary' tooltip={t('item_user_create')} onPress={() => editModal.onOpen()}>
         <UserPlusIcon />
       </ExButton>
       <CreateUserModal
@@ -383,9 +374,7 @@ export const CreateUserButtonWithModal: FC = () => {
         onOpenChange={editModal.onOpenChange}
         isDismissable={false}
         scrollBehavior='outside'
-        updated={() => {
-          router.refresh()
-        }}
+        updated={() => updated()}
       />
     </>
   )

@@ -18,7 +18,6 @@ import {
   ModalProps,
   useDisclosure,
 } from '@nextui-org/react'
-import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -154,20 +153,12 @@ export const EditLabelModal: FC<Omit<ModalProps, 'children'> & { target?: TypeLa
 }
 
 /** ラベル作成ボタン */
-export const CreateLabelButtonWithModal: FC = () => {
+export const CreateLabelButtonWithModal: FC<{ updated: () => void }> = ({ updated }) => {
   const { t } = useLocale()
   const editModal = useDisclosure()
-  const router = useRouter()
   return (
     <>
-      <ExButton
-        isIconOnly
-        color='primary'
-        tooltip={t('item_label_create')}
-        onPress={() => {
-          editModal.onOpen()
-        }}
-      >
+      <ExButton isIconOnly color='primary' tooltip={t('item_label_create')} onPress={() => editModal.onOpen()}>
         <DocumentPlusIcon />
       </ExButton>
       <EditLabelModal
@@ -176,9 +167,7 @@ export const CreateLabelButtonWithModal: FC = () => {
         onOpenChange={editModal.onOpenChange}
         isDismissable={false}
         scrollBehavior='outside'
-        updated={() => {
-          router.refresh()
-        }}
+        updated={() => updated()}
       />
     </>
   )

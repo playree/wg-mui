@@ -20,7 +20,7 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { DeleteLabelModal, EditLabelModal } from './edit'
+import { CreateLabelButtonWithModal, DeleteLabelModal, EditLabelModal } from './edit'
 import { getLabelList } from './server-actions'
 
 export const LabelsTitle: FC = () => {
@@ -79,6 +79,10 @@ export const LabelListClient: FC = () => {
             }}
           />
         </div>
+        <div className='col-span-5'></div>
+        <div className='col-span-1 flex items-center'>
+          <CreateLabelButtonWithModal updated={() => list.reload()} />
+        </div>
         <div className='col-span-12'>
           <Table
             aria-label='label list'
@@ -113,6 +117,7 @@ export const LabelListClient: FC = () => {
                   <TableCell>
                     <ExButton
                       isIconOnly
+                      isSmart
                       color='primary'
                       tooltip='編集'
                       onPress={() => {
@@ -123,6 +128,7 @@ export const LabelListClient: FC = () => {
                     </ExButton>
                     <ExButton
                       isIconOnly
+                      isSmart
                       color='danger'
                       tooltip='削除'
                       onPress={() => {

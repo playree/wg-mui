@@ -13,7 +13,7 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
     proc: (item: T[0], filters: F) => boolean
   }
 }) => {
-  const rowsPerPage = 3
+  const rowsPerPage = 10
   const [page, setPage] = useState(1)
   const [total, setTotal] = useState(1)
   const list = useAsyncList({

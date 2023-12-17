@@ -21,7 +21,7 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { DeleteUserModal, UpdateUserModal } from './edit'
+import { CreateUserButtonWithModal, DeleteUserModal, UpdateUserModal } from './edit'
 import { getUserList } from './server-actions'
 
 export const UsersTitle: FC = () => {
@@ -80,6 +80,10 @@ export const UserListClient: FC = () => {
             }}
           />
         </div>
+        <div className='col-span-5'></div>
+        <div className='col-span-1 flex items-center'>
+          <CreateUserButtonWithModal updated={() => list.reload()} />
+        </div>
         <div className='col-span-12'>
           <Table
             aria-label='user list'
@@ -118,6 +122,7 @@ export const UserListClient: FC = () => {
                   <TableCell>
                     <ExButton
                       isIconOnly
+                      isSmart
                       color='primary'
                       tooltip='編集'
                       onPress={() => {
@@ -128,6 +133,7 @@ export const UserListClient: FC = () => {
                     </ExButton>
                     <ExButton
                       isIconOnly
+                      isSmart
                       color='danger'
                       tooltip='削除'
                       onPress={() => {
