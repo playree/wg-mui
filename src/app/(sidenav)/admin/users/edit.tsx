@@ -9,6 +9,7 @@ import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Checkbox,
+  Chip,
   Input,
   Modal,
   ModalBody,
@@ -16,11 +17,15 @@ import {
   ModalFooter,
   ModalHeader,
   ModalProps,
+  Select,
+  SelectItem,
   useDisclosure,
 } from '@nextui-org/react'
+import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
+import { getLabelList } from '../labels/server-actions'
 import { createUser, deleteUser, existsUserName, updateUser } from './server-actions'
 
 // ユーザー管理
@@ -34,6 +39,12 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
 
+  const labelList = useAsyncList({
+    async load() {
+      return { items: await getLabelList() }
+    },
+  })
+
   const {
     control,
     handleSubmit,
@@ -43,7 +54,7 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
   } = useForm<CreateUser>({
     resolver: zodResolver(scCreateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '' },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]) },
   })
 
   useEffect(() => {
@@ -155,6 +166,38 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
                     )}
                   />
                 </div>
+                <div className='col-span-12'>
+                  <Controller
+                    control={control}
+                    name='labelList'
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        items={labelList.items}
+                        label='Label'
+                        variant='bordered'
+                        isMultiline={true}
+                        selectionMode='multiple'
+                        onSelectionChange={onChange}
+                        selectedKeys={value}
+                        renderValue={(items) => {
+                          return (
+                            <div className='flex flex-wrap gap-2'>
+                              {items.map((item) => (
+                                <Chip key={item.key}>{item.data?.name}</Chip>
+                              ))}
+                            </div>
+                          )
+                        }}
+                      >
+                        {(label) => (
+                          <SelectItem key={label.id} textValue={label.name}>
+                            <span className='text-small'>{label.name}</span>
+                          </SelectItem>
+                        )}
+                      </Select>
+                    )}
+                  />
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
@@ -189,6 +232,12 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
   const toggleVisibility = () => setIsVisible(!isVisible)
   const [isUpdatePassword, setUpdatePassword] = useState(false)
 
+  const labelList = useAsyncList({
+    async load() {
+      return { items: await getLabelList() }
+    },
+  })
+
   const {
     control,
     handleSubmit,
@@ -199,7 +248,7 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
   } = useForm<UpdateUser>({
     resolver: zodResolver(scUpdateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '' },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]) },
   })
 
   useEffect(() => {
@@ -334,6 +383,38 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
                         value={value || ''}
                         autoComplete='email'
                       />
+                    )}
+                  />
+                </div>
+                <div className='col-span-12'>
+                  <Controller
+                    control={control}
+                    name='labelList'
+                    render={({ field: { onChange, value } }) => (
+                      <Select
+                        items={labelList.items}
+                        label='Label'
+                        variant='bordered'
+                        isMultiline={true}
+                        selectionMode='multiple'
+                        onSelectionChange={onChange}
+                        selectedKeys={value}
+                        renderValue={(items) => {
+                          return (
+                            <div className='flex flex-wrap gap-2'>
+                              {items.map((item) => (
+                                <Chip key={item.key}>{item.data?.name}</Chip>
+                              ))}
+                            </div>
+                          )
+                        }}
+                      >
+                        {(label) => (
+                          <SelectItem key={label.id} textValue={label.name}>
+                            <span className='text-small'>{label.name}</span>
+                          </SelectItem>
+                        )}
+                      </Select>
                     )}
                   />
                 </div>

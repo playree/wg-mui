@@ -52,6 +52,7 @@ export const scCreateUser = z.object({
   password: zPassword,
   isAdmin: z.boolean(),
   email: zEmail,
+  labelList: z.set(z.string()),
 })
 export type CreateUser = z.infer<typeof scCreateUser>
 
@@ -61,11 +62,23 @@ export const scUpdateUser = z.object({
   password: zPasswordUpdate,
   isAdmin: z.boolean(),
   email: zEmail,
+  labelList: z.set(z.string()),
 })
 export type UpdateUser = z.infer<typeof scUpdateUser>
 
 // ユーザー
-export type TypeUser = Omit<UpdateUser, 'password'> & { id: string; createdAt: Date; updatedAt: Date }
+export type TypeUser = {
+  id: string
+  name: string
+  isAdmin: boolean
+  email: string | null
+  // labelList: {
+  //   id: string
+  //   name: string
+  // }[]
+  createdAt: Date
+  updatedAt: Date
+}
 
 // ラベル作成・更新
 export const scEditLabel = z.object({
