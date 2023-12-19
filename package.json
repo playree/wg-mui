@@ -17,7 +17,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
     "@nextui-org/react": "^2.2.9",
-    "@prisma/client": "5.6.0",
+    "@prisma/client": "^5.7.1",
     "@react-aria/ssr": "^3.8.0",
     "@react-aria/visually-hidden": "^3.8.5",
     "@react-stately/data": "3.10.3",
@@ -63,7 +63,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.1.0",
     "prettier-plugin-tailwindcss": "^0.5.7",
-    "prisma": "5.6.0",
+    "prisma": "^5.7.1",
     "ts-node": "^10.9.1"
   },
   "prisma": {

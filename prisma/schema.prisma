@@ -36,10 +36,10 @@ model Label {
 model UserLabel {
   id        String   @id @default(uuid())
   userId    String
-  lablelId  String
+  labelId   String
   createdAt DateTime @default(now())
 
   // Relation
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  label Label @relation(fields: [lablelId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
 }

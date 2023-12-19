@@ -23,12 +23,20 @@ export const prisma = new PrismaClient().$extends({
         })
       },
       async createUser(data: CreateUser) {
-        const { password, ...input } = data
+        const { password, labelList, ...input } = data
+        // Labelの紐付け
+        const createLabelList =
+          labelList.size > 0
+            ? Array.from(labelList).map((value) => ({
+                labelId: value,
+              }))
+            : undefined
         // passwordHashは返却から除外
         const { passwordHash: _, ...user } = await prisma.user.create({
           data: {
             ...input,
             passwordHash: hashPassword(password),
+            userLabelList: { create: createLabelList },
           },
         })
         return user

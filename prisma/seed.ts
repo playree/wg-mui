@@ -8,7 +8,7 @@ async function main() {
     await prisma.user.create({
       data: {
         name: 'admin',
-        passwordHash: hashPassword('lab@user00'),
+        passwordHash: hashPassword('lab@test00'),
         isAdmin: true,
       },
     })
@@ -20,7 +20,7 @@ async function main() {
     await prisma.user.create({
       data: {
         name: 'testuser',
-        passwordHash: hashPassword('lab@user00'),
+        passwordHash: hashPassword('lab@test00'),
         isAdmin: false,
       },
     })
