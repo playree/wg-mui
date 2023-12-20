@@ -37,3 +37,6 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Label_name_key" ON "Label"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserLabel_userId_labelId_key" ON "UserLabel"("userId", "labelId");

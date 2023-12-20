@@ -42,4 +42,6 @@ model UserLabel {
   // Relation
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
   label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, labelId])
 }
