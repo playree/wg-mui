@@ -269,6 +269,7 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
       setValue('name', target.name)
       setValue('isAdmin', target.isAdmin)
       setValue('email', target.email || '')
+      setValue('labelList', new Set(target.labelList?.map((value) => value.id)))
     }
   }, [target, props.isOpen, setValue])
 
@@ -283,7 +284,7 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
                 setLoading(true)
 
                 // nameの重複チェック
-                if (await existsUserName(req.name)) {
+                if (await existsUserName(req.name, target.id)) {
                   // 重複チェックエラー
                   setError('name', { message: '@already_exists' })
                 } else {
@@ -296,7 +297,7 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
               }
             })}
           >
-            <ModalHeader className='flex flex-col gap-1'>{t('item_user_create')}</ModalHeader>
+            <ModalHeader className='flex flex-col gap-1'>{t('item_user_update')}</ModalHeader>
             <ModalBody>
               <div className={gridStyles()}>
                 <div className='col-span-12'>
