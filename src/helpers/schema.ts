@@ -36,7 +36,7 @@ const zPasswordUpdate = z
 const zPasswordConfirm = z.string().min(1, el('@required_field'))
 const zEmail = z.string().email('@invalid_email').or(z.string().length(0)).transform(convNull)
 
-const zLabelName = z.string().min(1, el('@invalid_label_name')).max(30, el('@invalid_label_name'))
+const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
 const zExplanation = z.string().max(80, el('@invalid_label_name'))
 
 // サインイン
@@ -72,10 +72,10 @@ export type TypeUser = {
   name: string
   isAdmin: boolean
   email: string | null
-  // labelList: {
-  //   id: string
-  //   name: string
-  // }[]
+  labelList?: {
+    id: string
+    name: string
+  }[]
   createdAt: Date
   updatedAt: Date
 }

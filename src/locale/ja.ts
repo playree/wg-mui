@@ -34,6 +34,7 @@ export const ja: Record<LocaleItem, string> = {
   item_delete_confirm: '削除確認',
   item_confirmed: '確認しました',
   item_change_password: 'パスワード変更',
+  item_label: 'ラベル',
   item_label_create: 'ラベル作成',
   item_label_update: 'ラベル更新',
   item_label_name: 'ラベル名',
@@ -49,7 +50,7 @@ export const ja: Record<LocaleItem, string> = {
   '@invalid_password': '半角英数記号8～30文字',
   '@invalid_email': 'Eメールフォーマットが不正',
   '@invalid_username_or_password': 'ユーザー名またはパスワードが間違っています',
-  '@invalid_label_name': '1～30文字',
+  '@invalid_label_name': '1～20文字',
   '@invalid_explanation': '80文字以内',
   '@already_exists': '既に存在しています',
 }

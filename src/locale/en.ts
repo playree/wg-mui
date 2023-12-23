@@ -34,6 +34,7 @@ export const en: Record<LocaleItem, string> = {
   item_delete_confirm: 'Delete confirmation',
   item_confirmed: 'Confirmed',
   item_change_password: 'Change password',
+  item_label: 'Label',
   item_label_create: 'Create Label',
   item_label_update: 'Update Label',
   item_label_name: 'Label name',
@@ -49,7 +50,7 @@ export const en: Record<LocaleItem, string> = {
   '@invalid_password': '8-30 alphanumeric characters',
   '@invalid_email': 'Invalid email format',
   '@invalid_username_or_password': 'Incorrect username or password',
-  '@invalid_label_name': '1-30 characters',
+  '@invalid_label_name': '1-20 characters',
   '@invalid_explanation': 'Within 80 characters',
   '@already_exists': 'Already exists',
 }

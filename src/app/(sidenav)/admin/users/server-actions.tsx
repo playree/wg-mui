@@ -3,9 +3,9 @@
 import { prisma } from '@/helpers/prisma'
 import { CreateUser, UpdateUser } from '@/helpers/schema'
 
-export const getUserList = async () => {
+export const getUserList = async (withLabel = false) => {
   console.debug('getUserList:in:')
-  const userList = await prisma.user.getAllList()
+  const userList = await prisma.user.getAllList(withLabel)
   console.debug('getUserList:out:', userList.length)
   return userList
 }

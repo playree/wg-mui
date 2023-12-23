@@ -9,6 +9,7 @@ import { dayformat } from '@/helpers/day'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
+  Chip,
   Input,
   Pagination,
   Table,
@@ -34,7 +35,7 @@ export const UserListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: getUserList,
+    load: () => getUserList(true),
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },
@@ -114,6 +115,7 @@ export const UserListClient: FC = () => {
               <TableColumn key='isAdmin' width={120} allowsSorting>
                 {t('item_isadmin')}
               </TableColumn>
+              <TableColumn>{t('item_label')}</TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
               </TableColumn>
@@ -127,6 +129,15 @@ export const UserListClient: FC = () => {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>
                     <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
+                  </TableCell>
+                  <TableCell>
+                    {user.labelList?.map((value) => {
+                      return (
+                        <Chip key={value.id} variant='faded' size='sm'>
+                          {value.name}
+                        </Chip>
+                      )
+                    })}
                   </TableCell>
                   <TableCell>
                     <div className='text-xs'>{dayformat(user.updatedAt, 'jp-simple')}</div>

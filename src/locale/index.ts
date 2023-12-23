@@ -35,6 +35,7 @@ export type LocaleItemBase =
   | 'item_delete_confirm'
   | 'item_confirmed'
   | 'item_change_password'
+  | 'item_label'
   | 'item_label_create'
   | 'item_label_update'
   | 'item_label_name'

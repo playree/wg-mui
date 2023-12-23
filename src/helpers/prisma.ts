@@ -1,7 +1,7 @@
-import { Prisma, PrismaClient, UserLabel } from '@prisma/client'
+import { Label, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
 
 import { hashPassword } from './password'
-import { CreateUser, UpdateUser } from './schema'
+import { CreateUser, TypeUser, UpdateUser } from './schema'
 
 export type AllOrCount = 'all' | 'count'
 
@@ -21,22 +21,40 @@ const convDeleteLabelList = (target: UserLabel[]) => {
     : undefined
 }
 
+const convUserLabel = (userLabel: UserLabel & { label: Label }) => ({
+  id: userLabel.label.id,
+  name: userLabel.label.name,
+})
+
+const convUser = (
+  inUser: User & {
+    userLabelList?: (UserLabel & { label: Label })[]
+  },
+): TypeUser => {
+  // passwordHashは返却から除外
+  const { passwordHash: _, userLabelList, ...outUser } = inUser
+  const labelList = userLabelList?.map((value) => convUserLabel(value))
+  return {
+    ...outUser,
+    labelList,
+  }
+}
+
 export const prisma = new PrismaClient().$extends({
   model: {
     user: {
-      getAllList() {
-        return prisma.user.findMany({
-          select: {
-            id: true,
-            name: true,
-            isNotInit: true,
-            isAdmin: true,
-            email: true,
-            updatedAt: true,
-            createdAt: true,
-          },
+      async getAllList(withLabel = false) {
+        const userList = await prisma.user.findMany({
+          include: withLabel
+            ? {
+                userLabelList: {
+                  include: { label: true },
+                },
+              }
+            : undefined,
           orderBy: { createdAt: 'asc' },
         })
+        return userList.map((value) => convUser(value))
       },
       async createUser(data: CreateUser) {
         const { password, labelList, ...input } = data
@@ -64,7 +82,7 @@ export const prisma = new PrismaClient().$extends({
         }
         const targetLabelList = target.userLabelList.map((value) => value.labelId)
 
-        // ラベルの紐付け
+        // Labelの紐付け
         const createLabelList = convCreateLabelList(
           Array.from(labelList).filter((value) => !targetLabelList.includes(value)),
         )
