@@ -3,7 +3,7 @@
 import { CheckIcon, EyeIcon, EyeSlashIcon, UserPlusIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
-import { CreateUser, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
+import { CreateUser, TypeLabel, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -21,29 +21,24 @@ import {
   SelectItem,
   useDisclosure,
 } from '@nextui-org/react'
-import { useAsyncList } from '@react-stately/data'
+import { AsyncListData } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { getLabelList } from '../labels/server-actions'
 import { createUser, deleteUser, existsUserName, updateUser } from './server-actions'
 
 // ユーザー管理
 
 /** 作成モーダル */
-const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }> = (props) => {
-  const { updated, ...nextProps } = props
+const CreateUserModal: FC<
+  Omit<ModalProps, 'children'> & { updated: () => void; labelList: AsyncListData<TypeLabel> }
+> = (props) => {
+  const { updated, labelList, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
-
-  const labelList = useAsyncList({
-    async load() {
-      return { items: await getLabelList() }
-    },
-  })
 
   const {
     control,
@@ -173,7 +168,7 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
                     render={({ field: { onChange, value } }) => (
                       <Select
                         items={labelList.items}
-                        label='Label'
+                        label={t('item_label')}
                         variant='bordered'
                         isMultiline={true}
                         selectionMode='multiple'
@@ -221,22 +216,16 @@ const CreateUserModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
 }
 
 /** 更新モーダル */
-export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeUser; updated: () => void }> = (
-  props,
-) => {
-  const { target, updated, ...nextProps } = props
+export const UpdateUserModal: FC<
+  Omit<ModalProps, 'children'> & { target?: TypeUser; updated: () => void; labelList: AsyncListData<TypeLabel> }
+> = (props) => {
+  const { target, updated, labelList, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
   const [isUpdatePassword, setUpdatePassword] = useState(false)
-
-  const labelList = useAsyncList({
-    async load() {
-      return { items: await getLabelList() }
-    },
-  })
 
   const {
     control,
@@ -394,7 +383,7 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
                     render={({ field: { onChange, value } }) => (
                       <Select
                         items={labelList.items}
-                        label='Label'
+                        label={t('item_label')}
                         variant='bordered'
                         isMultiline={true}
                         selectionMode='multiple'
@@ -442,7 +431,10 @@ export const UpdateUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
 }
 
 /** ユーザー作成ボタン */
-export const CreateUserButtonWithModal: FC<{ updated: () => void }> = ({ updated }) => {
+export const CreateUserButtonWithModal: FC<{ updated: () => void; labelList: AsyncListData<TypeLabel> }> = ({
+  updated,
+  labelList,
+}) => {
   const { t } = useLocale()
   const editModal = useDisclosure()
   return (
@@ -457,6 +449,7 @@ export const CreateUserButtonWithModal: FC<{ updated: () => void }> = ({ updated
         isDismissable={false}
         scrollBehavior='outside'
         updated={() => updated()}
+        labelList={labelList}
       />
     </>
   )

@@ -132,7 +132,7 @@ export const UserListClient: FC = () => {
           </Select>
         </div>
         <div className='col-span-2 flex items-center'>
-          <CreateUserButtonWithModal updated={() => list.reload()} />
+          <CreateUserButtonWithModal updated={() => list.reload()} labelList={labelList} />
         </div>
         <div className='col-span-12'>
           <Table
@@ -227,6 +227,7 @@ export const UserListClient: FC = () => {
         updated={() => {
           list.reload()
         }}
+        labelList={labelList}
         onClose={() => setTargetUpdate(undefined)}
       />
       <DeleteUserModal

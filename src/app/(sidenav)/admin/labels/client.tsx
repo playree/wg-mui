@@ -79,7 +79,7 @@ export const LabelListClient: FC = () => {
             placeholder={t('msg_enter_search_word')}
             onChange={(el) => {
               setFilterText(el.target.value)
-              list.setFilters({ free: el.target.value })
+              list.setFilter({ free: el.target.value })
             }}
           />
         </div>
