@@ -66,6 +66,13 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
       setPage(page)
     },
     reload: list.reload,
-    setFilters,
+    setFilter: (filter: Partial<F>) => {
+      if (filters) {
+        setFilters({
+          ...filters,
+          ...filter,
+        })
+      }
+    },
   }
 }

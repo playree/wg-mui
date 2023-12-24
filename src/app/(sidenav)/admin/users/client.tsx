@@ -12,6 +12,8 @@ import {
   Chip,
   Input,
   Pagination,
+  Select,
+  SelectItem,
   Table,
   TableBody,
   TableCell,
@@ -20,9 +22,11 @@ import {
   TableRow,
   useDisclosure,
 } from '@nextui-org/react'
+import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
+import { getLabelList } from '../labels/server-actions'
 import { CreateUserButtonWithModal, DeleteUserModal, UpdateUserModal } from './edit'
 import { getUserList } from './server-actions'
 
@@ -40,13 +44,40 @@ export const UserListClient: FC = () => {
       init: { column: 'updatedAt', direction: 'descending' },
     },
     filter: {
-      init: { free: '' },
+      init: { free: '', label: '' },
       proc: (item, filters) => {
-        return filters.free ? item.name.indexOf(filters.free) > -1 : true
+        if (filters.free) {
+          // フリー入力あり
+          if (item.name.indexOf(filters.free) < 0) {
+            // 該当なし
+            return false
+          }
+        }
+
+        if (filters.label) {
+          // ラベル指定あり
+          if (item.labelList) {
+            for (const label of item.labelList) {
+              if (label.id === filters.label) {
+                // 該当あり
+                return true
+              }
+            }
+            // 該当なし
+            return false
+          }
+        }
+
+        return true
       },
     },
   })
-  const [filterText, setFilterText] = useState('')
+
+  const labelList = useAsyncList({
+    async load() {
+      return { items: await getLabelList() }
+    },
+  })
 
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
@@ -73,20 +104,34 @@ export const UserListClient: FC = () => {
   return (
     <>
       <div className={twMerge(gridStyles(), 'w-full')}>
-        <div className='col-span-6'>
+        <div className='col-span-5'>
           <Input
             type='text'
-            value={filterText}
             label={t('item_username')}
             placeholder={t('msg_enter_search_word')}
             onChange={(el) => {
-              setFilterText(el.target.value)
-              list.setFilters({ free: el.target.value })
+              list.setFilter({ free: el.target.value })
             }}
           />
         </div>
-        <div className='col-span-5'></div>
-        <div className='col-span-1 flex items-center'>
+        <div className='col-span-5'>
+          <Select
+            label={t('item_label')}
+            variant='bordered'
+            items={labelList.items}
+            onChange={(el) => {
+              console.debug('select change:', el.target.value)
+              list.setFilter({ label: el.target.value })
+            }}
+          >
+            {(label) => (
+              <SelectItem key={label.id} textValue={label.name}>
+                <span className='text-small'>{label.name}</span>
+              </SelectItem>
+            )}
+          </Select>
+        </div>
+        <div className='col-span-2 flex items-center'>
           <CreateUserButtonWithModal updated={() => list.reload()} />
         </div>
         <div className='col-span-12'>
