@@ -45,6 +45,7 @@ export type LocaleItemBase =
   | 'msg_user_delete'
   | 'msg_common_error'
   | 'msg_enter_search_word'
+  | 'msg_not_installed'
 
 export type LocaleItemError =
   | '@required_field'

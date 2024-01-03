@@ -45,3 +45,13 @@ model UserLabel {
 
   @@unique([userId, labelId])
 }
+
+model WgConfig {
+  id         String  @id @default(uuid())
+  address    String
+  privateKey String
+  publicKey  String
+  listenPort Int
+  endPoint   String
+  dns        String?
+}

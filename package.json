@@ -29,6 +29,7 @@
     "dayjs": "^1.11.10",
     "framer-motion": "^10.16.5",
     "intl-messageformat": "^10.5.8",
+    "ip-address": "^9.0.5",
     "next": "^14.0.3",
     "next-auth": "^4.24.5",
     "next-themes": "^0.2.1",
