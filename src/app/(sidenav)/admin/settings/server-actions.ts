@@ -13,7 +13,7 @@ export const getWgVersion = async () => {
 export const getIpForward = async () => {
   const res = await runCmd('sudo sysctl net.ipv4.ip_forward')
   if (res.error) {
-    console.debug('getWgVersion:', res.stderr)
+    console.debug('getIpForward:', res.stderr)
   }
   return res.error ? undefined : res.stdout
 }

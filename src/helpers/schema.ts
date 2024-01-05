@@ -18,8 +18,16 @@ const convNull = <T>(value: T): T | null => {
 }
 
 const reHalfString = /^[a-zA-Z0-9!-/:-@¥[-`{-~ ]*$/
+const rePattern1String = /^[a-zA-Z0-9.-_]*$/
+const reAbsolutePath = /^\/.*$/
+const reCIDR =
+  /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\/([1-2]?[0-9]|3[0-2])$/
 
-const zUsername = z.string().min(4, el('@invalid_username')).max(30, el('@invalid_username'))
+const zUsername = z
+  .string()
+  .min(4, el('@invalid_username'))
+  .max(30, el('@invalid_username'))
+  .regex(rePattern1String, el('@invalid_username'))
 const zUsernameConfirm = z.string().min(1, el('@required_field'))
 const zPassword = z
   .string()
@@ -34,10 +42,21 @@ const zPasswordUpdate = z
   .or(z.string().length(0))
   .transform(convUndefined)
 const zPasswordConfirm = z.string().min(1, el('@required_field'))
-const zEmail = z.string().email('@invalid_email').or(z.string().length(0)).transform(convNull)
+const zEmail = z.string().email(el('@invalid_email')).or(z.string().length(0)).transform(convNull)
 
 const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
 const zExplanation = z.string().max(80, el('@invalid_label_name'))
+
+const zConfDirPath = z.string().min(1, el('@invalid_conf_dir_path')).regex(reAbsolutePath, el('@invalid_conf_dir_path'))
+const zInterfaceName = z
+  .string()
+  .min(1, el('@invalid_interface_name'))
+  .max(60, el('@invalid_interface_name'))
+  .regex(rePattern1String, el('@invalid_interface_name'))
+const zAddress = z.string().regex(reCIDR, el('@invalid_address'))
+const zPrivateKey = z.string().regex(reHalfString, el('@invalid_private_key'))
+const zEndPoint = z.string().url(el('@invalid_end_point'))
+const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(z.string().length(0)).transform(convNull)
 
 // サインイン
 export const scSignin = z.object({
@@ -89,3 +108,14 @@ export type EditLabel = z.infer<typeof scEditLabel>
 
 // ラベル
 export type TypeLabel = EditLabel & { id: string; createdAt: Date; updatedAt: Date }
+
+// WG Conf初期設定
+export const scInitializeWgConf = z.object({
+  confDirPath: zConfDirPath,
+  interfaceName: zInterfaceName,
+  address: zAddress,
+  privateKey: zPrivateKey,
+  endPoint: zEndPoint,
+  dns: zDns,
+})
+export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
