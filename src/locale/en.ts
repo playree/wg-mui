@@ -1,6 +1,7 @@
 import { LocaleItem } from '.'
 
 export const en: Record<LocaleItem, string> = {
+  menu_initial_setting: 'Initial Setting',
   menu_dashboard: 'Dashboard',
   menu_users: 'Users',
   menu_labels: 'Labels',

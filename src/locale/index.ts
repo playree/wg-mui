@@ -1,6 +1,7 @@
 import { useLocale as ul } from '@/components/nextekit/locale/client'
 
 export type LocaleItemBase =
+  | 'menu_initial_setting'
   | 'menu_dashboard'
   | 'menu_users'
   | 'menu_labels'

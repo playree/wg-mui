@@ -18,7 +18,7 @@ const convNull = <T>(value: T): T | null => {
 }
 
 const reHalfString = /^[a-zA-Z0-9!-/:-@¥[-`{-~ ]*$/
-const rePattern1String = /^[a-zA-Z0-9.-_]*$/
+const rePattern1String = /^[a-zA-Z0-9.\-_]*$/
 const reAbsolutePath = /^\/.*$/
 const reCIDR =
   /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\/([1-2]?[0-9]|3[0-2])$/

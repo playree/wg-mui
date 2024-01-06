@@ -1,6 +1,7 @@
 import { LocaleItem } from '.'
 
 export const ja: Record<LocaleItem, string> = {
+  menu_initial_setting: '初期設定',
   menu_dashboard: 'ダッシュボード',
   menu_users: 'ユーザー管理',
   menu_labels: 'ラベル管理',
