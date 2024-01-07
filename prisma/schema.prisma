@@ -52,8 +52,19 @@ model WgConf {
   interfaceName String
   address       String
   privateKey    String
+  publicKey     String
   endPoint      String
   dns           String?
   updatedAt     DateTime @updatedAt
   createdAt     DateTime @default(now())
+}
+
+model Peer {
+  address             String   @id
+  privateKey          String
+  publicKey           String
+  allowedIPs          String
+  persistentKeepalive Int?
+  updatedAt           DateTime @updatedAt
+  createdAt           DateTime @default(now())
 }

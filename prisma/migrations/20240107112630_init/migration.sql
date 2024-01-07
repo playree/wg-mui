@@ -29,6 +29,31 @@ CREATE TABLE "UserLabel" (
     CONSTRAINT "UserLabel_labelId_fkey" FOREIGN KEY ("labelId") REFERENCES "Label" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- CreateTable
+CREATE TABLE "WgConf" (
+    "id" TEXT NOT NULL PRIMARY KEY DEFAULT 'main',
+    "confDirPath" TEXT NOT NULL,
+    "interfaceName" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "privateKey" TEXT NOT NULL,
+    "publicKey" TEXT NOT NULL,
+    "endPoint" TEXT NOT NULL,
+    "dns" TEXT,
+    "updatedAt" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CreateTable
+CREATE TABLE "Peer" (
+    "address" TEXT NOT NULL PRIMARY KEY,
+    "privateKey" TEXT NOT NULL,
+    "publicKey" TEXT NOT NULL,
+    "allowedIPs" TEXT NOT NULL,
+    "persistentKeepalive" INTEGER,
+    "updatedAt" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
 

@@ -1,11 +1,11 @@
 import { Cog6ToothIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
+import { getIpForward, getWgVersion } from '@/helpers/cmd'
 import { Address4 } from 'ip-address'
 import { Metadata } from 'next'
 import { FC, Suspense, use } from 'react'
 
 import { SettingsTitle, StatusViewClient } from './client'
-import { getIpForward, getWgVersion } from './server-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
