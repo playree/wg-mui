@@ -1,18 +1,26 @@
 'use client'
 
 import { CheckIcon, Cog6ToothIcon } from '@/components/icons'
+import { LangSwitch } from '@/components/lang-switch'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
+import { ThemeSwitchList } from '@/components/theme-switch'
 import { InitializeWgConf, scInitializeWgConf } from '@/helpers/schema'
+import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
+import { localeConfig } from '@/locale/config'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
+
+import { initializeWgConf } from './server-actions'
 
 export const InitializeSettings: FC = () => {
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
+  const router = useRouter()
 
   const {
     control,
@@ -36,14 +44,20 @@ export const InitializeSettings: FC = () => {
       <div className='mb-4 flex items-center pl-8 lg:pl-0'>
         <Cog6ToothIcon className='mr-2' />
         <span className='mr-8 text-lg'>{t('menu_initial_setting')}</span>
+        <div className='right-0 flex flex-auto justify-end'>
+          <ThemeSwitchList size='sm' className='mr-2' />
+          <LangSwitch localeConfig={localeConfig} size='sm' />
+        </div>
       </div>
 
       <form
         onSubmit={handleSubmit(async (req) => {
           console.debug('create:submit:', req)
           setLoading(true)
-
+          await initializeWgConf(req)
+          await intervalOperation()
           setLoading(false)
+          router.refresh()
         })}
       >
         <div className={gridStyles()}>
