@@ -1,4 +1,4 @@
-import { Label, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
+import { Label, Peer, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
 
 import { hashPassword } from './password'
 import { CreateUser, TypeUser, UpdateUser } from './schema'
@@ -21,37 +21,46 @@ const convDeleteLabelList = (target: UserLabel[]) => {
     : undefined
 }
 
-const convUserLabel = (userLabel: UserLabel & { label: Label }) => ({
-  id: userLabel.label.id,
-  name: userLabel.label.name,
+const convUserLabel = (userLabel: UserLabel & { label?: Label }) => ({
+  id: userLabel.label?.id || '',
+  name: userLabel.label?.name || '',
 })
+
+const convPeerAddress = (peer: Peer) => peer.address
 
 const convUser = (
   inUser: User & {
-    userLabelList?: (UserLabel & { label: Label })[]
+    userLabelList?: (UserLabel & { label?: Label })[]
+    peerList?: Peer[]
   },
 ): TypeUser => {
   // passwordHashは返却から除外
-  const { passwordHash: _, userLabelList, ...outUser } = inUser
+  const { passwordHash: _, userLabelList, peerList, ...outUser } = inUser
   const labelList = userLabelList?.map((value) => convUserLabel(value))
+  const peerAddressList = peerList?.map((value) => convPeerAddress(value))
   return {
     ...outUser,
     labelList,
+    peerAddressList,
   }
 }
+
+export type GetUserOption = { withLabel?: boolean; withPeer?: boolean }
 
 export const prisma = new PrismaClient().$extends({
   model: {
     user: {
-      async getAllList(withLabel = false) {
+      async getAllList({ withLabel = false, withPeer = false }: GetUserOption) {
         const userList = await prisma.user.findMany({
-          include: withLabel
-            ? {
-                userLabelList: {
+          include: {
+            userLabelList: withLabel
+              ? {
                   include: { label: true },
-                },
-              }
-            : undefined,
+                }
+              : undefined,
+            peer: withPeer,
+          },
+
           orderBy: { createdAt: 'asc' },
         })
         return userList.map((value) => convUser(value))

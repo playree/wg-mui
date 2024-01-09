@@ -1,6 +1,6 @@
 'use client'
 
-import { PencilSquareIcon, TrashIcon } from '@/components/icons'
+import { ComputerDesktopIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
@@ -39,7 +39,7 @@ export const UserListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: () => getUserList(true),
+    load: () => getUserList({ withLabel: true, withPeer: true }),
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },
@@ -161,6 +161,7 @@ export const UserListClient: FC = () => {
                 {t('item_isadmin')}
               </TableColumn>
               <TableColumn>{t('item_label')}</TableColumn>
+              <TableColumn>{t('item_peer')}</TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
               </TableColumn>
@@ -185,6 +186,22 @@ export const UserListClient: FC = () => {
                     })}
                   </TableCell>
                   <TableCell>
+                    <div className='flex items-center'>
+                      <Chip variant='faded' size='sm'>
+                        {user.peerAddressList?.length || 0}
+                      </Chip>
+                      <ExButton
+                        isIconOnly
+                        isSmart
+                        color='primary'
+                        tooltip={t('item_peer_management')}
+                        onPress={() => {}}
+                      >
+                        <ComputerDesktopIcon />
+                      </ExButton>
+                    </div>
+                  </TableCell>
+                  <TableCell>
                     <div className='text-xs'>{dayformat(user.updatedAt, 'jp-simple')}</div>
                   </TableCell>
                   <TableCell>
@@ -192,7 +209,7 @@ export const UserListClient: FC = () => {
                       isIconOnly
                       isSmart
                       color='primary'
-                      tooltip='編集'
+                      tooltip={t('item_edit')}
                       onPress={() => {
                         setTargetUpdate(user)
                       }}
@@ -203,7 +220,7 @@ export const UserListClient: FC = () => {
                       isIconOnly
                       isSmart
                       color='danger'
-                      tooltip='削除'
+                      tooltip={t('item_delete')}
                       onPress={() => {
                         setTargetDelete(user)
                       }}

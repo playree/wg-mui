@@ -95,6 +95,7 @@ export type TypeUser = {
     id: string
     name: string
   }[]
+  peerAddressList?: string[]
   createdAt: Date
   updatedAt: Date
 }

@@ -1,11 +1,11 @@
 'use server'
 
-import { prisma } from '@/helpers/prisma'
+import { GetUserOption, prisma } from '@/helpers/prisma'
 import { CreateUser, UpdateUser } from '@/helpers/schema'
 
-export const getUserList = async (withLabel = false) => {
+export const getUserList = async (option: GetUserOption) => {
   console.debug('getUserList:in:')
-  const userList = await prisma.user.getAllList(withLabel)
+  const userList = await prisma.user.getAllList(option)
   console.debug('getUserList:out:', userList.length)
   return userList
 }

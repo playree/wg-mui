@@ -22,6 +22,7 @@ model User {
 
   // Relation
   userLabelList UserLabel[]
+  peer          Peer[]
 }
 
 model Label {
@@ -61,10 +62,14 @@ model WgConf {
 
 model Peer {
   address             String   @id
+  userId              String
   privateKey          String
   publicKey           String
   allowedIPs          String
   persistentKeepalive Int?
   updatedAt           DateTime @updatedAt
   createdAt           DateTime @default(now())
+
+  // Relation
+  user User @relation(fields: [userId], references: [id])
 }
