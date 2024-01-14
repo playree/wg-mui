@@ -1,5 +1,6 @@
 'use server'
 
+import { getSessionUser } from '@/config/auth-options'
 import { prisma } from '@/helpers/prisma'
 import { getWgMgr } from '@/helpers/wgmgr'
 import { genPrivateKey } from '@/server-actions/cmd'
@@ -20,4 +21,9 @@ export const getFreeAddressList = async () => {
 
 export const getPrivateKey = async () => {
   return genPrivateKey()
+}
+
+export const createPeer = async () => {
+  const user = await getSessionUser()
+  console.debug('@user:', user)
 }

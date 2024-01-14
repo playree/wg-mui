@@ -23,7 +23,7 @@ import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { getFreeAddressList, getPrivateKey } from './server-actions'
+import { createPeer, getFreeAddressList, getPrivateKey } from './server-actions'
 
 // ピア管理
 
@@ -46,7 +46,6 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
     handleSubmit,
     formState: { errors },
     setValue,
-    setError,
     reset,
   } = useForm<CreatePeer>({
     resolver: zodResolver(scCreatePeer),
@@ -74,7 +73,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
             onSubmit={handleSubmit(async (req) => {
               console.debug('create:submit:', req)
               setLoading(true)
-
+              await createPeer()
               setLoading(false)
             })}
           >

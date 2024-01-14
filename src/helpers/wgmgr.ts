@@ -16,14 +16,14 @@ export class WgMgr {
     const end = this.ip4.endAddress().bigInteger()
     const addressList = []
     for (let i = start; i < end; i++) {
-      addressList.push(Address4.fromBigInteger(i).address)
+      addressList.push(`${Address4.fromBigInteger(i).address}/${this.ip4.subnetMask}`)
     }
     this.targetAddress = addressList
   }
 
   async getUsedAddressList() {
     const peerList = await prisma.peer.findMany({ select: { address: true } })
-    return peerList.map((value) => value.address)
+    return peerList.map((value) => `${value.address}/${this.ip4.subnetMask}`)
   }
 
   async getFreeAddressList() {

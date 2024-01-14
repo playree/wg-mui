@@ -4,7 +4,7 @@ import acceptLanguageParser from 'accept-language-parser'
 import { type NextRequestWithAuth, withAuth } from 'next-auth/middleware'
 import { type NextFetchEvent, NextResponse } from 'next/server'
 
-import { authProps } from './config/auth'
+import { authProps } from './config/auth-props'
 import { localeConfig } from './locale/config'
 
 const middlewareWithAuth = withAuth(

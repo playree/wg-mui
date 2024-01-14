@@ -1,6 +1,12 @@
 import { subtitle, title } from '@/components/primitives'
 import { Code } from '@nextui-org/code'
 import { Snippet } from '@nextui-org/snippet'
+import { Metadata } from 'next'
+
+export const dynamic = 'force-dynamic'
+export const metadata: Metadata = {
+  title: 'Home',
+}
 
 export default function Home() {
   return (
