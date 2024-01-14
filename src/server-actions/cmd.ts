@@ -34,6 +34,14 @@ export const getIpForward = async () => {
   return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
 }
 
+export const genPrivateKey = async () => {
+  const res = await runCmd(`wg genkey`)
+  if (res.error) {
+    console.debug('genPrivateKey:', res.stderr)
+  }
+  return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
+}
+
 export const genPublicKey = async (privateKey: string) => {
   const res = await runCmd(`echo ${privateKey} | wg pubkey`)
   if (res.error) {

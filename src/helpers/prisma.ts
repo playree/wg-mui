@@ -50,6 +50,10 @@ export type GetUserOption = { withLabel?: boolean; withPeer?: boolean }
 export const prisma = new PrismaClient().$extends({
   model: {
     user: {
+      async get(id: string) {
+        const user = await prisma.user.findUnique({ where: { id } })
+        return user ? convUser(user) : undefined
+      },
       async getAllList({ withLabel = false, withPeer = false }: GetUserOption) {
         const userList = await prisma.user.findMany({
           include: {
@@ -115,7 +119,7 @@ export const prisma = new PrismaClient().$extends({
       },
     },
     label: {
-      getAllList(withUser?: AllOrCount) {
+      async getAllList(withUser?: AllOrCount) {
         const include: Prisma.LabelInclude | undefined = withUser
           ? {
               userLabelList: withUser === 'all',
@@ -125,6 +129,20 @@ export const prisma = new PrismaClient().$extends({
         return prisma.label.findMany({
           orderBy: { createdAt: 'asc' },
           include,
+        })
+      },
+    },
+    peer: {
+      async getAllListByUser(userId: string, includeDeleting = false) {
+        return prisma.peer.findMany({
+          where: { userId, isDeleting: !includeDeleting || undefined },
+          select: {
+            address: true,
+            remarks: true,
+            isDeleting: true,
+            updatedAt: true,
+            createdAt: true,
+          },
         })
       },
     },

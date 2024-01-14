@@ -51,6 +51,10 @@ export const ja: Record<LocaleItem, string> = {
   item_dns: 'DNS',
   item_peer: 'ピア',
   item_peer_management: 'ピア管理',
+  item_peer_add: 'ピア追加',
+  item_generate_key: '鍵生成',
+  item_allowed_ips: '許可IP',
+  item_remarks: '備考',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',
@@ -70,5 +74,6 @@ export const ja: Record<LocaleItem, string> = {
   '@invalid_private_key': '半角英数記号',
   '@invalid_end_point': 'URLフォーマット不正',
   '@invalid_dns': 'DNSフォーマット不正',
+  '@invalid_allowed_ips': 'フォーマット不正',
   '@already_exists': '既に存在しています',
 }

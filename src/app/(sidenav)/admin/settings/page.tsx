@@ -1,6 +1,6 @@
 import { Cog6ToothIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
-import { getIpForward, getWgVersion } from '@/helpers/cmd'
+import { getIpForward, getWgVersion } from '@/server-actions/cmd'
 import { Address4 } from 'ip-address'
 import { Metadata } from 'next'
 import { FC, Suspense, use } from 'react'

@@ -52,6 +52,10 @@ export type LocaleItemBase =
   | 'item_dns'
   | 'item_peer'
   | 'item_peer_management'
+  | 'item_peer_add'
+  | 'item_generate_key'
+  | 'item_allowed_ips'
+  | 'item_remarks'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
@@ -73,6 +77,7 @@ export type LocaleItemError =
   | '@invalid_private_key'
   | '@invalid_end_point'
   | '@invalid_dns'
+  | '@invalid_allowed_ips'
   | '@already_exists'
 export const el = (item: LocaleItemError) => item
 

@@ -131,7 +131,7 @@ export const UserListClient: FC = () => {
             )}
           </Select>
         </div>
-        <div className='col-span-2 flex items-center'>
+        <div className='col-span-2 flex flex-row-reverse items-center'>
           <CreateUserButtonWithModal updated={() => list.reload()} labelList={labelList} />
         </div>
         <div className='col-span-12'>
@@ -195,7 +195,7 @@ export const UserListClient: FC = () => {
                         isSmart
                         color='primary'
                         tooltip={t('item_peer_management')}
-                        onPress={() => {}}
+                        href={`/admin/users/${user.id}/peer`}
                       >
                         <ComputerDesktopIcon />
                       </ExButton>

@@ -8,7 +8,7 @@ import { authProps } from './config/auth'
 import { localeConfig } from './locale/config'
 
 const middlewareWithAuth = withAuth(
-  (request) => {
+  async (request) => {
     // Locale
     if (match(request.url, ['/((?!api/).*)'])) {
       console.debug('mw:locale')

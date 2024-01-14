@@ -65,8 +65,10 @@ model Peer {
   userId              String
   privateKey          String
   publicKey           String
-  allowedIPs          String
+  allowedIPs          String?
   persistentKeepalive Int?
+  remarks             String?
+  isDeleting          Boolean  @default(false)
   updatedAt           DateTime @updatedAt
   createdAt           DateTime @default(now())
 

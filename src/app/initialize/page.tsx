@@ -1,5 +1,5 @@
 import { RedirectComponent } from '@/components/nextekit/ui/redirect'
-import { getWgConf } from '@/helpers/wgconf'
+import { getWgMgr } from '@/helpers/wgmgr'
 import { Metadata } from 'next'
 import { FC, use } from 'react'
 
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 }
 
 const InitializePage: FC = () => {
-  const wgConf = use(getWgConf())
+  const wgMgr = use(getWgMgr())
 
-  return wgConf ? <RedirectComponent redirectUrl='/' /> : <InitializeSettings />
+  return wgMgr ? <RedirectComponent redirectUrl='/' /> : <InitializeSettings />
 }
 export default InitializePage

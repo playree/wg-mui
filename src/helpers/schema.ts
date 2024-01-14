@@ -57,6 +57,13 @@ const zAddress = z.string().regex(reCIDR, el('@invalid_address'))
 const zPrivateKey = z.string().regex(reHalfString, el('@invalid_private_key'))
 const zEndPoint = z.string().url(el('@invalid_end_point'))
 const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(z.string().length(0)).transform(convNull)
+const zAllowedIPs = z
+  .string()
+  .regex(reHalfString, el('@invalid_allowed_ips'))
+  .or(z.string().length(0))
+  .transform(convNull)
+const zPersistentKeepalive = z.number()
+const zRemarks = z.string().or(z.string().length(0)).transform(convNull)
 
 // サインイン
 export const scSignin = z.object({
@@ -120,3 +127,13 @@ export const scInitializeWgConf = z.object({
   dns: zDns,
 })
 export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
+
+// Peer作成
+export const scCreatePeer = z.object({
+  address: zAddress,
+  privateKey: zPrivateKey,
+  allowedIPs: zAllowedIPs,
+  persistentKeepalive: zPersistentKeepalive,
+  remarks: zRemarks,
+})
+export type CreatePeer = z.infer<typeof scCreatePeer>
