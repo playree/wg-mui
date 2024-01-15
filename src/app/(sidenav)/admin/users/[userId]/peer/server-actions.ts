@@ -1,9 +1,9 @@
 'use server'
 
-import { getSessionUser } from '@/config/auth-options'
 import { prisma } from '@/helpers/prisma'
+import { CreatePeer } from '@/helpers/schema'
 import { getWgMgr } from '@/helpers/wgmgr'
-import { genPrivateKey } from '@/server-actions/cmd'
+import { genPrivateKey, genPublicKey } from '@/server-actions/cmd'
 
 export const getUser = async (id: string) => {
   return prisma.user.get(id)
@@ -23,7 +23,11 @@ export const getPrivateKey = async () => {
   return genPrivateKey()
 }
 
-export const createPeer = async () => {
-  const user = await getSessionUser()
-  console.debug('@user:', user)
+export const createPeer = async (data: CreatePeer) => {
+  console.debug('createPeer:in:', data)
+  const publicKey = await genPublicKey(data.privateKey)
+  if (!publicKey) {
+    throw new Error('Failed to generate public key')
+  }
+  prisma.peer.create({ data: { ...data, publicKey } })
 }

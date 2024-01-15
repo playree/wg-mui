@@ -131,6 +131,7 @@ export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
 // Peer作成
 export const scCreatePeer = z.object({
   address: zAddress,
+  userId: z.string().uuid(),
   privateKey: zPrivateKey,
   allowedIPs: zAllowedIPs,
   persistentKeepalive: zPersistentKeepalive,

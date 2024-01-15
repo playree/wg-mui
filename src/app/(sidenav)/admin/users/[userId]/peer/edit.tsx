@@ -5,7 +5,8 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { requireSelect } from '@/helpers/client'
-import { CreatePeer, scCreatePeer } from '@/helpers/schema'
+import { CreatePeer, TypeUser, scCreatePeer } from '@/helpers/schema'
+import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -28,15 +29,14 @@ import { createPeer, getFreeAddressList, getPrivateKey } from './server-actions'
 // ピア管理
 
 /** 作成モーダル */
-const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }> = (props) => {
-  const { updated, ...nextProps } = props
+const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updated: () => void }> = (props) => {
+  const { user, updated, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
   const freeAddressList = useAsyncList({
     async load() {
       const items = await getFreeAddressList()
-      console.debug('list:', items)
       return { items }
     },
   })
@@ -50,7 +50,14 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
   } = useForm<CreatePeer>({
     resolver: zodResolver(scCreatePeer),
     mode: 'onChange',
-    defaultValues: { address: '', privateKey: '', allowedIPs: '', persistentKeepalive: 25, remarks: '' },
+    defaultValues: {
+      address: '',
+      userId: user.id,
+      privateKey: '',
+      allowedIPs: '',
+      persistentKeepalive: 25,
+      remarks: '',
+    },
   })
 
   useEffect(() => {
@@ -73,11 +80,14 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
             onSubmit={handleSubmit(async (req) => {
               console.debug('create:submit:', req)
               setLoading(true)
-              await createPeer()
+              await createPeer(req)
+              await intervalOperation()
+              updated()
+              onClose()
               setLoading(false)
             })}
           >
-            <ModalHeader className='flex flex-col gap-1'>{t('item_user_create')}</ModalHeader>
+            <ModalHeader className='flex flex-col gap-1'>{t('item_peer_create')}</ModalHeader>
             <ModalBody>
               <div className={gridStyles()}>
                 <div className='col-span-12'>
@@ -126,12 +136,21 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
                     <KeyIcon />
                   </ExButton>
                 </div>
-                <div className='col-span-12'>
+                <div className='col-span-6'>
                   <InputCtrl
                     control={control}
                     name='allowedIPs'
                     label={t('item_allowed_ips')}
                     errorMessage={fet(errors.allowedIPs)}
+                  />
+                </div>
+                <div className='col-span-6'>
+                  <InputCtrl
+                    control={control}
+                    name='persistentKeepalive'
+                    type='number'
+                    label={t('item_persistent_keepalive')}
+                    errorMessage={fet(errors.persistentKeepalive)}
                   />
                 </div>
                 <div className='col-span-12'>
@@ -165,12 +184,12 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { updated: () => void }
 }
 
 /** ピア作成ボタン */
-export const CreatePeerButtonWithModal: FC<{ updated: () => void }> = ({ updated }) => {
+export const CreatePeerButtonWithModal: FC<{ user: TypeUser; updated: () => void }> = ({ user, updated }) => {
   const { t } = useLocale()
   const editModal = useDisclosure()
   return (
     <>
-      <ExButton isIconOnly color='primary' tooltip={t('item_peer_add')} onPress={() => editModal.onOpen()}>
+      <ExButton isIconOnly color='primary' tooltip={t('item_peer_create')} onPress={() => editModal.onOpen()}>
         <PlusCircleIcon />
       </ExButton>
       <CreatePeerModal
@@ -179,6 +198,7 @@ export const CreatePeerButtonWithModal: FC<{ updated: () => void }> = ({ updated
         onOpenChange={editModal.onOpenChange}
         isDismissable={false}
         scrollBehavior='outside'
+        user={user}
         updated={() => updated()}
       />
     </>

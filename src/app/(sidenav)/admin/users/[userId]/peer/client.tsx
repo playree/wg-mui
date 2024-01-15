@@ -34,7 +34,7 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
     <div className={twMerge(gridStyles(), 'w-full')}>
       <div className='col-span-10'></div>
       <div className='col-span-2 flex flex-row-reverse items-center'>
-        <CreatePeerButtonWithModal updated={() => list.reload()} />
+        <CreatePeerButtonWithModal user={user} updated={() => list.reload()} />
       </div>
       <div className='col-span-12'>
         <Table
