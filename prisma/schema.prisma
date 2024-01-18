@@ -66,7 +66,7 @@ model Peer {
   privateKey          String
   publicKey           String
   allowedIPs          String?
-  persistentKeepalive Int?
+  persistentKeepalive Int
   remarks             String?
   isDeleting          Boolean  @default(false)
   updatedAt           DateTime @updatedAt

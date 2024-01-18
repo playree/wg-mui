@@ -23,7 +23,7 @@ export class WgMgr {
 
   async getUsedAddressList() {
     const peerList = await prisma.peer.findMany({ select: { address: true } })
-    return peerList.map((value) => `${value.address}/${this.ip4.subnetMask}`)
+    return peerList.map((value) => value.address)
   }
 
   async getFreeAddressList() {

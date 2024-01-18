@@ -79,9 +79,9 @@ export const UserListClient: FC = () => {
     },
   })
 
+  const [targetUpdate, setTargetUpdate] = useState<TypeUser>()
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
-  const [targetUpdate, setTargetUpdate] = useState<TypeUser>()
 
   const [targetDelete, setTargetDelete] = useState<TypeUser>()
   const deleteModal = useDisclosure()

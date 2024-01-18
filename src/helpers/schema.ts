@@ -138,3 +138,14 @@ export const scCreatePeer = z.object({
   remarks: zRemarks,
 })
 export type CreatePeer = z.infer<typeof scCreatePeer>
+
+// Peer更新
+export const scUpdatePeer = z.object({
+  allowedIPs: zAllowedIPs,
+  persistentKeepalive: zPersistentKeepalive,
+  remarks: zRemarks,
+})
+export type UpdatePeer = z.infer<typeof scUpdatePeer>
+
+// Peer
+export type TypePeer = UpdatePeer & { address: string; createdAt: Date; updatedAt: Date }

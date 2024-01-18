@@ -5,11 +5,12 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { requireSelect } from '@/helpers/client'
-import { CreatePeer, TypeUser, scCreatePeer } from '@/helpers/schema'
+import { CreatePeer, TypePeer, TypeUser, scCreatePeer } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  Checkbox,
   Modal,
   ModalBody,
   ModalContent,
@@ -24,7 +25,7 @@ import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createPeer, getFreeAddressList, getPrivateKey } from './server-actions'
+import { createPeer, deletePeer, getFreeAddressList, getPrivateKey } from './server-actions'
 
 // ピア管理
 
@@ -54,7 +55,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
       address: '',
       userId: user.id,
       privateKey: '',
-      allowedIPs: '',
+      allowedIPs: '0.0.0.0/0',
       persistentKeepalive: 25,
       remarks: '',
     },
@@ -202,5 +203,62 @@ export const CreatePeerButtonWithModal: FC<{ user: TypeUser; updated: () => void
         updated={() => updated()}
       />
     </>
+  )
+}
+
+/** 削除モーダル */
+export const DeletePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypePeer; updated: () => void }> = (
+  props,
+) => {
+  const { target, updated, ...nextProps } = props
+  const { t } = useLocale()
+  const [isAgree, setAgree] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  useEffect(() => {
+    setLoading(false)
+    setAgree(false)
+  }, [props.isOpen])
+
+  return (
+    <Modal {...nextProps}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className='flex flex-col gap-1'>{t('item_delete_confirm')}</ModalHeader>
+            <ModalBody className='gap-0'>
+              <div className='whitespace-pre-wrap'>{t('msg_peer_delete', { peer: target?.address })}</div>
+              <Checkbox className='mt-4' onChange={() => setAgree(!isAgree)} isSelected={isAgree}>
+                {t('item_confirmed')}
+              </Checkbox>
+            </ModalBody>
+            <ModalFooter>
+              <ExButton color='danger' onPress={onClose}>
+                {t('item_cancel')}
+              </ExButton>
+              <ExButton
+                variant='solid'
+                startContent={isLoading ? undefined : <CheckIcon />}
+                isDisabled={!isAgree}
+                isLoading={isLoading}
+                onPress={async () => {
+                  console.debug('delete:submit:', target)
+                  if (target) {
+                    setLoading(true)
+                    await deletePeer(target.address)
+                    await intervalOperation()
+                    setLoading(false)
+                    updated()
+                    onClose()
+                  }
+                }}
+              >
+                {t('item_ok')}
+              </ExButton>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
   )
 }

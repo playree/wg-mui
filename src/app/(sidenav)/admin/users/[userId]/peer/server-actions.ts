@@ -29,5 +29,13 @@ export const createPeer = async (data: CreatePeer) => {
   if (!publicKey) {
     throw new Error('Failed to generate public key')
   }
-  prisma.peer.create({ data: { ...data, publicKey } })
+  const peer = await prisma.peer.create({ data: { ...data, publicKey } })
+  console.debug('createPeer:out:', peer)
+  return peer
+}
+
+export const deletePeer = async (address: string) => {
+  console.debug('deletePeer:in:', address)
+  await prisma.peer.update({ where: { address }, data: { isDeleting: true } })
+  console.debug('deletePeer:out:')
 }
