@@ -80,6 +80,7 @@ export type LocaleItemError =
   | '@invalid_private_key'
   | '@invalid_end_point'
   | '@invalid_dns'
+  | '@invalid_ip'
   | '@invalid_allowed_ips'
   | '@already_exists'
 export const el = (item: LocaleItemError) => item

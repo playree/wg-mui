@@ -77,6 +77,7 @@ export const en: Record<LocaleItem, string> = {
   '@invalid_private_key': 'alphanumeric characters',
   '@invalid_end_point': 'Invalid URL format',
   '@invalid_dns': 'Invalid DNS format',
+  '@invalid_ip': 'Invalid IP format (ex. 192.168.1.1',
   '@invalid_allowed_ips': 'Invalid format',
   '@already_exists': 'Already exists',
 }

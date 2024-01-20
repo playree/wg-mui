@@ -45,12 +45,14 @@ CREATE TABLE "WgConf" (
 
 -- CreateTable
 CREATE TABLE "Peer" (
-    "address" TEXT NOT NULL PRIMARY KEY,
+    "ip" TEXT NOT NULL PRIMARY KEY,
     "userId" TEXT NOT NULL,
     "privateKey" TEXT NOT NULL,
     "publicKey" TEXT NOT NULL,
-    "allowedIPs" TEXT NOT NULL,
-    "persistentKeepalive" INTEGER,
+    "allowedIPs" TEXT,
+    "persistentKeepalive" INTEGER NOT NULL,
+    "remarks" TEXT,
+    "isDeleting" BOOLEAN NOT NULL DEFAULT false,
     "updatedAt" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Peer_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE

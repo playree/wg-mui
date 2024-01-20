@@ -77,6 +77,7 @@ export const ja: Record<LocaleItem, string> = {
   '@invalid_private_key': '半角英数記号',
   '@invalid_end_point': 'URLフォーマット不正',
   '@invalid_dns': 'DNSフォーマット不正',
+  '@invalid_ip': 'IPフォーマット不正 例)192.168.1.1',
   '@invalid_allowed_ips': 'フォーマット不正',
   '@already_exists': '既に存在しています',
 }

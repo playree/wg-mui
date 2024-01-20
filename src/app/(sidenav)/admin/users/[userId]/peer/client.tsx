@@ -102,8 +102,8 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
             </TableHeader>
             <TableBody items={list.items}>
               {(peer) => (
-                <TableRow key={peer.address}>
-                  <TableCell>{peer.address}</TableCell>
+                <TableRow key={peer.ip}>
+                  <TableCell>{peer.ip}</TableCell>
                   <TableCell>{peer.remarks}</TableCell>
                   <TableCell>
                     <ExButton

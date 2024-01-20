@@ -34,8 +34,8 @@ export const createPeer = async (data: CreatePeer) => {
   return peer
 }
 
-export const deletePeer = async (address: string) => {
-  console.debug('deletePeer:in:', address)
-  await prisma.peer.update({ where: { address }, data: { isDeleting: true } })
+export const deletePeer = async (ip: string) => {
+  console.debug('deletePeer:in:', ip)
+  await prisma.peer.update({ where: { ip }, data: { isDeleting: true } })
   console.debug('deletePeer:out:')
 }

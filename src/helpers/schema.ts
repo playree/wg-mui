@@ -20,6 +20,7 @@ const convNull = <T>(value: T): T | null => {
 const reHalfString = /^[a-zA-Z0-9!-/:-@¥[-`{-~ ]*$/
 const rePattern1String = /^[a-zA-Z0-9.\-_]*$/
 const reAbsolutePath = /^\/.*$/
+const reIp = /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$/
 const reCIDR =
   /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\/([1-2]?[0-9]|3[0-2])$/
 
@@ -57,6 +58,7 @@ const zAddress = z.string().regex(reCIDR, el('@invalid_address'))
 const zPrivateKey = z.string().regex(reHalfString, el('@invalid_private_key'))
 const zEndPoint = z.string().url(el('@invalid_end_point'))
 const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(z.string().length(0)).transform(convNull)
+const zIp = z.string().regex(reIp, el('@invalid_ip'))
 const zAllowedIPs = z
   .string()
   .regex(reHalfString, el('@invalid_allowed_ips'))
@@ -102,7 +104,7 @@ export type TypeUser = {
     id: string
     name: string
   }[]
-  peerAddressList?: string[]
+  peerIpList?: string[]
   createdAt: Date
   updatedAt: Date
 }
@@ -130,7 +132,7 @@ export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
 
 // Peer作成
 export const scCreatePeer = z.object({
-  address: zAddress,
+  ip: zIp,
   userId: z.string().uuid(),
   privateKey: zPrivateKey,
   allowedIPs: zAllowedIPs,
@@ -148,4 +150,4 @@ export const scUpdatePeer = z.object({
 export type UpdatePeer = z.infer<typeof scUpdatePeer>
 
 // Peer
-export type TypePeer = UpdatePeer & { address: string; createdAt: Date; updatedAt: Date }
+export type TypePeer = UpdatePeer & { ip: string; createdAt: Date; updatedAt: Date }

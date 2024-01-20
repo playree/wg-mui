@@ -26,7 +26,7 @@ const convUserLabel = (userLabel: UserLabel & { label?: Label }) => ({
   name: userLabel.label?.name || '',
 })
 
-const convPeerAddress = (peer: Peer) => peer.address
+const convPeerIp = (peer: Peer) => peer.ip
 
 const convUser = (
   inUser: User & {
@@ -37,11 +37,11 @@ const convUser = (
   // passwordHashは返却から除外
   const { passwordHash: _, userLabelList, peerList, ...outUser } = inUser
   const labelList = userLabelList?.map((value) => convUserLabel(value))
-  const peerAddressList = peerList?.map((value) => convPeerAddress(value))
+  const peerIpList = peerList?.map((value) => convPeerIp(value))
   return {
     ...outUser,
     labelList,
-    peerAddressList,
+    peerIpList,
   }
 }
 
@@ -137,7 +137,7 @@ export const prisma = new PrismaClient().$extends({
         return prisma.peer.findMany({
           where: { userId, isDeleting: !includeDeleting || undefined },
           select: {
-            address: true,
+            ip: true,
             allowedIPs: true,
             persistentKeepalive: true,
             remarks: true,

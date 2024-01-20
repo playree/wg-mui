@@ -61,7 +61,7 @@ model WgConf {
 }
 
 model Peer {
-  address             String   @id
+  ip                  String   @id
   userId              String
   privateKey          String
   publicKey           String

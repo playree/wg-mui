@@ -188,7 +188,7 @@ export const UserListClient: FC = () => {
                   <TableCell>
                     <div className='flex items-center'>
                       <Chip variant='faded' size='sm'>
-                        {user.peerAddressList?.length || 0}
+                        {user.peerIpList?.length || 0}
                       </Chip>
                       <ExButton
                         isIconOnly

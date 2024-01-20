@@ -52,7 +52,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
     resolver: zodResolver(scCreatePeer),
     mode: 'onChange',
     defaultValues: {
-      address: '',
+      ip: '',
       userId: user.id,
       privateKey: '',
       allowedIPs: '0.0.0.0/0',
@@ -64,7 +64,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
   useEffect(() => {
     setLoading(false)
     reset()
-    setValue('address', freeAddressList.items[0])
+    setValue('ip', freeAddressList.items[0])
   }, [reset, props.isOpen, setValue, freeAddressList.items])
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
                 <div className='col-span-12'>
                   <Controller
                     control={control}
-                    name='address'
+                    name='ip'
                     render={({ field: { onChange, value } }) => (
                       <Select
                         label={t('item_address')}
@@ -227,7 +227,7 @@ export const DeletePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
           <>
             <ModalHeader className='flex flex-col gap-1'>{t('item_delete_confirm')}</ModalHeader>
             <ModalBody className='gap-0'>
-              <div className='whitespace-pre-wrap'>{t('msg_peer_delete', { peer: target?.address })}</div>
+              <div className='whitespace-pre-wrap'>{t('msg_peer_delete', { peer: target?.ip })}</div>
               <Checkbox className='mt-4' onChange={() => setAgree(!isAgree)} isSelected={isAgree}>
                 {t('item_confirmed')}
               </Checkbox>
@@ -245,7 +245,7 @@ export const DeletePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
                   console.debug('delete:submit:', target)
                   if (target) {
                     setLoading(true)
-                    await deletePeer(target.address)
+                    await deletePeer(target.ip)
                     await intervalOperation()
                     setLoading(false)
                     updated()
