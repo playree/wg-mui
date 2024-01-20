@@ -1,6 +1,6 @@
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
-import { NextAuthOptions, getServerSession } from 'next-auth'
+import { NextAuthOptions, Session, getServerSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 export const authOptions: NextAuthOptions = {
@@ -45,6 +45,7 @@ export const authOptions: NextAuthOptions = {
           token.email = user.email
           console.debug('set token:', token)
         } else {
+          console.debug('user not found')
           token.sub = undefined
         }
       }
@@ -58,6 +59,8 @@ export const authOptions: NextAuthOptions = {
         session.user.isAdmin = token.isAdmin
         session.user.email = token.email
         console.debug('set session:', session.user)
+      } else {
+        return undefined as unknown as Session
       }
       return session
     },
