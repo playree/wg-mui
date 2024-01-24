@@ -1,5 +1,8 @@
 import { WgConf } from '@prisma/client'
+import { writeFileSync } from 'fs'
+import ini from 'ini'
 import { Address4 } from 'ip-address'
+import path from 'path'
 
 import { prisma } from './prisma'
 
@@ -21,6 +24,10 @@ export class WgMgr {
     this.targetAddress = addressList
   }
 
+  get confPath() {
+    return path.join(this.conf.confDirPath, `${this.conf.interfaceName}.conf`)
+  }
+
   async getUsedAddressList() {
     const peerList = await prisma.peer.findMany({ select: { ip: true } })
     return peerList.map((value) => value.ip)
@@ -29,6 +36,21 @@ export class WgMgr {
   async getFreeAddressList() {
     const usedAddressList = await this.getUsedAddressList()
     return this.targetAddress.filter((value) => !usedAddressList.includes(value))
+  }
+
+  saveConf() {
+    writeFileSync(
+      this.confPath,
+      ini.stringify({
+        Interface: {
+          Address: this.conf.address,
+          ListenPort: this.conf.listenPort,
+          PrivateKey: this.conf.privateKey,
+          PostUp: this.conf.postUp || '',
+          PostDown: this.conf.postDown || '',
+        },
+      }),
+    )
   }
 
   static async getWgMgr() {

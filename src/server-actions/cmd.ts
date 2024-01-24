@@ -24,6 +24,21 @@ export const runCmd = async (cmd: string) => {
   })
 }
 
+let exeUser: string
+export const getExeUser = async () => {
+  if (exeUser) {
+    return exeUser
+  }
+
+  const res = await runCmd(`whoami`)
+  if (res.error) {
+    console.debug('getExeUser:', res.stderr)
+  } else {
+    exeUser = res.stdout.replace(/\r?\n/g, '')
+  }
+  return res.error ? undefined : exeUser
+}
+
 /**
  * WireGuard Version取得
  * @returns
@@ -79,8 +94,26 @@ export const genPublicKey = async (privateKey: string) => {
  * @returns
  */
 export const createWgConfDir = async (dirPath: string) => {
+  const exeUser = await getExeUser()
+  if (!exeUser) {
+    return false
+  }
+
   const peerDir = path.join(dirPath, 'peer')
-  const res = await runCmd(`sudo mkdir -p ${peerDir}`)
+  const res = await runCmd(`sudo mkdir -p ${peerDir}; sudo chown ${exeUser} ${peerDir}`)
+  if (res.error) {
+    console.debug('createWgConfDir:', res.stderr)
+  }
+  return !res.error
+}
+
+export const touchFile = async (filePath: string) => {
+  const exeUser = await getExeUser()
+  if (!exeUser) {
+    return false
+  }
+
+  const res = await runCmd(`sudo touch ${filePath}; sudo chown ${exeUser} ${filePath}`)
   if (res.error) {
     console.debug('createWgConfDir:', res.stderr)
   }

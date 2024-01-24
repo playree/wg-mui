@@ -33,7 +33,10 @@ export const InitializeSettings: FC = () => {
       confDirPath: '/etc/wireguard',
       interfaceName: 'wg0',
       address: '172.16.15.1/24',
+      listenPort: 51820,
       privateKey: '',
+      postUp: '',
+      postDown: '',
       endPoint: 'wg.change.it:51820',
       dns: '',
     },
@@ -79,12 +82,22 @@ export const InitializeSettings: FC = () => {
               isRequired
             />
           </div>
-          <div className='col-span-12'>
+          <div className='col-span-6'>
             <InputCtrl
               control={control}
               name='address'
               label={t('item_address')}
               errorMessage={fet(errors.address)}
+              isRequired
+            />
+          </div>
+          <div className='col-span-6'>
+            <InputCtrl
+              control={control}
+              name='listenPort'
+              type='number'
+              label={t('item_listen_port')}
+              errorMessage={fet(errors.listenPort)}
               isRequired
             />
           </div>
@@ -104,6 +117,17 @@ export const InitializeSettings: FC = () => {
               label={t('item_end_point')}
               errorMessage={fet(errors.endPoint)}
               isRequired
+            />
+          </div>
+          <div className='col-span-12'>
+            <InputCtrl control={control} name='postUp' label={t('item_post_up')} errorMessage={fet(errors.postUp)} />
+          </div>
+          <div className='col-span-12'>
+            <InputCtrl
+              control={control}
+              name='postDown'
+              label={t('item_post_down')}
+              errorMessage={fet(errors.postDown)}
             />
           </div>
           <div className='col-span-12'>

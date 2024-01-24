@@ -52,8 +52,11 @@ model WgConf {
   confDirPath   String
   interfaceName String
   address       String
+  listenPort    Int
   privateKey    String
   publicKey     String
+  postUp        String?
+  postDown      String?
   endPoint      String
   dns           String?
   updatedAt     DateTime @updatedAt

@@ -55,6 +55,7 @@ const zInterfaceName = z
   .max(60, el('@invalid_interface_name'))
   .regex(rePattern1String, el('@invalid_interface_name'))
 const zAddress = z.string().regex(reCIDR, el('@invalid_address'))
+const zListenPort = z.number().min(1, el('@invalid_port')).max(65535, el('@invalid_port'))
 const zPrivateKey = z.string().regex(reHalfString, el('@invalid_private_key'))
 const zEndPoint = z.string().url(el('@invalid_end_point'))
 const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(z.string().length(0)).transform(convNull)
@@ -66,6 +67,8 @@ const zAllowedIPs = z
   .transform(convNull)
 const zPersistentKeepalive = z.number()
 const zRemarks = z.string().or(z.string().length(0)).transform(convNull)
+const zPostUp = z.string().or(z.string().length(0)).transform(convNull)
+const zPostDown = z.string().or(z.string().length(0)).transform(convNull)
 
 // サインイン
 export const scSignin = z.object({
@@ -124,7 +127,10 @@ export const scInitializeWgConf = z.object({
   confDirPath: zConfDirPath,
   interfaceName: zInterfaceName,
   address: zAddress,
+  listenPort: zListenPort,
   privateKey: zPrivateKey,
+  postUp: zPostUp,
+  postDown: zPostDown,
   endPoint: zEndPoint,
   dns: zDns,
 })
