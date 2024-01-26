@@ -3,7 +3,7 @@
 import { prisma } from '@/helpers/prisma'
 import { InitializeWgConf } from '@/helpers/schema'
 import { getWgMgr } from '@/helpers/wgmgr'
-import { createWgConfDir, genPublicKey, touchFile } from '@/server-actions/cmd'
+import { createDir, genPublicKey, touchFile, touchFileSh } from '@/server-actions/cmd'
 
 export const initializeWgConf = async (conf: InitializeWgConf) => {
   console.info('initializeWgConf:')
@@ -24,16 +24,21 @@ export const initializeWgConf = async (conf: InitializeWgConf) => {
     throw new Error('WgMgr could not be loaded')
   }
 
-  // 設定ディレクトリ作成
-  if (!(await createWgConfDir(wgMgr.conf.confDirPath))) {
-    throw new Error('Failed to create conf directory')
+  // 設定(peer)ディレクトリ作成
+  if (!(await createDir(wgMgr.peerDirPath))) {
+    throw new Error('Failed to create conf(peer) directory')
   }
   console.info('createWgConfDir: ok')
+
+  // loader.sh 作成
+  if (!(await touchFileSh(wgMgr.peerLoaderPath))) {
+    throw new Error('Failed to create loader.sh file')
+  }
+  wgMgr.makePeerLoader()
 
   // 設定ファイル作成
   if (!(await touchFile(wgMgr.confPath))) {
     throw new Error('Failed to create conf file')
   }
-  // 設定保存
   wgMgr.saveConf()
 }

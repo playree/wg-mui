@@ -28,6 +28,14 @@ export class WgMgr {
     return path.join(this.conf.confDirPath, `${this.conf.interfaceName}.conf`)
   }
 
+  get peerDirPath() {
+    return path.join(this.conf.confDirPath, `${this.conf.interfaceName}_peer`)
+  }
+
+  get peerLoaderPath() {
+    return path.join(this.conf.confDirPath, `${this.conf.interfaceName}_peer`, 'loader.sh')
+  }
+
   async getUsedAddressList() {
     const peerList = await prisma.peer.findMany({ select: { ip: true } })
     return peerList.map((value) => value.ip)
@@ -50,6 +58,19 @@ export class WgMgr {
           PostDown: this.conf.postDown || '',
         },
       }),
+    )
+  }
+
+  makePeerLoader() {
+    const peerPath = path.join(this.conf.confDirPath, `${this.conf.interfaceName}_peer`, '*_peer.conf')
+    writeFileSync(
+      this.peerLoaderPath,
+      `#! /bin/bash
+for peer in $(ls ${peerPath}); do
+  wg addconf ${this.conf.interfaceName} $peer
+done
+exit 0
+`,
     )
   }
 

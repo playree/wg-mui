@@ -1,7 +1,6 @@
 'use server'
 
 import { ExecException, exec } from 'child_process'
-import path from 'path'
 
 /**
  * Shell Command 実行
@@ -89,24 +88,28 @@ export const genPublicKey = async (privateKey: string) => {
 }
 
 /**
- * 設定ディレクトリ作成
+ * ディレクトリ作成
  * @param dirPath
  * @returns
  */
-export const createWgConfDir = async (dirPath: string) => {
+export const createDir = async (dirPath: string) => {
   const exeUser = await getExeUser()
   if (!exeUser) {
     return false
   }
 
-  const peerDir = path.join(dirPath, 'peer')
-  const res = await runCmd(`sudo mkdir -p ${peerDir}; sudo chown ${exeUser} ${peerDir}`)
+  const res = await runCmd(`sudo mkdir -p ${dirPath}; sudo chown ${exeUser} ${dirPath}`)
   if (res.error) {
-    console.debug('createWgConfDir:', res.stderr)
+    console.debug('createDir:', res.stderr)
   }
   return !res.error
 }
 
+/**
+ * ファイル作成
+ * @param filePath
+ * @returns
+ */
 export const touchFile = async (filePath: string) => {
   const exeUser = await getExeUser()
   if (!exeUser) {
@@ -114,6 +117,24 @@ export const touchFile = async (filePath: string) => {
   }
 
   const res = await runCmd(`sudo touch ${filePath}; sudo chown ${exeUser} ${filePath}`)
+  if (res.error) {
+    console.debug('createWgConfDir:', res.stderr)
+  }
+  return !res.error
+}
+
+/**
+ * shファイル作成
+ * @param filePath
+ * @returns
+ */
+export const touchFileSh = async (filePath: string) => {
+  const exeUser = await getExeUser()
+  if (!exeUser) {
+    return false
+  }
+
+  const res = await runCmd(`sudo touch ${filePath}; sudo chown ${exeUser} ${filePath}; sudo chmod 755 ${filePath}`)
   if (res.error) {
     console.debug('createWgConfDir:', res.stderr)
   }
