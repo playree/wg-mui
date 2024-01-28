@@ -1,6 +1,6 @@
-import { LocaleItem } from '.'
+import { LocaleItems } from '.'
 
-export const ja: Record<LocaleItem, string> = {
+export const ja: LocaleItems = {
   menu_initial_setting: '初期設定',
   menu_dashboard: 'ダッシュボード',
   menu_users: 'ユーザー管理',
@@ -60,6 +60,10 @@ export const ja: Record<LocaleItem, string> = {
   item_allowed_ips: '許可IP',
   item_remarks: '備考',
   item_persistent_keepalive: 'Persistent Keep-Alive',
+  item_start: '起動',
+  item_stop: '停止',
+  item_starting: '起動中',
+  item_stopped: '停止中',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',

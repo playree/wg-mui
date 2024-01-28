@@ -1,11 +1,10 @@
 import { Cog6ToothIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
-import { getIpForward, getWgVersion } from '@/server-actions/cmd'
-import { Address4 } from 'ip-address'
 import { Metadata } from 'next'
 import { FC, Suspense, use } from 'react'
 
-import { SettingsTitle, StatusViewClient } from './client'
+import { SettingsTitle, SystemInfoClient } from './client'
+import { getSystemInfo } from './server-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -13,24 +12,11 @@ export const metadata: Metadata = {
 }
 
 const StatusView: FC = () => {
-  const wg = use(getWgVersion())
-  const ipf = use(getIpForward())
-  return (
-    <StatusViewClient
-      view={{
-        wg,
-        ipf,
-      }}
-    />
-  )
+  const info = use(getSystemInfo())
+  return <SystemInfoClient info={info} />
 }
 
 const SettingsPage: FC = () => {
-  const ip4 = new Address4('192.16.123.111/24')
-  console.debug('ip4:', ip4)
-  console.debug('startAddress:', ip4.startAddress())
-  console.debug('endAddress:', ip4.endAddress())
-
   return (
     <div>
       <div className='mb-2 flex items-center pl-8 lg:pl-0'>

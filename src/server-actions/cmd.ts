@@ -24,6 +24,10 @@ export const runCmd = async (cmd: string) => {
 }
 
 let exeUser: string
+/**
+ * 実行ユーザ取得
+ * @returns
+ */
 export const getExeUser = async () => {
   if (exeUser) {
     return exeUser
@@ -36,55 +40,6 @@ export const getExeUser = async () => {
     exeUser = res.stdout.replace(/\r?\n/g, '')
   }
   return res.error ? undefined : exeUser
-}
-
-/**
- * WireGuard Version取得
- * @returns
- */
-export const getWgVersion = async () => {
-  const res = await runCmd('sudo wg -v')
-  if (res.error) {
-    console.debug('getWgVersion:', res.stderr)
-  }
-  return res.error ? undefined : res.stdout.split(' - ')[0]
-}
-
-/**
- *
- * @returns IP Forward設定取得
- */
-export const getIpForward = async () => {
-  const res = await runCmd('sudo sysctl net.ipv4.ip_forward')
-  if (res.error) {
-    console.debug('getIpForward:', res.stderr)
-  }
-  return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
-}
-
-/**
- * WireGuard秘密鍵生成
- * @returns
- */
-export const genPrivateKey = async () => {
-  const res = await runCmd(`wg genkey`)
-  if (res.error) {
-    console.debug('genPrivateKey:', res.stderr)
-  }
-  return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
-}
-
-/**
- * WireGuard公開鍵生成
- * @param privateKey
- * @returns
- */
-export const genPublicKey = async (privateKey: string) => {
-  const res = await runCmd(`echo ${privateKey} | wg pubkey`)
-  if (res.error) {
-    console.debug('genPublicKey:', res.stderr)
-  }
-  return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
 }
 
 /**
@@ -137,6 +92,79 @@ export const touchFileSh = async (filePath: string) => {
   const res = await runCmd(`sudo touch ${filePath}; sudo chown ${exeUser} ${filePath}; sudo chmod 755 ${filePath}`)
   if (res.error) {
     console.debug('createWgConfDir:', res.stderr)
+  }
+  return !res.error
+}
+
+/**
+ *
+ * @returns IP Forward設定取得
+ */
+export const getIpForward = async () => {
+  const res = await runCmd('sudo sysctl net.ipv4.ip_forward')
+  if (res.error) {
+    console.debug('getIpForward:', res.stderr)
+  }
+  return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
+}
+
+/**
+ * WireGuard Version取得
+ * @returns
+ */
+export const getWgVersion = async () => {
+  const res = await runCmd('sudo wg -v')
+  if (res.error) {
+    console.debug('getWgVersion:', res.stderr)
+  }
+  return res.error ? undefined : res.stdout.split(' - ')[0]
+}
+
+/**
+ * WireGuard 秘密鍵生成
+ * @returns
+ */
+export const genPrivateKey = async () => {
+  const res = await runCmd(`wg genkey`)
+  if (res.error) {
+    console.debug('genPrivateKey:', res.stderr)
+  }
+  return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
+}
+
+/**
+ * WireGuard 公開鍵生成
+ * @param privateKey
+ * @returns
+ */
+export const genPublicKey = async (privateKey: string) => {
+  const res = await runCmd(`echo ${privateKey} | wg pubkey`)
+  if (res.error) {
+    console.debug('genPublicKey:', res.stderr)
+  }
+  return res.error ? undefined : res.stdout.replace(/\r?\n/g, '')
+}
+
+/**
+ * WireGuard 起動状態確認
+ * @returns
+ */
+export const isWgStarted = async (interfaceName: string) => {
+  const res = await runCmd(`sudo wg show ${interfaceName}`)
+  if (res.error) {
+    console.debug('isWgStarted:', res.stderr)
+  }
+  return !res.error
+}
+
+/**
+ * WireGuard 起動
+ * @returns
+ */
+export const startWg = async (interfaceName: string) => {
+  const res = await runCmd(`sudo wg-quick up ${interfaceName}`)
+  if (res.error) {
+    console.debug('startWg:', res.stderr)
   }
   return !res.error
 }

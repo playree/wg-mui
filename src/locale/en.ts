@@ -1,6 +1,6 @@
-import { LocaleItem } from '.'
+import { DefaultLocaleItems } from '.'
 
-export const en: Record<LocaleItem, string> = {
+export const en: DefaultLocaleItems = {
   menu_initial_setting: 'Initial Setting',
   menu_dashboard: 'Dashboard',
   menu_users: 'Users',
@@ -54,6 +54,10 @@ export const en: Record<LocaleItem, string> = {
   item_dns: 'DNS',
   item_peer: 'Peer',
   item_peer_management: 'Management Peer',
+  item_start: 'Start',
+  item_stop: 'Stop',
+  item_starting: 'Starting',
+  item_stopped: 'Stopped',
   item_peer_create: 'Create Peer',
   item_peer_update: 'Update Peer',
   item_generate_key: 'Generate Key',

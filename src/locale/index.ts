@@ -61,6 +61,10 @@ export type LocaleItemBase =
   | 'item_allowed_ips'
   | 'item_remarks'
   | 'item_persistent_keepalive'
+  | 'item_start'
+  | 'item_stop'
+  | 'item_starting'
+  | 'item_stopped'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
@@ -90,6 +94,8 @@ export type LocaleItemError =
 export const el = (item: LocaleItemError) => item
 
 export type LocaleItem = LocaleItemBase | LocaleItemError
+export type DefaultLocaleItems = Record<LocaleItem, string>
+export type LocaleItems = Partial<Record<LocaleItem, string>>
 export const useLocale = () => {
   const ulItem = ul<LocaleItem>()
   const fet = (fieldError?: { message?: string }) => {

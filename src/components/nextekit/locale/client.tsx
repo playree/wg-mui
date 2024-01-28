@@ -1,7 +1,8 @@
 'use client'
 
-import { FC, createContext, useCallback, useContext, useState } from 'react'
+import { FC, createContext, useCallback, useContext, useEffect, useState } from 'react'
 
+import { getCookie } from '../cookie/client'
 import { LocaleConfig } from './types'
 
 type LocaleContextType = {
@@ -16,6 +17,13 @@ const useLocaleContext = (localeConfig: LocaleConfig): LocaleContextType => {
   const { locales, resources } = localeConfig
   const [locale, setLocale] = useState(locales[0])
 
+  useEffect(() => {
+    const localeCookie = getCookie('locale')
+    if (localeCookie && localeConfig.locales.includes(localeCookie)) {
+      setLocale(localeCookie)
+    }
+  }, [localeConfig.locales])
+
   return {
     locale,
     setLocale: useCallback((current: string) => {
@@ -24,7 +32,7 @@ const useLocaleContext = (localeConfig: LocaleConfig): LocaleContextType => {
     t: useCallback(
       (item, values) => {
         if (resources[locale]) {
-          const template = resources[locale][item] || ''
+          const template = resources[locale][item] || resources[localeConfig.locales[0]][item] || ''
           return !values
             ? template
             : new Function(...Object.keys(values), `return \`${template}\`;`)(
@@ -33,7 +41,7 @@ const useLocaleContext = (localeConfig: LocaleConfig): LocaleContextType => {
         }
         return ''
       },
-      [locale, resources],
+      [locale, localeConfig.locales, resources],
     ),
   }
 }

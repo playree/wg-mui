@@ -2,7 +2,7 @@
 
 import { Button } from '@nextui-org/button'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/dropdown'
-import { FC, useMemo, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { setCookie } from './nextekit/cookie/client'
 import { useLocale } from './nextekit/locale/client'
@@ -15,7 +15,15 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; si
 }) => {
   const { locale, setLocale } = useLocale()
   const [selectedKeys, setSelectedKeys] = useState(new Set([locale]))
-  const selectedValue = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
+  const [selectedValue, setSelectedValue] = useState('')
+
+  useEffect(() => {
+    setSelectedKeys(new Set([locale]))
+  }, [locale])
+
+  useEffect(() => {
+    setSelectedValue(Array.from(selectedKeys).join(', ').replaceAll('_', ' '))
+  }, [selectedKeys])
 
   return (
     <Dropdown className={className} size={size}>
@@ -35,8 +43,8 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; si
           setLocale(keyString)
         }}
       >
-        {localeConfig.locales.map((locale) => {
-          return <DropdownItem key={locale}>{locale}</DropdownItem>
+        {localeConfig.locales.map((lc) => {
+          return <DropdownItem key={lc}>{lc}</DropdownItem>
         })}
       </DropdownMenu>
     </Dropdown>

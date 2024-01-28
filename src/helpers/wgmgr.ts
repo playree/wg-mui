@@ -1,7 +1,8 @@
+import { getWgVersion, isWgStarted, startWg } from '@/server-actions/cmd'
 import { WgConf } from '@prisma/client'
 import { writeFileSync } from 'fs'
-import ini from 'ini'
 import { Address4 } from 'ip-address'
+import { stringify } from 'js-ini'
 import path from 'path'
 
 import { prisma } from './prisma'
@@ -36,6 +37,18 @@ export class WgMgr {
     return path.join(this.conf.confDirPath, `${this.conf.interfaceName}_peer`, 'loader.sh')
   }
 
+  async getWgVersion() {
+    return getWgVersion()
+  }
+
+  async isWgStarted() {
+    return isWgStarted(this.conf.interfaceName)
+  }
+
+  async startWg() {
+    return startWg(this.conf.interfaceName)
+  }
+
   async getUsedAddressList() {
     const peerList = await prisma.peer.findMany({ select: { ip: true } })
     return peerList.map((value) => value.ip)
@@ -47,17 +60,21 @@ export class WgMgr {
   }
 
   saveConf() {
+    const postUp = this.conf.postUp ? `${this.conf.postUp}; ` : ''
     writeFileSync(
       this.confPath,
-      ini.stringify({
-        Interface: {
-          Address: this.conf.address,
-          ListenPort: this.conf.listenPort,
-          PrivateKey: this.conf.privateKey,
-          PostUp: this.conf.postUp || '',
-          PostDown: this.conf.postDown || '',
+      stringify(
+        {
+          Interface: {
+            Address: this.conf.address,
+            ListenPort: this.conf.listenPort,
+            PrivateKey: this.conf.privateKey,
+            PostUp: `${postUp}${this.peerLoaderPath}`,
+            PostDown: this.conf.postDown || '',
+          },
         },
-      }),
+        { spaceBefore: true, spaceAfter: true },
+      ) + '\n',
     )
   }
 
