@@ -65,6 +65,10 @@ export type LocaleItemBase =
   | 'item_stop'
   | 'item_starting'
   | 'item_stopped'
+  | 'item_autostart_on'
+  | 'item_autostart_off'
+  | 'item_enable'
+  | 'item_disable'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
@@ -72,6 +76,7 @@ export type LocaleItemBase =
   | 'msg_not_installed'
   | 'msg_peer_delete'
   | 'msg_wg_stop_confirm'
+  | 'msg_wg_autostart_disable_confirm'
 
 export type LocaleItemError =
   | '@required_field'

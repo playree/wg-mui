@@ -180,3 +180,40 @@ export const stopWg = async (interfaceName: string) => {
   }
   return !res.error
 }
+
+/**
+ * WireGuard 自動起動設定確認
+ * @returns
+ */
+export const isWgAutoStartEnabled = async (interfaceName: string) => {
+  const res = await runCmd(`sudo systemctl is-enabled wg-quick@${interfaceName}`)
+  if (res.error) {
+    console.debug('isWgAutoStartEnabled:', res.stderr)
+    return false
+  }
+  return res.stdout.replace(/\r?\n/g, '') === 'enabled'
+}
+
+/**
+ * WireGuard 自動起動設定ON
+ * @returns
+ */
+export const ebableWgAutoStart = async (interfaceName: string) => {
+  const res = await runCmd(`sudo systemctl enable wg-quick@${interfaceName}`)
+  if (res.error) {
+    console.debug('ebableWgAutoStart:', res.stderr)
+  }
+  return !res.error
+}
+
+/**
+ * WireGuard 自動起動設定OFF
+ * @returns
+ */
+export const disableWgAutoStart = async (interfaceName: string) => {
+  const res = await runCmd(`sudo systemctl disable wg-quick@${interfaceName}`)
+  if (res.error) {
+    console.debug('disableWgAutoStart:', res.stderr)
+  }
+  return !res.error
+}

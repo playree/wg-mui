@@ -63,6 +63,10 @@ export const en: DefaultLocaleItems = {
   item_generate_key: 'Generate Key',
   item_allowed_ips: 'Allowed IPs',
   item_remarks: 'Remarks',
+  item_autostart_on: 'Auto Start ON',
+  item_autostart_off: 'Auto Start OFF',
+  item_enable: 'Enable',
+  item_disable: 'Disable',
   item_persistent_keepalive: 'Persistent Keep-Alive',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -71,6 +75,7 @@ export const en: DefaultLocaleItems = {
   msg_not_installed: 'Not installed',
   msg_peer_delete: 'Delete ${peer}.\n*Deletion will not take effect until WireGuard is restarted.',
   msg_wg_stop_confirm: 'Do you want to stop WireGuard?',
+  msg_wg_autostart_disable_confirm: 'Disable WireGuard autostart?',
 
   '@required_field': 'Required field',
   '@invalid_username': '4-30 alphanumeric characters (.-_)',

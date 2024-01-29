@@ -64,6 +64,10 @@ export const ja: LocaleItems = {
   item_stop: '停止',
   item_starting: '起動中',
   item_stopped: '停止中',
+  item_autostart_on: '自動起動ON',
+  item_autostart_off: '自動起動OFF',
+  item_enable: '有効化',
+  item_disable: '無効化',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',
@@ -71,6 +75,7 @@ export const ja: LocaleItems = {
   msg_not_installed: 'インストールされていません',
   msg_peer_delete: '${peer} を削除します。\n※削除はWireGuardを再起動するまで反映されません。',
   msg_wg_stop_confirm: 'WireGuardを停止しますか？',
+  msg_wg_autostart_disable_confirm: 'WireGuardの自動起動を無効にしますか？',
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)4～30文字',

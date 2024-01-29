@@ -16,6 +16,7 @@ export const getSystemInfo = async () => {
   return {
     wgVersion,
     isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
+    isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
     ipForward,
   }
 }
@@ -39,4 +40,24 @@ export const stopWg = async () => {
 
   console.debug('stopWg:')
   return wgMgr.stopWg()
+}
+
+export const ebableWgAutoStart = async () => {
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw new Error('WgMgr not initialized')
+  }
+
+  console.debug('ebableWgAutoStart:')
+  return wgMgr.ebableWgAutoStart()
+}
+
+export const disableWgAutoStart = async () => {
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw new Error('WgMgr not initialized')
+  }
+
+  console.debug('disableWgAutoStart:')
+  return wgMgr.disableWgAutoStart()
 }
