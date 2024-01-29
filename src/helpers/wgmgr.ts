@@ -1,4 +1,4 @@
-import { getWgVersion, isWgStarted, startWg } from '@/server-actions/cmd'
+import { getWgVersion, isWgStarted, startWg, stopWg } from '@/server-actions/cmd'
 import { WgConf } from '@prisma/client'
 import { writeFileSync } from 'fs'
 import { Address4 } from 'ip-address'
@@ -47,6 +47,10 @@ export class WgMgr {
 
   async startWg() {
     return startWg(this.conf.interfaceName)
+  }
+
+  async stopWg() {
+    return stopWg(this.conf.interfaceName)
   }
 
   async getUsedAddressList() {

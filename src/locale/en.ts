@@ -70,6 +70,7 @@ export const en: DefaultLocaleItems = {
   msg_enter_search_word: 'Enter search word',
   msg_not_installed: 'Not installed',
   msg_peer_delete: 'Delete ${peer}.\n*Deletion will not take effect until WireGuard is restarted.',
+  msg_wg_stop_confirm: 'Do you want to stop WireGuard?',
 
   '@required_field': 'Required field',
   '@invalid_username': '4-30 alphanumeric characters (.-_)',

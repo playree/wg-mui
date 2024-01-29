@@ -70,6 +70,7 @@ export const ja: LocaleItems = {
   msg_enter_search_word: '検索ワードを入力',
   msg_not_installed: 'インストールされていません',
   msg_peer_delete: '${peer} を削除します。\n※削除はWireGuardを再起動するまで反映されません。',
+  msg_wg_stop_confirm: 'WireGuardを停止しますか？',
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)4～30文字',

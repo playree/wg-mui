@@ -1,6 +1,6 @@
 'use client'
 
-import { PlayCircleIcon } from '@/components/icons'
+import { PlayCircleIcon, StopCircleIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { intervalOperation } from '@/helpers/sleep'
@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from 
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 
-import { SystemInfo, startWg } from './server-actions'
+import { SystemInfo, startWg, stopWg } from './server-actions'
 
 export const SettingsTitle: FC = () => {
   const { t } = useLocale()
@@ -21,7 +21,7 @@ export const SystemInfoClient: FC<{
 }> = ({ info }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
-  const [isLoadingStart, setLoadingStart] = useState(false)
+  const [isLoadingStartStop, setLoadingStartStop] = useState(false)
 
   return (
     <Table aria-label='system info' hideHeader>
@@ -41,23 +41,45 @@ export const SystemInfoClient: FC<{
           <TableCell>
             <div hidden={!info.wgVersion} className=' flex items-center'>
               <OnOffChip isEnable={info.isWgStarted} messageOn={t('item_starting')} messageOff={t('item_stopped')} />
-              <ExButton
-                className='ml-2'
-                variant='solid'
-                isSmart
-                startContent={isLoadingStart ? undefined : <PlayCircleIcon />}
-                isLoading={isLoadingStart}
-                onPress={async () => {
-                  console.debug('WireGuard Start:')
-                  setLoadingStart(true)
-                  await startWg()
-                  await intervalOperation()
-                  setLoadingStart(false)
-                  refresh()
-                }}
-              >
-                {t('item_start')}
-              </ExButton>
+              {info.isWgStarted ? (
+                <ExButton
+                  className='ml-2'
+                  variant='solid'
+                  isSmart
+                  startContent={isLoadingStartStop ? undefined : <StopCircleIcon />}
+                  isLoading={isLoadingStartStop}
+                  onPress={async () => {
+                    console.debug('WireGuard Stop:')
+                    if (window.confirm(t('msg_wg_stop_confirm'))) {
+                      setLoadingStartStop(true)
+                      await stopWg()
+                      await intervalOperation()
+                      setLoadingStartStop(false)
+                      refresh()
+                    }
+                  }}
+                >
+                  {t('item_stop')}
+                </ExButton>
+              ) : (
+                <ExButton
+                  className='ml-2'
+                  variant='solid'
+                  isSmart
+                  startContent={isLoadingStartStop ? undefined : <PlayCircleIcon />}
+                  isLoading={isLoadingStartStop}
+                  onPress={async () => {
+                    console.debug('WireGuard Start:')
+                    setLoadingStartStop(true)
+                    await startWg()
+                    await intervalOperation()
+                    setLoadingStartStop(false)
+                    refresh()
+                  }}
+                >
+                  {t('item_start')}
+                </ExButton>
+              )}
             </div>
           </TableCell>
         </TableRow>

@@ -168,3 +168,15 @@ export const startWg = async (interfaceName: string) => {
   }
   return !res.error
 }
+
+/**
+ * WireGuard 停止
+ * @returns
+ */
+export const stopWg = async (interfaceName: string) => {
+  const res = await runCmd(`sudo wg-quick down ${interfaceName}`)
+  if (res.error) {
+    console.debug('stopWg:', res.stderr)
+  }
+  return !res.error
+}

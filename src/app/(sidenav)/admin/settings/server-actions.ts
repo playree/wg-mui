@@ -30,3 +30,13 @@ export const startWg = async () => {
   console.debug('startWg:')
   return wgMgr.startWg()
 }
+
+export const stopWg = async () => {
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw new Error('WgMgr not initialized')
+  }
+
+  console.debug('stopWg:')
+  return wgMgr.stopWg()
+}

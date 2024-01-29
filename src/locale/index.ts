@@ -71,6 +71,7 @@ export type LocaleItemBase =
   | 'msg_enter_search_word'
   | 'msg_not_installed'
   | 'msg_peer_delete'
+  | 'msg_wg_stop_confirm'
 
 export type LocaleItemError =
   | '@required_field'
