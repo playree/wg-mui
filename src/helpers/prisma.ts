@@ -62,7 +62,7 @@ export const prisma = new PrismaClient().$extends({
                   include: { label: true },
                 }
               : undefined,
-            peer: withPeer,
+            peerList: withPeer,
           },
 
           orderBy: { createdAt: 'asc' },

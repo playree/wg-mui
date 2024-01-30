@@ -22,7 +22,7 @@ model User {
 
   // Relation
   userLabelList UserLabel[]
-  peer          Peer[]
+  peerList      Peer[]
 }
 
 model Label {
