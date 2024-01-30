@@ -3,7 +3,7 @@
 import { prisma } from '@/helpers/prisma'
 import { CreatePeer } from '@/helpers/schema'
 import { getWgMgr } from '@/helpers/wgmgr'
-import { genPrivateKey, genPublicKey } from '@/server-actions/cmd'
+import { genPrivateKey } from '@/server-actions/cmd'
 
 export const getUser = async (id: string) => {
   return prisma.user.get(id)
@@ -14,6 +14,7 @@ export const getPeerList = async (userId: string) => {
 }
 
 export const getFreeAddressList = async () => {
+  console.debug('getFreeAddressList:')
   const wgMgr = await getWgMgr()
   const freeAddressList = await wgMgr?.getFreeAddressList()
   return freeAddressList || ['']
@@ -25,17 +26,21 @@ export const getPrivateKey = async () => {
 
 export const createPeer = async (data: CreatePeer) => {
   console.debug('createPeer:in:', data)
-  const publicKey = await genPublicKey(data.privateKey)
-  if (!publicKey) {
-    throw new Error('Failed to generate public key')
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw new Error('WgMgr not initialized')
   }
-  const peer = await prisma.peer.create({ data: { ...data, publicKey } })
+  const peer = await wgMgr.createPeer(data)
   console.debug('createPeer:out:', peer)
   return peer
 }
 
 export const deletePeer = async (ip: string) => {
   console.debug('deletePeer:in:', ip)
-  await prisma.peer.update({ where: { ip }, data: { isDeleting: true } })
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw new Error('WgMgr not initialized')
+  }
+  await wgMgr.deletePeer(ip)
   console.debug('deletePeer:out:')
 }

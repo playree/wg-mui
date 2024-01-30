@@ -83,6 +83,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
               setLoading(true)
               await createPeer(req)
               await intervalOperation()
+              freeAddressList.reload()
               updated()
               onClose()
               setLoading(false)

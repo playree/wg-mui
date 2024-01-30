@@ -1,6 +1,8 @@
 import {
+  addWgPeer,
   disableWgAutoStart,
   ebableWgAutoStart,
+  genPublicKey,
   getWgVersion,
   isWgAutoStartEnabled,
   isWgStarted,
@@ -10,15 +12,20 @@ import {
 import { WgConf } from '@prisma/client'
 import { writeFileSync } from 'fs'
 import { Address4 } from 'ip-address'
-import { stringify } from 'js-ini'
+import { IIniObject, stringify } from 'js-ini'
 import path from 'path'
 
 import { prisma } from './prisma'
+import { CreatePeer } from './schema'
+
+const writeConf = (confPath: string, data: IIniObject) =>
+  writeFileSync(confPath, stringify(data, { spaceBefore: true, spaceAfter: true }) + '\n')
 
 export class WgMgr {
   conf: WgConf
   targetAddress: string[]
   ip4: Address4
+  isNeedRestart: boolean
 
   constructor(wgConf: WgConf) {
     this.conf = wgConf
@@ -31,6 +38,7 @@ export class WgMgr {
       addressList.push(Address4.fromBigInteger(i).address)
     }
     this.targetAddress = addressList
+    this.isNeedRestart = false
   }
 
   get confPath() {
@@ -85,21 +93,15 @@ export class WgMgr {
 
   saveConf() {
     const postUp = this.conf.postUp ? `${this.conf.postUp}; ` : ''
-    writeFileSync(
-      this.confPath,
-      stringify(
-        {
-          Interface: {
-            Address: this.conf.address,
-            ListenPort: this.conf.listenPort,
-            PrivateKey: this.conf.privateKey,
-            PostUp: `${postUp}${this.peerLoaderPath}`,
-            PostDown: this.conf.postDown || '',
-          },
-        },
-        { spaceBefore: true, spaceAfter: true },
-      ) + '\n',
-    )
+    writeConf(this.confPath, {
+      Interface: {
+        Address: this.conf.address,
+        ListenPort: this.conf.listenPort,
+        PrivateKey: this.conf.privateKey,
+        PostUp: `${postUp}${this.peerLoaderPath}`,
+        PostDown: this.conf.postDown || '',
+      },
+    })
   }
 
   makePeerLoader() {
@@ -113,6 +115,51 @@ done
 exit 0
 `,
     )
+  }
+
+  getPeerPath(ip: string) {
+    const ipFilename = ip.replaceAll('.', '-')
+    return path.join(this.peerDirPath, `${ipFilename}_peer.conf`)
+  }
+
+  /**
+   * ピア作成
+   * @param data
+   * @returns
+   */
+  async createPeer(data: CreatePeer) {
+    const publicKey = await genPublicKey(data.privateKey)
+    if (!publicKey) {
+      throw new Error('Failed to generate public key')
+    }
+    const peer = await prisma.peer.create({ data: { ...data, publicKey } })
+
+    // Peerファイル作成
+    const peerPath = this.getPeerPath(peer.ip)
+    writeConf(peerPath, {
+      Peer: {
+        PublicKey: peer.publicKey,
+        AllowedIPs: `${peer.ip}/32`,
+      },
+    })
+
+    if (await this.isWgStarted()) {
+      // WireGurd起動中の場合は追加コマンド
+      await addWgPeer(this.conf.interfaceName, peerPath)
+    }
+
+    return peer
+  }
+
+  /**
+   * ピア削除
+   * @param ip
+   * @returns
+   */
+  async deletePeer(ip: string) {
+    await prisma.peer.update({ where: { ip }, data: { isDeleting: true } })
+    this.isNeedRestart = true
+    return
   }
 
   static async getWgMgr() {

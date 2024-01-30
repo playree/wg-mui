@@ -217,3 +217,15 @@ export const disableWgAutoStart = async (interfaceName: string) => {
   }
   return !res.error
 }
+
+/**
+ * WireGuard Peer追加
+ * @returns
+ */
+export const addWgPeer = async (interfaceName: string, peerPath: string) => {
+  const res = await runCmd(`sudo wg addconf ${interfaceName} ${peerPath}`)
+  if (res.error) {
+    console.debug('addWgPeer:', res.stderr)
+  }
+  return !res.error
+}
