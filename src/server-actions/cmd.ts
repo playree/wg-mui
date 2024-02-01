@@ -219,6 +219,19 @@ export const disableWgAutoStart = async (interfaceName: string) => {
 }
 
 /**
+ * WireGuard ステータス取得
+ * @returns
+ */
+export const getWgStatus = async (interfaceName: string) => {
+  const res = await runCmd(`sudo wg show ${interfaceName}`)
+  if (res.error) {
+    console.debug('isWgStarted:', res.stderr)
+    return undefined
+  }
+  return res.stdout
+}
+
+/**
  * WireGuard Peer追加
  * @returns
  */

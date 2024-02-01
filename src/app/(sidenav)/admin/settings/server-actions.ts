@@ -61,3 +61,13 @@ export const disableWgAutoStart = async () => {
   console.debug('disableWgAutoStart:')
   return wgMgr.disableWgAutoStart()
 }
+
+export const getPeerStatus = async () => {
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw new Error('WgMgr not initialized')
+  }
+
+  console.debug('getPeerStatus:')
+  return wgMgr.getPeerStatus()
+}

@@ -3,6 +3,7 @@ import {
   disableWgAutoStart,
   ebableWgAutoStart,
   genPublicKey,
+  getWgStatus,
   getWgVersion,
   isWgAutoStartEnabled,
   isWgStarted,
@@ -10,13 +11,21 @@ import {
   stopWg,
 } from '@/server-actions/cmd'
 import { WgConf } from '@prisma/client'
-import { writeFileSync } from 'fs'
+import { unlinkSync, writeFileSync } from 'fs'
 import { Address4 } from 'ip-address'
 import { IIniObject, stringify } from 'js-ini'
 import path from 'path'
 
 import { prisma } from './prisma'
 import { CreatePeer } from './schema'
+
+export type PeerStatus = {
+  publicKey: string
+  ip?: string
+  endpoint?: string
+  transfer?: string
+  latestHandshake?: string
+}
 
 const writeConf = (confPath: string, data: IIniObject) =>
   writeFileSync(confPath, stringify(data, { spaceBefore: true, spaceAfter: true }) + '\n')
@@ -26,6 +35,7 @@ export class WgMgr {
   targetAddress: string[]
   ip4: Address4
   isNeedRestart: boolean
+  peerStatusMap?: Record<string, PeerStatus>
 
   constructor(wgConf: WgConf) {
     this.conf = wgConf
@@ -132,6 +142,7 @@ exit 0
     if (!publicKey) {
       throw new Error('Failed to generate public key')
     }
+    // DB更新(作成)
     const peer = await prisma.peer.create({ data: { ...data, publicKey } })
 
     // Peerファイル作成
@@ -157,9 +168,61 @@ exit 0
    * @returns
    */
   async deletePeer(ip: string) {
+    // Peer情報取得
+    const peer = await prisma.peer.findUnique({ where: { ip } })
+    if (!peer) {
+      throw new Error('Target peer does not exist')
+    }
+
+    // Peerファイル削除
+    const peerPath = this.getPeerPath(peer.ip)
+    unlinkSync(peerPath)
+
+    // DB更新(削除予約)
     await prisma.peer.update({ where: { ip }, data: { isDeleting: true } })
+
+    // 削除を反映させるためにはWireGurdの再起動が必要
     this.isNeedRestart = true
     return
+  }
+
+  async getPeerStatus(force = false) {
+    if (this.peerStatusMap && !force) {
+      return this.peerStatusMap
+    }
+
+    const statusText = await getWgStatus(this.conf.interfaceName)
+    if (statusText) {
+      const peerStatusMap: Record<string, PeerStatus> = {}
+      const statusTextList = statusText.split('peer: ')
+      if (statusTextList.length > 1) {
+        statusTextList.shift()
+        for (const statusText of statusTextList) {
+          const statusParts = statusText.split('\n')
+          const publicKey = statusParts.shift()
+          if (statusParts.length > 0 && publicKey) {
+            const peerStatus: PeerStatus = { publicKey }
+            for (const status of statusParts) {
+              if (status.indexOf('endpoint: ') > -1) {
+                peerStatus.endpoint = status.split('endpoint: ')[1]
+              } else if (status.indexOf('allowed ips: ') > -1) {
+                peerStatus.ip = status.split('allowed ips: ')[1].split('/')[0]
+              } else if (status.indexOf('latest handshake: ') > -1) {
+                peerStatus.latestHandshake = status.split('latest handshake: ')[1]
+              } else if (status.indexOf('transfer: ') > -1) {
+                peerStatus.transfer = status.split('transfer: ')[1]
+              }
+            }
+            if (peerStatus.ip) {
+              peerStatusMap[peerStatus.ip] = peerStatus
+            }
+          }
+        }
+      }
+      console.debug('peerStatusMap:', peerStatusMap)
+    }
+
+    return this.peerStatusMap
   }
 
   static async getWgMgr() {
