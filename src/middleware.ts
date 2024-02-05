@@ -7,34 +7,37 @@ import { type NextFetchEvent, NextResponse } from 'next/server'
 import { authProps } from './config/auth-props'
 import { localeConfig } from './locale/config'
 
-const middlewareWithAuth = withAuth(
-  async (request) => {
-    // Locale
-    if (match(request.url, ['/((?!api/).*)'])) {
-      console.debug('mw:locale')
-      if (request.method.toUpperCase() === 'GET') {
-        if (!request.cookies.has(localeConfig.cookie.name)) {
-          const detectedLang =
-            acceptLanguageParser.pick(
-              localeConfig.locales,
-              request.headers.get('accept-language') ?? localeConfig.locales[0],
-              {
-                loose: true,
-              },
-            ) ?? localeConfig.locales[0]
+const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
+  if (match(request.nextUrl.pathname, ['/((?!api/).*)'])) {
+    console.debug('mw:locale')
+    if (request.method.toUpperCase() === 'GET') {
+      if (!request.cookies.has(localeConfig.cookie.name)) {
+        const detectedLang =
+          acceptLanguageParser.pick(
+            localeConfig.locales,
+            request.headers.get('accept-language') ?? localeConfig.locales[0],
+            {
+              loose: true,
+            },
+          ) ?? localeConfig.locales[0]
 
-          console.debug('set locale cookie:', detectedLang)
-          const response = NextResponse.next()
-          response.cookies.set({
-            name: localeConfig.cookie.name,
-            value: detectedLang,
-            httpOnly: false,
-            maxAge: localeConfig.cookie.maxAge,
-          })
-          return response
-        }
+        console.debug('set locale cookie:', detectedLang)
+        response.cookies.set({
+          name: localeConfig.cookie.name,
+          value: detectedLang,
+          httpOnly: false,
+          maxAge: localeConfig.cookie.maxAge,
+        })
       }
     }
+  }
+}
+
+const middlewareWithAuth = withAuth(
+  async (request) => {
+    const response = NextResponse.next()
+    mwLocale(request, response)
+    return response
   },
   {
     pages: { signIn: '/auth/signin' },
@@ -53,11 +56,15 @@ const middlewareWithAuth = withAuth(
 
 export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) => {
   console.debug('mw:start:', request.url, request.method)
+
   if (matchCondition(request.nextUrl.pathname, authProps.targetAuth)) {
     console.debug('mw:auth')
     return middlewareWithAuth(request, event)
   }
-  return NextResponse.next()
+
+  const response = NextResponse.next()
+  mwLocale(request, response)
+  return response
 }
 
 export const config = {
