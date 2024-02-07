@@ -61,6 +61,37 @@ export const createDir = async (dirPath: string) => {
 }
 
 /**
+ * ディレクトリアクセス確認
+ * @param dirPath
+ * @returns
+ */
+export const isAccessibleDir = async (dirPath: string) => {
+  const res = await runCmd(`cd ${dirPath}`)
+  if (res.error) {
+    console.debug('isAccessibleDir:', res.stderr)
+  }
+  return !res.error
+}
+
+/**
+ * ConfDirのアクセス権付与
+ * @param dirPath
+ * @returns
+ */
+export const chConfDir = async (confDirPath: string) => {
+  const exeUser = await getExeUser()
+  if (!exeUser) {
+    return false
+  }
+
+  const res = await runCmd(`sudo chgrp ${exeUser} ${confDirPath}; sudo chmod g+x ${confDirPath}`)
+  if (res.error) {
+    console.debug('chmodConfDir:', res.stderr)
+  }
+  return !res.error
+}
+
+/**
  * ファイル作成
  * @param filePath
  * @returns

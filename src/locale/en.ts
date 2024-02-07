@@ -76,6 +76,8 @@ export const en: DefaultLocaleItems = {
   msg_peer_delete: 'Delete ${peer}.\n*Deletion will not take effect until WireGuard is restarted.',
   msg_wg_stop_confirm: 'Do you want to stop WireGuard?',
   msg_wg_autostart_disable_confirm: 'Disable WireGuard autostart?',
+  msg_conf_dir_permission_confirm:
+    'The execution user (${user}) cannot access ${path}.\nWould you like to run the following command to grant permission?\n\n$ sudo chgrp ${user} ${path}\n$ sudo chmod g+x ${path}',
 
   '@required_field': 'Required field',
   '@invalid_username': '4-30 alphanumeric characters (.-_)',

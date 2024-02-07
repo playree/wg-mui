@@ -77,6 +77,7 @@ export type LocaleItemBase =
   | 'msg_peer_delete'
   | 'msg_wg_stop_confirm'
   | 'msg_wg_autostart_disable_confirm'
+  | 'msg_conf_dir_permission_confirm'
 
 export type LocaleItemError =
   | '@required_field'

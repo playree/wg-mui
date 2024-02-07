@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckIcon, Cog6ToothIcon } from '@/components/icons'
+import { CheckIcon, Cog6ToothIcon, KeyIcon } from '@/components/icons'
 import { LangSwitch } from '@/components/lang-switch'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { initializeWgConf } from './server-actions'
+import { changeConfDir, checkConfDir, getPrivateKey, initializeWgConf } from './server-actions'
 
 export const InitializeSettings: FC = () => {
   const { t, fet } = useLocale()
@@ -26,6 +26,7 @@ export const InitializeSettings: FC = () => {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<InitializeWgConf>({
     resolver: zodResolver(scInitializeWgConf),
     mode: 'onChange',
@@ -57,6 +58,19 @@ export const InitializeSettings: FC = () => {
         onSubmit={handleSubmit(async (req) => {
           console.debug('create:submit:', req)
           setLoading(true)
+
+          // ConfDirのアクセス権確認
+          const exeUser = await checkConfDir(req.confDirPath)
+          if (exeUser) {
+            // アクセス権がない場合
+            if (!window.confirm(t('msg_conf_dir_permission_confirm', { user: exeUser, path: req.confDirPath }))) {
+              setLoading(false)
+              return
+            }
+            // ConfDirのアクセス権付与
+            await changeConfDir(req.confDirPath)
+          }
+
           await initializeWgConf(req)
           await intervalOperation()
           setLoading(false)
@@ -101,7 +115,7 @@ export const InitializeSettings: FC = () => {
               isRequired
             />
           </div>
-          <div className='col-span-12'>
+          <div className='col-span-11'>
             <InputCtrl
               control={control}
               name='privateKey'
@@ -109,6 +123,22 @@ export const InitializeSettings: FC = () => {
               errorMessage={fet(errors.privateKey)}
               isRequired
             />
+          </div>
+          <div className='col-span-1 flex items-center'>
+            <ExButton
+              isIconOnly
+              color='default'
+              variant='ghost'
+              tooltip={t('item_generate_key')}
+              onPress={async () => {
+                const privateKey = await getPrivateKey()
+                if (privateKey) {
+                  setValue('privateKey', privateKey)
+                }
+              }}
+            >
+              <KeyIcon />
+            </ExButton>
           </div>
           <div className='col-span-12'>
             <InputCtrl

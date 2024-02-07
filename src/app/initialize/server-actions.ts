@@ -3,10 +3,24 @@
 import { prisma } from '@/helpers/prisma'
 import { InitializeWgConf } from '@/helpers/schema'
 import { getWgMgr } from '@/helpers/wgmgr'
-import { createDir, genPublicKey, touchFile, touchFileSh } from '@/server-actions/cmd'
+import {
+  chConfDir,
+  createDir,
+  genPrivateKey,
+  genPublicKey,
+  getExeUser,
+  isAccessibleDir,
+  touchFile,
+  touchFileSh,
+} from '@/server-actions/cmd'
 
 export const initializeWgConf = async (conf: InitializeWgConf) => {
   console.info('initializeWgConf:')
+
+  // 初期化チェック
+  if (await getWgMgr()) {
+    throw new Error('Already initialized')
+  }
 
   // 公開鍵生成
   const publicKey = await genPublicKey(conf.privateKey)
@@ -41,4 +55,35 @@ export const initializeWgConf = async (conf: InitializeWgConf) => {
     throw new Error('Failed to create conf file')
   }
   wgMgr.saveConf()
+}
+
+export const getPrivateKey = async () => {
+  return genPrivateKey()
+}
+
+export const checkConfDir = async (confDirPath: string) => {
+  // 初期化チェック
+  if (await getWgMgr()) {
+    throw new Error('Already initialized')
+  }
+
+  if (await isAccessibleDir(confDirPath)) {
+    // アクセス可能なら、undefinedを返却
+    return undefined
+  }
+
+  // アクセス不可なら、実行ユーザー名を返却
+  const exeUser = await getExeUser()
+  return exeUser
+}
+
+export const changeConfDir = async (confDirPath: string) => {
+  console.info('changeConfDir:')
+
+  // 初期化チェック
+  if (await getWgMgr()) {
+    throw new Error('Already initialized')
+  }
+
+  return chConfDir(confDirPath)
 }

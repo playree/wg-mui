@@ -76,6 +76,8 @@ export const ja: LocaleItems = {
   msg_peer_delete: '${peer} を削除します。\n※削除はWireGuardを再起動するまで反映されません。',
   msg_wg_stop_confirm: 'WireGuardを停止しますか？',
   msg_wg_autostart_disable_confirm: 'WireGuardの自動起動を無効にしますか？',
+  msg_conf_dir_permission_confirm:
+    '実行ユーザー(${user})は${path}へアクセスできません。\n権限を付与する為に下記コマンドを実行しますか？\n\n$ sudo chgrp ${user} ${path}\n$ sudo chmod g+x ${path}',
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)4～30文字',
