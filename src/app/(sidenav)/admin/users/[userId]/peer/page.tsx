@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Peer',
 }
 
-const UsersPage: FC<{ params: { userId: string } }> = ({ params: { userId } }) => {
+const PeerPage: FC<{ params: { userId: string } }> = ({ params: { userId } }) => {
   const user = use(getUser(userId))
   if (!user) {
     return notFound()
@@ -30,4 +30,4 @@ const UsersPage: FC<{ params: { userId: string } }> = ({ params: { userId } }) =
     </div>
   )
 }
-export default UsersPage
+export default PeerPage

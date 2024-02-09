@@ -220,6 +220,8 @@ exit 0
         }
       }
       console.debug('peerStatusMap:', peerStatusMap)
+
+      this.peerStatusMap = peerStatusMap
     }
 
     return this.peerStatusMap

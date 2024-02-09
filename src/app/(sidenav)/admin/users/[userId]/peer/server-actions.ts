@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/helpers/prisma'
-import { CreatePeer } from '@/helpers/schema'
+import { CreatePeer, UpdatePeer } from '@/helpers/schema'
 import { getWgMgr } from '@/helpers/wgmgr'
 import { genPrivateKey } from '@/server-actions/cmd'
 
@@ -32,6 +32,17 @@ export const createPeer = async (data: CreatePeer) => {
   }
   const peer = await wgMgr.createPeer(data)
   console.debug('createPeer:out:', peer)
+  return peer
+}
+
+export const updatePeer = async (ip: string, data: UpdatePeer) => {
+  console.debug('updatePeer:in:', ip, data)
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw new Error('WgMgr not initialized')
+  }
+  const peer = await prisma.peer.update({ where: { ip }, data })
+  console.debug('updatePeer:out:', peer)
   return peer
 }
 

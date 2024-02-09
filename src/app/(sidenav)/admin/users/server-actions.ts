@@ -18,7 +18,7 @@ export const createUser = async (data: CreateUser) => {
 }
 
 export const updateUser = async (id: string, data: UpdateUser) => {
-  console.debug('updateUser:in:', data)
+  console.debug('updateUser:in:', id, data)
   const user = await prisma.user.updateUser(id, data)
   console.debug('updateUser:out:', user)
   return user

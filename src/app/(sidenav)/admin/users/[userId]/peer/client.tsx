@@ -19,7 +19,7 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { CreatePeerButtonWithModal, DeletePeerModal } from './edit'
+import { CreatePeerButtonWithModal, DeletePeerModal, UpdatePeerModal } from './edit'
 import { getPeerList } from './server-actions'
 
 export const PeerManagementTitle: FC<{ user: TypeUser }> = ({ user }) => {
@@ -112,7 +112,7 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
                       color='primary'
                       tooltip={t('item_edit')}
                       onPress={() => {
-                        // setTargetUpdate(user)
+                        setTargetUpdate(peer)
                       }}
                     >
                       <PencilSquareIcon />
@@ -135,6 +135,18 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
           </Table>
         </div>
       </div>
+      <UpdatePeerModal
+        size='xl'
+        isOpen={updateModal.isOpen}
+        onOpenChange={updateModal.onOpenChange}
+        isDismissable={false}
+        scrollBehavior='outside'
+        target={targetUpdate}
+        updated={() => {
+          list.reload()
+        }}
+        onClose={() => setTargetUpdate(undefined)}
+      />
       <DeletePeerModal
         size='xl'
         isOpen={deleteModal.isOpen}

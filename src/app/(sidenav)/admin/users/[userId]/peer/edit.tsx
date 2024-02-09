@@ -5,12 +5,13 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { requireSelect } from '@/helpers/client'
-import { CreatePeer, TypePeer, TypeUser, scCreatePeer } from '@/helpers/schema'
+import { CreatePeer, TypePeer, TypeUser, UpdatePeer, scCreatePeer, scUpdatePeer } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Checkbox,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -25,7 +26,7 @@ import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createPeer, deletePeer, getFreeAddressList, getPrivateKey } from './server-actions'
+import { createPeer, deletePeer, getFreeAddressList, getPrivateKey, updatePeer } from './server-actions'
 
 // ピア管理
 
@@ -137,6 +138,128 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
                   >
                     <KeyIcon />
                   </ExButton>
+                </div>
+                <div className='col-span-6'>
+                  <InputCtrl
+                    control={control}
+                    name='allowedIPs'
+                    label={t('item_allowed_ips')}
+                    errorMessage={fet(errors.allowedIPs)}
+                  />
+                </div>
+                <div className='col-span-6'>
+                  <InputCtrl
+                    control={control}
+                    name='persistentKeepalive'
+                    type='number'
+                    label={t('item_persistent_keepalive')}
+                    errorMessage={fet(errors.persistentKeepalive)}
+                  />
+                </div>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='remarks'
+                    label={t('item_remarks')}
+                    errorMessage={fet(errors.remarks)}
+                  />
+                </div>
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <ExButton color='danger' onPress={onClose}>
+                {t('item_cancel')}
+              </ExButton>
+              <ExButton
+                type='submit'
+                variant='solid'
+                startContent={isLoading ? undefined : <CheckIcon />}
+                isLoading={isLoading}
+              >
+                {t('item_ok')}
+              </ExButton>
+            </ModalFooter>
+          </form>
+        )}
+      </ModalContent>
+    </Modal>
+  )
+}
+
+/** 更新モーダル */
+export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypePeer; updated: () => void }> = (
+  props,
+) => {
+  const { target, updated, ...nextProps } = props
+  const { t, fet } = useLocale()
+  const [isLoading, setLoading] = useState(false)
+
+  const freeAddressList = useAsyncList({
+    async load() {
+      const items = await getFreeAddressList()
+      return { items }
+    },
+  })
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm<UpdatePeer>({
+    resolver: zodResolver(scUpdatePeer),
+    mode: 'onChange',
+    defaultValues: {
+      allowedIPs: '0.0.0.0/0',
+      persistentKeepalive: 25,
+      remarks: '',
+    },
+  })
+
+  useEffect(() => {
+    setLoading(false)
+    reset()
+  }, [reset, props.isOpen, setValue, freeAddressList.items])
+
+  useEffect(() => {
+    console.debug('target:', target)
+    if (target) {
+      setValue('allowedIPs', target.allowedIPs || '')
+      setValue('persistentKeepalive', target.persistentKeepalive)
+      setValue('remarks', target.remarks || '')
+    }
+  }, [target, props.isOpen, setValue])
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      console.debug('errors:', errors)
+    }
+  }, [errors])
+
+  return (
+    <Modal {...nextProps}>
+      <ModalContent>
+        {(onClose) => (
+          <form
+            onSubmit={handleSubmit(async (req) => {
+              console.debug('update:submit:', req)
+              if (target) {
+                setLoading(true)
+                await updatePeer(target.ip, req)
+                await intervalOperation()
+                freeAddressList.reload()
+                updated()
+                onClose()
+                setLoading(false)
+              }
+            })}
+          >
+            <ModalHeader className='flex flex-col gap-1'>{t('item_peer_update')}</ModalHeader>
+            <ModalBody>
+              <div className={gridStyles()}>
+                <div className='col-span-12'>
+                  <Input label={t('item_address')} value={target?.ip || ''} readOnly />
                 </div>
                 <div className='col-span-6'>
                   <InputCtrl
