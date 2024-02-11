@@ -11,7 +11,7 @@ import { getPeerAllList } from './server-actions'
 
 export const PeerManagementTitle: FC = () => {
   const { t } = useLocale()
-  return <span className='mr-8 text-lg'>{t('item_peer_management')}</span>
+  return <span className='mr-8 text-lg'>{t('menu_peers')}</span>
 }
 
 export const PeerAllListClient: FC = () => {

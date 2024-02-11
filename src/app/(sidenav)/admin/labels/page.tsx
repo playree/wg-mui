@@ -1,7 +1,6 @@
 import { TagIcon } from '@/components/icons'
-import { Loading } from '@/components/nextekit/ui/loading'
 import { Metadata } from 'next'
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 
 import { LabelListClient, LabelsTitle } from './client'
 
@@ -19,9 +18,7 @@ const LabelsPage: FC = () => {
       </div>
 
       <div className='flex min-h-[200px] w-full'>
-        <Suspense fallback={<Loading />}>
-          <LabelListClient />
-        </Suspense>
+        <LabelListClient />
       </div>
     </div>
   )

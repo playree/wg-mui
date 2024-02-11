@@ -350,6 +350,42 @@ export const StopCircleIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, .
   </svg>
 )
 
+export const WifiIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
+  <svg
+    fill='currentColor'
+    viewBox='0 0 24 24'
+    xmlns='http://www.w3.org/2000/svg'
+    aria-hidden='true'
+    width={size}
+    strokeWidth={strokeWidth}
+    {...props}
+  >
+    <path
+      clipRule='evenodd'
+      fillRule='evenodd'
+      d='M1.371 8.143c5.858-5.857 15.356-5.857 21.213 0a.75.75 0 0 1 0 1.061l-.53.53a.75.75 0 0 1-1.06 0c-4.98-4.979-13.053-4.979-18.032 0a.75.75 0 0 1-1.06 0l-.53-.53a.75.75 0 0 1 0-1.06Zm3.182 3.182c4.1-4.1 10.749-4.1 14.85 0a.75.75 0 0 1 0 1.061l-.53.53a.75.75 0 0 1-1.062 0 8.25 8.25 0 0 0-11.667 0 .75.75 0 0 1-1.06 0l-.53-.53a.75.75 0 0 1 0-1.06Zm3.204 3.182a6 6 0 0 1 8.486 0 .75.75 0 0 1 0 1.061l-.53.53a.75.75 0 0 1-1.061 0 3.75 3.75 0 0 0-5.304 0 .75.75 0 0 1-1.06 0l-.53-.53a.75.75 0 0 1 0-1.06Zm3.182 3.182a1.5 1.5 0 0 1 2.122 0 .75.75 0 0 1 0 1.061l-.53.53a.75.75 0 0 1-1.061 0l-.53-.53a.75.75 0 0 1 0-1.06Z'
+    />
+  </svg>
+)
+
+export const ArrowPathIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
+  <svg
+    fill='currentColor'
+    viewBox='0 0 24 24'
+    xmlns='http://www.w3.org/2000/svg'
+    aria-hidden='true'
+    width={size}
+    strokeWidth={strokeWidth}
+    {...props}
+  >
+    <path
+      clipRule='evenodd'
+      fillRule='evenodd'
+      d='M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z'
+    />
+  </svg>
+)
+
 // 以下削除予定
 
 export const Logo: React.FC<IconSvgProps> = ({ size = 36, width, height, ...props }) => (

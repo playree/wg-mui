@@ -8,10 +8,10 @@ import { getUser } from './server-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
-  title: 'Peer',
+  title: 'Peer Management',
 }
 
-const PeerPage: FC<{ params: { userId: string } }> = ({ params: { userId } }) => {
+const PeerManagementPage: FC<{ params: { userId: string } }> = ({ params: { userId } }) => {
   const user = use(getUser(userId))
   if (!user) {
     return notFound()
@@ -30,4 +30,4 @@ const PeerPage: FC<{ params: { userId: string } }> = ({ params: { userId } }) =>
     </div>
   )
 }
-export default PeerPage
+export default PeerManagementPage

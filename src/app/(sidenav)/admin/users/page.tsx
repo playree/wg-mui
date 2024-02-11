@@ -1,7 +1,6 @@
 import { UsersIcon } from '@/components/icons'
-import { Loading } from '@/components/nextekit/ui/loading'
 import { Metadata } from 'next'
-import { FC, Suspense } from 'react'
+import { FC } from 'react'
 
 import { UserListClient, UsersTitle } from './client'
 
@@ -19,9 +18,7 @@ const UsersPage: FC = () => {
       </div>
 
       <div className='flex min-h-[200px] w-full'>
-        <Suspense fallback={<Loading />}>
-          <UserListClient />
-        </Suspense>
+        <UserListClient />
       </div>
     </div>
   )

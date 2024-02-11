@@ -138,7 +138,7 @@ export const prisma = new PrismaClient().$extends({
       },
       async getAllListByUser(userId: string, includeDeleting = false) {
         return prisma.peer.findMany({
-          where: { userId, isDeleting: !includeDeleting || undefined },
+          where: { userId, isDeleting: includeDeleting ? undefined : false },
           select: {
             ip: true,
             allowedIPs: true,
