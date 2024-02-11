@@ -133,6 +133,9 @@ export const prisma = new PrismaClient().$extends({
       },
     },
     peer: {
+      async getAllList() {
+        return prisma.peer.findMany({ orderBy: { ip: 'asc' }, include: { user: true } })
+      },
       async getAllListByUser(userId: string, includeDeleting = false) {
         return prisma.peer.findMany({
           where: { userId, isDeleting: !includeDeleting || undefined },

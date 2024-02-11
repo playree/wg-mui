@@ -5,6 +5,7 @@ export type LocaleItemBase =
   | 'menu_dashboard'
   | 'menu_users'
   | 'menu_labels'
+  | 'menu_peers'
   | 'menu_settings'
   | 'menu_locale'
   | 'menu_theme'

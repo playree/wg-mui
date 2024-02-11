@@ -5,6 +5,7 @@ export const ja: LocaleItems = {
   menu_dashboard: 'ダッシュボード',
   menu_users: 'ユーザー管理',
   menu_labels: 'ラベル管理',
+  menu_peers: 'ピア一覧',
   menu_settings: '設定',
   menu_locale: '言語',
   menu_theme: 'テーマ',

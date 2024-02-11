@@ -9,9 +9,7 @@ export const getUser = async (id: string) => {
   return prisma.user.get(id)
 }
 
-export const getPeerList = async (userId: string) => {
-  return prisma.peer.getAllListByUser(userId, true)
-}
+export const getPeerList = async (userId: string) => prisma.peer.getAllListByUser(userId, true)
 
 export const getFreeAddressList = async () => {
   console.debug('getFreeAddressList:')

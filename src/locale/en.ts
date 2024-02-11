@@ -5,6 +5,7 @@ export const en: DefaultLocaleItems = {
   menu_dashboard: 'Dashboard',
   menu_users: 'Users',
   menu_labels: 'Labels',
+  menu_peers: 'Peers',
   menu_settings: 'Settings',
   menu_locale: 'Locale',
   menu_theme: 'Theme',
