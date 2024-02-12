@@ -74,6 +74,7 @@ export type LocaleItemBase =
   | 'item_refresh'
   | 'item_download_file'
   | 'item_scan_qr'
+  | 'item_close'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'

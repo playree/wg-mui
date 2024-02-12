@@ -73,6 +73,7 @@ export const en: DefaultLocaleItems = {
   item_refresh: 'Refresh',
   item_download_file: 'Download File',
   item_scan_qr: 'Scan from QR code',
+  item_close: 'Close',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',

@@ -1,14 +1,16 @@
 'use client'
 
-import { ArrowPathIcon, CheckIcon, DocumentArrowDownIcon, QrCodeIcon, SignalIcon } from '@/components/icons'
+import { ArrowPathIcon, DocumentArrowDownIcon, QrCodeIcon, SignalIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { getQrImgString } from '@/helpers/qr'
 import { TypePeer } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
   Card,
   CardBody,
   CardHeader,
+  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -20,6 +22,8 @@ import {
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+
+import { getUserPeerConf } from './server-actions'
 
 export const PeerTitle: FC = () => {
   const { t } = useLocale()
@@ -36,7 +40,7 @@ export const RefreshButton: FC = () => {
   )
 }
 
-const QrModal: FC<Omit<ModalProps, 'children'> & { target?: TypePeer }> = (props) => {
+const QrModal: FC<Omit<ModalProps, 'children'> & { target?: string }> = (props) => {
   const { target, ...nextProps } = props
   const { t } = useLocale()
 
@@ -45,11 +49,13 @@ const QrModal: FC<Omit<ModalProps, 'children'> & { target?: TypePeer }> = (props
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className='flex flex-col gap-1'>QR</ModalHeader>
-            <ModalBody></ModalBody>
+            <ModalHeader className='flex flex-col gap-1'>{t('item_scan_qr')}</ModalHeader>
+            <ModalBody>
+              {target && <Image src={target} alt='QR' width={200} classNames={{ wrapper: 'mx-auto' }} />}
+            </ModalBody>
             <ModalFooter>
-              <ExButton color='danger' onPress={onClose}>
-                {t('item_cancel')}
+              <ExButton variant='solid' onPress={onClose}>
+                {t('item_close')}
               </ExButton>
             </ModalFooter>
           </>
@@ -62,12 +68,12 @@ const QrModal: FC<Omit<ModalProps, 'children'> & { target?: TypePeer }> = (props
 export const PeerViewClient: FC<{ peerList: TypePeer[] }> = ({ peerList }) => {
   const { t } = useLocale()
 
-  const [targetQr, setTargetQr] = useState<TypePeer>()
+  const [targetQr, setTargetQr] = useState<string>()
   const qrModal = useDisclosure()
   const openQrModal = qrModal.onOpen
 
   useEffect(() => {
-    console.debug('targetQr:', targetQr)
+    console.debug('targetQr:', !!targetQr)
     if (targetQr) {
       openQrModal()
     }
@@ -86,13 +92,28 @@ export const PeerViewClient: FC<{ peerList: TypePeer[] }> = ({ peerList }) => {
               <CardBody className={twMerge(gridStyles(), 'pl-10')}>
                 <div className='col-span-12'>{t('msg_add_tunnel')}</div>
                 <div className='col-span-12 pl-4'>
-                  <ExButton>
+                  <ExButton
+                    onPress={async () => {
+                      const conf = await getUserPeerConf(peer.ip)
+                      const blob = new Blob([conf], { type: 'text/plain' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a')
+                      document.body.appendChild(a)
+                      a.download = 'test.conf'
+                      a.href = url
+                      a.click()
+                      a.remove()
+                      URL.revokeObjectURL(url)
+                    }}
+                  >
                     <DocumentArrowDownIcon />
                     {t('item_download_file')}
                   </ExButton>
                   <ExButton
-                    onPress={() => {
-                      setTargetQr(peer)
+                    onPress={async () => {
+                      const conf = await getUserPeerConf(peer.ip)
+                      const qr = await getQrImgString(conf)
+                      setTargetQr(qr)
                     }}
                   >
                     <QrCodeIcon />
@@ -111,6 +132,7 @@ export const PeerViewClient: FC<{ peerList: TypePeer[] }> = ({ peerList }) => {
         isDismissable={false}
         scrollBehavior='outside'
         target={targetQr}
+        onClose={() => setTargetQr(undefined)}
       />
     </>
   )

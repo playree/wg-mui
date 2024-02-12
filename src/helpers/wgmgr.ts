@@ -10,7 +10,7 @@ import {
   startWg,
   stopWg,
 } from '@/server-actions/cmd'
-import { WgConf } from '@prisma/client'
+import { Peer, WgConf } from '@prisma/client'
 import { unlinkSync, writeFileSync } from 'fs'
 import { Address4 } from 'ip-address'
 import { IIniObject, stringify } from 'js-ini'
@@ -225,6 +225,27 @@ exit 0
     }
 
     return this.peerStatusMap
+  }
+
+  getPeerConf(peer: Peer) {
+    return (
+      stringify(
+        {
+          Interface: {
+            PrivateKey: peer.privateKey,
+            Address: `${peer.ip}/${this.ip4.subnetMask}`,
+            DNS: this.conf.dns || undefined,
+          },
+          Peer: {
+            PublicKey: this.conf.publicKey,
+            EndPoint: this.conf.endPoint,
+            AllowedIPs: peer.allowedIPs || '0.0.0.0/0',
+            PersistentKeepalive: peer.persistentKeepalive,
+          },
+        } as IIniObject,
+        { spaceBefore: true, spaceAfter: true, skipUndefined: true },
+      ) + '\n'
+    )
   }
 
   static async getWgMgr() {

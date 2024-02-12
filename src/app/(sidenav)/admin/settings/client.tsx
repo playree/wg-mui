@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from 
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 
-import { SystemInfo, disableWgAutoStart, ebableWgAutoStart, getPeerStatus, startWg, stopWg } from './server-actions'
+import { SystemInfo, disableWgAutoStart, ebableWgAutoStart, startWg, stopWg } from './server-actions'
 
 export const SettingsTitle: FC = () => {
   const { t } = useLocale()
@@ -146,18 +146,6 @@ export const SystemInfoClient: FC<{
           </TableRow>
         </TableBody>
       </Table>
-      <div>
-        <ExButton
-          className='ml-2'
-          variant='solid'
-          isSmart
-          onPress={async () => {
-            await getPeerStatus()
-          }}
-        >
-          {t('item_start')}
-        </ExButton>
-      </div>
     </>
   )
 }
