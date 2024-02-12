@@ -9191,7 +9191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^2.2.1":
+"tailwind-merge@npm:^2.2.0, tailwind-merge@npm:^2.2.1":
   version: 2.2.1
   resolution: "tailwind-merge@npm:2.2.1"
   dependencies:
@@ -9211,14 +9211,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-variants@npm:^0.1.20":
-  version: 0.1.20
-  resolution: "tailwind-variants@npm:0.1.20"
+"tailwind-variants@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "tailwind-variants@npm:0.2.0"
   dependencies:
-    tailwind-merge: "npm:^1.14.0"
+    tailwind-merge: "npm:^2.2.0"
   peerDependencies:
     tailwindcss: "*"
-  checksum: 70fedecb635c5aa8109acb9e4d5608d37d5df82d9c9c091f6b9b2d3b7ddf5f6ca1902e3443b30a367352795d49aa5da73f47e49cc0f3c69108425df8fd95039c
+  checksum: 2163ab679473110a0c3c2907af035db4cd1290ba508a1b57d31b30ac06a98ee318e84f67d041a38017e9997c9751cd6f0a1703ccdd92584792ecdade8d62ece9
   languageName: node
   linkType: hard
 
@@ -9764,7 +9764,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-hook-form: "npm:^7.50.1"
     tailwind-merge: "npm:^2.2.1"
-    tailwind-variants: "npm:^0.1.20"
+    tailwind-variants: "npm:^0.2.0"
     tailwindcss: "npm:^3.4.1"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.3.3"
