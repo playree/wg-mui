@@ -1,4 +1,4 @@
-import { ComputerDesktopIcon } from '@/components/icons'
+import { CloudIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
 import { Metadata } from 'next'
 import { FC, Suspense, use } from 'react'
@@ -20,7 +20,7 @@ const PeerPage: FC = () => {
   return (
     <div>
       <div className='mb-2 flex items-center pl-8 lg:pl-0'>
-        <ComputerDesktopIcon className='mr-2' />
+        <CloudIcon className='mr-2' />
         <PeerTitle />
         <div className='flex flex-auto flex-row-reverse'>
           <RefreshButton />

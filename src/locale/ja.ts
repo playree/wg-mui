@@ -71,6 +71,8 @@ export const ja: LocaleItems = {
   item_enable: '有効化',
   item_disable: '無効化',
   item_refresh: '更新',
+  item_download_file: 'ファイルをダウンロード',
+  item_scan_qr: 'QRコードをスキャン',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',
@@ -81,6 +83,7 @@ export const ja: LocaleItems = {
   msg_wg_autostart_disable_confirm: 'WireGuardの自動起動を無効にしますか？',
   msg_conf_dir_permission_confirm:
     '実行ユーザー(${user})は${path}へアクセスできません。\n権限を付与する為に下記コマンドを実行しますか？\n\n$ sudo chgrp ${user} ${path}\n$ sudo chmod g+x ${path}',
+  msg_add_tunnel: '端末にトンネルを追加',
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)4～30文字',

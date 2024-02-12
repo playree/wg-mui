@@ -72,6 +72,8 @@ export type LocaleItemBase =
   | 'item_enable'
   | 'item_disable'
   | 'item_refresh'
+  | 'item_download_file'
+  | 'item_scan_qr'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
@@ -81,6 +83,7 @@ export type LocaleItemBase =
   | 'msg_wg_stop_confirm'
   | 'msg_wg_autostart_disable_confirm'
   | 'msg_conf_dir_permission_confirm'
+  | 'msg_add_tunnel'
 
 export type LocaleItemError =
   | '@required_field'

@@ -1,6 +1,6 @@
 'use client'
 
-import { Cog6ToothIcon, ComputerDesktopIcon, Squares2x2Icon, TagIcon, UsersIcon, WifiIcon } from '@/components/icons'
+import { CloudIcon, Cog6ToothIcon, ComputerDesktopIcon, Squares2x2Icon, TagIcon, UsersIcon } from '@/components/icons'
 import { LangSwitch } from '@/components/lang-switch'
 import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { textStyles } from '@/components/styles'
@@ -77,7 +77,7 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
               <MenuButton to='/' text={t('menu_dashboard')} icon={<Squares2x2Icon />} closeMenu={closeMenu} />
             </div>
             <div className='mx-2'>
-              <MenuButton to='/peer' text={t('menu_peer')} icon={<WifiIcon />} closeMenu={closeMenu} />
+              <MenuButton to='/peer' text={t('menu_peer')} icon={<CloudIcon />} closeMenu={closeMenu} />
             </div>
           </AccordionItem>
 

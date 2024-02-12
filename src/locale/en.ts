@@ -71,6 +71,8 @@ export const en: DefaultLocaleItems = {
   item_enable: 'Enable',
   item_disable: 'Disable',
   item_refresh: 'Refresh',
+  item_download_file: 'Download File',
+  item_scan_qr: 'Scan from QR code',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',
@@ -81,6 +83,7 @@ export const en: DefaultLocaleItems = {
   msg_wg_autostart_disable_confirm: 'Disable WireGuard autostart?',
   msg_conf_dir_permission_confirm:
     'The execution user (${user}) cannot access ${path}.\nWould you like to run the following command to grant permission?\n\n$ sudo chgrp ${user} ${path}\n$ sudo chmod g+x ${path}',
+  msg_add_tunnel: 'Add a tunnel to your device',
 
   '@required_field': 'Required field',
   '@invalid_username': '4-30 alphanumeric characters (.-_)',
