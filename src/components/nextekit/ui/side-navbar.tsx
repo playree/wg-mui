@@ -23,11 +23,12 @@ const Bars3BottomLeftIcon: FC<IconSvgProps> = ({ size = 24, width, height, ...pr
   </svg>
 )
 
-export const SideNavbar: FC<{ children: ReactNode; menu: ReactNode; className?: string }> = ({
-  children,
-  menu,
-  className,
-}) => {
+export const SideNavbar: FC<{
+  children: ReactNode
+  menu?: ReactNode
+  getMenu?: (closeMenu?: () => void) => ReactNode
+  className?: string
+}> = ({ children, menu, getMenu, className }) => {
   const [isOpen, setIsOpen] = useState(false)
   const closeMenu = () => {
     setIsOpen(false)
@@ -53,7 +54,11 @@ export const SideNavbar: FC<{ children: ReactNode; menu: ReactNode; className?: 
         )}
       >
         <div className={twMerge('h-full overflow-y-auto bg-gray-100 px-3 py-4 dark:bg-gray-900', className)}>
-          {menu}
+          {getMenu
+            ? getMenu(() => {
+                setTimeout(closeMenu, 200)
+              })
+            : menu}
         </div>
       </nav>
       <div

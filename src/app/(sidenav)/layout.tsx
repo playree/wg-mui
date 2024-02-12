@@ -3,7 +3,7 @@ import { SideNavbar } from '@/components/nextekit/ui/side-navbar'
 import { getWgMgr } from '@/helpers/wgmgr'
 import { FC, ReactNode, use } from 'react'
 
-import { Menu } from './menu'
+import { Menu, getMenu } from './menu'
 
 const SideNavLayout: FC<{ children: ReactNode }> = ({ children }) => {
   const wgMgr = use(getWgMgr())
@@ -12,7 +12,7 @@ const SideNavLayout: FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   return (
-    <SideNavbar menu={<Menu />} className='bg-white dark:bg-black'>
+    <SideNavbar menu={<Menu />} getMenu={getMenu} className='bg-white dark:bg-black'>
       <div className='mx-auto max-w-3xl'>{children}</div>
     </SideNavbar>
   )
