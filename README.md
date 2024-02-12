@@ -4,6 +4,8 @@
 - [はじめに](#はじめに)
 - [モジュール構成](#モジュール構成)
 - [ビルドと起動](#ビルドと起動)
+- [開発用](#開発用)
+  - [パッケージ更新](#パッケージ更新)
 
 # はじめに
 
@@ -12,7 +14,7 @@ Next.jsの最新機能を率先して利用して開発しています。
 
 # モジュール構成
 
-- [Next.js](https://nextjs.org/) v14.0.x \
+- [Next.js](https://nextjs.org/) v14.1.x \
   出来るだけ最新機能を利用して開発しています。
   - Using App Router
   - Using Server Components
@@ -33,4 +35,12 @@ yarn install
 yarn migrate
 yarn build
 yarn start
+```
+
+# 開発用
+
+## パッケージ更新
+
+```sh
+yarn upgrade-interactive
 ```
