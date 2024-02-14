@@ -52,6 +52,7 @@ export type LocaleItemBase =
   | 'item_listen_port'
   | 'item_post_up'
   | 'item_post_down'
+  | 'item_generate_post_updown'
   | 'item_private_key'
   | 'item_end_point'
   | 'item_dns'

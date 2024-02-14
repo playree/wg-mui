@@ -75,6 +75,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - xxx.xxx (file)
      */
-    '/((?!_next/static|_next/image|api/auth/|.*\\.).*)',
+    '/((?!_next/static|_next/image|_next/webpack-hmr|api/auth/|.*\\.).*)',
   ],
 }

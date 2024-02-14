@@ -98,7 +98,12 @@ export class WgMgr {
 
   async getFreeAddressList() {
     const usedAddressList = await this.getUsedAddressList()
-    return this.targetAddress.filter((value) => !usedAddressList.includes(value))
+    return this.targetAddress.filter((value) => {
+      if (value === this.ip4.addressMinusSuffix) {
+        return false
+      }
+      return !usedAddressList.includes(value)
+    })
   }
 
   saveConf() {

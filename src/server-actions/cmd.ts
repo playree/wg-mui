@@ -273,3 +273,21 @@ export const addWgPeer = async (interfaceName: string, peerPath: string) => {
   }
   return !res.error
 }
+
+/**
+ * デフォルトネットワークインターフェース取得
+ * @returns
+ */
+export const getDefaultNetworkInterface = async () => {
+  const res = await runCmd(`ip route show`)
+  if (res.error) {
+    console.debug('getDefaultNetworkInterface:', res.stderr)
+    return undefined
+  }
+  const parts = res.stdout.split('\n')[0].split(' ')
+  if (parts.length > 4) {
+    return parts[4]
+  }
+
+  return undefined
+}

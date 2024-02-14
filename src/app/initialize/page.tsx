@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 
 const InitializePage: FC = () => {
   const wgMgr = use(getWgMgr())
+  const hostname = new URL(process.env.NEXTAUTH_URL || 'http://localhost').hostname
 
-  return wgMgr ? <RedirectComponent redirectUrl='/' /> : <InitializeSettings />
+  return wgMgr ? <RedirectComponent redirectUrl='/' /> : <InitializeSettings hostname={hostname} />
 }
 export default InitializePage

@@ -8,6 +8,7 @@ import {
   createDir,
   genPrivateKey,
   genPublicKey,
+  getDefaultNetworkInterface,
   getExeUser,
   isAccessibleDir,
   touchFile,
@@ -58,7 +59,28 @@ export const initializeWgConf = async (conf: InitializeWgConf) => {
 }
 
 export const getPrivateKey = async () => {
+  // 初期化チェック
+  if (await getWgMgr()) {
+    throw new Error('Already initialized')
+  }
+
   return genPrivateKey()
+}
+
+export const getPostUpDownScript = async (interfaceName: string) => {
+  // 初期化チェック
+  if (await getWgMgr()) {
+    throw new Error('Already initialized')
+  }
+
+  const nif = await getDefaultNetworkInterface()
+  if (nif) {
+    return {
+      up: `iptables -A FORWARD -i ${interfaceName} -j ACCEPT; iptables -t nat -A POSTROUTING -o ${nif} -j MASQUERADE`,
+      down: `iptables -D FORWARD -i ${interfaceName} -j ACCEPT; iptables -t nat -D POSTROUTING -o ${nif} -j MASQUERADE`,
+    }
+  }
+  return undefined
 }
 
 export const checkConfDir = async (confDirPath: string) => {

@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckIcon, Cog6ToothIcon, KeyIcon } from '@/components/icons'
+import { CheckIcon, Cog6ToothIcon, CommandLineIcon, KeyIcon } from '@/components/icons'
 import { LangSwitch } from '@/components/lang-switch'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
@@ -15,9 +15,9 @@ import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { changeConfDir, checkConfDir, getPrivateKey, initializeWgConf } from './server-actions'
+import { changeConfDir, checkConfDir, getPostUpDownScript, getPrivateKey, initializeWgConf } from './server-actions'
 
-export const InitializeSettings: FC = () => {
+export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
@@ -27,6 +27,7 @@ export const InitializeSettings: FC = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm<InitializeWgConf>({
     resolver: zodResolver(scInitializeWgConf),
     mode: 'onChange',
@@ -38,7 +39,8 @@ export const InitializeSettings: FC = () => {
       privateKey: '',
       postUp: '',
       postDown: '',
-      endPoint: 'wg.change.it:51820',
+      // endPoint: 'wg.change.it:51820',
+      endPoint: `${hostname}:51820`,
       dns: '',
     },
   })
@@ -128,7 +130,7 @@ export const InitializeSettings: FC = () => {
             <ExButton
               isIconOnly
               color='default'
-              variant='ghost'
+              variant='flat'
               tooltip={t('item_generate_key')}
               onPress={async () => {
                 const privateKey = await getPrivateKey()
@@ -148,6 +150,23 @@ export const InitializeSettings: FC = () => {
               errorMessage={fet(errors.endPoint)}
               isRequired
             />
+          </div>
+          <div className='col-span-12'>
+            <ExButton
+              color='default'
+              variant='flat'
+              size='sm'
+              onPress={async () => {
+                const script = await getPostUpDownScript(getValues('interfaceName'))
+                if (script) {
+                  setValue('postUp', script.up)
+                  setValue('postDown', script.down)
+                }
+              }}
+            >
+              <CommandLineIcon />
+              {t('item_generate_post_updown')}
+            </ExButton>
           </div>
           <div className='col-span-12'>
             <InputCtrl control={control} name='postUp' label={t('item_post_up')} errorMessage={fet(errors.postUp)} />

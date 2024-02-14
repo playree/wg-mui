@@ -51,6 +51,7 @@ export const ja: LocaleItems = {
   item_listen_port: 'Listen Port',
   item_post_up: 'PostUp',
   item_post_down: 'PostDown',
+  item_generate_post_updown: 'PostUp/Downスクリプトを自動生成',
   item_private_key: '秘密鍵',
   item_end_point: 'エンドポイントアドレス',
   item_dns: 'DNS',

@@ -51,6 +51,7 @@ export const en: DefaultLocaleItems = {
   item_listen_port: 'Listen Port',
   item_post_up: 'PostUp',
   item_post_down: 'PostDown',
+  item_generate_post_updown: 'Generate PostUp/Down script',
   item_private_key: 'Private Key',
   item_end_point: 'End point',
   item_dns: 'DNS',
