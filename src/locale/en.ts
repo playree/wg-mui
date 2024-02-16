@@ -79,6 +79,8 @@ export const en: DefaultLocaleItems = {
   item_from_ip: 'From',
   item_transfer: 'Transfer',
   item_latest_handshake: 'Latest Handshake',
+  item_receive: 'Receive',
+  item_send: 'Send',
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',

@@ -80,6 +80,8 @@ export type LocaleItemBase =
   | 'item_from_ip'
   | 'item_transfer'
   | 'item_latest_handshake'
+  | 'item_receive'
+  | 'item_send'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'

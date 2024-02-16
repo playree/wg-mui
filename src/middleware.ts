@@ -45,7 +45,7 @@ const middlewareWithAuth = withAuth(
       authorized({ req, token }) {
         // 管理者権限の確認
         if (matchCondition(req.nextUrl.pathname, authProps.targetAdmin)) {
-          console.log('check admin:', token)
+          console.debug('check admin:', token?.isAdmin)
           return token?.isAdmin === true
         }
         return true

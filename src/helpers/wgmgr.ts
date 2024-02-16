@@ -30,6 +30,46 @@ export type PeerStatus = {
 const writeConf = (confPath: string, data: IIniObject) =>
   writeFileSync(confPath, stringify(data, { spaceBefore: true, spaceAfter: true }) + '\n')
 
+const convKiB = (text: string) => {
+  const [num, unit] = text.split(' ')
+  switch (unit) {
+    case 'KiB':
+      return Number(num)
+    case 'MiB':
+      return Number(num) * 1024
+    case 'GiB':
+      return Number(num) * 1024 * 1024
+    case 'TiB':
+      return Number(num) * 1024 * 1024 * 1024
+  }
+  return 0
+}
+
+export const convTransfer = (transferText?: string) => {
+  if (transferText) {
+    try {
+      const tmp = transferText.split(' received, ')
+      const receiveText = tmp[0]
+      const sendText = tmp[1].replace(' sent', '')
+      return {
+        sendText,
+        send: convKiB(sendText),
+        receiveText,
+        receive: convKiB(receiveText),
+      }
+    } catch {
+      //
+    }
+  }
+
+  return {
+    sendText: '0 B',
+    send: 0,
+    receiveText: '0 B',
+    receive: 0,
+  }
+}
+
 export class WgMgr {
   conf: WgConf
   targetAddress: string[]
@@ -255,7 +295,7 @@ exit 0
 
   static async getWgMgr() {
     const wgConf = await prisma.wgConf.findUnique({ where: { id: 'main' } })
-    console.debug('Load WgConf:', wgConf)
+    console.log('Load WgConf:', wgConf)
     return wgConf ? new WgMgr(wgConf) : undefined
   }
 }

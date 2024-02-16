@@ -79,6 +79,8 @@ export const ja: LocaleItems = {
   item_from_ip: '接続元',
   item_transfer: '転送量',
   item_latest_handshake: '最新送受信',
+  item_receive: '受信',
+  item_send: '送信',
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',
