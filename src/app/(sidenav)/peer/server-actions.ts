@@ -12,9 +12,16 @@ export const getUserPeerList = async () => {
     throw errInvalidSession()
   }
 
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw errSystemError()
+  }
+
   const peerList = await prisma.peer.getAllListByUser(user.id)
   console.debug('getUserPeerList:', user.id, peerList.length)
-  return peerList
+
+  const peerStatus = await wgMgr.getPeerStatus()
+  return peerList.map((peer) => ({ ...peer, status: peerStatus ? peerStatus[peer.ip] : undefined }))
 }
 
 export const getUserPeerConf = async (ip: string) => {

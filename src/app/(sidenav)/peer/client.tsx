@@ -1,15 +1,24 @@
 'use client'
 
-import { ArrowPathIcon, DocumentArrowDownIcon, QrCodeIcon, SignalIcon } from '@/components/icons'
+import {
+  ArrowPathIcon,
+  BoltIcon,
+  DocumentArrowDownIcon,
+  NewspaperIcon,
+  PlusCircleIcon,
+  QrCodeIcon,
+} from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
-import { gridStyles } from '@/components/styles'
+import { gridStyles, textStyles } from '@/components/styles'
 import { getQrImgString } from '@/helpers/qr'
 import { TypePeer } from '@/helpers/schema'
+import { PeerStatus } from '@/helpers/wgmgr'
 import { useLocale } from '@/locale'
 import {
   Card,
   CardBody,
   CardHeader,
+  Divider,
   Image,
   Modal,
   ModalBody,
@@ -65,7 +74,7 @@ const QrModal: FC<Omit<ModalProps, 'children'> & { target?: string }> = (props) 
   )
 }
 
-export const PeerViewClient: FC<{ peerList: TypePeer[] }> = ({ peerList }) => {
+export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })[] }> = ({ peerList }) => {
   const { t } = useLocale()
 
   const [targetQr, setTargetQr] = useState<string>()
@@ -86,11 +95,14 @@ export const PeerViewClient: FC<{ peerList: TypePeer[] }> = ({ peerList }) => {
           return (
             <Card key={peer.ip} className='col-span-12'>
               <CardHeader className='flex py-2'>
-                <SignalIcon className='mr-2' />
+                <BoltIcon className='mr-2' />
                 <span className='font-bold'>{peer.ip}</span>
               </CardHeader>
               <CardBody className={twMerge(gridStyles(), 'pl-10')}>
-                <div className='col-span-12'>{t('msg_add_tunnel')}</div>
+                <div className='col-span-12 flex items-center'>
+                  <PlusCircleIcon className='mr-2' />
+                  {t('msg_add_tunnel')}
+                </div>
                 <div className='col-span-12 pl-4'>
                   <ExButton
                     onPress={async () => {
@@ -119,6 +131,34 @@ export const PeerViewClient: FC<{ peerList: TypePeer[] }> = ({ peerList }) => {
                     <QrCodeIcon />
                     {t('item_scan_qr')}
                   </ExButton>
+                </div>
+
+                <div className='col-span-12'>
+                  <Divider />
+                </div>
+                <div className='col-span-12 flex items-center'>
+                  <NewspaperIcon className='mr-2' />
+                  {t('item_status')}
+                </div>
+                <div className={twMerge(gridStyles(), textStyles({ color: 'light' }), 'col-span-12 pl-4 text-sm')}>
+                  {peer.status?.endpoint && (
+                    <div className='col-span-12 flex items-center md:col-span-5'>
+                      <span>{t('item_from_ip')} :</span>
+                      <span className='ml-2'>{peer.status.endpoint}</span>
+                    </div>
+                  )}
+                  {peer.status?.transfer && (
+                    <div className='col-span-12 flex items-center md:col-span-7'>
+                      <span>{t('item_transfer')} :</span>
+                      <span className='ml-2'>{peer.status.transfer}</span>
+                    </div>
+                  )}
+                  {peer.status?.latestHandshake && (
+                    <div className='col-span-12 flex items-center'>
+                      <span>{t('item_latest_handshake')} :</span>
+                      <span className='ml-2'>{peer.status.latestHandshake}</span>
+                    </div>
+                  )}
                 </div>
               </CardBody>
             </Card>

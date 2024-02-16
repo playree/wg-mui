@@ -8,6 +8,11 @@ export const iconSizes = {
 
 export const textStyles = tv({
   base: 'text-black dark:text-white',
+  variants: {
+    color: {
+      light: 'text-gray-600 dark:text-gray-400',
+    },
+  },
 })
 
 export const gridStyles = tv({

@@ -4,6 +4,7 @@ import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { dayformat } from '@/helpers/day'
 import { TypePeer, TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
@@ -90,11 +91,12 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
             }
           >
             <TableHeader>
-              <TableColumn key='addlress' minWidth={120} allowsSorting>
+              <TableColumn key='ip' minWidth={120} allowsSorting>
                 {t('item_address')}
               </TableColumn>
-              <TableColumn key='remarks' allowsSorting>
-                {t('item_remarks')}
+              <TableColumn key='remarks'>{t('item_remarks')}</TableColumn>
+              <TableColumn key='updatedAt' allowsSorting>
+                {t('item_updated_at')}
               </TableColumn>
               <TableColumn width={120} align='center'>
                 {t('item_action')}
@@ -105,6 +107,9 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
                 <TableRow key={peer.ip}>
                   <TableCell>{peer.ip}</TableCell>
                   <TableCell>{peer.remarks}</TableCell>
+                  <TableCell>
+                    <div className='text-xs'>{dayformat(peer.updatedAt, 'jp-simple')}</div>
+                  </TableCell>
                   <TableCell>
                     <ExButton
                       isIconOnly

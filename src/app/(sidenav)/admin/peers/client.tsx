@@ -2,6 +2,7 @@
 
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { gridStyles } from '@/components/styles'
+import { dayformat } from '@/helpers/day'
 import { useLocale } from '@/locale'
 import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
 import { FC } from 'react'
@@ -47,11 +48,12 @@ export const PeerAllListClient: FC = () => {
             }
           >
             <TableHeader>
-              <TableColumn key='addlress' minWidth={120} allowsSorting>
+              <TableColumn key='ip' minWidth={120} allowsSorting>
                 {t('item_address')}
               </TableColumn>
-              <TableColumn key='remarks' allowsSorting>
-                {t('item_remarks')}
+              <TableColumn key='remarks'>{t('item_remarks')}</TableColumn>
+              <TableColumn key='updatedAt' allowsSorting>
+                {t('item_updated_at')}
               </TableColumn>
             </TableHeader>
             <TableBody items={list.items}>
@@ -59,6 +61,9 @@ export const PeerAllListClient: FC = () => {
                 <TableRow key={peer.ip}>
                   <TableCell>{peer.ip}</TableCell>
                   <TableCell>{peer.remarks}</TableCell>
+                  <TableCell>
+                    <div className='text-xs'>{dayformat(peer.updatedAt, 'jp-simple')}</div>
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>
