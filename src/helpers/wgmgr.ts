@@ -75,7 +75,6 @@ export class WgMgr {
   targetAddress: string[]
   ip4: Address4
   isNeedRestart: boolean
-  peerStatusMap?: Record<string, PeerStatus>
 
   constructor(wgConf: WgConf) {
     this.conf = wgConf
@@ -231,11 +230,7 @@ exit 0
     return
   }
 
-  async getPeerStatus(force = false) {
-    if (this.peerStatusMap && !force) {
-      return this.peerStatusMap
-    }
-
+  async getPeerStatus() {
     const statusText = await getWgStatus(this.conf.interfaceName)
     if (statusText) {
       const peerStatusMap: Record<string, PeerStatus> = {}
@@ -266,10 +261,10 @@ exit 0
       }
       console.debug('peerStatusMap:', peerStatusMap)
 
-      this.peerStatusMap = peerStatusMap
+      return peerStatusMap
     }
 
-    return this.peerStatusMap
+    return undefined
   }
 
   getPeerConf(peer: Peer) {
@@ -295,16 +290,9 @@ exit 0
 
   static async getWgMgr() {
     const wgConf = await prisma.wgConf.findUnique({ where: { id: 'main' } })
-    console.log('Load WgConf:', wgConf)
+    console.debug('Load WgConf:', wgConf)
     return wgConf ? new WgMgr(wgConf) : undefined
   }
 }
 
-let wgMgr: WgMgr | undefined
-
-export const getWgMgr = async () => {
-  if (!wgMgr) {
-    wgMgr = await WgMgr.getWgMgr()
-  }
-  return wgMgr
-}
+export const getWgMgr = async () => WgMgr.getWgMgr()

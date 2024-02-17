@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { getPeerAllList, reloadPeerStatus } from './server-actions'
+import { getPeerAllList } from './server-actions'
 
 export const PeerManagementTitle: FC = () => {
   const { t } = useLocale()
@@ -27,7 +27,6 @@ export const RefreshButton: FC = () => {
       isSmart
       tooltip={t('item_refresh')}
       onPress={async () => {
-        await reloadPeerStatus()
         refresh()
       }}
     >
@@ -55,7 +54,6 @@ export const PeerAllListClient: FC = () => {
             isSmart
             tooltip={t('item_refresh')}
             onPress={async () => {
-              await reloadPeerStatus()
               list.reload()
             }}
           >

@@ -23,13 +23,3 @@ export const getPeerAllList = async () => {
     }
   })
 }
-
-export const reloadPeerStatus = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw errSystemError()
-  }
-
-  // ピアステータスの強制リロード
-  await wgMgr.getPeerStatus(true)
-}
