@@ -19,7 +19,13 @@ export const InputCtrl = <
       control={control}
       name={name}
       render={({ field: { onChange, value } }) => (
-        <Input {...props} type={type} variant={variant} onChange={onChange} value={value} />
+        <Input
+          {...props}
+          type={type}
+          variant={variant}
+          onChange={type === 'number' ? (e) => onChange(Number(e.target.value)) : onChange}
+          value={value}
+        />
       )}
     />
   )
