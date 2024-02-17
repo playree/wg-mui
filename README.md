@@ -3,7 +3,11 @@
 - [WireGuard Managenent UI](#wireguard-managenent-ui)
 - [はじめに](#はじめに)
 - [モジュール構成](#モジュール構成)
-- [ビルドと起動](#ビルドと起動)
+- [ビルド](#ビルド)
+- [起動](#起動)
+  - [PM2](#pm2)
+    - [PM2のインストール](#pm2のインストール)
+    - [PM2で起動](#pm2で起動)
 - [開発用](#開発用)
   - [パッケージ更新](#パッケージ更新)
 
@@ -28,13 +32,32 @@ Next.jsの最新機能を率先して利用して開発しています。
 - [Auth.js](https://authjs.dev/) \
   認証機能
 
-# ビルドと起動
+# ビルド
 
 ```sh
 yarn install
 yarn migrate
 yarn build
+```
+
+# 起動
+
+```sh
 yarn start
+```
+
+## PM2
+
+### PM2のインストール
+
+```sh
+npm install -g pm2
+```
+
+### PM2で起動
+
+```sh
+pm2 start ./wg-mui.sh
 ```
 
 # 開発用
