@@ -81,6 +81,8 @@ export const ja: LocaleItems = {
   item_latest_handshake: '最新送受信',
   item_receive: '受信',
   item_send: '送信',
+  item_google_signin: 'Googleでサインイン',
+
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
   msg_common_error: 'エラーが発生しました',

@@ -81,6 +81,8 @@ export const en: DefaultLocaleItems = {
   item_latest_handshake: 'Latest Handshake',
   item_receive: 'Receive',
   item_send: 'Send',
+  item_google_signin: 'Sign in with Google',
+
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',

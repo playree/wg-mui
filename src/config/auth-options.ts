@@ -1,9 +1,10 @@
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
-import { NextAuthOptions, Session, getServerSession } from 'next-auth'
+import { NextAuthOptions, Profile, Session, getServerSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 
-export const authOptions: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       credentials: {
@@ -35,23 +36,39 @@ export const authOptions: NextAuthOptions = {
       console.debug('callbacks:signIn:', param)
       return true
     },
-    async jwt({ token }) {
-      if (token.sub) {
-        const user = await prisma.user.findUnique({ where: { id: token.sub } })
-        if (user) {
-          token.name = user.name
-          token.isAdmin = user.isAdmin
-          token.isNotInit = user.isNotInit
-          token.email = user.email
-          console.debug('set token:', token)
-        } else {
-          console.debug('user not found')
-          token.sub = undefined
+    async jwt(param) {
+      console.debug('callbacks:jwt:', param)
+      const { token, account } = param
+
+      let user
+      if (account?.provider === 'google') {
+        const profile: (Profile & { email_verified?: boolean }) | undefined = param.profile
+        if (profile?.email_verified && profile?.email) {
+          user = await prisma.user.findUnique({ where: { email: profile.email } })
+        }
+      } else {
+        if (token.sub) {
+          user = await prisma.user.findUnique({ where: { id: token.sub } })
         }
       }
+
+      if (user) {
+        token.sub = user.id
+        token.name = user.name
+        token.isAdmin = user.isAdmin
+        token.isNotInit = user.isNotInit
+        token.email = user.email
+        console.debug('set token:', token)
+      } else {
+        console.debug('user not found')
+        token.sub = undefined
+      }
+
       return token
     },
-    async session({ token, session }) {
+    async session(param) {
+      console.debug('callbacks:session:', param)
+      const { token, session } = param
       if (token.sub) {
         session.user.id = token.sub
         session.user.name = token.name
@@ -66,6 +83,15 @@ export const authOptions: NextAuthOptions = {
     },
   },
 }
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  authOptions.providers.push(
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  )
+}
+export { authOptions }
 
 export const getSessionUser = async () => {
   const session = await getServerSession(authOptions)

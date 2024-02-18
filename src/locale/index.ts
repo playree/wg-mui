@@ -82,6 +82,7 @@ export type LocaleItemBase =
   | 'item_latest_handshake'
   | 'item_receive'
   | 'item_send'
+  | 'item_google_signin'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
