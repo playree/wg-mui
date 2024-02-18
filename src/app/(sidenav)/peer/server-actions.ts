@@ -6,15 +6,15 @@ import { prisma } from '@/helpers/prisma'
 import { getWgMgr } from '@/helpers/wgmgr'
 
 export const getUserPeerList = async () => {
-  // ログインユーザーを確認
-  const user = await getSessionUser()
-  if (!user) {
-    throw errInvalidSession()
-  }
-
   const wgMgr = await getWgMgr()
   if (!wgMgr) {
     throw errSystemError()
+  }
+
+  // ログインユーザーを確認
+  const user = await getSessionUser()
+  if (!user) {
+    return []
   }
 
   const peerList = await prisma.peer.getAllListByUser(user.id)

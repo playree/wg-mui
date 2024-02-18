@@ -1,7 +1,7 @@
 import { Cog6ToothIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
 import { Metadata } from 'next'
-import { FC, Suspense, use } from 'react'
+import { FC, Suspense } from 'react'
 
 import { SettingsTitle, SystemInfoClient } from './client'
 import { getSystemInfo } from './server-actions'
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   title: 'Settings',
 }
 
-const StatusView: FC = () => {
-  const info = use(getSystemInfo())
+const StatusView: FC = async () => {
+  const info = await getSystemInfo()
   return <SystemInfoClient info={info} />
 }
 

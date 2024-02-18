@@ -1,7 +1,7 @@
 import { CloudIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
 import { Metadata } from 'next'
-import { FC, Suspense, use } from 'react'
+import { FC, Suspense } from 'react'
 
 import { PeerTitle, PeerViewClient, RefreshButton } from './client'
 import { getUserPeerList } from './server-actions'
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   title: 'Peer',
 }
 
-const PeerView: FC = () => {
-  const peerList = use(getUserPeerList())
+const PeerView: FC = async () => {
+  const peerList = await getUserPeerList()
   return <PeerViewClient peerList={peerList} />
 }
 

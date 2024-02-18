@@ -1,7 +1,7 @@
 import { ComputerDesktopIcon } from '@/components/icons'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { FC, use } from 'react'
+import { FC } from 'react'
 
 import { PeerListClient, PeerManagementTitle } from './client'
 import { getUser } from './server-actions'
@@ -11,8 +11,8 @@ export const metadata: Metadata = {
   title: 'Peer Management',
 }
 
-const PeerManagementPage: FC<{ params: { userId: string } }> = ({ params: { userId } }) => {
-  const user = use(getUser(userId))
+const PeerManagementPage: FC<{ params: { userId: string } }> = async ({ params: { userId } }) => {
+  const user = await getUser(userId)
   if (!user) {
     return notFound()
   }
