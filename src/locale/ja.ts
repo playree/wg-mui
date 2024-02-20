@@ -82,6 +82,9 @@ export const ja: LocaleItems = {
   item_receive: '受信',
   item_send: '送信',
   item_google_signin: 'Googleでサインイン',
+  item_app_info: 'アプリ情報',
+  item_app_version: 'バージョン',
+  item_app_buildno: 'ビルドNo',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

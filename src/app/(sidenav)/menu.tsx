@@ -1,6 +1,14 @@
 'use client'
 
-import { CloudIcon, Cog6ToothIcon, ComputerDesktopIcon, Squares2x2Icon, TagIcon, UsersIcon } from '@/components/icons'
+import {
+  CloudIcon,
+  Cog6ToothIcon,
+  ComputerDesktopIcon,
+  Squares2x2Icon,
+  TagIcon,
+  UserCircleIcon,
+  UsersIcon,
+} from '@/components/icons'
 import { LangSwitch } from '@/components/lang-switch'
 import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { textStyles } from '@/components/styles'
@@ -55,7 +63,12 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
   return (
     <div>
       <Card>
-        <CardBody>{session?.user.name}</CardBody>
+        <CardBody>
+          <div className='flex items-center'>
+            <UserCircleIcon className='mr-2' />
+            <div>{session?.user.name}</div>
+          </div>
+        </CardBody>
       </Card>
       <div // テーマ・言語
         className='flex p-2'

@@ -82,6 +82,9 @@ export const en: DefaultLocaleItems = {
   item_receive: 'Receive',
   item_send: 'Send',
   item_google_signin: 'Sign in with Google',
+  item_app_info: 'App Infomation',
+  item_app_version: 'Version',
+  item_app_buildno: 'Build No',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
