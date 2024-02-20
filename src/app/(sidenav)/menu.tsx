@@ -17,7 +17,7 @@ import { useLocale } from '@/locale'
 import { localeConfig } from '@/locale/config'
 import { Accordion, AccordionItem, AccordionItemProps, Button, Card, CardBody } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import NextLink from 'next/link'
 import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -36,15 +36,15 @@ export const MenuButton: FC<{
   /** アイコン */
   icon?: ReactNode
 }> = ({ text, to, closeMenu, icon }) => {
-  const router = useRouter()
   return (
     <div>
       <Button
+        href={to}
+        as={NextLink}
         color='default'
         variant='light'
         className='mb-2 h-8 w-full justify-start p-2'
         onPress={() => {
-          router.push(to)
           if (closeMenu) {
             closeMenu()
           }

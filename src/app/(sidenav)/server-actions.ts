@@ -22,6 +22,7 @@ export const getServerInfo = async () => {
     uptime: os.uptime(),
   }
 }
+export type ServerInfo = Awaited<ReturnType<typeof getServerInfo>>
 
 export const getLinodeTransferInfo = async (): Promise<
   | {
