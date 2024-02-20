@@ -24,14 +24,7 @@ export const getServerInfo = async () => {
 }
 export type ServerInfo = Awaited<ReturnType<typeof getServerInfo>>
 
-export const getLinodeTransferInfo = async (): Promise<
-  | {
-      used: number
-      quota: number
-      billable: number
-    }
-  | undefined
-> => {
+export const getLinodeTransferInfo = async () => {
   if (process.env.LINODE_ID && process.env.LINODE_PERSONAL_ACCESS_TOKEN) {
     try {
       const res = await fetch(`https://api.linode.com/v4/linode/instances/${process.env.LINODE_ID}/transfer`, {
@@ -42,10 +35,19 @@ export const getLinodeTransferInfo = async (): Promise<
           revalidate: process.env.LINODE_ACCESS_INTERVAL ? Number(process.env.LINODE_ACCESS_INTERVAL) : 180,
         },
       })
-      return res.json()
+      const info: {
+        used: number
+        quota: number
+        billable: number
+      } = await res.json()
+      return {
+        ...info,
+        total: info.quota * Math.pow(1024, 3),
+      }
     } catch {
       //
     }
   }
   return undefined
 }
+export type LinodeTransferInfo = Awaited<ReturnType<typeof getLinodeTransferInfo>>

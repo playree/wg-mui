@@ -85,6 +85,9 @@ export const en: DefaultLocaleItems = {
   item_server_info: 'Server Infomation',
   item_free_memory: 'Free Memory',
   item_uptime: 'Up Time',
+  item_transfer_info: 'Network Transfer Infomation',
+  item_transfer_pool_usage: 'Pool Usage',
+  item_transfer_billable: 'Billable',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',

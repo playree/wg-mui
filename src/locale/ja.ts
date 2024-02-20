@@ -85,6 +85,9 @@ export const ja: LocaleItems = {
   item_server_info: 'サーバー情報',
   item_free_memory: '空きメモリ',
   item_uptime: '起動時間',
+  item_transfer_info: 'ネットワーク転送情報',
+  item_transfer_pool_usage: 'プール使用量',
+  item_transfer_billable: '請求対象',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
