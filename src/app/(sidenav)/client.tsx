@@ -87,14 +87,7 @@ export const LinodeTransferInfoViewClient: FC = () => {
   const [info, setInfo] = useState<LinodeTransferInfo>()
 
   useEffect(() => {
-    // getLinodeTransferInfo().then((info) => setInfo(info))
-    // @todo テスト用ダミー
-    setInfo({
-      used: 1200109071,
-      quota: 4662,
-      billable: 0,
-      total: 4662 * Math.pow(1024, 3),
-    })
+    getLinodeTransferInfo().then((info) => setInfo(info))
   }, [])
 
   return (

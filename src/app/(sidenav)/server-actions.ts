@@ -25,6 +25,16 @@ export const getServerInfo = async () => {
 export type ServerInfo = Awaited<ReturnType<typeof getServerInfo>>
 
 export const getLinodeTransferInfo = async () => {
+  // テスト用ダミー
+  if (process.env.LINODE_DUMMY) {
+    return {
+      used: 1200109071,
+      quota: 4662,
+      billable: 0,
+      total: 4662 * Math.pow(1024, 3),
+    }
+  }
+
   if (process.env.LINODE_ID && process.env.LINODE_PERSONAL_ACCESS_TOKEN) {
     try {
       const res = await fetch(`https://api.linode.com/v4/linode/instances/${process.env.LINODE_ID}/transfer`, {
