@@ -11,6 +11,7 @@ export type LocaleItemBase =
   | 'menu_theme'
   | 'menu_signout'
   | 'menu_peer'
+  | 'menu_account'
   | 'group_user'
   | 'group_admin'
   | 'item_user'

@@ -92,6 +92,9 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
             <div className='mx-2'>
               <MenuButton to='/peer' text={t('menu_peer')} icon={<CloudIcon />} closeMenu={closeMenu} />
             </div>
+            <div className='mx-2'>
+              <MenuButton to='/account' text={t('menu_account')} icon={<UserCircleIcon />} closeMenu={closeMenu} />
+            </div>
           </AccordionItem>
 
           <AccordionItem isCompact={true} title={t('group_admin')} hidden={!session?.user.isAdmin}>

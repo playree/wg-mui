@@ -11,6 +11,7 @@ export const en: DefaultLocaleItems = {
   menu_theme: 'Theme',
   menu_signout: 'Sign Out',
   menu_peer: 'Peer(Connect)',
+  menu_account: 'Account',
   group_user: 'User',
   group_admin: 'Admin',
   item_user: 'User',

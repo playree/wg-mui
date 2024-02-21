@@ -35,7 +35,9 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
 
 const middlewareWithAuth = withAuth(
   async (request) => {
-    const response = NextResponse.next()
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set('x-pathname', request.nextUrl.pathname)
+    const response = NextResponse.next({ request: { headers: requestHeaders } })
     mwLocale(request, response)
     return response
   },
@@ -62,7 +64,9 @@ export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) 
     return middlewareWithAuth(request, event)
   }
 
-  const response = NextResponse.next()
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-pathname', request.nextUrl.pathname)
+  const response = NextResponse.next({ request: { headers: requestHeaders } })
   mwLocale(request, response)
   return response
 }

@@ -11,6 +11,7 @@ export const ja: LocaleItems = {
   menu_theme: 'テーマ',
   menu_signout: 'サインアウト',
   menu_peer: 'ピア(接続)',
+  menu_account: 'アカウント',
   group_user: 'ユーザー',
   group_admin: '管理者',
   item_user: '一般ユーザー',
