@@ -39,7 +39,7 @@ export const validateApi = <
     const parsed = schema.safeParse(items)
     if (!parsed.success) {
       const errorMessage = JSON.parse(parsed.error.message)
-      console.warn(errorMessage)
+      console.warn('validation error', parsed.error.message)
       return NextResponse.json(errorMessage, { status: 400 })
     }
 
@@ -85,7 +85,7 @@ export const validateAuthApi = <
     const parsed = schema.safeParse(items)
     if (!parsed.success) {
       const errorMessage = JSON.parse(parsed.error.message)
-      console.warn(errorMessage)
+      console.warn('validation error', parsed.error.message)
       return NextResponse.json(errorMessage, { status: 400 })
     }
 
@@ -101,7 +101,7 @@ export const convFormData = (formData: FormData) => {
   return data
 }
 
-export const validateAction = <REQ extends ZodSchema = ZodSchema, RES = void>(
+export const validateAuthAction = <REQ extends ZodSchema = ZodSchema, RES = void>(
   reqSchema: REQ,
   next: (param: { req: z.infer<REQ>; user: Session['user'] }) => Promise<RES>,
   requreAdmin = false,
@@ -120,9 +120,8 @@ export const validateAction = <REQ extends ZodSchema = ZodSchema, RES = void>(
 
     const parsed = reqSchema.safeParse(req)
     if (!parsed.success) {
-      const errorMessage = JSON.parse(parsed.error.message)
-      console.warn(errorMessage)
-      throw new Error(errorMessage)
+      // console.warn('validation error', parsed.error.message)
+      throw new Error(parsed.error.message)
     }
 
     return next({ req, user })

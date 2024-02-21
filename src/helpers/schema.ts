@@ -24,6 +24,7 @@ const reIp = /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-
 const reCIDR =
   /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\/([1-2]?[0-9]|3[0-2])$/
 
+const zUUID = z.string().uuid()
 const zUsername = z
   .string()
   .min(4, el('@invalid_username'))
@@ -157,3 +158,10 @@ export type UpdatePeer = z.infer<typeof scUpdatePeer>
 
 // Peer
 export type TypePeer = UpdatePeer & { ip: string; createdAt: Date; updatedAt: Date }
+
+// パスワード更新
+export const scUpdatePassword = z.object({
+  id: zUUID,
+  password: zPassword,
+})
+export type UpdatePassword = z.infer<typeof scUpdatePassword>

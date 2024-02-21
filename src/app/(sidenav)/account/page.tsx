@@ -1,4 +1,4 @@
-import { CloudIcon } from '@/components/icons'
+import { UserCircleIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
 import { Metadata } from 'next'
 import { FC, Suspense } from 'react'
@@ -20,7 +20,7 @@ const PeerPage: FC = () => {
   return (
     <div>
       <div className='mb-2 flex items-center pl-8 lg:pl-0'>
-        <CloudIcon className='mr-2' />
+        <UserCircleIcon className='mr-2' />
         <Title />
       </div>
 

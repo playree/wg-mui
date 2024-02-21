@@ -117,6 +117,14 @@ export const prisma = new PrismaClient().$extends({
         })
         return user
       },
+      async updatePassword(id: string, password: string) {
+        await prisma.user.update({
+          where: { id },
+          data: {
+            passwordHash: hashPassword(password),
+          },
+        })
+      },
     },
     label: {
       async getAllList(withUser?: AllOrCount) {
