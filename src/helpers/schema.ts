@@ -71,6 +71,8 @@ const zRemarks = z.string().or(z.string().length(0)).transform(convNull)
 const zPostUp = z.string().or(z.string().length(0)).transform(convNull)
 const zPostDown = z.string().or(z.string().length(0)).transform(convNull)
 
+export const scVoid = z.void()
+
 // サインイン
 export const scSignin = z.object({
   username: zUsernameConfirm,
