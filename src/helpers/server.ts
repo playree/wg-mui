@@ -57,14 +57,14 @@ export const validAuthApi = <
     req: NextRequest,
     items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P>; user: Session['user'] },
   ) => void,
-  requreAdmin = false,
+  requireAdmin = false,
 ) => {
   return async (req: NextRequest, { params: _params }: { params: Record<string, unknown> }) => {
     const user = await getSessionUser()
     if (!user) {
       return new NextResponse('Invalid session', { status: 403 })
     }
-    if (requreAdmin && !user.isAdmin) {
+    if (requireAdmin && !user.isAdmin) {
       return new NextResponse('Permission denied', { status: 403 })
     }
 
@@ -115,51 +115,6 @@ export type ActionResultType<T extends (...args: any) => any> = FindFromUnion<
   'ok',
   true
 >['data']
-
-export const validAuthAction = <REQ extends ZodSchema = ZodSchema, RES = void>(
-  reqSchema: REQ,
-  next: (param: { req: z.infer<REQ>; user: Session['user'] }) => Promise<RES>,
-  requreAdmin = false,
-) => {
-  return async (req: z.infer<REQ>): Promise<ActionResult<RES>> => {
-    const pathname = headers().get('x-pathname') || ''
-    console.debug(`va@${pathname}@${next.name}`)
-
-    try {
-      const user = await getSessionUser()
-      if (!user) {
-        throw errInvalidSession()
-      }
-      if (requreAdmin && !user.isAdmin) {
-        throw errPermissionDenied()
-      }
-
-      const parsed = reqSchema.safeParse(req)
-      if (!parsed.success) {
-        throw errValidation(parsed.error.message)
-      }
-
-      return {
-        ok: true,
-        data: await next({ req: parsed.data, user }),
-      }
-    } catch (e) {
-      if (e instanceof ClientError) {
-        console.warn(e.message)
-        return {
-          ok: false,
-          error: e.message,
-        }
-      }
-
-      console.error(e)
-      return {
-        ok: false,
-        error: errSystemError().message,
-      }
-    }
-  }
-}
 
 const parseSchema = (schema: ZodSchema | undefined, data: unknown) => {
   if (schema) {
