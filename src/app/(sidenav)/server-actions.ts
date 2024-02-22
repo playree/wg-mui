@@ -1,33 +1,47 @@
 'use server'
 
+import { errCommunication, errNotFound } from '@/helpers/error'
+import { scVoid } from '@/helpers/schema'
+import { ActionResultType, validAuthAction } from '@/helpers/server'
 import os from 'os'
 
 import pkg from '../../../package.json'
 
-export const getAppInfo = async () => {
-  console.debug('getAppInfo:')
+/**
+ * アプリ情報取得
+ */
+export const getAppInfo = validAuthAction(scVoid, async function getAppInfo() {
   const { version, buildno } = pkg
   return {
     version,
     buildno,
   }
-}
-export type AppInfo = Awaited<ReturnType<typeof getAppInfo>>
+})
+export type AppInfo = ActionResultType<typeof getAppInfo>
 
-export const getServerInfo = async () => {
-  console.debug('getServerInfo:')
-
+/**
+ * サーバー情報取得
+ */
+export const getServerInfo = validAuthAction(scVoid, async function getServerInfo() {
   return {
     memory: { total: os.totalmem(), free: os.freemem() },
     uptime: os.uptime(),
   }
-}
-export type ServerInfo = Awaited<ReturnType<typeof getServerInfo>>
+})
+export type ServerInfo = ActionResultType<typeof getServerInfo>
 
-export const getLinodeTransferInfo = async () => {
+/**
+ * Linode Transfer情報取得
+ */
+export const getLinodeTransferInfo = validAuthAction(scVoid, async function getLinodeTransferInfo() {
   if (process.env.LINODE_DUMMY) {
     // テスト用ダミー
-    return JSON.parse(process.env.LINODE_DUMMY)
+    return JSON.parse(process.env.LINODE_DUMMY) as {
+      used: number
+      quota: number
+      billable: number
+      total: number
+    }
   }
 
   if (process.env.LINODE_ID && process.env.LINODE_PERSONAL_ACCESS_TOKEN) {
@@ -50,9 +64,9 @@ export const getLinodeTransferInfo = async () => {
         total: info.quota * Math.pow(1024, 3),
       }
     } catch {
-      //
+      throw errCommunication('Linode Transfer')
     }
   }
-  return undefined
-}
-export type LinodeTransferInfo = Awaited<ReturnType<typeof getLinodeTransferInfo>>
+  throw errNotFound()
+})
+export type LinodeTransferInfo = ActionResultType<typeof getLinodeTransferInfo>

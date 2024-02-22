@@ -25,6 +25,10 @@ const reCIDR =
   /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\/([1-2]?[0-9]|3[0-2])$/
 
 export const zUUID = z.string().uuid()
+export const zString = z.string()
+
+export const zAllOrCount = z.union([z.literal('all'), z.literal('count')])
+
 export const zUsername = z
   .string()
   .min(4, el('@invalid_username'))
@@ -74,8 +78,9 @@ export const zRemarks = z.string().or(z.string().length(0)).transform(convNull)
 export const zPostUp = z.string().or(z.string().length(0)).transform(convNull)
 export const zPostDown = z.string().or(z.string().length(0)).transform(convNull)
 
-export const scVoid = z.void()
 export const zReq = z.object
+
+export const scVoid = z.void()
 
 // サインイン
 export const scSignin = z.object({
@@ -119,15 +124,23 @@ export type TypeUser = {
   updatedAt: Date
 }
 
-// ラベル作成・更新
-export const scEditLabel = z.object({
+// ラベル作成
+export const scCreateLabel = z.object({
   name: zLabelName,
   explanation: zExplanation,
 })
-export type EditLabel = z.infer<typeof scEditLabel>
+export type CreateLabel = z.infer<typeof scCreateLabel>
+
+// ラベル更新
+export const scUpdateLabel = z.object({
+  id: zUUID,
+  name: zLabelName,
+  explanation: zExplanation,
+})
+export type UpdateLabel = z.infer<typeof scUpdateLabel>
 
 // ラベル
-export type TypeLabel = EditLabel & { id: string; createdAt: Date; updatedAt: Date }
+export type TypeLabel = UpdateLabel & { createdAt: Date; updatedAt: Date }
 
 // WG Conf初期設定
 export const scInitializeWgConf = z.object({
@@ -146,7 +159,7 @@ export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
 // Peer作成
 export const scCreatePeer = z.object({
   ip: zIp,
-  userId: z.string().uuid(),
+  userId: zUUID,
   privateKey: zPrivateKey,
   allowedIPs: zAllowedIPs,
   persistentKeepalive: zPersistentKeepalive,

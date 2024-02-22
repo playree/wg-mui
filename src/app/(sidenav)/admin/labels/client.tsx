@@ -21,7 +21,7 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { CreateLabelButtonWithModal, DeleteLabelModal, EditLabelModal } from './edit'
+import { CreateLabelButtonWithModal, DeleteLabelModal, UpdateLabelModal } from './edit'
 import { getLabelList } from './server-actions'
 
 export const LabelsTitle: FC = () => {
@@ -33,7 +33,10 @@ export const LabelListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: () => getLabelList('count'),
+    load: async () => {
+      const res = await getLabelList({ withUser: 'count' })
+      return res.ok ? res.data : []
+    },
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },
@@ -152,7 +155,7 @@ export const LabelListClient: FC = () => {
           </Table>
         </div>
       </div>
-      <EditLabelModal
+      <UpdateLabelModal
         size='xl'
         isOpen={updateModal.isOpen}
         onOpenChange={updateModal.onOpenChange}

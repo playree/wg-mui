@@ -22,7 +22,11 @@ export const AppInfoViewClient: FC = () => {
   const [info, setInfo] = useState<AppInfo>()
 
   useEffect(() => {
-    getAppInfo().then((info) => setInfo(info))
+    getAppInfo().then((res) => {
+      if (res.ok) {
+        setInfo(res.data)
+      }
+    })
   }, [])
 
   return (
@@ -52,7 +56,11 @@ export const ServerInfoViewClient: FC = () => {
   const [info, setInfo] = useState<ServerInfo>()
 
   useEffect(() => {
-    getServerInfo().then((info) => setInfo(info))
+    getServerInfo().then((res) => {
+      if (res.ok) {
+        setInfo(res.data)
+      }
+    })
   }, [])
 
   return (
@@ -87,7 +95,11 @@ export const LinodeTransferInfoViewClient: FC = () => {
   const [info, setInfo] = useState<LinodeTransferInfo>()
 
   useEffect(() => {
-    getLinodeTransferInfo().then((info) => setInfo(info))
+    getLinodeTransferInfo().then((res) => {
+      if (res.ok) {
+        setInfo(res.data)
+      }
+    })
   }, [])
 
   return (

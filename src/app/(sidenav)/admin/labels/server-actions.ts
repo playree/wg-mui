@@ -1,40 +1,70 @@
 'use server'
 
-import { AllOrCount, prisma } from '@/helpers/prisma'
-import { EditLabel } from '@/helpers/schema'
+import { prisma } from '@/helpers/prisma'
+import { scCreateLabel, scUpdateLabel, zAllOrCount, zReq, zString, zUUID } from '@/helpers/schema'
+import { validAction } from '@/helpers/server'
 
-export const getLabelList = async (withUser?: AllOrCount) => {
-  console.debug('getLabelList:in:')
-  const lablelList = await prisma.label.getAllList(withUser)
-  console.debug('getLabelList:out:', lablelList.length)
-  return lablelList
-}
+/**
+ * ラベルリスト取得(管理者権限)
+ */
+export const getLabelList = validAction({
+  schema: zReq({ withUser: zAllOrCount.optional() }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getLabelList({ req }) {
+    return prisma.label.getAllList(req.withUser)
+  },
+})
 
-export const createLabel = async (data: EditLabel) => {
-  console.debug('createLabel:in:', data)
-  const lablel = await prisma.label.create({ data })
-  console.debug('createLabel:out:', lablel)
-  return lablel
-}
+/**
+ * ラベル作成(管理者権限)
+ */
+export const createLabel = validAction({
+  schema: scCreateLabel,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function createLabel({ req }) {
+    return prisma.label.create({ data: req })
+  },
+})
 
-export const updateLabel = async (id: string, data: EditLabel) => {
-  console.debug('updateLabel:in:', data)
-  const lablel = await prisma.label.update({ where: { id }, data })
-  console.debug('updateLabel:out:', lablel)
-  return lablel
-}
+/**
+ * ラベル更新(管理者権限)
+ */
+export const updateLabel = validAction({
+  schema: scUpdateLabel,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function updateLabel({ req }) {
+    const { id, ...data } = req
+    return prisma.label.update({ where: { id }, data })
+  },
+})
 
-export const deleteLabel = async (id: string) => {
-  console.debug('deleteLabel:in:', id)
-  await prisma.label.delete({ where: { id } })
-  console.debug('deleteLabel:out:')
-  return
-}
+/**
+ * ラベル削除(管理者権限)
+ */
+export const deleteLabel = validAction({
+  schema: zReq({ id: zUUID }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function deleteLabel({ req: { id } }) {
+    return prisma.label.delete({ where: { id } })
+  },
+})
 
-export const existsLabelName = async (name: string) => {
-  console.debug('existsLabelName:in:', name)
-  const label = await prisma.label.findUnique({ where: { name } })
-  const exists = !!label
-  console.debug('existsLabelName:out:', exists)
-  return exists
-}
+/**
+ * ラベル名の存在確認(管理者権限)
+ */
+export const existsLabelName = validAction({
+  schema: zReq({ name: zString, excludeId: zUUID.optional() }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function existsLabelName({ req: { name, excludeId } }) {
+    const label = await prisma.label.findUnique({ where: { name } })
+    if (label) {
+      return excludeId ? label.id !== excludeId : true
+    }
+    return false
+  },
+})

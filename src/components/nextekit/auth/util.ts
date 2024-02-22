@@ -7,8 +7,8 @@ export type MatchCondition = {
 
 export const matchCondition = (path: string, condition?: MatchCondition) => {
   if (condition) {
-    const requre = condition.require ? match(path, condition.require) : true
-    return requre && !match(path, condition.exclude)
+    const require = condition.require ? match(path, condition.require) : true
+    return require && !match(path, condition.exclude)
   }
   return false
 }
