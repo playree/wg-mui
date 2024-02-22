@@ -12,8 +12,10 @@ export const metadata: Metadata = {
 }
 
 const PeerView: FC = async () => {
-  const peerList = await getUserPeerList()
-  return <PeerViewClient peerList={peerList} />
+  const res = await getUserPeerList()
+  if (res.ok) {
+    return <PeerViewClient peerList={res.data} />
+  }
 }
 
 const PeerPage: FC = () => {

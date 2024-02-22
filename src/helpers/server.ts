@@ -4,7 +4,7 @@ import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { ZodSchema, z } from 'zod'
 
-import { errInvalidSession, errPermissionDenied } from './error'
+import { ClientError, errInvalidSession, errPermissionDenied, errSystemError, errValidation } from './error'
 
 export const ALLOW_ORIGIN_ALL = { 'Access-Control-Allow-Origin': '*' }
 
@@ -101,29 +101,49 @@ export const convFormData = (formData: FormData) => {
   return data
 }
 
+type ActionResult<T> = { ok: true; data: T } | { ok: false; error: string }
+
 export const validateAuthAction = <REQ extends ZodSchema = ZodSchema, RES = void>(
   reqSchema: REQ,
   next: (param: { req: z.infer<REQ>; user: Session['user'] }) => Promise<RES>,
   requreAdmin = false,
 ) => {
-  return async (req: z.infer<REQ>) => {
+  return async (req: z.infer<REQ>): Promise<ActionResult<RES>> => {
     const pathname = headers().get('x-pathname') || ''
     console.debug(`va@${pathname}@${next.name}`)
 
-    const user = await getSessionUser()
-    if (!user) {
-      throw errInvalidSession()
-    }
-    if (requreAdmin && !user.isAdmin) {
-      throw errPermissionDenied()
-    }
+    try {
+      const user = await getSessionUser()
+      if (!user) {
+        throw errInvalidSession()
+      }
+      if (requreAdmin && !user.isAdmin) {
+        throw errPermissionDenied()
+      }
 
-    const parsed = reqSchema.safeParse(req)
-    if (!parsed.success) {
-      // console.warn('validation error', parsed.error.message)
-      throw new Error(parsed.error.message)
-    }
+      const parsed = reqSchema.safeParse(req)
+      if (!parsed.success) {
+        throw errValidation(parsed.error.message)
+      }
 
-    return next({ req, user })
+      return {
+        ok: true,
+        data: await next({ req, user }),
+      }
+    } catch (e) {
+      if (e instanceof ClientError) {
+        console.warn(e.message)
+        return {
+          ok: false,
+          error: e.message,
+        }
+      }
+
+      console.error(e)
+      return {
+        ok: false,
+        error: errSystemError().message,
+      }
+    }
   }
 }

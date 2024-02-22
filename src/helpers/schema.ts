@@ -24,54 +24,58 @@ const reIp = /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-
 const reCIDR =
   /^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\/([1-2]?[0-9]|3[0-2])$/
 
-const zUUID = z.string().uuid()
-const zUsername = z
+export const zUUID = z.string().uuid()
+export const zUsername = z
   .string()
   .min(4, el('@invalid_username'))
   .max(30, el('@invalid_username'))
   .regex(rePattern1String, el('@invalid_username'))
-const zUsernameConfirm = z.string().min(1, el('@required_field'))
-const zPassword = z
+export const zUsernameConfirm = z.string().min(1, el('@required_field'))
+export const zPassword = z
   .string()
   .min(8, el('@invalid_password'))
   .max(30, el('@invalid_password'))
   .regex(reHalfString, el('@invalid_password'))
-const zPasswordUpdate = z
+export const zPasswordUpdate = z
   .string()
   .min(8, el('@invalid_password'))
   .max(30, el('@invalid_password'))
   .regex(reHalfString, el('@invalid_password'))
   .or(z.string().length(0))
   .transform(convUndefined)
-const zPasswordConfirm = z.string().min(1, el('@required_field'))
-const zEmail = z.string().email(el('@invalid_email')).or(z.string().length(0)).transform(convNull)
+export const zPasswordConfirm = z.string().min(1, el('@required_field'))
+export const zEmail = z.string().email(el('@invalid_email')).or(z.string().length(0)).transform(convNull)
 
-const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
-const zExplanation = z.string().max(80, el('@invalid_label_name'))
+export const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
+export const zExplanation = z.string().max(80, el('@invalid_label_name'))
 
-const zConfDirPath = z.string().min(1, el('@invalid_conf_dir_path')).regex(reAbsolutePath, el('@invalid_conf_dir_path'))
-const zInterfaceName = z
+export const zConfDirPath = z
+  .string()
+  .min(1, el('@invalid_conf_dir_path'))
+  .regex(reAbsolutePath, el('@invalid_conf_dir_path'))
+export const zInterfaceName = z
   .string()
   .min(1, el('@invalid_interface_name'))
   .max(60, el('@invalid_interface_name'))
   .regex(rePattern1String, el('@invalid_interface_name'))
-const zAddress = z.string().regex(reCIDR, el('@invalid_address'))
-const zListenPort = z.number().min(1, el('@invalid_port')).max(65535, el('@invalid_port'))
-const zPrivateKey = z.string().regex(reHalfString, el('@invalid_private_key'))
-const zEndPoint = z.string().url(el('@invalid_end_point'))
-const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(z.string().length(0)).transform(convNull)
-const zIp = z.string().regex(reIp, el('@invalid_ip'))
-const zAllowedIPs = z
+export const zAddress = z.string().regex(reCIDR, el('@invalid_address'))
+export const zListenPort = z.number().min(1, el('@invalid_port')).max(65535, el('@invalid_port'))
+export const zPrivateKey = z.string().regex(reHalfString, el('@invalid_private_key'))
+export const zEndPoint = z.string().url(el('@invalid_end_point'))
+export const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(z.string().length(0)).transform(convNull)
+export const zIp = z.string().regex(reIp, el('@invalid_ip'))
+export const zAllowedIPs = z
   .string()
   .regex(reHalfString, el('@invalid_allowed_ips'))
   .or(z.string().length(0))
   .transform(convNull)
-const zPersistentKeepalive = z.number()
-const zRemarks = z.string().or(z.string().length(0)).transform(convNull)
-const zPostUp = z.string().or(z.string().length(0)).transform(convNull)
-const zPostDown = z.string().or(z.string().length(0)).transform(convNull)
+export const zPersistentKeepalive = z.number()
+export const zRemarks = z.string().or(z.string().length(0)).transform(convNull)
+export const zPostUp = z.string().or(z.string().length(0)).transform(convNull)
+export const zPostDown = z.string().or(z.string().length(0)).transform(convNull)
 
 export const scVoid = z.void()
+export const zReq = z.object
 
 // サインイン
 export const scSignin = z.object({

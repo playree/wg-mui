@@ -1,46 +1,43 @@
 'use server'
 
-import { getSessionUser } from '@/config/auth-options'
-import { errInvalidSession, errNotFound, errSystemError } from '@/helpers/error'
+import { errNotFound, errSystemError } from '@/helpers/error'
 import { prisma } from '@/helpers/prisma'
-import { getWgMgr } from '@/helpers/wgmgr'
+import { scVoid, zIp, zReq } from '@/helpers/schema'
+import { validateAuthAction } from '@/helpers/server'
+import { getWgMgr, refWgMgr } from '@/helpers/wgmgr'
 
-export const getUserPeerList = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw errSystemError()
-  }
-
-  // ログインユーザーを確認
-  const user = await getSessionUser()
-  if (!user) {
-    return []
-  }
+/**
+ * ログインユーザーのピアリスト取得
+ */
+export const getUserPeerList = validateAuthAction(scVoid, async function getUserPeerList({ user }) {
+  const wgMgr = await refWgMgr()
 
   const peerList = await prisma.peer.getAllListByUser(user.id)
-  console.debug('getUserPeerList:', user.id, peerList.length)
-
   const peerStatus = await wgMgr.getPeerStatus()
   return peerList.map((peer) => ({ ...peer, status: peerStatus ? peerStatus[peer.ip] : undefined }))
-}
+})
 
-export const getUserPeerConf = async (ip: string) => {
-  // ログインユーザーを確認
-  const user = await getSessionUser()
-  if (!user) {
-    throw errInvalidSession()
-  }
+const scGetUserPeerConf = zReq({
+  ip: zIp,
+})
 
-  // IPとユーザーでピア検索
-  const peer = await prisma.peer.findUnique({ where: { ip, userId: user.id } })
-  if (!peer) {
-    throw errNotFound()
-  }
+/**
+ * 対象IPのピア設定取得
+ */
+export const getUserPeerConf = validateAuthAction(
+  scGetUserPeerConf,
+  async function getUserPeerConf({ req: { ip }, user }) {
+    // IPとユーザーでピア検索
+    const peer = await prisma.peer.findUnique({ where: { ip, userId: user.id } })
+    if (!peer) {
+      throw errNotFound()
+    }
 
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw errSystemError()
-  }
+    const wgMgr = await getWgMgr()
+    if (!wgMgr) {
+      throw errSystemError()
+    }
 
-  return wgMgr.getPeerConf(peer)
-}
+    return wgMgr.getPeerConf(peer)
+  },
+)

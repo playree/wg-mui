@@ -56,10 +56,9 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
               console.debug('update:submit:', req)
               if (target) {
                 setLoading(true)
-                try {
-                  await updatePassword(req)
-                } catch (e) {
-                  console.warn(String(e))
+                const res = await updatePassword(req)
+                if (!res.ok) {
+                  // @todo エラー処理
                 }
                 await intervalOperation()
                 updated()

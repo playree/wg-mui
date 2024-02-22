@@ -12,8 +12,10 @@ export const metadata: Metadata = {
 }
 
 const AccountView: FC = async () => {
-  const account = await getAccount()
-  return <AccountViewClient account={account} />
+  const res = await getAccount()
+  if (res.ok) {
+    return <AccountViewClient account={res.data} />
+  }
 }
 
 const PeerPage: FC = () => {

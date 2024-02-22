@@ -16,6 +16,7 @@ import { Address4 } from 'ip-address'
 import { IIniObject, stringify } from 'js-ini'
 import path from 'path'
 
+import { errSystemError } from './error'
 import { prisma } from './prisma'
 import { CreatePeer } from './schema'
 
@@ -296,3 +297,10 @@ exit 0
 }
 
 export const getWgMgr = async () => WgMgr.getWgMgr()
+export const refWgMgr = async () => {
+  const wgMgr = await getWgMgr()
+  if (!wgMgr) {
+    throw errSystemError()
+  }
+  return wgMgr
+}

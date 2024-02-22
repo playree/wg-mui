@@ -106,16 +106,18 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
                 <div className='col-span-12 pl-4'>
                   <ExButton
                     onPress={async () => {
-                      const conf = await getUserPeerConf(peer.ip)
-                      const blob = new Blob([conf], { type: 'text/plain' })
-                      const url = URL.createObjectURL(blob)
-                      const a = document.createElement('a')
-                      document.body.appendChild(a)
-                      a.download = 'test.conf'
-                      a.href = url
-                      a.click()
-                      a.remove()
-                      URL.revokeObjectURL(url)
+                      const res = await getUserPeerConf({ ip: peer.ip })
+                      if (res.ok) {
+                        const blob = new Blob([res.data], { type: 'text/plain' })
+                        const url = URL.createObjectURL(blob)
+                        const a = document.createElement('a')
+                        document.body.appendChild(a)
+                        a.download = `${peer.ip.replace('.', '-')}.conf`
+                        a.href = url
+                        a.click()
+                        a.remove()
+                        URL.revokeObjectURL(url)
+                      }
                     }}
                   >
                     <DocumentArrowDownIcon />
@@ -123,9 +125,11 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
                   </ExButton>
                   <ExButton
                     onPress={async () => {
-                      const conf = await getUserPeerConf(peer.ip)
-                      const qr = await getQrImgString(conf)
-                      setTargetQr(qr)
+                      const res = await getUserPeerConf({ ip: peer.ip })
+                      if (res.ok) {
+                        const qr = await getQrImgString(res.data)
+                        setTargetQr(qr)
+                      }
                     }}
                   >
                     <QrCodeIcon />
