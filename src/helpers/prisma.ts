@@ -85,8 +85,8 @@ export const prisma = new PrismaClient().$extends({
         })
         return user
       },
-      async updateUser(id: string, data: UpdateUser) {
-        const { password, labelList, ...input } = data
+      async updateUser(data: UpdateUser) {
+        const { id, password, labelList, ...input } = data
 
         // 更新対象を取得
         const target = await prisma.user.findUnique({ where: { id }, include: { userLabelList: true } })

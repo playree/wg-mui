@@ -39,7 +39,10 @@ export const UserListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: () => getUserList({ withLabel: true, withPeer: true }),
+    load: async () => {
+      const userList = await getUserList({ withLabel: true, withPeer: true })
+      return userList.ok ? userList.data : []
+    },
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },
@@ -74,8 +77,9 @@ export const UserListClient: FC = () => {
   })
 
   const labelList = useAsyncList({
-    async load() {
-      return { items: await getLabelList() }
+    load: async () => {
+      const labelList = await getLabelList({})
+      return { items: labelList.ok ? labelList.data : [] }
     },
   })
 

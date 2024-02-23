@@ -1,4 +1,5 @@
 import { ComputerDesktopIcon } from '@/components/icons'
+import { parseAction } from '@/helpers/action'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { FC } from 'react'
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 }
 
 const PeerManagementPage: FC<{ params: { userId: string } }> = async ({ params: { userId } }) => {
-  const user = await getUser(userId)
+  const user = await parseAction(getUser({ id: userId }))
   if (!user) {
     return notFound()
   }

@@ -4,6 +4,7 @@ import { CheckIcon, KeyIcon, PlusCircleIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { requireSelect } from '@/helpers/client'
 import { CreatePeer, TypePeer, TypeUser, UpdatePeer, scCreatePeer, scUpdatePeer } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
@@ -37,10 +38,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
   const [isLoading, setLoading] = useState(false)
 
   const freeAddressList = useAsyncList({
-    async load() {
-      const items = await getFreeAddressList()
-      return { items }
-    },
+    load: async () => ({ items: await parseAction(getFreeAddressList()) }),
   })
 
   const {
@@ -82,7 +80,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
             onSubmit={handleSubmit(async (req) => {
               console.debug('create:submit:', req)
               setLoading(true)
-              await createPeer(req)
+              await parseAction(createPeer(req))
               await intervalOperation()
               freeAddressList.reload()
               updated()
@@ -130,7 +128,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
                     variant='ghost'
                     tooltip={t('item_generate_key')}
                     onPress={async () => {
-                      const privateKey = await getPrivateKey()
+                      const privateKey = await parseAction(getPrivateKey())
                       if (privateKey) {
                         setValue('privateKey', privateKey)
                       }
@@ -195,10 +193,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
   const [isLoading, setLoading] = useState(false)
 
   const freeAddressList = useAsyncList({
-    async load() {
-      const items = await getFreeAddressList()
-      return { items }
-    },
+    load: async () => ({ items: await parseAction(getFreeAddressList()) }),
   })
 
   const {
@@ -225,6 +220,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
   useEffect(() => {
     console.debug('target:', target)
     if (target) {
+      setValue('ip', target.ip)
       setValue('allowedIPs', target.allowedIPs || '')
       setValue('persistentKeepalive', target.persistentKeepalive)
       setValue('remarks', target.remarks || '')
@@ -246,7 +242,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
               console.debug('update:submit:', req)
               if (target) {
                 setLoading(true)
-                await updatePeer(target.ip, req)
+                await parseAction(updatePeer(req))
                 await intervalOperation()
                 freeAddressList.reload()
                 updated()
@@ -369,7 +365,7 @@ export const DeletePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
                   console.debug('delete:submit:', target)
                   if (target) {
                     setLoading(true)
-                    await deletePeer(target.ip)
+                    await parseAction(deletePeer({ ip: target.ip }))
                     await intervalOperation()
                     setLoading(false)
                     updated()

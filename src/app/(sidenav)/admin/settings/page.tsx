@@ -13,7 +13,9 @@ export const metadata: Metadata = {
 
 const StatusView: FC = async () => {
   const info = await getSystemInfo()
-  return <SystemInfoClient info={info} />
+  if (info.ok) {
+    return <SystemInfoClient info={info.data} />
+  }
 }
 
 const SettingsPage: FC = () => {

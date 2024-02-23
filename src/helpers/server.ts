@@ -2,7 +2,7 @@ import { getSessionUser } from '@/config/auth-options'
 import { Session } from 'next-auth'
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
-import { ZodSchema, z } from 'zod'
+import { ZodSchema, ZodVoid, z } from 'zod'
 
 import { ClientError, errInvalidSession, errPermissionDenied, errSystemError, errValidation } from './error'
 
@@ -127,7 +127,7 @@ const parseSchema = (schema: ZodSchema | undefined, data: unknown) => {
   return {}
 }
 
-export const validAction = <REQ extends ZodSchema = ZodSchema, RES = void>({
+export const validAction = <REQ extends ZodSchema = ZodVoid, RES = void>({
   schema,
   next,
   requireAuth,

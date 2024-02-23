@@ -1,55 +1,94 @@
 'use server'
 
 import { prisma } from '@/helpers/prisma'
-import { CreatePeer, UpdatePeer } from '@/helpers/schema'
-import { getWgMgr } from '@/helpers/wgmgr'
+import { scCreatePeer, scUpdatePeer, zIp, zReq, zUUID } from '@/helpers/schema'
+import { validAction } from '@/helpers/server'
+import { refWgMgr } from '@/helpers/wgmgr'
 import { genPrivateKey } from '@/server-actions/cmd'
 
-export const getUser = async (id: string) => {
-  return prisma.user.get(id)
-}
+/**
+ * ユーザー取得(管理者権限)
+ */
+export const getUser = validAction({
+  schema: zReq({ id: zUUID }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getUser({ req: { id } }) {
+    return prisma.user.get(id)
+  },
+})
 
-export const getPeerList = async (userId: string) => prisma.peer.getAllListByUser(userId, true)
+/**
+ * 対象ユーザのピアリスト取得(管理者権限)
+ */
+export const getPeerList = validAction({
+  schema: zReq({ userId: zUUID }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getPeerList({ req: { userId } }) {
+    return prisma.peer.getAllListByUser(userId, true)
+  },
+})
 
-export const getFreeAddressList = async () => {
-  console.debug('getFreeAddressList:')
-  const wgMgr = await getWgMgr()
-  const freeAddressList = await wgMgr?.getFreeAddressList()
-  return freeAddressList || ['']
-}
+/**
+ * 空きIPリスト取得(管理者権限)
+ */
+export const getFreeAddressList = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getFreeAddressList() {
+    const wgMgr = await refWgMgr()
+    const freeAddressList = await wgMgr.getFreeAddressList()
+    return freeAddressList || ['']
+  },
+})
 
-export const getPrivateKey = async () => {
-  return genPrivateKey()
-}
+/**
+ * 秘密鍵取得(管理者権限)
+ */
+export const getPrivateKey = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getPrivateKey() {
+    return genPrivateKey()
+  },
+})
 
-export const createPeer = async (data: CreatePeer) => {
-  console.debug('createPeer:in:', data)
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
-  const peer = await wgMgr.createPeer(data)
-  console.debug('createPeer:out:', peer)
-  return peer
-}
+/**
+ * ピア作成(管理者権限)
+ */
+export const createPeer = validAction({
+  schema: scCreatePeer,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function createPeer({ req }) {
+    const wgMgr = await refWgMgr()
+    return wgMgr.createPeer(req)
+  },
+})
 
-export const updatePeer = async (ip: string, data: UpdatePeer) => {
-  console.debug('updatePeer:in:', ip, data)
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
-  const peer = await prisma.peer.update({ where: { ip }, data })
-  console.debug('updatePeer:out:', peer)
-  return peer
-}
+/**
+ * ピア更新(管理者権限)
+ */
+export const updatePeer = validAction({
+  schema: scUpdatePeer,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function updatePeer({ req }) {
+    const { ip, ...data } = req
+    return prisma.peer.update({ where: { ip }, data })
+  },
+})
 
-export const deletePeer = async (ip: string) => {
-  console.debug('deletePeer:in:', ip)
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
-  await wgMgr.deletePeer(ip)
-  console.debug('deletePeer:out:')
-}
+/**
+ * ピア削除(管理者権限)
+ */
+export const deletePeer = validAction({
+  schema: zReq({ ip: zIp }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req: { ip } }) => {
+    const wgMgr = await refWgMgr()
+    await wgMgr.deletePeer(ip)
+  },
+})

@@ -39,7 +39,10 @@ export const PeerAllListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: () => getPeerAllList(),
+    load: async () => {
+      const res = await getPeerAllList()
+      return res.ok ? res.data : []
+    },
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },

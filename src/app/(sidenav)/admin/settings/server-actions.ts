@@ -1,73 +1,85 @@
 'use server'
 
-import { getWgMgr } from '@/helpers/wgmgr'
+import { ActionResultType, validAction } from '@/helpers/server'
+import { refWgMgr } from '@/helpers/wgmgr'
 import { getIpForward } from '@/server-actions/cmd'
 
-export const getSystemInfo = async () => {
-  console.debug('getSystemInfomation:')
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
+/**
+ * システム情報取得(管理者権限)
+ */
+export const getSystemInfo = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getSystemInfo() {
+    const wgMgr = await refWgMgr()
+    const wgVersion = await wgMgr.getWgVersion()
+    const ipForward = await getIpForward()
+    return {
+      wgVersion,
+      isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
+      isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
+      ipForward,
+    }
+  },
+})
+export type SystemInfo = ActionResultType<typeof getSystemInfo>
 
-  const wgVersion = await wgMgr.getWgVersion()
-  const ipForward = await getIpForward()
+/**
+ * WireGurd起動(管理者権限)
+ */
+export const startWg = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function startWg() {
+    const wgMgr = await refWgMgr()
+    return wgMgr.startWg()
+  },
+})
 
-  return {
-    wgVersion,
-    isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
-    isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
-    ipForward,
-  }
-}
-export type SystemInfo = Awaited<ReturnType<typeof getSystemInfo>>
+/**
+ * WireGurd停止(管理者権限)
+ */
+export const stopWg = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function stopWg() {
+    const wgMgr = await refWgMgr()
+    return wgMgr.stopWg()
+  },
+})
 
-export const startWg = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
+/**
+ * WireGurd自動起動ON(管理者権限)
+ */
+export const ebableWgAutoStart = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function ebableWgAutoStart() {
+    const wgMgr = await refWgMgr()
+    return wgMgr.ebableWgAutoStart()
+  },
+})
 
-  console.debug('startWg:')
-  return wgMgr.startWg()
-}
+/**
+ * WireGurd自動起動OFF(管理者権限)
+ */
+export const disableWgAutoStart = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function disableWgAutoStart() {
+    const wgMgr = await refWgMgr()
+    return wgMgr.disableWgAutoStart()
+  },
+})
 
-export const stopWg = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
-
-  console.debug('stopWg:')
-  return wgMgr.stopWg()
-}
-
-export const ebableWgAutoStart = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
-
-  console.debug('ebableWgAutoStart:')
-  return wgMgr.ebableWgAutoStart()
-}
-
-export const disableWgAutoStart = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
-
-  console.debug('disableWgAutoStart:')
-  return wgMgr.disableWgAutoStart()
-}
-
-export const getPeerStatus = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw new Error('WgMgr not initialized')
-  }
-
-  console.debug('getPeerStatus:')
-  return wgMgr.getPeerStatus()
-}
+/**
+ * ピアステータス取得(管理者権限)
+ */
+export const getPeerStatus = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getPeerStatus() {
+    const wgMgr = await refWgMgr()
+    return wgMgr.getPeerStatus()
+  },
+})

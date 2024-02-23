@@ -129,7 +129,7 @@ export const useLocale = () => {
   const ulItem = ul<LocaleItem>()
   const fet = (fieldError?: { message?: string }) => {
     if (fieldError) {
-      return ulItem.t(fieldError.message as LocaleItem)
+      return ulItem.t(fieldError.message as LocaleItem) || fieldError.message
     }
     return undefined
   }

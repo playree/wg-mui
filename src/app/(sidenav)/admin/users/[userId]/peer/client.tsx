@@ -4,6 +4,7 @@ import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { TypePeer, TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
@@ -36,7 +37,7 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: () => getPeerList(user.id),
+    load: () => parseAction(getPeerList({ userId: user.id })),
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },

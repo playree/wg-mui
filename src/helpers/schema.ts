@@ -26,6 +26,8 @@ const reCIDR =
 
 export const zUUID = z.string().uuid()
 export const zString = z.string()
+export const zBoolean = z.boolean()
+export const zEmpty = z.string().length(0).nullish()
 
 export const zAllOrCount = z.union([z.literal('all'), z.literal('count')])
 
@@ -45,10 +47,10 @@ export const zPasswordUpdate = z
   .min(8, el('@invalid_password'))
   .max(30, el('@invalid_password'))
   .regex(reHalfString, el('@invalid_password'))
-  .or(z.string().length(0))
+  .or(zEmpty)
   .transform(convUndefined)
 export const zPasswordConfirm = z.string().min(1, el('@required_field'))
-export const zEmail = z.string().email(el('@invalid_email')).or(z.string().length(0)).transform(convNull)
+export const zEmail = z.string().email(el('@invalid_email')).or(zEmpty).transform(convNull)
 
 export const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
 export const zExplanation = z.string().max(80, el('@invalid_label_name'))
@@ -66,17 +68,13 @@ export const zAddress = z.string().regex(reCIDR, el('@invalid_address'))
 export const zListenPort = z.number().min(1, el('@invalid_port')).max(65535, el('@invalid_port'))
 export const zPrivateKey = z.string().regex(reHalfString, el('@invalid_private_key'))
 export const zEndPoint = z.string().url(el('@invalid_end_point'))
-export const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(z.string().length(0)).transform(convNull)
+export const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(zEmpty).transform(convNull)
 export const zIp = z.string().regex(reIp, el('@invalid_ip'))
-export const zAllowedIPs = z
-  .string()
-  .regex(reHalfString, el('@invalid_allowed_ips'))
-  .or(z.string().length(0))
-  .transform(convNull)
+export const zAllowedIPs = z.string().regex(reHalfString, el('@invalid_allowed_ips')).or(zEmpty).transform(convNull)
 export const zPersistentKeepalive = z.number()
-export const zRemarks = z.string().or(z.string().length(0)).transform(convNull)
-export const zPostUp = z.string().or(z.string().length(0)).transform(convNull)
-export const zPostDown = z.string().or(z.string().length(0)).transform(convNull)
+export const zRemarks = z.string().or(zEmpty).transform(convNull)
+export const zPostUp = z.string().or(zEmpty).transform(convNull)
+export const zPostDown = z.string().or(zEmpty).transform(convNull)
 
 export const zReq = z.object
 
@@ -101,6 +99,7 @@ export type CreateUser = z.infer<typeof scCreateUser>
 
 // ユーザー更新
 export const scUpdateUser = z.object({
+  id: zUUID,
   name: zUsername,
   password: zPasswordUpdate,
   isAdmin: z.boolean(),
@@ -169,6 +168,7 @@ export type CreatePeer = z.infer<typeof scCreatePeer>
 
 // Peer更新
 export const scUpdatePeer = z.object({
+  ip: zIp,
   allowedIPs: zAllowedIPs,
   persistentKeepalive: zPersistentKeepalive,
   remarks: zRemarks,
@@ -176,7 +176,7 @@ export const scUpdatePeer = z.object({
 export type UpdatePeer = z.infer<typeof scUpdatePeer>
 
 // Peer
-export type TypePeer = UpdatePeer & { ip: string; createdAt: Date; updatedAt: Date }
+export type TypePeer = UpdatePeer & { createdAt: Date; updatedAt: Date }
 
 // パスワード更新
 export const scUpdatePassword = z.object({

@@ -73,14 +73,17 @@ const CreateUserModal: FC<
               setLoading(true)
 
               // nameの重複チェック
-              if (await existsUserName(req.name)) {
-                // 重複チェックエラー
-                setError('name', { message: '@already_exists' })
-              } else {
-                await createUser(req)
-                await intervalOperation()
-                updated()
-                onClose()
+              const exist = await existsUserName({ name: req.name })
+              if (exist.ok) {
+                if (exist.data) {
+                  // 重複チェックエラー
+                  setError('name', { message: '@already_exists' })
+                } else {
+                  await createUser(req)
+                  await intervalOperation()
+                  updated()
+                  onClose()
+                }
               }
               setLoading(false)
             })}
@@ -255,6 +258,7 @@ export const UpdateUserModal: FC<
   useEffect(() => {
     console.debug('target:', target)
     if (target) {
+      setValue('id', target.id)
       setValue('name', target.name)
       setValue('isAdmin', target.isAdmin)
       setValue('email', target.email || '')
@@ -273,14 +277,17 @@ export const UpdateUserModal: FC<
                 setLoading(true)
 
                 // nameの重複チェック
-                if (await existsUserName(req.name, target.id)) {
-                  // 重複チェックエラー
-                  setError('name', { message: '@already_exists' })
-                } else {
-                  await updateUser(target.id, req)
-                  await intervalOperation()
-                  updated()
-                  onClose()
+                const exist = await existsUserName({ name: req.name, excludeId: req.id })
+                if (exist.ok) {
+                  if (exist.data) {
+                    // 重複チェックエラー
+                    setError('name', { message: '@already_exists' })
+                  } else {
+                    await updateUser(req)
+                    await intervalOperation()
+                    updated()
+                    onClose()
+                  }
                 }
                 setLoading(false)
               }
@@ -494,7 +501,7 @@ export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
                   console.debug('delete:submit:', target)
                   if (target) {
                     setLoading(true)
-                    await deleteUser(target.id)
+                    await deleteUser({ id: target.id })
                     await intervalOperation()
                     setLoading(false)
                     updated()

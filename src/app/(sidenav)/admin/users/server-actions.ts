@@ -1,47 +1,74 @@
 'use server'
 
-import { GetUserOption, prisma } from '@/helpers/prisma'
-import { CreateUser, UpdateUser } from '@/helpers/schema'
+import { prisma } from '@/helpers/prisma'
+import { scCreateUser, scUpdateUser, zBoolean, zReq, zString, zUUID } from '@/helpers/schema'
+import { validAction } from '@/helpers/server'
 
-export const getUserList = async (option: GetUserOption) => {
-  console.debug('getUserList:in:')
-  const userList = await prisma.user.getAllList(option)
-  console.debug('getUserList:out:', userList.length)
-  return userList
-}
+/**
+ * ユーザーリスト取得(管理者権限)
+ */
+export const getUserList = validAction({
+  schema: zReq({
+    withLabel: zBoolean.optional(),
+    withPeer: zBoolean.optional(),
+  }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getUserList({ req }) {
+    return prisma.user.getAllList(req)
+  },
+})
 
-export const createUser = async (data: CreateUser) => {
-  console.debug('createUser:in:', data)
-  const user = await prisma.user.createUser(data)
-  console.debug('createUser:out:', user)
-  return user
-}
+/**
+ * ユーザー作成(管理者権限)
+ */
+export const createUser = validAction({
+  schema: scCreateUser,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function createUser({ req }) {
+    return prisma.user.createUser(req)
+  },
+})
 
-export const updateUser = async (id: string, data: UpdateUser) => {
-  console.debug('updateUser:in:', id, data)
-  const user = await prisma.user.updateUser(id, data)
-  console.debug('updateUser:out:', user)
-  return user
-}
+/**
+ * ユーザー更新(管理者権限)
+ */
+export const updateUser = validAction({
+  schema: scUpdateUser,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function updateUser({ req }) {
+    return prisma.user.updateUser(req)
+  },
+})
 
-export const deleteUser = async (id: string) => {
-  console.debug('deleteUser:in:', id)
-  await prisma.user.delete({ where: { id } })
-  console.debug('deleteUser:out:')
-  return
-}
+/**
+ * ユーザー削除(管理者権限)
+ */
+export const deleteUser = validAction({
+  schema: zReq({ id: zUUID }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function deleteUser({ req: { id } }) {
+    await prisma.user.delete({ where: { id } })
+    return
+  },
+})
 
-export const existsUserName = async (name: string, id?: string) => {
-  console.debug('existsUser:in:', name)
-  const user = await prisma.user.findUnique({ where: { name } })
-  let exists = false
-  if (user) {
-    if (id) {
-      exists = !(user.id === id)
-    } else {
-      exists = true
+/**
+ * ユーザー名の存在確認(管理者権限)
+ */
+export const existsUserName = validAction({
+  schema: zReq({ name: zString, excludeId: zUUID.optional() }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function existsUserName({ req: { name, excludeId } }) {
+    console.debug('existsUser:in:', name)
+    const user = await prisma.user.findUnique({ where: { name } })
+    if (user) {
+      return excludeId ? user.id !== excludeId : true
     }
-  }
-  console.debug('existsUser:out:', exists)
-  return exists
-}
+    return false
+  },
+})

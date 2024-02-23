@@ -1,25 +1,29 @@
 'use server'
 
-import { errSystemError } from '@/helpers/error'
 import { prisma } from '@/helpers/prisma'
-import { convTransfer, getWgMgr } from '@/helpers/wgmgr'
+import { validAction } from '@/helpers/server'
+import { convTransfer, refWgMgr } from '@/helpers/wgmgr'
 
-export const getPeerAllList = async () => {
-  const wgMgr = await getWgMgr()
-  if (!wgMgr) {
-    throw errSystemError()
-  }
+/**
+ * ピア一覧取得(管理者権限)
+ */
+export const getPeerAllList = validAction({
+  requireAuth: true,
+  requireAdmin: true,
+  next: async function getPeerAllList() {
+    const wgMgr = await refWgMgr()
 
-  const peerList = await prisma.peer.getAllList()
-  const peerStatus = await wgMgr.getPeerStatus()
+    const peerList = await prisma.peer.getAllList()
+    const peerStatus = await wgMgr.getPeerStatus()
 
-  return peerList.map((peer) => {
-    const status = peerStatus ? peerStatus[peer.ip] : undefined
-    return {
-      ip: peer.ip,
-      remarks: peer.remarks,
-      updatedAt: peer.updatedAt,
-      ...convTransfer(status?.transfer),
-    }
-  })
-}
+    return peerList.map((peer) => {
+      const status = peerStatus ? peerStatus[peer.ip] : undefined
+      return {
+        ip: peer.ip,
+        remarks: peer.remarks,
+        updatedAt: peer.updatedAt,
+        ...convTransfer(status?.transfer),
+      }
+    })
+  },
+})
