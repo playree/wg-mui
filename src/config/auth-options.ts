@@ -57,8 +57,7 @@ const authOptions: NextAuthOptions = {
         token.isAdmin = user.isAdmin
         token.isNotInit = user.isNotInit
         token.email = user.email
-        token.picture = undefined
-        console.debug('set token:', JSON.stringify(token))
+        console.debug('set token:', token.sub)
       } else {
         console.debug('user not found')
         token.sub = undefined

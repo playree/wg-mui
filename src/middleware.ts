@@ -45,10 +45,10 @@ const middlewareWithAuth = withAuth(
     pages: { signIn: '/auth/signin' },
     callbacks: {
       authorized({ req, token }) {
-        console.debug('mw:token:', JSON.stringify(token))
+        console.debug('mw:auth:token:', JSON.stringify(token))
         // 管理者権限の確認
         if (matchCondition(req.nextUrl.pathname, authProps.targetAdmin)) {
-          console.debug('check admin:', token?.isAdmin)
+          console.debug('mw:auth:admin:', token?.isAdmin)
           return token?.isAdmin === true
         }
         return !!token
@@ -61,7 +61,6 @@ export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) 
   console.debug('mw:start:', request.url, request.method)
 
   if (matchCondition(request.nextUrl.pathname, authProps.targetAuth)) {
-    console.debug('mw:auth')
     return middlewareWithAuth(request, event)
   }
 
