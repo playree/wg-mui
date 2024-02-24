@@ -6,6 +6,7 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { ThemeSwitchList } from '@/components/theme-switch'
+import { parseAction } from '@/helpers/action'
 import { InitializeWgConf, scInitializeWgConf } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
@@ -39,7 +40,6 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
       privateKey: '',
       postUp: '',
       postDown: '',
-      // endPoint: 'wg.change.it:51820',
       endPoint: `${hostname}:51820`,
       dns: '',
     },
@@ -62,7 +62,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
           setLoading(true)
 
           // ConfDirのアクセス権確認
-          const exeUser = await checkConfDir(req.confDirPath)
+          const exeUser = await parseAction(checkConfDir({ confDirPath: req.confDirPath }))
           if (exeUser) {
             // アクセス権がない場合
             if (!window.confirm(t('msg_conf_dir_permission_confirm', { user: exeUser, path: req.confDirPath }))) {
@@ -70,10 +70,10 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
               return
             }
             // ConfDirのアクセス権付与
-            await changeConfDir(req.confDirPath)
+            await parseAction(changeConfDir({ confDirPath: req.confDirPath }))
           }
 
-          await initializeWgConf(req)
+          await parseAction(initializeWgConf(req))
           await intervalOperation()
           setLoading(false)
           router.refresh()
@@ -133,7 +133,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
               variant='flat'
               tooltip={t('item_generate_key')}
               onPress={async () => {
-                const privateKey = await getPrivateKey()
+                const privateKey = await parseAction(getPrivateKey())
                 if (privateKey) {
                   setValue('privateKey', privateKey)
                 }
@@ -157,7 +157,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
               variant='flat'
               size='sm'
               onPress={async () => {
-                const script = await getPostUpDownScript(getValues('interfaceName'))
+                const script = await parseAction(getPostUpDownScript({ interfaceName: getValues('interfaceName') }))
                 if (script) {
                   setValue('postUp', script.up)
                   setValue('postDown', script.down)
