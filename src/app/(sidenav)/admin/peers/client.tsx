@@ -1,9 +1,9 @@
 'use client'
 
-import { ArrowPathIcon } from '@/components/icons'
+import { ArrowPathIcon, ExclamationTriangleIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
-import { gridStyles } from '@/components/styles'
+import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { useLocale } from '@/locale'
@@ -84,11 +84,17 @@ export const PeerAllListClient: FC = () => {
               <TableColumn key='ip' minWidth={120} allowsSorting>
                 {t('item_address')}
               </TableColumn>
+              <TableColumn key='userId' minWidth={120} allowsSorting>
+                {t('item_username')}
+              </TableColumn>
               <TableColumn key='receive' minWidth={80} allowsSorting>
                 {t('item_receive')}
               </TableColumn>
               <TableColumn key='send' minWidth={80} allowsSorting>
                 {t('item_send')}
+              </TableColumn>
+              <TableColumn key='isDeleting' minWidth={60} allowsSorting>
+                {t('item_deleting')}
               </TableColumn>
               <TableColumn key='remarks'>{t('item_remarks')}</TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
@@ -99,8 +105,12 @@ export const PeerAllListClient: FC = () => {
               {(peer) => (
                 <TableRow key={peer.ip}>
                   <TableCell>{peer.ip}</TableCell>
+                  <TableCell>{peer.user.name}</TableCell>
                   <TableCell>{peer.receiveText}</TableCell>
                   <TableCell>{peer.sendText}</TableCell>
+                  <TableCell className={twMerge(textStyles({ color: 'red' }))}>
+                    {peer.isDeleting && <ExclamationTriangleIcon />}
+                  </TableCell>
                   <TableCell>{peer.remarks}</TableCell>
                   <TableCell>
                     <div className='text-xs'>{dayformat(peer.updatedAt, 'jp-simple')}</div>

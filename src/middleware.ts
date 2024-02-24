@@ -25,6 +25,7 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
         response.cookies.set({
           name: localeConfig.cookie.name,
           value: detectedLang,
+          path: '/',
           httpOnly: false,
           maxAge: localeConfig.cookie.maxAge,
         })

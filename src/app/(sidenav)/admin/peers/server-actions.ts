@@ -20,6 +20,9 @@ export const getPeerAllList = validAction('getPeerAllList', {
       const status = peerStatus ? peerStatus[peer.ip] : undefined
       return {
         ip: peer.ip,
+        user: peer.user,
+        userId: peer.userId,
+        isDeleting: peer.isDeleting,
         remarks: peer.remarks,
         updatedAt: peer.updatedAt,
         ...convTransfer(status?.transfer),

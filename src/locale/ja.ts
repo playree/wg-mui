@@ -79,6 +79,7 @@ export const ja: LocaleItems = {
   item_latest_handshake: '最新送受信',
   item_receive: '受信',
   item_send: '送信',
+  item_deleting: '削除中',
   item_google_signin: 'Googleでサインイン',
   item_app_info: 'アプリ情報',
   item_app_version: 'バージョン',

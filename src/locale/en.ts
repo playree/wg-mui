@@ -79,6 +79,7 @@ export const en: DefaultLocaleItems = {
   item_latest_handshake: 'Latest Handshake',
   item_receive: 'Receive',
   item_send: 'Send',
+  item_deleting: 'Deleting',
   item_google_signin: 'Sign in with Google',
   item_app_info: 'App Infomation',
   item_app_version: 'Version',

@@ -39,8 +39,9 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; si
         onAction={(key) => {
           const keyString = key.toString()
           setSelectedKeys(new Set([keyString]))
-          setCookie(localeConfig.cookie.name, keyString, { maxAge: localeConfig.cookie.maxAge })
+          setCookie(localeConfig.cookie.name, keyString, { maxAge: localeConfig.cookie.maxAge, path: '/' })
           setLocale(keyString)
+          return
         }}
       >
         {localeConfig.locales.map((lc) => {

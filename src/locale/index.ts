@@ -80,6 +80,7 @@ export type LocaleItemBase =
   | 'item_latest_handshake'
   | 'item_receive'
   | 'item_send'
+  | 'item_deleting'
   | 'item_google_signin'
   | 'item_app_info'
   | 'item_app_version'
