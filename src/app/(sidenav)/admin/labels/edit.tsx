@@ -2,6 +2,7 @@
 
 import { CheckIcon, DocumentPlusIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
+import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { CreateLabel, TypeLabel, UpdateLabel, scCreateLabel, scUpdateLabel } from '@/helpers/schema'
@@ -75,36 +76,23 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
             <ModalBody>
               <div className={gridStyles()}>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='name'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_label_name')}
-                        variant='bordered'
-                        errorMessage={fet(errors.name)}
-                        onChange={onChange}
-                        value={value}
-                        isRequired
-                      />
-                    )}
+                    label={t('item_label_name')}
+                    variant='bordered'
+                    errorMessage={fet(errors.name)}
+                    isRequired
                   />
                 </div>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='explanation'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_explanation')}
-                        variant='bordered'
-                        errorMessage={fet(errors.explanation)}
-                        onChange={onChange}
-                        value={value || ''}
-                      />
-                    )}
+                    type='text'
+                    label={t('item_explanation')}
+                    variant='bordered'
+                    errorMessage={fet(errors.explanation)}
                   />
                 </div>
               </div>

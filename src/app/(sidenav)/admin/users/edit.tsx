@@ -2,6 +2,7 @@
 
 import { CheckIcon, EyeIcon, EyeSlashIcon, UserPlusIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
+import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { CreateUser, TypeLabel, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
@@ -11,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Checkbox,
   Chip,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -84,48 +84,35 @@ const CreateUserModal: FC<
             <ModalBody>
               <div className={gridStyles()}>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='name'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_username')}
-                        variant='bordered'
-                        errorMessage={fet(errors.name)}
-                        onChange={onChange}
-                        value={value}
-                        autoComplete='username'
-                        isRequired
-                      />
-                    )}
+                    label={t('item_username')}
+                    variant='bordered'
+                    errorMessage={fet(errors.name)}
+                    autoComplete='username'
+                    isRequired
                   />
                 </div>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='password'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        label={t('item_password')}
-                        variant='bordered'
-                        endContent={
-                          <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
-                            {isVisible ? (
-                              <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
-                            ) : (
-                              <EyeIcon className='pointer-events-none text-2xl text-default-400' />
-                            )}
-                          </button>
-                        }
-                        type={isVisible ? 'text' : 'password'}
-                        autoComplete='new-password'
-                        errorMessage={fet(errors.password)}
-                        onChange={onChange}
-                        value={value}
-                        isRequired
-                      />
-                    )}
+                    label={t('item_password')}
+                    variant='bordered'
+                    endContent={
+                      <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+                        {isVisible ? (
+                          <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
+                        ) : (
+                          <EyeIcon className='pointer-events-none text-2xl text-default-400' />
+                        )}
+                      </button>
+                    }
+                    type={isVisible ? 'text' : 'password'}
+                    autoComplete='new-password'
+                    errorMessage={fet(errors.password)}
+                    isRequired
                   />
                 </div>
                 <div className='col-span-12 pl-2'>
@@ -140,20 +127,13 @@ const CreateUserModal: FC<
                   />
                 </div>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='email'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_email')}
-                        variant='bordered'
-                        errorMessage={fet(errors.email)}
-                        onChange={onChange}
-                        value={value || ''}
-                        autoComplete='email'
-                      />
-                    )}
+                    label={t('item_email')}
+                    variant='bordered'
+                    errorMessage={fet(errors.email)}
+                    autoComplete='email'
                   />
                 </div>
                 <div className='col-span-12'>
@@ -278,21 +258,14 @@ export const UpdateUserModal: FC<
             <ModalBody>
               <div className={gridStyles()}>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='name'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_username')}
-                        variant='bordered'
-                        errorMessage={fet(errors.name)}
-                        onChange={onChange}
-                        value={value}
-                        autoComplete='username'
-                        isRequired
-                      />
-                    )}
+                    label={t('item_username')}
+                    variant='bordered'
+                    errorMessage={fet(errors.name)}
+                    autoComplete='username'
+                    isRequired
                   />
                 </div>
                 <div className='col-span-5 flex items-center pl-2'>
@@ -309,31 +282,25 @@ export const UpdateUserModal: FC<
                   </Checkbox>
                 </div>
                 <div className='col-span-7'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='password'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        label={t('item_password')}
-                        variant='bordered'
-                        endContent={
-                          <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
-                            {isVisible ? (
-                              <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
-                            ) : (
-                              <EyeIcon className='pointer-events-none text-2xl text-default-400' />
-                            )}
-                          </button>
-                        }
-                        type={isVisible ? 'text' : 'password'}
-                        autoComplete='new-password'
-                        errorMessage={fet(errors.password)}
-                        onChange={onChange}
-                        value={value || ''}
-                        isDisabled={!isUpdatePassword}
-                        isRequired
-                      />
-                    )}
+                    label={t('item_password')}
+                    variant='bordered'
+                    endContent={
+                      <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+                        {isVisible ? (
+                          <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
+                        ) : (
+                          <EyeIcon className='pointer-events-none text-2xl text-default-400' />
+                        )}
+                      </button>
+                    }
+                    type={isVisible ? 'text' : 'password'}
+                    autoComplete='new-password'
+                    errorMessage={fet(errors.password)}
+                    isDisabled={!isUpdatePassword}
+                    isRequired
                   />
                 </div>
                 <div className='col-span-12 pl-2'>
@@ -348,20 +315,13 @@ export const UpdateUserModal: FC<
                   />
                 </div>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='email'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_email')}
-                        variant='bordered'
-                        errorMessage={fet(errors.email)}
-                        onChange={onChange}
-                        value={value || ''}
-                        autoComplete='email'
-                      />
-                    )}
+                    label={t('item_email')}
+                    variant='bordered'
+                    errorMessage={fet(errors.email)}
+                    autoComplete='email'
                   />
                 </div>
                 <div className='col-span-12'>

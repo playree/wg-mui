@@ -2,15 +2,16 @@
 
 import { CheckIcon, EyeIcon, EyeSlashIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
+import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { UpdatePassword, scUpdatePassword } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react'
 import { FC, useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { updatePassword } from './server-actions'
 
@@ -68,30 +69,24 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
               <div className={gridStyles()}>
                 <div className='col-span-12'>
                   <input name='username' autoComplete='username' hidden />
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='password'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        label={t('item_password')}
-                        variant='bordered'
-                        endContent={
-                          <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
-                            {isVisible ? (
-                              <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
-                            ) : (
-                              <EyeIcon className='pointer-events-none text-2xl text-default-400' />
-                            )}
-                          </button>
-                        }
-                        type={isVisible ? 'text' : 'password'}
-                        autoComplete='new-password'
-                        errorMessage={fet(errors.password)}
-                        onChange={onChange}
-                        value={value}
-                        isRequired
-                      />
-                    )}
+                    label={t('item_password')}
+                    variant='bordered'
+                    endContent={
+                      <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+                        {isVisible ? (
+                          <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
+                        ) : (
+                          <EyeIcon className='pointer-events-none text-2xl text-default-400' />
+                        )}
+                      </button>
+                    }
+                    type={isVisible ? 'text' : 'password'}
+                    autoComplete='new-password'
+                    errorMessage={fet(errors.password)}
+                    isRequired
                   />
                 </div>
               </div>
