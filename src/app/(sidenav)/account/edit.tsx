@@ -3,6 +3,7 @@
 import { CheckIcon, EyeIcon, EyeSlashIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { UpdatePassword, scUpdatePassword } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
@@ -54,17 +55,12 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
           <form
             onSubmit={handleSubmit(async (req) => {
               console.debug('update:submit:', req)
-              if (target) {
-                setLoading(true)
-                const res = await updatePassword(req)
-                if (!res.ok) {
-                  // @todo エラー処理
-                }
-                await intervalOperation()
-                updated()
-                onClose()
-                setLoading(false)
-              }
+              setLoading(true)
+              await parseAction(updatePassword(req))
+              await intervalOperation()
+              updated()
+              onClose()
+              setLoading(false)
             })}
           >
             <ModalHeader className='flex flex-col gap-1'>{t('item_change_password')}</ModalHeader>

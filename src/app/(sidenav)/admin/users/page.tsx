@@ -2,7 +2,7 @@ import { UsersIcon } from '@/components/icons'
 import { Metadata } from 'next'
 import { FC } from 'react'
 
-import { UserListClient, UsersTitle } from './client'
+import { Title, UserListClient } from './client'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ const UsersPage: FC = () => {
     <div>
       <div className='mb-2 flex items-center pl-8 lg:pl-0'>
         <UsersIcon className='mr-2' />
-        <UsersTitle />
+        <Title />
       </div>
 
       <div className='flex min-h-[200px] w-full'>

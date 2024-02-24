@@ -5,6 +5,7 @@ import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
@@ -30,7 +31,7 @@ import { getLabelList } from '../labels/server-actions'
 import { CreateUserButtonWithModal, DeleteUserModal, UpdateUserModal } from './edit'
 import { getUserList } from './server-actions'
 
-export const UsersTitle: FC = () => {
+export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_users')}</span>
 }
@@ -39,10 +40,7 @@ export const UserListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: async () => {
-      const userList = await getUserList({ withLabel: true, withPeer: true })
-      return userList.ok ? userList.data : []
-    },
+    load: async () => parseAction(getUserList({ withLabel: true, withPeer: true })),
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },
@@ -77,10 +75,7 @@ export const UserListClient: FC = () => {
   })
 
   const labelList = useAsyncList({
-    load: async () => {
-      const labelList = await getLabelList({})
-      return { items: labelList.ok ? labelList.data : [] }
-    },
+    load: async () => ({ items: await parseAction(getLabelList({})) }),
   })
 
   const [targetUpdate, setTargetUpdate] = useState<TypeUser>()
@@ -92,14 +87,14 @@ export const UserListClient: FC = () => {
   const openDeleteModal = deleteModal.onOpen
 
   useEffect(() => {
-    console.debug('targetUpdate:', targetUpdate)
+    console.debug('targetUpdate:', targetUpdate?.id)
     if (targetUpdate) {
       openUpdateModal()
     }
   }, [openUpdateModal, targetUpdate])
 
   useEffect(() => {
-    console.debug('targetDelete:', targetDelete)
+    console.debug('targetDelete:', targetDelete?.id)
     if (targetDelete) {
       openDeleteModal()
     }

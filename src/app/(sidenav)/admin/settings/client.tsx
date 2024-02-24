@@ -3,6 +3,7 @@
 import { CheckCircleIcon, PlayCircleIcon, StopCircleIcon, XCircleIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
+import { parseAction } from '@/helpers/action'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
@@ -11,7 +12,7 @@ import { FC, useState } from 'react'
 
 import { SystemInfo, disableWgAutoStart, ebableWgAutoStart, startWg, stopWg } from './server-actions'
 
-export const SettingsTitle: FC = () => {
+export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_settings')}</span>
 }
@@ -55,7 +56,7 @@ export const SystemInfoClient: FC<{
                       console.debug('WireGuard Stop:')
                       if (window.confirm(t('msg_wg_stop_confirm'))) {
                         setLoadingWgStarted(true)
-                        await stopWg()
+                        await parseAction(stopWg())
                         await intervalOperation()
                         setLoadingWgStarted(false)
                         refresh()
@@ -74,7 +75,7 @@ export const SystemInfoClient: FC<{
                     onPress={async () => {
                       console.debug('WireGuard Start:')
                       setLoadingWgStarted(true)
-                      await startWg()
+                      await parseAction(startWg())
                       await intervalOperation()
                       setLoadingWgStarted(false)
                       refresh()
@@ -109,7 +110,7 @@ export const SystemInfoClient: FC<{
                       console.debug('WireGuard AutoStart Disable:')
                       if (window.confirm(t('msg_wg_autostart_disable_confirm'))) {
                         setLoadingWgAutoStartEnabled(true)
-                        await disableWgAutoStart()
+                        await parseAction(disableWgAutoStart())
                         await intervalOperation()
                         setLoadingWgAutoStartEnabled(false)
                         refresh()
@@ -128,7 +129,7 @@ export const SystemInfoClient: FC<{
                     onPress={async () => {
                       console.debug('WireGuard AutoStart Enable:')
                       setLoadingWgAutoStartEnabled(true)
-                      await ebableWgAutoStart()
+                      await parseAction(ebableWgAutoStart())
                       await intervalOperation()
                       setLoadingWgAutoStartEnabled(false)
                       refresh()

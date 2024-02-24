@@ -4,6 +4,7 @@ import { ArrowPathIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { useLocale } from '@/locale'
 import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
@@ -13,7 +14,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { getPeerAllList } from './server-actions'
 
-export const PeerManagementTitle: FC = () => {
+export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_peers')}</span>
 }
@@ -39,10 +40,7 @@ export const PeerAllListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: async () => {
-      const res = await getPeerAllList()
-      return res.ok ? res.data : []
-    },
+    load: async () => parseAction(getPeerAllList()),
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },

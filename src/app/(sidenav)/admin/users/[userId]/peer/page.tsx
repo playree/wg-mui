@@ -4,7 +4,7 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { FC } from 'react'
 
-import { PeerListClient, PeerManagementTitle } from './client'
+import { PeerListClient, Title } from './client'
 import { getUser } from './server-actions'
 
 export const dynamic = 'force-dynamic'
@@ -22,7 +22,7 @@ const PeerManagementPage: FC<{ params: { userId: string } }> = async ({ params: 
     <div>
       <div className='mb-2 flex items-center pl-8 lg:pl-0'>
         <ComputerDesktopIcon className='mr-2' />
-        <PeerManagementTitle user={user} />
+        <Title user={user} />
       </div>
 
       <div className='flex min-h-[200px] w-full'>

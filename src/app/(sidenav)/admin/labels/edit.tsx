@@ -3,6 +3,7 @@
 import { CheckIcon, DocumentPlusIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { CreateLabel, TypeLabel, UpdateLabel, scCreateLabel, scUpdateLabel } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
@@ -48,12 +49,6 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
     reset()
   }, [reset, props.isOpen])
 
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.debug('errors:', errors)
-    }
-  }, [errors])
-
   return (
     <Modal {...nextProps}>
       <ModalContent>
@@ -61,21 +56,17 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
           <form
             onSubmit={handleSubmit(async (req) => {
               console.debug('update:submit:', req)
-
               setLoading(true)
-
               // nameの重複チェック
-              const exist = await existsLabelName({ name: req.name })
-              if (exist.ok) {
-                if (exist.data) {
-                  // 重複チェックエラー
-                  setError('name', { message: '@already_exists' })
-                } else {
-                  await createLabel(req)
-                  await intervalOperation()
-                  updated()
-                  onClose()
-                }
+              const exist = await parseAction(existsLabelName({ name: req.name }))
+              if (exist) {
+                // 重複チェックエラー
+                setError('name', { message: '@already_exists' })
+              } else {
+                await parseAction(createLabel(req))
+                await intervalOperation()
+                updated()
+                onClose()
               }
               setLoading(false)
             })}
@@ -165,13 +156,7 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
   }, [reset, props.isOpen])
 
   useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.debug('errors:', errors)
-    }
-  }, [errors])
-
-  useEffect(() => {
-    console.debug('target:', target)
+    console.debug('target:', target?.id)
     if (target) {
       setValue('id', target.id)
       setValue('name', target.name)
@@ -186,23 +171,19 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
           <form
             onSubmit={handleSubmit(async (req) => {
               console.debug('update:submit:', req)
-              if (target) {
-                setLoading(true)
-                // nameの重複チェック
-                const exist = await existsLabelName({ name: req.name, excludeId: req.id })
-                if (exist.ok) {
-                  if (exist.data) {
-                    // 重複チェックエラー
-                    setError('name', { message: '@already_exists' })
-                  } else {
-                    await updateLabel(req)
-                    await intervalOperation()
-                    updated()
-                    onClose()
-                  }
-                }
-                setLoading(false)
+              setLoading(true)
+              // nameの重複チェック
+              const exist = await parseAction(existsLabelName({ name: req.name, excludeId: req.id }))
+              if (exist) {
+                // 重複チェックエラー
+                setError('name', { message: '@already_exists' })
+              } else {
+                await parseAction(updateLabel(req))
+                await intervalOperation()
+                updated()
+                onClose()
               }
+              setLoading(false)
             })}
           >
             <ModalHeader className='flex flex-col gap-1'>{t('item_label_update')}</ModalHeader>
@@ -323,7 +304,7 @@ export const DeleteLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
                   console.debug('delete:submit:', target)
                   if (target) {
                     setLoading(true)
-                    await deleteLabel({ id: target.id })
+                    await parseAction(deleteLabel({ id: target.id }))
                     await intervalOperation()
                     setLoading(false)
                     updated()

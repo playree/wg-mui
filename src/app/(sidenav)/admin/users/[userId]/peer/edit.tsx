@@ -66,12 +66,6 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
     setValue('ip', freeAddressList.items[0])
   }, [reset, props.isOpen, setValue, freeAddressList.items])
 
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.debug('errors:', errors)
-    }
-  }, [errors])
-
   return (
     <Modal {...nextProps}>
       <ModalContent>
@@ -218,7 +212,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
   }, [reset, props.isOpen, setValue, freeAddressList.items])
 
   useEffect(() => {
-    console.debug('target:', target)
+    console.debug('target:', target?.ip)
     if (target) {
       setValue('ip', target.ip)
       setValue('allowedIPs', target.allowedIPs || '')
@@ -227,12 +221,6 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
     }
   }, [target, props.isOpen, setValue])
 
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.debug('errors:', errors)
-    }
-  }, [errors])
-
   return (
     <Modal {...nextProps}>
       <ModalContent>
@@ -240,15 +228,13 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
           <form
             onSubmit={handleSubmit(async (req) => {
               console.debug('update:submit:', req)
-              if (target) {
-                setLoading(true)
-                await parseAction(updatePeer(req))
-                await intervalOperation()
-                freeAddressList.reload()
-                updated()
-                onClose()
-                setLoading(false)
-              }
+              setLoading(true)
+              await parseAction(updatePeer(req))
+              await intervalOperation()
+              freeAddressList.reload()
+              updated()
+              onClose()
+              setLoading(false)
             })}
           >
             <ModalHeader className='flex flex-col gap-1'>{t('item_peer_update')}</ModalHeader>

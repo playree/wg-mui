@@ -3,6 +3,7 @@
 import { Loading } from '@/components/nextekit/ui/loading'
 import { ProgressBar } from '@/components/nextekit/ui/progress'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { formatByte, formatPercent, formatTime } from '@/helpers/format'
 import { useLocale } from '@/locale'
 import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react'
@@ -22,11 +23,7 @@ export const AppInfoViewClient: FC = () => {
   const [info, setInfo] = useState<AppInfo>()
 
   useEffect(() => {
-    getAppInfo().then((res) => {
-      if (res.ok) {
-        setInfo(res.data)
-      }
-    })
+    parseAction(getAppInfo()).then((res) => setInfo(res))
   }, [])
 
   return (
@@ -56,11 +53,7 @@ export const ServerInfoViewClient: FC = () => {
   const [info, setInfo] = useState<ServerInfo>()
 
   useEffect(() => {
-    getServerInfo().then((res) => {
-      if (res.ok) {
-        setInfo(res.data)
-      }
-    })
+    parseAction(getServerInfo()).then((res) => setInfo(res))
   }, [])
 
   return (
@@ -95,11 +88,7 @@ export const LinodeTransferInfoViewClient: FC = () => {
   const [info, setInfo] = useState<LinodeTransferInfo>()
 
   useEffect(() => {
-    getLinodeTransferInfo().then((res) => {
-      if (res.ok) {
-        setInfo(res.data)
-      }
-    })
+    parseAction(getLinodeTransferInfo()).then((res) => setInfo(res))
   }, [])
 
   return (

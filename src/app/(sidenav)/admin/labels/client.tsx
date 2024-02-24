@@ -4,6 +4,7 @@ import { PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import type { TypeLabel } from '@/helpers/schema'
 import { useLocale } from '@/locale'
@@ -24,7 +25,7 @@ import { twMerge } from 'tailwind-merge'
 import { CreateLabelButtonWithModal, DeleteLabelModal, UpdateLabelModal } from './edit'
 import { getLabelList } from './server-actions'
 
-export const LabelsTitle: FC = () => {
+export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_labels')}</span>
 }
@@ -33,10 +34,7 @@ export const LabelListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: async () => {
-      const res = await getLabelList({ withUser: 'count' })
-      return res.ok ? res.data : []
-    },
+    load: async () => parseAction(getLabelList({ withUser: 'count' })),
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },
@@ -58,14 +56,14 @@ export const LabelListClient: FC = () => {
   const openDeleteModal = deleteModal.onOpen
 
   useEffect(() => {
-    console.debug('targetUpdate:', targetUpdate)
+    console.debug('targetUpdate:', targetUpdate?.id)
     if (targetUpdate) {
       openUpdateModal()
     }
   }, [openUpdateModal, targetUpdate])
 
   useEffect(() => {
-    console.debug('targetDelete:', targetDelete)
+    console.debug('targetDelete:', targetDelete?.id)
     if (targetDelete) {
       openDeleteModal()
     }

@@ -3,6 +3,7 @@
 import { CheckIcon, EyeIcon, EyeSlashIcon, UserPlusIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { CreateUser, TypeLabel, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
@@ -57,12 +58,6 @@ const CreateUserModal: FC<
     reset()
   }, [reset, props.isOpen])
 
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.debug('errors:', errors)
-    }
-  }, [errors])
-
   return (
     <Modal {...nextProps}>
       <ModalContent>
@@ -71,19 +66,16 @@ const CreateUserModal: FC<
             onSubmit={handleSubmit(async (req) => {
               console.debug('create:submit:', req)
               setLoading(true)
-
               // nameの重複チェック
-              const exist = await existsUserName({ name: req.name })
-              if (exist.ok) {
-                if (exist.data) {
-                  // 重複チェックエラー
-                  setError('name', { message: '@already_exists' })
-                } else {
-                  await createUser(req)
-                  await intervalOperation()
-                  updated()
-                  onClose()
-                }
+              const exist = await parseAction(existsUserName({ name: req.name }))
+              if (exist) {
+                // 重複チェックエラー
+                setError('name', { message: '@already_exists' })
+              } else {
+                await parseAction(createUser(req))
+                await intervalOperation()
+                updated()
+                onClose()
               }
               setLoading(false)
             })}
@@ -250,13 +242,7 @@ export const UpdateUserModal: FC<
   }, [reset, props.isOpen])
 
   useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.debug('errors:', errors)
-    }
-  }, [errors])
-
-  useEffect(() => {
-    console.debug('target:', target)
+    console.debug('target:', target?.id)
     if (target) {
       setValue('id', target.id)
       setValue('name', target.name)
@@ -273,24 +259,19 @@ export const UpdateUserModal: FC<
           <form
             onSubmit={handleSubmit(async (req) => {
               console.debug('update:submit:', req)
-              if (target) {
-                setLoading(true)
-
-                // nameの重複チェック
-                const exist = await existsUserName({ name: req.name, excludeId: req.id })
-                if (exist.ok) {
-                  if (exist.data) {
-                    // 重複チェックエラー
-                    setError('name', { message: '@already_exists' })
-                  } else {
-                    await updateUser(req)
-                    await intervalOperation()
-                    updated()
-                    onClose()
-                  }
-                }
-                setLoading(false)
+              setLoading(true)
+              // nameの重複チェック
+              const exist = await parseAction(existsUserName({ name: req.name, excludeId: req.id }))
+              if (exist) {
+                // 重複チェックエラー
+                setError('name', { message: '@already_exists' })
+              } else {
+                await parseAction(updateUser(req))
+                await intervalOperation()
+                updated()
+                onClose()
               }
+              setLoading(false)
             })}
           >
             <ModalHeader className='flex flex-col gap-1'>{t('item_user_update')}</ModalHeader>
@@ -348,7 +329,7 @@ export const UpdateUserModal: FC<
                         autoComplete='new-password'
                         errorMessage={fet(errors.password)}
                         onChange={onChange}
-                        value={value}
+                        value={value || ''}
                         isDisabled={!isUpdatePassword}
                         isRequired
                       />
@@ -501,7 +482,7 @@ export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeU
                   console.debug('delete:submit:', target)
                   if (target) {
                     setLoading(true)
-                    await deleteUser({ id: target.id })
+                    await parseAction(deleteUser({ id: target.id }))
                     await intervalOperation()
                     setLoading(false)
                     updated()

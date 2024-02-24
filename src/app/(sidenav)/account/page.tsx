@@ -1,5 +1,6 @@
 import { UserCircleIcon } from '@/components/icons'
 import { Loading } from '@/components/nextekit/ui/loading'
+import { parseAction } from '@/helpers/action'
 import { Metadata } from 'next'
 import { FC, Suspense } from 'react'
 
@@ -12,10 +13,8 @@ export const metadata: Metadata = {
 }
 
 const AccountView: FC = async () => {
-  const res = await getAccount()
-  if (res.ok) {
-    return <AccountViewClient account={res.data} />
-  }
+  const account = await parseAction(getAccount())
+  return <AccountViewClient account={account} />
 }
 
 const PeerPage: FC = () => {

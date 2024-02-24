@@ -24,7 +24,7 @@ import { twMerge } from 'tailwind-merge'
 import { CreatePeerButtonWithModal, DeletePeerModal, UpdatePeerModal } from './edit'
 import { getPeerList } from './server-actions'
 
-export const PeerManagementTitle: FC<{ user: TypeUser }> = ({ user }) => {
+export const Title: FC<{ user: TypeUser }> = ({ user }) => {
   const { t } = useLocale()
   return (
     <span className='mr-8 text-lg'>
@@ -52,14 +52,14 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
   const openDeleteModal = deleteModal.onOpen
 
   useEffect(() => {
-    console.debug('targetUpdate:', targetUpdate)
+    console.debug('targetUpdate:', targetUpdate?.ip)
     if (targetUpdate) {
       openUpdateModal()
     }
   }, [openUpdateModal, targetUpdate])
 
   useEffect(() => {
-    console.debug('targetDelete:', targetDelete)
+    console.debug('targetDelete:', targetDelete?.ip)
     if (targetDelete) {
       openDeleteModal()
     }

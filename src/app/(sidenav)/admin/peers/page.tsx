@@ -2,7 +2,7 @@ import { ComputerDesktopIcon } from '@/components/icons'
 import { Metadata } from 'next'
 import { FC } from 'react'
 
-import { PeerAllListClient, PeerManagementTitle } from './client'
+import { PeerAllListClient, Title } from './client'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -14,7 +14,7 @@ const PeerListPage: FC = () => {
     <div>
       <div className='mb-2 flex items-center pl-8 lg:pl-0'>
         <ComputerDesktopIcon className='mr-2' />
-        <PeerManagementTitle />
+        <Title />
       </div>
 
       <div className='flex min-h-[200px] w-full'>
