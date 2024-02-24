@@ -9,9 +9,9 @@ import pkg from '../../../package.json'
 /**
  * アプリ情報取得
  */
-export const getAppInfo = validAction({
+export const getAppInfo = validAction('getAppInfo', {
   requireAuth: true,
-  next: async function getAppInfo() {
+  next: async () => {
     const { version, buildno } = pkg
     return {
       version,
@@ -24,9 +24,9 @@ export type AppInfo = ActionResultType<typeof getAppInfo>
 /**
  * サーバー情報取得
  */
-export const getServerInfo = validAction({
+export const getServerInfo = validAction('getServerInfo', {
   requireAuth: true,
-  next: async function getServerInfo() {
+  next: async () => {
     return {
       memory: { total: os.totalmem(), free: os.freemem() },
       uptime: os.uptime(),
@@ -38,9 +38,9 @@ export type ServerInfo = ActionResultType<typeof getServerInfo>
 /**
  * Linode Transfer情報取得
  */
-export const getLinodeTransferInfo = validAction({
+export const getLinodeTransferInfo = validAction('getLinodeTransferInfo', {
   requireAuth: true,
-  next: async function getLinodeTransferInfo() {
+  next: async () => {
     if (process.env.LINODE_DUMMY) {
       // テスト用ダミー
       return JSON.parse(process.env.LINODE_DUMMY) as {

@@ -7,10 +7,10 @@ import { getIpForward } from '@/server-actions/cmd'
 /**
  * システム情報取得(管理者権限)
  */
-export const getSystemInfo = validAction({
+export const getSystemInfo = validAction('getSystemInfo', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function getSystemInfo() {
+  next: async () => {
     const wgMgr = await refWgMgr()
     const wgVersion = await wgMgr.getWgVersion()
     const ipForward = await getIpForward()
@@ -27,10 +27,10 @@ export type SystemInfo = ActionResultType<typeof getSystemInfo>
 /**
  * WireGurd起動(管理者権限)
  */
-export const startWg = validAction({
+export const startWg = validAction('startWg', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function startWg() {
+  next: async () => {
     const wgMgr = await refWgMgr()
     return wgMgr.startWg()
   },
@@ -39,10 +39,10 @@ export const startWg = validAction({
 /**
  * WireGurd停止(管理者権限)
  */
-export const stopWg = validAction({
+export const stopWg = validAction('stopWg', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function stopWg() {
+  next: async () => {
     const wgMgr = await refWgMgr()
     return wgMgr.stopWg()
   },
@@ -51,10 +51,10 @@ export const stopWg = validAction({
 /**
  * WireGurd自動起動ON(管理者権限)
  */
-export const ebableWgAutoStart = validAction({
+export const ebableWgAutoStart = validAction('ebableWgAutoStart', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function ebableWgAutoStart() {
+  next: async () => {
     const wgMgr = await refWgMgr()
     return wgMgr.ebableWgAutoStart()
   },
@@ -63,10 +63,10 @@ export const ebableWgAutoStart = validAction({
 /**
  * WireGurd自動起動OFF(管理者権限)
  */
-export const disableWgAutoStart = validAction({
+export const disableWgAutoStart = validAction('disableWgAutoStart', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function disableWgAutoStart() {
+  next: async () => {
     const wgMgr = await refWgMgr()
     return wgMgr.disableWgAutoStart()
   },
@@ -75,10 +75,10 @@ export const disableWgAutoStart = validAction({
 /**
  * ピアステータス取得(管理者権限)
  */
-export const getPeerStatus = validAction({
+export const getPeerStatus = validAction('getPeerStatus', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function getPeerStatus() {
+  next: async () => {
     const wgMgr = await refWgMgr()
     return wgMgr.getPeerStatus()
   },

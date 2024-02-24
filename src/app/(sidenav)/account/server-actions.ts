@@ -8,9 +8,9 @@ import { validAction } from '@/helpers/server'
 /**
  * アカウント取得
  */
-export const getAccount = validAction({
+export const getAccount = validAction('getAccount', {
   requireAuth: true,
-  next: async function getAccount({ user }) {
+  next: async ({ user }) => {
     const account = await prisma.user.get(user.id)
     if (!account) {
       throw errNotFound()
@@ -22,10 +22,10 @@ export const getAccount = validAction({
 /**
  * パスワード変更
  */
-export const updatePassword = validAction({
+export const updatePassword = validAction('updatePassword', {
   schema: scUpdatePassword,
   requireAuth: true,
-  next: async function updatePassword({ req, user }) {
+  next: async ({ req, user }) => {
     if (req.id !== user.id) {
       throw errInvalidSession()
     }

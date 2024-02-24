@@ -45,6 +45,7 @@ const middlewareWithAuth = withAuth(
     pages: { signIn: '/auth/signin' },
     callbacks: {
       authorized({ req, token }) {
+        console.debug('mw:token:', JSON.stringify(token))
         // 管理者権限の確認
         if (matchCondition(req.nextUrl.pathname, authProps.targetAdmin)) {
           console.debug('check admin:', token?.isAdmin)

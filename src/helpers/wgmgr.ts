@@ -260,8 +260,6 @@ exit 0
           }
         }
       }
-      console.debug('peerStatusMap:', peerStatusMap)
-
       return peerStatusMap
     }
 

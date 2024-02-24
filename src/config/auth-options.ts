@@ -37,7 +37,6 @@ const authOptions: NextAuthOptions = {
       return true
     },
     async jwt(param) {
-      console.debug('callbacks:jwt:', param)
       const { token, account } = param
 
       let user
@@ -58,7 +57,8 @@ const authOptions: NextAuthOptions = {
         token.isAdmin = user.isAdmin
         token.isNotInit = user.isNotInit
         token.email = user.email
-        console.debug('set token:', token)
+        token.picture = undefined
+        console.debug('set token:', JSON.stringify(token))
       } else {
         console.debug('user not found')
         token.sub = undefined
@@ -67,7 +67,6 @@ const authOptions: NextAuthOptions = {
       return token
     },
     async session(param) {
-      console.debug('callbacks:session:', param)
       const { token, session } = param
       if (token.sub) {
         session.user.id = token.sub
@@ -75,7 +74,7 @@ const authOptions: NextAuthOptions = {
         session.user.isNotInit = token.isNotInit
         session.user.isAdmin = token.isAdmin
         session.user.email = token.email
-        console.debug('set session:', session.user)
+        console.debug('set session:', JSON.stringify(session.user))
       } else {
         return undefined as unknown as Session
       }

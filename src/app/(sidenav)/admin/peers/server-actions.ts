@@ -7,10 +7,10 @@ import { convTransfer, refWgMgr } from '@/helpers/wgmgr'
 /**
  * ピア一覧取得(管理者権限)
  */
-export const getPeerAllList = validAction({
+export const getPeerAllList = validAction('getPeerAllList', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function getPeerAllList() {
+  next: async () => {
     const wgMgr = await refWgMgr()
 
     const peerList = await prisma.peer.getAllList()

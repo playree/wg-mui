@@ -9,11 +9,11 @@ import { genPrivateKey } from '@/server-actions/cmd'
 /**
  * ユーザー取得(管理者権限)
  */
-export const getUser = validAction({
+export const getUser = validAction('getUser', {
   schema: zReq({ id: zUUID }),
   requireAuth: true,
   requireAdmin: true,
-  next: async function getUser({ req: { id } }) {
+  next: async ({ req: { id } }) => {
     return prisma.user.get(id)
   },
 })
@@ -21,11 +21,11 @@ export const getUser = validAction({
 /**
  * 対象ユーザのピアリスト取得(管理者権限)
  */
-export const getPeerList = validAction({
+export const getPeerList = validAction('getPeerList', {
   schema: zReq({ userId: zUUID }),
   requireAuth: true,
   requireAdmin: true,
-  next: async function getPeerList({ req: { userId } }) {
+  next: async ({ req: { userId } }) => {
     return prisma.peer.getAllListByUser(userId, true)
   },
 })
@@ -33,10 +33,10 @@ export const getPeerList = validAction({
 /**
  * 空きIPリスト取得(管理者権限)
  */
-export const getFreeAddressList = validAction({
+export const getFreeAddressList = validAction('getFreeAddressList', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function getFreeAddressList() {
+  next: async () => {
     const wgMgr = await refWgMgr()
     const freeAddressList = await wgMgr.getFreeAddressList()
     return freeAddressList || ['']
@@ -46,10 +46,10 @@ export const getFreeAddressList = validAction({
 /**
  * 秘密鍵取得(管理者権限)
  */
-export const getPrivateKey = validAction({
+export const getPrivateKey = validAction('getPrivateKey', {
   requireAuth: true,
   requireAdmin: true,
-  next: async function getPrivateKey() {
+  next: async () => {
     return genPrivateKey()
   },
 })
@@ -57,11 +57,11 @@ export const getPrivateKey = validAction({
 /**
  * ピア作成(管理者権限)
  */
-export const createPeer = validAction({
+export const createPeer = validAction('createPeer', {
   schema: scCreatePeer,
   requireAuth: true,
   requireAdmin: true,
-  next: async function createPeer({ req }) {
+  next: async ({ req }) => {
     const wgMgr = await refWgMgr()
     return wgMgr.createPeer(req)
   },
@@ -70,11 +70,11 @@ export const createPeer = validAction({
 /**
  * ピア更新(管理者権限)
  */
-export const updatePeer = validAction({
+export const updatePeer = validAction('updatePeer', {
   schema: scUpdatePeer,
   requireAuth: true,
   requireAdmin: true,
-  next: async function updatePeer({ req }) {
+  next: async ({ req }) => {
     const { ip, ...data } = req
     return prisma.peer.update({ where: { ip }, data })
   },
@@ -83,7 +83,7 @@ export const updatePeer = validAction({
 /**
  * ピア削除(管理者権限)
  */
-export const deletePeer = validAction({
+export const deletePeer = validAction('deletePeer', {
   schema: zReq({ ip: zIp }),
   requireAuth: true,
   requireAdmin: true,

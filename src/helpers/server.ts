@@ -127,27 +127,30 @@ const parseSchema = (schema: ZodSchema | undefined, data: unknown) => {
   return {}
 }
 
-export const validAction = <REQ extends ZodSchema = ZodVoid, RES = void>({
-  schema,
-  next,
-  requireAuth,
-  requireAdmin,
-}:
-  | {
-      schema?: REQ
-      next: (param: { req: z.infer<REQ>; user: Session['user'] }) => Promise<RES>
-      requireAuth: true
-      requireAdmin?: boolean
-    }
-  | {
-      schema?: REQ
-      next: (param: { req: z.infer<REQ> }) => Promise<RES>
-      requireAuth?: false
-      requireAdmin?: boolean
-    }) => {
+export const validAction = <REQ extends ZodSchema = ZodVoid, RES = void>(
+  name: string,
+  {
+    schema,
+    next,
+    requireAuth,
+    requireAdmin,
+  }:
+    | {
+        schema?: REQ
+        next: (param: { req: z.infer<REQ>; user: Session['user'] }) => Promise<RES>
+        requireAuth: true
+        requireAdmin?: boolean
+      }
+    | {
+        schema?: REQ
+        next: (param: { req: z.infer<REQ> }) => Promise<RES>
+        requireAuth?: false
+        requireAdmin?: boolean
+      },
+) => {
   return async (req: z.infer<REQ>): Promise<ActionResult<RES>> => {
     const pathname = headers().get('x-pathname') || ''
-    console.debug(`va@${pathname}@${next.name}`)
+    console.debug(`va@${pathname}@${name}`)
 
     try {
       if (requireAuth) {

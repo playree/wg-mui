@@ -7,14 +7,14 @@ import { validAction } from '@/helpers/server'
 /**
  * ユーザーリスト取得(管理者権限)
  */
-export const getUserList = validAction({
+export const getUserList = validAction('getUserList', {
   schema: zReq({
     withLabel: zBoolean.optional(),
     withPeer: zBoolean.optional(),
   }),
   requireAuth: true,
   requireAdmin: true,
-  next: async function getUserList({ req }) {
+  next: async ({ req }) => {
     return prisma.user.getAllList(req)
   },
 })
@@ -22,11 +22,11 @@ export const getUserList = validAction({
 /**
  * ユーザー作成(管理者権限)
  */
-export const createUser = validAction({
+export const createUser = validAction('createUser', {
   schema: scCreateUser,
   requireAuth: true,
   requireAdmin: true,
-  next: async function createUser({ req }) {
+  next: async ({ req }) => {
     return prisma.user.createUser(req)
   },
 })
@@ -34,11 +34,11 @@ export const createUser = validAction({
 /**
  * ユーザー更新(管理者権限)
  */
-export const updateUser = validAction({
+export const updateUser = validAction('updateUser', {
   schema: scUpdateUser,
   requireAuth: true,
   requireAdmin: true,
-  next: async function updateUser({ req }) {
+  next: async ({ req }) => {
     return prisma.user.updateUser(req)
   },
 })
@@ -46,11 +46,11 @@ export const updateUser = validAction({
 /**
  * ユーザー削除(管理者権限)
  */
-export const deleteUser = validAction({
+export const deleteUser = validAction('deleteUser', {
   schema: zReq({ id: zUUID }),
   requireAuth: true,
   requireAdmin: true,
-  next: async function deleteUser({ req: { id } }) {
+  next: async ({ req: { id } }) => {
     await prisma.user.delete({ where: { id } })
     return
   },
@@ -59,12 +59,11 @@ export const deleteUser = validAction({
 /**
  * ユーザー名の存在確認(管理者権限)
  */
-export const existsUserName = validAction({
+export const existsUserName = validAction('existsUserName', {
   schema: zReq({ name: zString, excludeId: zUUID.optional() }),
   requireAuth: true,
   requireAdmin: true,
-  next: async function existsUserName({ req: { name, excludeId } }) {
-    console.debug('existsUser:in:', name)
+  next: async ({ req: { name, excludeId } }) => {
     const user = await prisma.user.findUnique({ where: { name } })
     if (user) {
       return excludeId ? user.id !== excludeId : true
