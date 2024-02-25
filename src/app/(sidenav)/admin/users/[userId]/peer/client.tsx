@@ -1,9 +1,9 @@
 'use client'
 
-import { PencilSquareIcon, TrashIcon } from '@/components/icons'
+import { ExclamationTriangleIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
-import { gridStyles } from '@/components/styles'
+import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { TypePeer, TypeUser } from '@/helpers/schema'
@@ -95,6 +95,10 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
               <TableColumn key='ip' minWidth={120} allowsSorting>
                 {t('item_address')}
               </TableColumn>
+              <TableColumn key='allowedIPs'>{t('item_allowed_ips')}</TableColumn>
+              <TableColumn key='isDeleting' minWidth={60} allowsSorting>
+                {t('item_deleting')}
+              </TableColumn>
               <TableColumn key='remarks'>{t('item_remarks')}</TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
@@ -107,33 +111,43 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
               {(peer) => (
                 <TableRow key={peer.ip}>
                   <TableCell>{peer.ip}</TableCell>
+                  <TableCell>
+                    <div className='max-w-32 truncate'>{peer.allowedIPs}</div>
+                  </TableCell>
+                  <TableCell className={twMerge(textStyles({ color: 'red' }))}>
+                    {peer.isDeleting && <ExclamationTriangleIcon />}
+                  </TableCell>
                   <TableCell>{peer.remarks}</TableCell>
                   <TableCell>
                     <div className='text-xs'>{dayformat(peer.updatedAt, 'jp-simple')}</div>
                   </TableCell>
                   <TableCell>
-                    <ExButton
-                      isIconOnly
-                      isSmart
-                      color='primary'
-                      tooltip={t('item_edit')}
-                      onPress={() => {
-                        setTargetUpdate(peer)
-                      }}
-                    >
-                      <PencilSquareIcon />
-                    </ExButton>
-                    <ExButton
-                      isIconOnly
-                      isSmart
-                      color='danger'
-                      tooltip={t('item_delete')}
-                      onPress={() => {
-                        setTargetDelete(peer)
-                      }}
-                    >
-                      <TrashIcon />
-                    </ExButton>
+                    {!peer.isDeleting && (
+                      <>
+                        <ExButton
+                          isIconOnly
+                          isSmart
+                          color='primary'
+                          tooltip={t('item_edit')}
+                          onPress={() => {
+                            setTargetUpdate(peer)
+                          }}
+                        >
+                          <PencilSquareIcon />
+                        </ExButton>
+                        <ExButton
+                          isIconOnly
+                          isSmart
+                          color='danger'
+                          tooltip={t('item_delete')}
+                          onPress={() => {
+                            setTargetDelete(peer)
+                          }}
+                        >
+                          <TrashIcon />
+                        </ExButton>
+                      </>
+                    )}
                   </TableCell>
                 </TableRow>
               )}

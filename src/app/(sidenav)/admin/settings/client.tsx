@@ -88,6 +88,8 @@ export const SystemInfoClient: FC<{
                         setLoadingWgStart(true)
                         await parseAction(startWg())
                         await intervalOperation()
+                        const organizeList = await parseAction(organizePeers())
+                        console.debug('organizeList:', organizeList)
                         setLoadingWgStart(false)
                         refresh()
                       }}
