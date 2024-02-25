@@ -31,6 +31,9 @@ const authOptions: NextAuthOptions = {
   session: {
     maxAge: 86400,
   },
+  jwt: {
+    maxAge: 86400,
+  },
   pages: {
     signIn: '/auth/signin',
   },
