@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircleIcon, PlayCircleIcon, StopCircleIcon, XCircleIcon } from '@/components/icons'
+import { ArrowPathIcon, CheckCircleIcon, PlayCircleIcon, StopCircleIcon, XCircleIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles } from '@/components/styles'
@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { SystemInfo, disableWgAutoStart, ebableWgAutoStart, startWg, stopWg } from './server-actions'
+import { SystemInfo, disableWgAutoStart, ebableWgAutoStart, organizePeers, startWg, stopWg } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -24,8 +24,9 @@ export const SystemInfoClient: FC<{
 }> = ({ info }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
-  const [isLoadingWgStarted, setLoadingWgStarted] = useState(false)
-  const [isLoadingWgAutoStartEnabled, setLoadingWgAutoStartEnabled] = useState(false)
+  const [isLoadingWgStart, setLoadingWgStart] = useState(false)
+  const [isLoadingWgAutoStartEnable, setLoadingWgAutoStartEnable] = useState(false)
+  const [isLoadingWgReboot, setLoadingWgReboot] = useState(false)
 
   return (
     <>
@@ -60,15 +61,15 @@ export const SystemInfoClient: FC<{
                       variant='solid'
                       color='danger'
                       isSmart
-                      startContent={isLoadingWgStarted ? undefined : <StopCircleIcon />}
-                      isLoading={isLoadingWgStarted}
+                      startContent={isLoadingWgStart ? undefined : <StopCircleIcon />}
+                      isLoading={isLoadingWgStart}
                       onPress={async () => {
                         console.debug('WireGuard Stop:')
                         if (window.confirm(t('msg_wg_stop_confirm'))) {
-                          setLoadingWgStarted(true)
+                          setLoadingWgStart(true)
                           await parseAction(stopWg())
                           await intervalOperation()
-                          setLoadingWgStarted(false)
+                          setLoadingWgStart(false)
                           refresh()
                         }
                       }}
@@ -80,20 +81,44 @@ export const SystemInfoClient: FC<{
                       className='ml-2'
                       variant='solid'
                       isSmart
-                      startContent={isLoadingWgStarted ? undefined : <PlayCircleIcon />}
-                      isLoading={isLoadingWgStarted}
+                      startContent={isLoadingWgStart ? undefined : <PlayCircleIcon />}
+                      isLoading={isLoadingWgStart}
                       onPress={async () => {
                         console.debug('WireGuard Start:')
-                        setLoadingWgStarted(true)
+                        setLoadingWgStart(true)
                         await parseAction(startWg())
                         await intervalOperation()
-                        setLoadingWgStarted(false)
+                        setLoadingWgStart(false)
                         refresh()
                       }}
                     >
                       {t('item_start')}
                     </ExButton>
                   )}
+                  <ExButton
+                    className='ml-2'
+                    variant='solid'
+                    color='warning'
+                    isSmart
+                    isDisabled={!info.isWgStarted}
+                    startContent={isLoadingWgReboot ? undefined : <ArrowPathIcon />}
+                    isLoading={isLoadingWgReboot}
+                    onPress={async () => {
+                      console.debug('WireGuard Reboot:')
+                      if (window.confirm(t('msg_wg_restart_confirm'))) {
+                        setLoadingWgReboot(true)
+                        await parseAction(stopWg())
+                        await parseAction(startWg())
+                        await intervalOperation()
+                        const organizeList = await parseAction(organizePeers())
+                        console.debug('organizeList:', organizeList)
+                        setLoadingWgReboot(false)
+                        refresh()
+                      }
+                    }}
+                  >
+                    {t('item_restart')}
+                  </ExButton>
                 </div>
               </div>
             </TableCell>
@@ -119,15 +144,15 @@ export const SystemInfoClient: FC<{
                       variant='solid'
                       color='danger'
                       isSmart
-                      startContent={isLoadingWgAutoStartEnabled ? undefined : <XCircleIcon />}
-                      isLoading={isLoadingWgAutoStartEnabled}
+                      startContent={isLoadingWgAutoStartEnable ? undefined : <XCircleIcon />}
+                      isLoading={isLoadingWgAutoStartEnable}
                       onPress={async () => {
                         console.debug('WireGuard AutoStart Disable:')
                         if (window.confirm(t('msg_wg_autostart_disable_confirm'))) {
-                          setLoadingWgAutoStartEnabled(true)
+                          setLoadingWgAutoStartEnable(true)
                           await parseAction(disableWgAutoStart())
                           await intervalOperation()
-                          setLoadingWgAutoStartEnabled(false)
+                          setLoadingWgAutoStartEnable(false)
                           refresh()
                         }
                       }}
@@ -139,14 +164,14 @@ export const SystemInfoClient: FC<{
                       className='ml-2'
                       variant='solid'
                       isSmart
-                      startContent={isLoadingWgAutoStartEnabled ? undefined : <CheckCircleIcon />}
-                      isLoading={isLoadingWgAutoStartEnabled}
+                      startContent={isLoadingWgAutoStartEnable ? undefined : <CheckCircleIcon />}
+                      isLoading={isLoadingWgAutoStartEnable}
                       onPress={async () => {
                         console.debug('WireGuard AutoStart Enable:')
-                        setLoadingWgAutoStartEnabled(true)
+                        setLoadingWgAutoStartEnable(true)
                         await parseAction(ebableWgAutoStart())
                         await intervalOperation()
-                        setLoadingWgAutoStartEnabled(false)
+                        setLoadingWgAutoStartEnable(false)
                         refresh()
                       }}
                     >

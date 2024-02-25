@@ -83,3 +83,15 @@ export const getPeerStatus = validAction('getPeerStatus', {
     return wgMgr.getPeerStatus()
   },
 })
+
+/**
+ * ピアの整理
+ */
+export const organizePeers = validAction('organizePeers', {
+  requireAuth: true,
+  requireAdmin: true,
+  next: async () => {
+    const wgMgr = await refWgMgr()
+    return wgMgr.organizePeers()
+  },
+})

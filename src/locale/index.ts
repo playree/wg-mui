@@ -66,6 +66,7 @@ export type LocaleItemBase =
   | 'item_stop'
   | 'item_starting'
   | 'item_stopped'
+  | 'item_restart'
   | 'item_autostart_on'
   | 'item_autostart_off'
   | 'item_enable'
@@ -99,6 +100,7 @@ export type LocaleItemBase =
   | 'msg_peer_delete'
   | 'msg_wg_stop_confirm'
   | 'msg_wg_autostart_disable_confirm'
+  | 'msg_wg_restart_confirm'
   | 'msg_conf_dir_permission_confirm'
   | 'msg_add_tunnel'
 

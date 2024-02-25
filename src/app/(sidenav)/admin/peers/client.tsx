@@ -105,7 +105,13 @@ export const PeerAllListClient: FC = () => {
               {(peer) => (
                 <TableRow key={peer.ip}>
                   <TableCell>{peer.ip}</TableCell>
-                  <TableCell>{peer.user.name}</TableCell>
+                  <TableCell>
+                    {peer.user && (
+                      <ExButton isSmart href={`/admin/users/${peer.user.id}/peer`}>
+                        <span className='truncate'>{peer.user.name}</span>
+                      </ExButton>
+                    )}
+                  </TableCell>
                   <TableCell>{peer.receiveText}</TableCell>
                   <TableCell>{peer.sendText}</TableCell>
                   <TableCell className={twMerge(textStyles({ color: 'red' }))}>

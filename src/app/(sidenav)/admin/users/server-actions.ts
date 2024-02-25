@@ -51,6 +51,7 @@ export const deleteUser = validAction('deleteUser', {
   requireAuth: true,
   requireAdmin: true,
   next: async ({ req: { id } }) => {
+    //@todo ピアの削除
     await prisma.user.delete({ where: { id } })
     return
   },

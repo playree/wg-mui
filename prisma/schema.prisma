@@ -65,7 +65,7 @@ model WgConf {
 
 model Peer {
   ip                  String   @id
-  userId              String
+  userId              String?
   privateKey          String
   publicKey           String
   allowedIPs          String?
@@ -76,5 +76,5 @@ model Peer {
   createdAt           DateTime @default(now())
 
   // Relation
-  user User @relation(fields: [userId], references: [id])
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }

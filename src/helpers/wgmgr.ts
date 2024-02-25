@@ -75,7 +75,6 @@ export class WgMgr {
   conf: WgConf
   targetAddress: string[]
   ip4: Address4
-  isNeedRestart: boolean
 
   constructor(wgConf: WgConf) {
     this.conf = wgConf
@@ -88,7 +87,6 @@ export class WgMgr {
       addressList.push(Address4.fromBigInteger(i).address)
     }
     this.targetAddress = addressList
-    this.isNeedRestart = false
   }
 
   get confPath() {
@@ -226,9 +224,16 @@ exit 0
     // DB更新(削除予約)
     await prisma.peer.update({ where: { ip }, data: { isDeleting: true } })
 
-    // 削除を反映させるためにはWireGurdの再起動が必要
-    this.isNeedRestart = true
     return
+  }
+
+  async deletePeerByUser(userId: string) {
+    // 対象ユーザーに紐づく有効なピアを取得
+    const peerList = await prisma.peer.getAllListByUser(userId)
+    // ピアを削除
+    for (const peer of peerList) {
+      await this.deletePeer(peer.ip)
+    }
   }
 
   async getPeerStatus() {
@@ -285,6 +290,28 @@ exit 0
         { spaceBefore: true, spaceAfter: true, skipUndefined: true },
       ) + '\n'
     )
+  }
+
+  async organizePeers() {
+    const deletingPeerList = await prisma.peer.findMany({ where: { isDeleting: true }, select: { ip: true } })
+    const organizedList: string[] = []
+    if (deletingPeerList.length) {
+      // 削除中のピアがある場合
+      const peerStatusMap = await this.getPeerStatus()
+      if (peerStatusMap) {
+        deletingPeerList.map((peer) => {
+          if (!peerStatusMap[peer.ip]) {
+            // ステータスが存在しなければ削除
+            organizedList.push(peer.ip)
+          }
+        })
+        if (organizedList.length) {
+          // 削除
+          await prisma.peer.deleteMany({ where: { ip: { in: organizedList } } })
+        }
+      }
+    }
+    return organizedList
   }
 
   static async getWgMgr() {
