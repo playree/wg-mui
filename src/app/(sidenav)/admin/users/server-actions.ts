@@ -3,6 +3,7 @@
 import { prisma } from '@/helpers/prisma'
 import { scCreateUser, scUpdateUser, zBoolean, zReq, zString, zUUID } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
+import { refWgMgr } from '@/helpers/wgmgr'
 
 /**
  * ユーザーリスト取得(管理者権限)
@@ -51,7 +52,10 @@ export const deleteUser = validAction('deleteUser', {
   requireAuth: true,
   requireAdmin: true,
   next: async ({ req: { id } }) => {
-    //@todo ピアの削除
+    // ピアの削除
+    const wgMgr = await refWgMgr()
+    await wgMgr.deletePeerByUser(id)
+    // ユーザーの削除
     await prisma.user.delete({ where: { id } })
     return
   },
