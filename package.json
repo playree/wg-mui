@@ -11,7 +11,6 @@
     "prettier": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css}'",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
-    "seed": "prisma db seed",
     "studio": "prisma studio",
     "devinit": "cpx -u '.sample/.**/*' '.' && cpx -u '.sample/.*' '.'"
   },
@@ -71,11 +70,8 @@
     "prisma": "^5.10.2",
     "ts-node": "^10.9.2"
   },
-  "prisma": {
-    "seed": "ts-node -P tsconfig.nonext.json ./prisma/seed.ts"
-  },
   "exclude": [
     "./prisma/seed.ts"
   ],
-  "packageManager": "yarn@4.0.2"
+  "packageManager": "yarn@4.1.0"
 }

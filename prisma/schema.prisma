@@ -48,19 +48,21 @@ model UserLabel {
 }
 
 model WgConf {
-  id            String   @id @default("main")
-  confDirPath   String
-  interfaceName String
-  address       String
-  listenPort    Int
-  privateKey    String
-  publicKey     String
-  postUp        String?
-  postDown      String?
-  endPoint      String
-  dns           String?
-  updatedAt     DateTime @updatedAt
-  createdAt     DateTime @default(now())
+  id                String   @id @default("main")
+  confDirPath       String
+  interfaceName     String
+  address           String
+  listenPort        Int
+  privateKey        String
+  publicKey         String
+  postUp            String?
+  postDown          String?
+  endPoint          String
+  dns               String?
+  defaultAllowedIPs String?
+  defaultKeepalive  Int      @default(25)
+  updatedAt         DateTime @updatedAt
+  createdAt         DateTime @default(now())
 }
 
 model Peer {

@@ -104,6 +104,8 @@ export const ja: LocaleItems = {
   msg_conf_dir_permission_confirm:
     '実行ユーザー(${user})は${path}へアクセスできません。\n権限を付与する為に下記コマンドを実行しますか？\n\n$ sudo chgrp ${user} ${path}\n$ sudo chmod g+x ${path}',
   msg_add_tunnel: '端末にトンネルを追加',
+  msg_create_admin: '管理者ユーザーを作成します',
+  msg_initialize_wg: 'WireGuardの初期設定を行います',
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)4～30文字',

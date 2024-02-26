@@ -104,6 +104,8 @@ export const en: DefaultLocaleItems = {
   msg_conf_dir_permission_confirm:
     'The execution user (${user}) cannot access ${path}.\nWould you like to run the following command to grant permission?\n\n$ sudo chgrp ${user} ${path}\n$ sudo chmod g+x ${path}',
   msg_add_tunnel: 'Add a tunnel to your device',
+  msg_create_admin: 'Create an admin user',
+  msg_initialize_wg: 'Perform initial settings for WireGuard',
 
   '@required_field': 'Required field',
   '@invalid_username': '4-30 alphanumeric characters (.-_)',

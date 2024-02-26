@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/helpers/prisma'
-import { scInitializeWgConf, zConfDirPath, zInterfaceName, zReq } from '@/helpers/schema'
+import { scInitializeWgConf, scUserPassword, zConfDirPath, zInterfaceName, zReq } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
 import { getWgMgr } from '@/helpers/wgmgr'
 import {
@@ -16,11 +16,55 @@ import {
   touchFileSh,
 } from '@/server-actions/cmd'
 
+/**
+ * 初期設定済みチェック
+ */
+export const isInitialized = validAction('isInitialized', {
+  next: async () => {
+    return !!(await getWgMgr())
+  },
+})
+
+/**
+ * 管理者存在チェック
+ */
+export const existAdminUser = validAction('existAdminUser', {
+  next: async () => {
+    // 初期化チェック
+    if (await getWgMgr()) {
+      throw new Error('Already initialized')
+    }
+    const adminList = await prisma.user.findMany({ where: { isAdmin: true } })
+    return !!adminList.length
+  },
+})
+
+/**
+ * 管理者ユーザー作成
+ */
+export const createAdminUser = validAction('createAdminUser', {
+  schema: scUserPassword,
+  next: async ({ req }) => {
+    // 初期化チェック
+    if (await getWgMgr()) {
+      throw new Error('Already initialized')
+    }
+    const user = await prisma.user.createUser({
+      name: req.username,
+      password: req.password,
+      isAdmin: true,
+      labelList: new Set([]),
+    })
+    return user
+  },
+})
+
+/**
+ * 初期設定
+ */
 export const initializeWgConf = validAction('initializeWgConf', {
   schema: scInitializeWgConf,
   next: async ({ req: conf }) => {
-    console.info('initializeWgConf:')
-
     // 初期化チェック
     if (await getWgMgr()) {
       throw new Error('Already initialized')
@@ -62,6 +106,9 @@ export const initializeWgConf = validAction('initializeWgConf', {
   },
 })
 
+/**
+ * 秘密鍵生成
+ */
 export const getPrivateKey = validAction('getPrivateKey', {
   next: async () => {
     // 初期化チェック
@@ -73,6 +120,9 @@ export const getPrivateKey = validAction('getPrivateKey', {
   },
 })
 
+/**
+ * PostUp/Downスクリプト生成
+ */
 export const getPostUpDownScript = validAction('getPostUpDownScript', {
   schema: zReq({ interfaceName: zInterfaceName }),
   next: async ({ req: { interfaceName } }) => {
@@ -92,6 +142,9 @@ export const getPostUpDownScript = validAction('getPostUpDownScript', {
   },
 })
 
+/**
+ * ConfDirチェック
+ */
 export const checkConfDir = validAction('checkConfDir', {
   schema: zReq({ confDirPath: zConfDirPath }),
   next: async ({ req: { confDirPath } }) => {
@@ -111,6 +164,9 @@ export const checkConfDir = validAction('checkConfDir', {
   },
 })
 
+/**
+ * ConfDirアクセス権変更
+ */
 export const changeConfDir = validAction('changeConfDir', {
   schema: zReq({ confDirPath: zConfDirPath }),
   next: async ({ req: { confDirPath } }) => {

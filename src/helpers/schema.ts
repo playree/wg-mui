@@ -141,6 +141,13 @@ export type UpdateLabel = z.infer<typeof scUpdateLabel>
 // ラベル
 export type TypeLabel = UpdateLabel & { createdAt: Date; updatedAt: Date }
 
+// ユーザーパスワード
+export const scUserPassword = z.object({
+  username: zUsername,
+  password: zPassword,
+})
+export type UserPassword = z.infer<typeof scUserPassword>
+
 // WG Conf初期設定
 export const scInitializeWgConf = z.object({
   confDirPath: zConfDirPath,

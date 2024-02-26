@@ -103,6 +103,8 @@ export type LocaleItemBase =
   | 'msg_wg_restart_confirm'
   | 'msg_conf_dir_permission_confirm'
   | 'msg_add_tunnel'
+  | 'msg_create_admin'
+  | 'msg_initialize_wg'
 
 export type LocaleItemError =
   | '@required_field'

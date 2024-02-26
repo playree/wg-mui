@@ -3,6 +3,7 @@
 - [WireGuard Managenent UI](#wireguard-managenent-ui)
 - [はじめに](#はじめに)
 - [モジュール構成](#モジュール構成)
+- [推奨環境](#推奨環境)
 - [ビルド](#ビルド)
 - [起動](#起動)
   - [PM2](#pm2)
@@ -10,6 +11,7 @@
     - [PM2で起動](#pm2で起動)
 - [開発用](#開発用)
   - [パッケージ更新](#パッケージ更新)
+  - [yarn更新](#yarn更新)
 
 # はじめに
 
@@ -31,6 +33,10 @@ Next.jsの最新機能を率先して利用して開発しています。
   DB接続ORM
 - [Auth.js](https://authjs.dev/) \
   認証機能
+
+# 推奨環境
+
+- Ubuntu 22.04
 
 # ビルド
 
@@ -66,4 +72,10 @@ pm2 start ./wg-mui.sh
 
 ```sh
 yarn upgrade-interactive
+```
+
+## yarn更新
+
+```sh
+yarn set version latest --yarn-path
 ```
