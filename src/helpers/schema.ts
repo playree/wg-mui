@@ -71,7 +71,7 @@ export const zEndPoint = z.string().url(el('@invalid_end_point'))
 export const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(zEmpty).transform(convNull)
 export const zIp = z.string().regex(reIp, el('@invalid_ip'))
 export const zAllowedIPs = z.string().regex(reHalfString, el('@invalid_allowed_ips')).or(zEmpty).transform(convNull)
-export const zPersistentKeepalive = z.number()
+export const zKeepalive = z.number().min(0, el('@invalid_keepalive')).max(600, el('@invalid_keepalive'))
 export const zRemarks = z.string().or(zEmpty).transform(convNull)
 export const zPostUp = z.string().or(zEmpty).transform(convNull)
 export const zPostDown = z.string().or(zEmpty).transform(convNull)
@@ -159,6 +159,8 @@ export const scInitializeWgConf = z.object({
   postDown: zPostDown,
   endPoint: zEndPoint,
   dns: zDns,
+  defaultAllowdIPs: zAllowedIPs,
+  defaultKeepalive: zKeepalive,
 })
 export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
 
@@ -168,7 +170,7 @@ export const scCreatePeer = z.object({
   userId: zUUID,
   privateKey: zPrivateKey,
   allowedIPs: zAllowedIPs,
-  persistentKeepalive: zPersistentKeepalive,
+  keepalive: zKeepalive,
   remarks: zRemarks,
 })
 export type CreatePeer = z.infer<typeof scCreatePeer>
@@ -177,7 +179,7 @@ export type CreatePeer = z.infer<typeof scCreatePeer>
 export const scUpdatePeer = z.object({
   ip: zIp,
   allowedIPs: zAllowedIPs,
-  persistentKeepalive: zPersistentKeepalive,
+  keepalive: zKeepalive,
   remarks: zRemarks,
 })
 export type UpdatePeer = z.infer<typeof scUpdatePeer>

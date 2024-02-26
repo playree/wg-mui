@@ -16,7 +16,14 @@ import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { changeConfDir, checkConfDir, getPostUpDownScript, getPrivateKey, initializeWgConf } from './server-actions'
+import {
+  changeConfDir,
+  checkConfDir,
+  createAdminUser,
+  getPostUpDownScript,
+  getPrivateKey,
+  initializeWgConf,
+} from './server-actions'
 
 export const InitializeAdmin: FC = () => {
   const { t, fet } = useLocale()
@@ -54,7 +61,7 @@ export const InitializeAdmin: FC = () => {
         onSubmit={handleSubmit(async (req) => {
           console.debug('create:submit:', req)
           setLoading(true)
-
+          await parseAction(createAdminUser(req))
           await intervalOperation()
           setLoading(false)
           router.refresh()
@@ -133,6 +140,8 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
       postDown: '',
       endPoint: `${hostname}:51820`,
       dns: '',
+      defaultAllowdIPs: '',
+      defaultKeepalive: 25,
     },
   })
 
@@ -171,6 +180,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
         })}
       >
         <div className={gridStyles()}>
+          <div className='col-span-12 mb-2'>{t('msg_initialize_wg')}</div>
           <div className='col-span-12 md:col-span-6'>
             <InputCtrl
               control={control}

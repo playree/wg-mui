@@ -123,5 +123,6 @@ export const en: DefaultLocaleItems = {
   '@invalid_dns': 'Invalid DNS format',
   '@invalid_ip': 'Invalid IP format (ex. 192.168.1.1',
   '@invalid_allowed_ips': 'Invalid format',
+  '@invalid_keepalive': '0-600',
   '@already_exists': 'Already exists',
 }

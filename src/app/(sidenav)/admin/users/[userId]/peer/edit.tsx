@@ -55,7 +55,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
       userId: user.id,
       privateKey: '',
       allowedIPs: '0.0.0.0/0',
-      persistentKeepalive: 25,
+      keepalive: 25,
       remarks: '',
     },
   })
@@ -142,10 +142,10 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
                 <div className='col-span-6'>
                   <InputCtrl
                     control={control}
-                    name='persistentKeepalive'
+                    name='keepalive'
                     type='number'
                     label={t('item_persistent_keepalive')}
-                    errorMessage={fet(errors.persistentKeepalive)}
+                    errorMessage={fet(errors.keepalive)}
                   />
                 </div>
                 <div className='col-span-12'>
@@ -201,7 +201,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
     mode: 'onChange',
     defaultValues: {
       allowedIPs: '0.0.0.0/0',
-      persistentKeepalive: 25,
+      keepalive: 25,
       remarks: '',
     },
   })
@@ -216,7 +216,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
     if (target) {
       setValue('ip', target.ip)
       setValue('allowedIPs', target.allowedIPs || '')
-      setValue('persistentKeepalive', target.persistentKeepalive)
+      setValue('keepalive', target.keepalive)
       setValue('remarks', target.remarks || '')
     }
   }, [target, props.isOpen, setValue])
@@ -254,10 +254,10 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
                 <div className='col-span-6'>
                   <InputCtrl
                     control={control}
-                    name='persistentKeepalive'
+                    name='keepalive'
                     type='number'
                     label={t('item_persistent_keepalive')}
-                    errorMessage={fet(errors.persistentKeepalive)}
+                    errorMessage={fet(errors.keepalive)}
                   />
                 </div>
                 <div className='col-span-12'>

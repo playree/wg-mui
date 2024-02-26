@@ -123,5 +123,6 @@ export const ja: LocaleItems = {
   '@invalid_dns': 'DNSフォーマット不正',
   '@invalid_ip': 'IPフォーマット不正 例)192.168.1.1',
   '@invalid_allowed_ips': 'フォーマット不正',
+  '@invalid_keepalive': '1～65535',
   '@already_exists': '既に存在しています',
 }

@@ -284,7 +284,7 @@ exit 0
             PublicKey: this.conf.publicKey,
             EndPoint: this.conf.endPoint,
             AllowedIPs: peer.allowedIPs || '0.0.0.0/0',
-            PersistentKeepalive: peer.persistentKeepalive,
+            PersistentKeepalive: peer.keepalive,
           },
         } as IIniObject,
         { spaceBefore: true, spaceAfter: true, skipUndefined: true },

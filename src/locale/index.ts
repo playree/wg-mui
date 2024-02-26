@@ -124,6 +124,7 @@ export type LocaleItemError =
   | '@invalid_dns'
   | '@invalid_ip'
   | '@invalid_allowed_ips'
+  | '@invalid_keepalive'
   | '@already_exists'
 export const el = (item: LocaleItemError) => item
 

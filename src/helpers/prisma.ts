@@ -150,7 +150,7 @@ export const prisma = new PrismaClient().$extends({
           select: {
             ip: true,
             allowedIPs: true,
-            persistentKeepalive: true,
+            keepalive: true,
             remarks: true,
             isDeleting: true,
             updatedAt: true,
