@@ -12,9 +12,11 @@ import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { localeConfig } from '@/locale/config'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Textarea } from '@nextui-org/react'
+import { Address4 } from 'ip-address'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 
 import {
   changeConfDir,
@@ -24,6 +26,9 @@ import {
   getPrivateKey,
   initializeWgConf,
 } from './server-actions'
+
+const GLOBAL_CIDR =
+  '0.0.0.0/5, 8.0.0.0/7, 11.0.0.0/8, 12.0.0.0/6, 16.0.0.0/4, 32.0.0.0/3, 64.0.0.0/2, 128.0.0.0/3, 160.0.0.0/5, 168.0.0.0/6, 172.0.0.0/12, 172.32.0.0/11, 172.64.0.0/10, 172.128.0.0/9, 173.0.0.0/8, 174.0.0.0/7, 176.0.0.0/4, 192.0.0.0/9, 192.128.0.0/11, 192.160.0.0/13, 192.169.0.0/16, 192.170.0.0/15, 192.172.0.0/14, 192.176.0.0/12, 192.192.0.0/10, 193.0.0.0/8, 194.0.0.0/7, 196.0.0.0/6, 200.0.0.0/5, 208.0.0.0/4'
 
 export const InitializeAdmin: FC = () => {
   const { t, fet } = useLocale()
@@ -140,7 +145,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
       postDown: '',
       endPoint: `${hostname}:51820`,
       dns: '',
-      defaultAllowdIPs: '',
+      defaultAllowedIPs: '',
       defaultKeepalive: 25,
     },
   })
@@ -216,6 +221,8 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
               label={t('item_listen_port')}
               errorMessage={fet(errors.listenPort)}
               isRequired
+              min={1}
+              max={65535}
             />
           </div>
           <div className='col-span-11'>
@@ -280,9 +287,55 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
               errorMessage={fet(errors.postDown)}
             />
           </div>
-          <div className='col-span-12'>
+          <div className='col-span-12 md:col-span-6'>
             <InputCtrl control={control} name='dns' label={t('item_dns')} errorMessage={fet(errors.dns)} />
           </div>
+          <div className='col-span-12 md:col-span-6'>
+            <InputCtrl
+              control={control}
+              name='defaultKeepalive'
+              type='number'
+              label={t('item_default_allowed_ips')}
+              errorMessage={fet(errors.defaultKeepalive)}
+              isRequired
+              min={0}
+              max={600}
+            />
+          </div>
+          <div className='col-span-12'>
+            <ExButton
+              color='default'
+              variant='flat'
+              size='sm'
+              onPress={async () => {
+                const ifip = new Address4(getValues('address'))
+                setValue('defaultAllowedIPs', `${ifip.startAddress().address}${ifip.subnet}, ${GLOBAL_CIDR}`)
+              }}
+            >
+              <CommandLineIcon />
+              {t('item_generate_global_cidr')}
+            </ExButton>
+          </div>
+          <div className='col-span-12'>
+            <Controller
+              control={control}
+              name='defaultAllowedIPs'
+              render={({ field: { onChange, value } }) => (
+                <Textarea
+                  label={t('item_default_allowed_ips')}
+                  type='text'
+                  variant='bordered'
+                  size='sm'
+                  minRows={2}
+                  errorMessage={fet(errors.defaultAllowedIPs)}
+                  onChange={onChange}
+                  value={value || ''}
+                  classNames={{ input: 'text-xs' }}
+                />
+              )}
+            />
+          </div>
+
           <div className='col-span-12 text-center'>
             <ExButton
               type='submit'

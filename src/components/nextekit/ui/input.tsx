@@ -24,7 +24,7 @@ export const InputCtrl = <
           type={type}
           variant={variant}
           onChange={type === 'number' ? (e) => onChange(Number(e.target.value)) : onChange}
-          value={value || ''}
+          value={value || (type === 'number' ? '0' : '')}
         />
       )}
     />

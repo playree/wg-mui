@@ -49,7 +49,7 @@ export const ja: LocaleItems = {
   item_listen_port: 'Listen Port',
   item_post_up: 'PostUp',
   item_post_down: 'PostDown',
-  item_generate_post_updown: 'PostUp/Downスクリプトを自動生成',
+  item_generate_post_updown: '↓PostUp/Downスクリプトを自動生成',
   item_private_key: '秘密鍵',
   item_end_point: 'エンドポイントアドレス',
   item_dns: 'DNS',
@@ -91,6 +91,9 @@ export const ja: LocaleItems = {
   item_transfer_info: 'ネットワーク転送情報',
   item_transfer_pool_usage: 'プール使用量',
   item_transfer_billable: '請求対象',
+  item_default_allowed_ips: 'デフォルトの Allowed IPs',
+  item_default_keepalive: 'デフォルトの Persistent Keep-Alive',
+  item_generate_global_cidr: '↓このIP帯域とグローバルIP帯域を指定する',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

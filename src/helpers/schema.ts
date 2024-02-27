@@ -159,7 +159,7 @@ export const scInitializeWgConf = z.object({
   postDown: zPostDown,
   endPoint: zEndPoint,
   dns: zDns,
-  defaultAllowdIPs: zAllowedIPs,
+  defaultAllowedIPs: zAllowedIPs,
   defaultKeepalive: zKeepalive,
 })
 export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
