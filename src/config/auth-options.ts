@@ -38,8 +38,8 @@ const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
   },
   callbacks: {
-    async signIn(param) {
-      console.debug('callbacks:signIn:', param)
+    async signIn({ user, account }) {
+      console.debug('callbacks:signIn:', { provider: account?.provider, id: user.id })
       return true
     },
     async jwt(param) {
@@ -58,6 +58,15 @@ const authOptions: NextAuthOptions = {
       }
 
       if (user) {
+        // 最終サインイン
+        if (param.trigger === 'signIn') {
+          await prisma.lastSignIn.upsert({
+            where: { id: user.id },
+            create: { id: user.id, provider: account?.provider || '' },
+            update: { provider: account?.provider || '' },
+          })
+        }
+
         token.sub = user.id
         token.name = user.name
         token.isAdmin = user.isAdmin
