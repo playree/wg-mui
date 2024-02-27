@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/helpers/prisma'
-import { scCreateUser, scUpdateUser, zBoolean, zReq, zString, zUUID } from '@/helpers/schema'
+import { scCreateUser, scUpdateUser, zReq, zString, zUUID } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
 
@@ -9,14 +9,10 @@ import { refWgMgr } from '@/helpers/wgmgr'
  * ユーザーリスト取得(管理者権限)
  */
 export const getUserList = validAction('getUserList', {
-  schema: zReq({
-    withLabel: zBoolean.optional(),
-    withPeer: zBoolean.optional(),
-  }),
   requireAuth: true,
   requireAdmin: true,
-  next: async ({ req }) => {
-    return prisma.user.getAllList(req)
+  next: async () => {
+    return prisma.user.getAllList({ withLabel: true, withPeer: true, withLastSignIn: true })
   },
 })
 

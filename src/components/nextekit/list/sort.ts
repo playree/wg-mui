@@ -33,6 +33,10 @@ export const sortFunction: AsyncListLoadFunction<Record<string, unknown>, string
         else if (acol instanceof Date && bcol instanceof Date) {
           cmp = acol < bcol ? -1 : 1
         }
+        //
+        else if (acol === undefined || bcol === undefined) {
+          cmp = !acol && bcol ? -1 : 1
+        }
       }
 
       if (direction === 'descending') {

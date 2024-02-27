@@ -1,4 +1,4 @@
-import { Label, Peer, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
+import { Label, LastSignIn, Peer, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
 
 import { hashPassword } from './password'
 import { CreateUser, TypeUser, UpdateUser } from './schema'
@@ -32,20 +32,23 @@ const convUser = (
   inUser: User & {
     userLabelList?: (UserLabel & { label?: Label })[]
     peerList?: Peer[]
+    lastSignIn?: LastSignIn | null
   },
 ): TypeUser => {
   // passwordHashは返却から除外
-  const { passwordHash: _, userLabelList, peerList, ...outUser } = inUser
+  const { passwordHash: _, userLabelList, peerList, lastSignIn, ...outUser } = inUser
   const labelList = userLabelList?.map((value) => convUserLabel(value))
   const peerIpList = peerList?.map((value) => convPeerIp(value))
   return {
     ...outUser,
     labelList,
     peerIpList,
+    lastSignInAt: lastSignIn?.updatedAt,
+    lastSignInProvider: lastSignIn?.provider,
   }
 }
 
-export type GetUserOption = { withLabel?: boolean; withPeer?: boolean }
+export type GetUserOption = { withLabel?: boolean; withPeer?: boolean; withLastSignIn?: boolean }
 
 export const prisma = new PrismaClient().$extends({
   model: {
@@ -54,7 +57,7 @@ export const prisma = new PrismaClient().$extends({
         const user = await prisma.user.findUnique({ where: { id } })
         return user ? convUser(user) : undefined
       },
-      async getAllList({ withLabel = false, withPeer = false }: GetUserOption) {
+      async getAllList({ withLabel = false, withPeer = false, withLastSignIn = false }: GetUserOption) {
         const userList = await prisma.user.findMany({
           include: {
             userLabelList: withLabel
@@ -63,6 +66,7 @@ export const prisma = new PrismaClient().$extends({
                 }
               : undefined,
             peerList: withPeer,
+            lastSignIn: withLastSignIn,
           },
 
           orderBy: { createdAt: 'asc' },

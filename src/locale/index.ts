@@ -95,6 +95,7 @@ export type LocaleItemBase =
   | 'item_default_allowed_ips'
   | 'item_default_keepalive'
   | 'item_generate_global_cidr'
+  | 'item_last_signin_at'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'

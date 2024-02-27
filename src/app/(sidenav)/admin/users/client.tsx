@@ -40,7 +40,7 @@ export const UserListClient: FC = () => {
   const { t } = useLocale()
 
   const list = usePageingList({
-    load: async () => parseAction(getUserList({ withLabel: true, withPeer: true })),
+    load: async () => parseAction(getUserList()),
     sort: {
       init: { column: 'updatedAt', direction: 'descending' },
     },
@@ -161,6 +161,9 @@ export const UserListClient: FC = () => {
               </TableColumn>
               <TableColumn>{t('item_label')}</TableColumn>
               <TableColumn>{t('item_peer')}</TableColumn>
+              <TableColumn key='lastSignInAt' allowsSorting>
+                {t('item_last_signin_at')}
+              </TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
               </TableColumn>
@@ -199,6 +202,9 @@ export const UserListClient: FC = () => {
                         <ComputerDesktopIcon />
                       </ExButton>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className='text-xs'>{user.lastSignInAt ? dayformat(user.lastSignInAt, 'jp-simple') : ''}</div>
                   </TableCell>
                   <TableCell>
                     <div className='text-xs'>{dayformat(user.updatedAt, 'jp-simple')}</div>

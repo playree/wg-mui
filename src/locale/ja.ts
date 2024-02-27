@@ -94,6 +94,7 @@ export const ja: LocaleItems = {
   item_default_allowed_ips: 'デフォルトの Allowed IPs',
   item_default_keepalive: 'デフォルトの Persistent Keep-Alive',
   item_generate_global_cidr: '↓このIP帯域とグローバルIP帯域を指定する',
+  item_last_signin_at: '最終認証',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

@@ -119,6 +119,8 @@ export type TypeUser = {
     name: string
   }[]
   peerIpList?: string[]
+  lastSignInAt?: Date
+  lastSignInProvider?: string
   createdAt: Date
   updatedAt: Date
 }
