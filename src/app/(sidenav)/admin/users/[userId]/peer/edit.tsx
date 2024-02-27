@@ -54,8 +54,6 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
       ip: '',
       userId: user.id,
       privateKey: '',
-      allowedIPs: '0.0.0.0/0',
-      keepalive: 25,
       remarks: '',
     },
   })
@@ -131,23 +129,6 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
                     <KeyIcon />
                   </ExButton>
                 </div>
-                <div className='col-span-6'>
-                  <InputCtrl
-                    control={control}
-                    name='allowedIPs'
-                    label={t('item_allowed_ips')}
-                    errorMessage={fet(errors.allowedIPs)}
-                  />
-                </div>
-                <div className='col-span-6'>
-                  <InputCtrl
-                    control={control}
-                    name='keepalive'
-                    type='number'
-                    label={t('item_persistent_keepalive')}
-                    errorMessage={fet(errors.keepalive)}
-                  />
-                </div>
                 <div className='col-span-12'>
                   <InputCtrl
                     control={control}
@@ -200,8 +181,6 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
     resolver: zodResolver(scUpdatePeer),
     mode: 'onChange',
     defaultValues: {
-      allowedIPs: '0.0.0.0/0',
-      keepalive: 25,
       remarks: '',
     },
   })
@@ -215,8 +194,6 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
     console.debug('target:', target?.ip)
     if (target) {
       setValue('ip', target.ip)
-      setValue('allowedIPs', target.allowedIPs || '')
-      setValue('keepalive', target.keepalive)
       setValue('remarks', target.remarks || '')
     }
   }, [target, props.isOpen, setValue])
@@ -242,23 +219,6 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
               <div className={gridStyles()}>
                 <div className='col-span-12'>
                   <Input label={t('item_address')} value={target?.ip || ''} readOnly />
-                </div>
-                <div className='col-span-6'>
-                  <InputCtrl
-                    control={control}
-                    name='allowedIPs'
-                    label={t('item_allowed_ips')}
-                    errorMessage={fet(errors.allowedIPs)}
-                  />
-                </div>
-                <div className='col-span-6'>
-                  <InputCtrl
-                    control={control}
-                    name='keepalive'
-                    type='number'
-                    label={t('item_persistent_keepalive')}
-                    errorMessage={fet(errors.keepalive)}
-                  />
                 </div>
                 <div className='col-span-12'>
                   <InputCtrl

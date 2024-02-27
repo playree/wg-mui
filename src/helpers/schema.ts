@@ -169,8 +169,6 @@ export const scCreatePeer = z.object({
   ip: zIp,
   userId: zUUID,
   privateKey: zPrivateKey,
-  allowedIPs: zAllowedIPs,
-  keepalive: zKeepalive,
   remarks: zRemarks,
 })
 export type CreatePeer = z.infer<typeof scCreatePeer>
@@ -178,8 +176,6 @@ export type CreatePeer = z.infer<typeof scCreatePeer>
 // Peer更新
 export const scUpdatePeer = z.object({
   ip: zIp,
-  allowedIPs: zAllowedIPs,
-  keepalive: zKeepalive,
   remarks: zRemarks,
 })
 export type UpdatePeer = z.infer<typeof scUpdatePeer>

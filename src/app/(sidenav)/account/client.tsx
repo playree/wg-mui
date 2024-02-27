@@ -33,7 +33,7 @@ export const AccountViewClient: FC<{ account: TypeUser }> = ({ account }) => {
 
   return (
     <>
-      <Card className='w-full'>
+      <Card className='mt-2 w-full'>
         <CardBody className={gridStyles()}>
           <div className='col-span-3'>{t('item_username')}</div>
           <div className='col-span-7'>{account.name}</div>

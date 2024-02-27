@@ -60,7 +60,7 @@ const QrModal: FC<Omit<ModalProps, 'children'> & { target?: string }> = (props) 
           <>
             <ModalHeader className='flex flex-col gap-1'>{t('item_scan_qr')}</ModalHeader>
             <ModalBody>
-              {target && <Image src={target} alt='QR' width={200} classNames={{ wrapper: 'mx-auto' }} />}
+              {target && <Image src={target} alt='QR' width={320} classNames={{ wrapper: 'mx-auto' }} />}
             </ModalBody>
             <ModalFooter>
               <ExButton variant='solid' onPress={onClose}>

@@ -149,8 +149,6 @@ export const prisma = new PrismaClient().$extends({
           where: { userId, isDeleting: includeDeleting ? undefined : false },
           select: {
             ip: true,
-            allowedIPs: true,
-            keepalive: true,
             remarks: true,
             isDeleting: true,
             updatedAt: true,

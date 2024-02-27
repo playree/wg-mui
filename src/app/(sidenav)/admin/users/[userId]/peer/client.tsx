@@ -95,7 +95,6 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
               <TableColumn key='ip' minWidth={120} allowsSorting>
                 {t('item_address')}
               </TableColumn>
-              <TableColumn key='allowedIPs'>{t('item_allowed_ips')}</TableColumn>
               <TableColumn key='isDeleting' minWidth={60} allowsSorting>
                 {t('item_deleting')}
               </TableColumn>
@@ -111,9 +110,6 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
               {(peer) => (
                 <TableRow key={peer.ip}>
                   <TableCell>{peer.ip}</TableCell>
-                  <TableCell>
-                    <div className='max-w-32 truncate'>{peer.allowedIPs}</div>
-                  </TableCell>
                   <TableCell className={twMerge(textStyles({ color: 'red' }))}>
                     {peer.isDeleting && <ExclamationTriangleIcon />}
                   </TableCell>

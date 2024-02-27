@@ -70,8 +70,6 @@ model Peer {
   userId     String?
   privateKey String
   publicKey  String
-  allowedIPs String?
-  keepalive  Int
   remarks    String?
   isDeleting Boolean  @default(false)
   updatedAt  DateTime @updatedAt

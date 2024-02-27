@@ -283,8 +283,8 @@ exit 0
           Peer: {
             PublicKey: this.conf.publicKey,
             EndPoint: this.conf.endPoint,
-            AllowedIPs: peer.allowedIPs || '0.0.0.0/0',
-            PersistentKeepalive: peer.keepalive,
+            AllowedIPs: this.conf.defaultAllowedIPs || '0.0.0.0/0',
+            PersistentKeepalive: this.conf.defaultKeepalive,
           },
         } as IIniObject,
         { spaceBefore: true, spaceAfter: true, skipUndefined: true },
@@ -316,7 +316,10 @@ exit 0
 
   static async getWgMgr() {
     const wgConf = await prisma.wgConf.findUnique({ where: { id: 'main' } })
-    console.debug('Load WgConf:', wgConf)
+    console.debug(
+      'Load WgConf:',
+      wgConf && { interfaceName: wgConf.interfaceName, address: wgConf.address, listenPort: wgConf.listenPort },
+    )
     return wgConf ? new WgMgr(wgConf) : undefined
   }
 }
