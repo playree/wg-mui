@@ -14,7 +14,6 @@ model User {
   id           String   @id @default(uuid())
   name         String   @unique
   passwordHash String
-  isNotInit    Boolean  @default(true)
   isAdmin      Boolean  @default(false)
   email        String?  @unique
   updatedAt    DateTime @updatedAt
@@ -24,11 +23,22 @@ model User {
   userLabelList UserLabel[]
   peerList      Peer[]
   lastSignIn    LastSignIn?
+  passwordReset PasswordReset?
 }
 
 model LastSignIn {
   id        String   @id
   provider  String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  // Relation
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model PasswordReset {
+  id        String   @id
+  onetimeId String   @unique
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 

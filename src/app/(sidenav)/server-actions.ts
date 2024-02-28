@@ -41,9 +41,9 @@ export type ServerInfo = ActionResultType<typeof getServerInfo>
 export const getLinodeTransferInfo = validAction('getLinodeTransferInfo', {
   requireAuth: true,
   next: async () => {
-    if (process.env.LINODE_DUMMY) {
+    if (process.env.DEBUG_LINODE_DUMMY) {
       // テスト用ダミー
-      return JSON.parse(process.env.LINODE_DUMMY) as {
+      return JSON.parse(process.env.DEBUG_LINODE_DUMMY) as {
         used: number
         quota: number
         billable: number

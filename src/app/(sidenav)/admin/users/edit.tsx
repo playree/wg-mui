@@ -40,6 +40,7 @@ const CreateUserModal: FC<
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
+  const [isSendEmail, setSendEmail] = useState(false)
 
   const {
     control,
@@ -47,6 +48,7 @@ const CreateUserModal: FC<
     formState: { errors },
     setError,
     reset,
+    setValue,
   } = useForm<CreateUser>({
     resolver: zodResolver(scCreateUser),
     mode: 'onChange',
@@ -94,6 +96,19 @@ const CreateUserModal: FC<
                     isRequired
                   />
                 </div>
+                <div className='col-span-12 flex items-center pl-2'>
+                  <Checkbox
+                    className='pl-2'
+                    onChange={() => {
+                      setSendEmail(!isSendEmail)
+                      setValue('password', '')
+                      control.setError('password', { message: undefined })
+                    }}
+                    isSelected={isSendEmail}
+                  >
+                    {t('item_send_email_password')}
+                  </Checkbox>
+                </div>
                 <div className='col-span-12'>
                   <InputCtrl
                     control={control}
@@ -112,6 +127,7 @@ const CreateUserModal: FC<
                     type={isVisible ? 'text' : 'password'}
                     autoComplete='new-password'
                     errorMessage={fet(errors.password)}
+                    isDisabled={isSendEmail}
                     isRequired
                   />
                 </div>
@@ -134,6 +150,7 @@ const CreateUserModal: FC<
                     variant='bordered'
                     errorMessage={fet(errors.email)}
                     autoComplete='email'
+                    isRequired={isSendEmail}
                   />
                 </div>
                 <div className='col-span-12'>

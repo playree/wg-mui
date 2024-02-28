@@ -12,6 +12,7 @@ export const en: DefaultLocaleItems = {
   menu_signout: 'Sign Out',
   menu_peer: 'Peer(Connect)',
   menu_account: 'Account',
+  menu_password_reset: 'Reset Password',
   group_user: 'User',
   group_admin: 'Admin',
   item_user: 'User',
@@ -95,6 +96,7 @@ export const en: DefaultLocaleItems = {
   item_default_keepalive: 'Default Persistent Keep-Alive',
   item_generate_global_cidr: 'Specify this IP band and global IP band',
   item_last_signin_at: 'Last SignIn',
+  item_send_email_password: 'Send an email for initial password setting',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -110,6 +112,7 @@ export const en: DefaultLocaleItems = {
   msg_add_tunnel: 'Add a tunnel to your device',
   msg_create_admin: 'Create an admin user',
   msg_initialize_wg: 'Perform initial settings for WireGuard',
+  msg_password_reset: 'Reset your password\nPlease enter the password you want to set',
 
   '@required_field': 'Required field',
   '@invalid_username': '4-30 alphanumeric characters (.-_)',

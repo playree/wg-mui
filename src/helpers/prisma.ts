@@ -83,7 +83,7 @@ export const prisma = new PrismaClient().$extends({
         const { passwordHash: _, ...user } = await prisma.user.create({
           data: {
             ...input,
-            passwordHash: hashPassword(password),
+            passwordHash: password ? hashPassword(password) : '',
             userLabelList: { create: createLabelList },
           },
         })

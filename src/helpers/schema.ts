@@ -90,7 +90,7 @@ export type Signin = z.infer<typeof scSignin>
 // ユーザー作成
 export const scCreateUser = z.object({
   name: zUsername,
-  password: zPassword,
+  password: zPasswordUpdate,
   isAdmin: z.boolean(),
   email: zEmail,
   labelList: z.set(z.string()),

@@ -12,6 +12,7 @@ export type LocaleItemBase =
   | 'menu_signout'
   | 'menu_peer'
   | 'menu_account'
+  | 'menu_password_reset'
   | 'group_user'
   | 'group_admin'
   | 'item_user'
@@ -96,6 +97,7 @@ export type LocaleItemBase =
   | 'item_default_keepalive'
   | 'item_generate_global_cidr'
   | 'item_last_signin_at'
+  | 'item_send_email_password'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_common_error'
@@ -109,6 +111,7 @@ export type LocaleItemBase =
   | 'msg_add_tunnel'
   | 'msg_create_admin'
   | 'msg_initialize_wg'
+  | 'msg_password_reset'
 
 export type LocaleItemError =
   | '@required_field'

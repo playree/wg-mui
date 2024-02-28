@@ -70,7 +70,6 @@ const authOptions: NextAuthOptions = {
         token.sub = user.id
         token.name = user.name
         token.isAdmin = user.isAdmin
-        token.isNotInit = user.isNotInit
         token.email = user.email
         console.debug('set token:', token.sub)
       } else {
@@ -85,7 +84,6 @@ const authOptions: NextAuthOptions = {
       if (token.sub) {
         session.user.id = token.sub
         session.user.name = token.name
-        session.user.isNotInit = token.isNotInit
         session.user.isAdmin = token.isAdmin
         session.user.email = token.email
         console.debug('set session:', JSON.stringify(session.user))

@@ -4,6 +4,7 @@ import { prisma } from '@/helpers/prisma'
 import { scCreateUser, scUpdateUser, zReq, zString, zUUID } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
+import { randomUUID } from 'crypto'
 
 /**
  * ユーザーリスト取得(管理者権限)
@@ -24,7 +25,21 @@ export const createUser = validAction('createUser', {
   requireAuth: true,
   requireAdmin: true,
   next: async ({ req }) => {
-    return prisma.user.createUser(req)
+    const user = await prisma.user.createUser(req)
+    if (!req.password) {
+      // パスワード初期設定用メール送信
+      const passwordReset = await prisma.passwordReset.upsert({
+        where: { id: user.id },
+        create: { id: user.id, onetimeId: randomUUID() },
+        update: { onetimeId: randomUUID() },
+      })
+      if (process.env.DEBUG_SEND_EMAIL) {
+        console.debug('PasswordReset:onetimeId:', passwordReset.onetimeId)
+      } else {
+        // Eメール送信
+      }
+    }
+    return user
   },
 })
 
