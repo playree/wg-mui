@@ -1,5 +1,6 @@
 'use server'
 
+import { sendEmailPasswordReset } from '@/helpers/mail'
 import { prisma } from '@/helpers/prisma'
 import { scCreateUser, scUpdateUser, zReq, zString, zUUID } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
@@ -26,18 +27,18 @@ export const createUser = validAction('createUser', {
   requireAdmin: true,
   next: async ({ req }) => {
     const user = await prisma.user.createUser(req)
-    if (!req.password) {
+    if (!req.password && req.email) {
       // パスワード初期設定用メール送信
       const passwordReset = await prisma.passwordReset.upsert({
         where: { id: user.id },
         create: { id: user.id, onetimeId: randomUUID() },
         update: { onetimeId: randomUUID() },
       })
-      if (process.env.DEBUG_SEND_EMAIL) {
-        console.debug('PasswordReset:onetimeId:', passwordReset.onetimeId)
-      } else {
-        // Eメール送信
-      }
+      await sendEmailPasswordReset({
+        username: req.name,
+        to: req.email,
+        onetimeId: passwordReset.onetimeId,
+      })
     }
     return user
   },
