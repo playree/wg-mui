@@ -26,7 +26,7 @@ import { AsyncListData } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createUser, deleteUser, existsUserName, updateUser } from './server-actions'
+import { createUser, existsUserName, updateUser } from './server-actions'
 
 // ユーザー管理
 
@@ -417,62 +417,5 @@ export const CreateUserButtonWithModal: FC<{ updated: () => void; labelList: Asy
         labelList={labelList}
       />
     </>
-  )
-}
-
-/** 削除モーダル */
-export const DeleteUserModal: FC<Omit<ModalProps, 'children'> & { target?: TypeUser; updated: () => void }> = (
-  props,
-) => {
-  const { target, updated, ...nextProps } = props
-  const { t } = useLocale()
-  const [isAgree, setAgree] = useState(false)
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setLoading(false)
-    setAgree(false)
-  }, [props.isOpen])
-
-  return (
-    <Modal {...nextProps}>
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className='flex flex-col gap-1'>{t('item_delete_confirm')}</ModalHeader>
-            <ModalBody className='gap-0'>
-              <div className='whitespace-pre-wrap'>{t('msg_user_delete', { username: target?.name })}</div>
-              <Checkbox className='mt-4' onChange={() => setAgree(!isAgree)} isSelected={isAgree}>
-                {t('item_confirmed')}
-              </Checkbox>
-            </ModalBody>
-            <ModalFooter>
-              <ExButton color='danger' onPress={onClose}>
-                {t('item_cancel')}
-              </ExButton>
-              <ExButton
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isDisabled={!isAgree}
-                isLoading={isLoading}
-                onPress={async () => {
-                  console.debug('delete:submit:', target)
-                  if (target) {
-                    setLoading(true)
-                    await parseAction(deleteUser({ id: target.id }))
-                    await intervalOperation()
-                    setLoading(false)
-                    updated()
-                    onClose()
-                  }
-                }}
-              >
-                {t('item_ok')}
-              </ExButton>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
   )
 }

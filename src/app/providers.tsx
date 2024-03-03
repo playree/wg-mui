@@ -9,6 +9,8 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { ThemeProviderProps } from 'next-themes/dist/types'
 import { FC, ReactNode } from 'react'
 
+import { SharedUIProvider } from './context'
+
 export interface ProvidersProps {
   children: ReactNode
   themeProps?: ThemeProviderProps
@@ -19,7 +21,9 @@ export const Providers: FC<ProvidersProps> = ({ children, themeProps }) => {
     <NextUIProvider>
       <NextThemesProvider {...themeProps}>
         <AuthProvider authProps={authProps}>
-          <LocaleProvider config={localeConfig}>{children}</LocaleProvider>
+          <LocaleProvider config={localeConfig}>
+            <SharedUIProvider>{children}</SharedUIProvider>
+          </LocaleProvider>
         </AuthProvider>
       </NextThemesProvider>
     </NextUIProvider>

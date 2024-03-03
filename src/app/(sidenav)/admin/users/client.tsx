@@ -1,5 +1,6 @@
 'use client'
 
+import { useSharedUIContext } from '@/app/context'
 import {
   ComputerDesktopIcon,
   EllipsisHorizontalIcon,
@@ -10,7 +11,6 @@ import {
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
-import { ConfirmModal, ConfirmModalRef } from '@/components/nextekit/ui/modal'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
@@ -37,12 +37,12 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { useAsyncList } from '@react-stately/data'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { getLabelList } from '../labels/server-actions'
-import { CreateUserButtonWithModal, DeleteUserModal, UpdateUserModal } from './edit'
-import { getUserList, resetPassword } from './server-actions'
+import { CreateUserButtonWithModal, UpdateUserModal } from './edit'
+import { deleteUser, getUserList, resetPassword } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -95,11 +95,7 @@ export const UserListClient: FC = () => {
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
 
-  const [targetDelete, setTargetDelete] = useState<TypeUser>()
-  const deleteModal = useDisclosure()
-  const openDeleteModal = deleteModal.onOpen
-
-  const refModal = useRef<ConfirmModalRef>(null)
+  const sharedUI = useSharedUIContext()
 
   useEffect(() => {
     console.debug('targetUpdate:', targetUpdate?.id)
@@ -107,13 +103,6 @@ export const UserListClient: FC = () => {
       openUpdateModal()
     }
   }, [openUpdateModal, targetUpdate])
-
-  useEffect(() => {
-    console.debug('targetDelete:', targetDelete?.id)
-    if (targetDelete) {
-      openDeleteModal()
-    }
-  }, [openDeleteModal, targetDelete])
 
   return (
     <>
@@ -252,7 +241,7 @@ export const UserListClient: FC = () => {
                           key='pwreset'
                           startContent={<EnvelopeIcon />}
                           onPress={async () => {
-                            const ok = await refModal.current?.confirm({
+                            const ok = await sharedUI.confirmModal?.confirm({
                               title: t('menu_password_reset'),
                               text: t('msg_send_reset_confirm', { email: user.email }),
                               requireCheck: true,
@@ -261,7 +250,7 @@ export const UserListClient: FC = () => {
                             if (ok) {
                               await parseAction(resetPassword({ id: user.id }))
                               await intervalOperation()
-                              refModal.current?.close()
+                              sharedUI.confirmModal?.close()
                             }
                           }}
                         >
@@ -272,8 +261,19 @@ export const UserListClient: FC = () => {
                           className='text-danger'
                           color='danger'
                           startContent={<TrashIcon />}
-                          onPress={() => {
-                            setTargetDelete(user)
+                          onPress={async () => {
+                            const ok = await sharedUI.confirmModal?.confirm({
+                              title: t('item_delete_confirm'),
+                              text: t('msg_user_delete', { username: user.name }),
+                              requireCheck: true,
+                              autoClose: false,
+                            })
+                            if (ok) {
+                              await parseAction(deleteUser({ id: user.id }))
+                              await intervalOperation()
+                              list.reload()
+                              sharedUI.confirmModal?.close()
+                            }
                           }}
                         >
                           {t('item_delete')}
@@ -299,22 +299,6 @@ export const UserListClient: FC = () => {
         }}
         labelList={labelList}
         onClose={() => setTargetUpdate(undefined)}
-      />
-      <DeleteUserModal
-        size='xl'
-        isOpen={deleteModal.isOpen}
-        onOpenChange={deleteModal.onOpenChange}
-        isDismissable={false}
-        scrollBehavior='outside'
-        target={targetDelete}
-        updated={() => {
-          list.reload()
-        }}
-        onClose={() => setTargetDelete(undefined)}
-      />
-      <ConfirmModal
-        ref={refModal}
-        uiText={{ ok: t('item_ok'), cancel: t('item_cancel'), confirmed: t('item_confirmed') }}
       />
     </>
   )

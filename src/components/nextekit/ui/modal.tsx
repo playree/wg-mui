@@ -49,9 +49,7 @@ export const ConfirmModal = forwardRef<
       })
     },
     close: () => {
-      if (confirmParam) {
-        setConfirmParam(undefined)
-      }
+      setConfirmParam(undefined)
     },
   }))
 
