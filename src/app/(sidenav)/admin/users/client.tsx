@@ -1,6 +1,6 @@
 'use client'
 
-import { ComputerDesktopIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
+import { ComputerDesktopIcon, EllipsisHorizontalIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
@@ -10,7 +10,12 @@ import { dayformat } from '@/helpers/day'
 import type { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
+  Button,
   Chip,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Input,
   Pagination,
   Select,
@@ -210,28 +215,42 @@ export const UserListClient: FC = () => {
                     <div className='text-xs'>{dayformat(user.updatedAt, 'jp-simple')}</div>
                   </TableCell>
                   <TableCell>
-                    <ExButton
-                      isIconOnly
-                      isSmart
-                      color='primary'
-                      tooltip={t('item_edit')}
-                      onPress={() => {
-                        setTargetUpdate(user)
+                    <Dropdown
+                      showArrow
+                      classNames={{
+                        base: 'before:bg-default-200',
+                        content:
+                          'py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
                       }}
                     >
-                      <PencilSquareIcon />
-                    </ExButton>
-                    <ExButton
-                      isIconOnly
-                      isSmart
-                      color='danger'
-                      tooltip={t('item_delete')}
-                      onPress={() => {
-                        setTargetDelete(user)
-                      }}
-                    >
-                      <TrashIcon />
-                    </ExButton>
+                      <DropdownTrigger>
+                        <Button isIconOnly variant='flat' color='primary' className='h-fit px-2 py-1'>
+                          <EllipsisHorizontalIcon />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label='actions'>
+                        <DropdownItem
+                          key='edit'
+                          startContent={<PencilSquareIcon />}
+                          onPress={() => {
+                            setTargetUpdate(user)
+                          }}
+                        >
+                          {t('item_edit')}
+                        </DropdownItem>
+                        <DropdownItem
+                          key='delete'
+                          className='text-danger'
+                          color='danger'
+                          startContent={<TrashIcon />}
+                          onPress={() => {
+                            setTargetDelete(user)
+                          }}
+                        >
+                          {t('item_delete')}
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
                   </TableCell>
                 </TableRow>
               )}

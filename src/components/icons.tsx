@@ -550,6 +550,42 @@ export const ExclamationTriangleIcon: FC<IconSvgProps> = ({ size = 20, strokeWid
   </svg>
 )
 
+export const Bars3Icon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
+  <svg
+    fill='currentColor'
+    viewBox='0 0 24 24'
+    xmlns='http://www.w3.org/2000/svg'
+    aria-hidden='true'
+    width={size}
+    strokeWidth={strokeWidth}
+    {...props}
+  >
+    <path
+      clipRule='evenodd'
+      fillRule='evenodd'
+      d='M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z'
+    />
+  </svg>
+)
+
+export const EllipsisHorizontalIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
+  <svg
+    fill='currentColor'
+    viewBox='0 0 24 24'
+    xmlns='http://www.w3.org/2000/svg'
+    aria-hidden='true'
+    width={size}
+    strokeWidth={strokeWidth}
+    {...props}
+  >
+    <path
+      clipRule='evenodd'
+      fillRule='evenodd'
+      d='M4.5 12a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Zm6 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z'
+    />
+  </svg>
+)
+
 //
 
 export const MoonFilledIcon = ({ size = 24, width, height, ...props }: IconSvgProps) => (

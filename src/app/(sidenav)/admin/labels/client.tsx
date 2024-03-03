@@ -1,14 +1,18 @@
 'use client'
 
-import { PencilSquareIcon, TrashIcon } from '@/components/icons'
+import { EllipsisHorizontalIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
-import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import type { TypeLabel } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Input,
   Pagination,
   Table,
@@ -124,28 +128,42 @@ export const LabelListClient: FC = () => {
                   <TableCell>{label.explanation}</TableCell>
                   <TableCell>{dayformat(label.updatedAt, 'jp-simple')}</TableCell>
                   <TableCell>
-                    <ExButton
-                      isIconOnly
-                      isSmart
-                      color='primary'
-                      tooltip='編集'
-                      onPress={() => {
-                        setTargetUpdate(label)
+                    <Dropdown
+                      showArrow
+                      classNames={{
+                        base: 'before:bg-default-200',
+                        content:
+                          'py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
                       }}
                     >
-                      <PencilSquareIcon />
-                    </ExButton>
-                    <ExButton
-                      isIconOnly
-                      isSmart
-                      color='danger'
-                      tooltip='削除'
-                      onPress={() => {
-                        setTargetDelete(label)
-                      }}
-                    >
-                      <TrashIcon />
-                    </ExButton>
+                      <DropdownTrigger>
+                        <Button isIconOnly variant='flat' color='primary' className='h-fit px-2 py-1'>
+                          <EllipsisHorizontalIcon />
+                        </Button>
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label='actions'>
+                        <DropdownItem
+                          key='edit'
+                          startContent={<PencilSquareIcon />}
+                          onPress={() => {
+                            setTargetUpdate(label)
+                          }}
+                        >
+                          {t('item_edit')}
+                        </DropdownItem>
+                        <DropdownItem
+                          key='delete'
+                          className='text-danger'
+                          color='danger'
+                          startContent={<TrashIcon />}
+                          onPress={() => {
+                            setTargetDelete(label)
+                          }}
+                        >
+                          {t('item_delete')}
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
                   </TableCell>
                 </TableRow>
               )}

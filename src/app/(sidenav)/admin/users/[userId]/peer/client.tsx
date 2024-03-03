@@ -1,14 +1,18 @@
 'use client'
 
-import { ExclamationTriangleIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
+import { EllipsisHorizontalIcon, ExclamationTriangleIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
-import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { TypePeer, TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale'
 import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
   Pagination,
   Table,
   TableBody,
@@ -119,30 +123,42 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
                   </TableCell>
                   <TableCell>
                     {!peer.isDeleting && (
-                      <>
-                        <ExButton
-                          isIconOnly
-                          isSmart
-                          color='primary'
-                          tooltip={t('item_edit')}
-                          onPress={() => {
-                            setTargetUpdate(peer)
-                          }}
-                        >
-                          <PencilSquareIcon />
-                        </ExButton>
-                        <ExButton
-                          isIconOnly
-                          isSmart
-                          color='danger'
-                          tooltip={t('item_delete')}
-                          onPress={() => {
-                            setTargetDelete(peer)
-                          }}
-                        >
-                          <TrashIcon />
-                        </ExButton>
-                      </>
+                      <Dropdown
+                        showArrow
+                        classNames={{
+                          base: 'before:bg-default-200',
+                          content:
+                            'py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
+                        }}
+                      >
+                        <DropdownTrigger>
+                          <Button isIconOnly variant='flat' color='primary' className='h-fit px-2 py-1'>
+                            <EllipsisHorizontalIcon />
+                          </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu aria-label='actions'>
+                          <DropdownItem
+                            key='edit'
+                            startContent={<PencilSquareIcon />}
+                            onPress={() => {
+                              setTargetUpdate(peer)
+                            }}
+                          >
+                            {t('item_edit')}
+                          </DropdownItem>
+                          <DropdownItem
+                            key='delete'
+                            className='text-danger'
+                            color='danger'
+                            startContent={<TrashIcon />}
+                            onPress={() => {
+                              setTargetDelete(peer)
+                            }}
+                          >
+                            {t('item_delete')}
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
                     )}
                   </TableCell>
                 </TableRow>
