@@ -15,6 +15,7 @@ import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import type { TypeUser } from '@/helpers/schema'
+import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import {
   Button,
@@ -41,7 +42,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { getLabelList } from '../labels/server-actions'
 import { CreateUserButtonWithModal, DeleteUserModal, UpdateUserModal } from './edit'
-import { getUserList } from './server-actions'
+import { getUserList, resetPassword } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -255,8 +256,13 @@ export const UserListClient: FC = () => {
                               title: t('menu_password_reset'),
                               text: t('msg_send_reset_confirm', { email: user.email }),
                               requireCheck: true,
+                              autoClose: false,
                             })
-                            console.debug('modal:ok:', ok)
+                            if (ok) {
+                              await parseAction(resetPassword({ id: user.id }))
+                              await intervalOperation()
+                              refModal.current?.close()
+                            }
                           }}
                         >
                           {t('menu_password_reset')}

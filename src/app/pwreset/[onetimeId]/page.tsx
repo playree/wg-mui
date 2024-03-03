@@ -8,7 +8,7 @@ import { isEnabledOnetimeId } from './server-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
-  title: 'Initialize',
+  title: 'Reset Password',
 }
 
 const PasswordResetPage: FC<{ params: { onetimeId: string } }> = async ({ params: { onetimeId } }) => {

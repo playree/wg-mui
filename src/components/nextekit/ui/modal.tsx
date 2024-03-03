@@ -22,10 +22,11 @@ const CheckIcon: FC = () => (
   </svg>
 )
 
-type ConfirmParam = { title: string; text: string; requireCheck?: boolean }
+type ConfirmParam = { title: string; text: string; requireCheck?: boolean; autoClose?: boolean }
 
 export type ConfirmModalRef = {
   confirm: (param: ConfirmParam) => Promise<boolean>
+  close: () => void
 }
 
 export const ConfirmModal = forwardRef<
@@ -46,6 +47,11 @@ export const ConfirmModal = forwardRef<
       return new Promise((resolve) => {
         response.current = resolve
       })
+    },
+    close: () => {
+      if (confirmParam) {
+        setConfirmParam(undefined)
+      }
     },
   }))
 
@@ -98,7 +104,11 @@ export const ConfirmModal = forwardRef<
                 response.current(true)
                 response.current = undefined
               }
-              setConfirmParam(undefined)
+              if (confirmParam?.autoClose === false) {
+                setLoading(true)
+              } else {
+                setConfirmParam(undefined)
+              }
             }}
           >
             {uiText?.ok || 'OK'}

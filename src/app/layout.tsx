@@ -1,3 +1,4 @@
+import { getAppName } from '@/helpers/env'
 import '@/styles/globals.css'
 import { Metadata } from 'next'
 import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
@@ -20,7 +21,7 @@ const RobotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   title: {
     default: 'WireGuard Managenent UI',
-    template: `%s - WG MUI`,
+    template: `%s - ${getAppName() || 'WG MUI'}`,
   },
   description: 'WireGuard Managenent UI',
   icons: {

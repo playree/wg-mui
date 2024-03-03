@@ -18,6 +18,23 @@ export const getUserList = validAction('getUserList', {
   },
 })
 
+const resetPwd = async (userId: string) => {
+  const user = await prisma.user.get(userId)
+  if (user?.email) {
+    // パスワード初期設定用メール送信
+    const passwordReset = await prisma.passwordReset.upsert({
+      where: { id: user.id },
+      create: { id: user.id, onetimeId: randomUUID() },
+      update: { onetimeId: randomUUID() },
+    })
+    await sendEmailPasswordReset({
+      username: user.name,
+      to: user.email,
+      onetimeId: passwordReset.onetimeId,
+    })
+  }
+}
+
 /**
  * ユーザー作成(管理者権限)
  */
@@ -29,16 +46,7 @@ export const createUser = validAction('createUser', {
     const user = await prisma.user.createUser(req)
     if (!req.password && req.email) {
       // パスワード初期設定用メール送信
-      const passwordReset = await prisma.passwordReset.upsert({
-        where: { id: user.id },
-        create: { id: user.id, onetimeId: randomUUID() },
-        update: { onetimeId: randomUUID() },
-      })
-      await sendEmailPasswordReset({
-        username: req.name,
-        to: req.email,
-        onetimeId: passwordReset.onetimeId,
-      })
+      await resetPwd(user.id)
     }
     return user
   },
@@ -86,5 +94,17 @@ export const existsUserName = validAction('existsUserName', {
       return excludeId ? user.id !== excludeId : true
     }
     return false
+  },
+})
+
+/**
+ * パスワードリセット(管理者権限)
+ */
+export const resetPassword = validAction('resetPassword', {
+  schema: zReq({ id: zUUID }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req: { id } }) => {
+    await resetPwd(id)
   },
 })
