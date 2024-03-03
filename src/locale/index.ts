@@ -112,6 +112,7 @@ export type LocaleItemBase =
   | 'msg_create_admin'
   | 'msg_initialize_wg'
   | 'msg_password_reset'
+  | 'msg_send_reset_confirm'
 
 export type LocaleItemError =
   | '@required_field'

@@ -113,6 +113,7 @@ export const en: DefaultLocaleItems = {
   msg_create_admin: 'Create an admin user',
   msg_initialize_wg: 'Perform initial settings for WireGuard',
   msg_password_reset: 'Reset your password\nPlease enter the password you want to set',
+  msg_send_reset_confirm: 'A password reset email will be sent to this email address\n\n${email}',
 
   '@required_field': 'Required field',
   '@invalid_username': '4-30 alphanumeric characters (.-_)',

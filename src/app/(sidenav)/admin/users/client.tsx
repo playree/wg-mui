@@ -1,9 +1,16 @@
 'use client'
 
-import { ComputerDesktopIcon, EllipsisHorizontalIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
+import {
+  ComputerDesktopIcon,
+  EllipsisHorizontalIcon,
+  EnvelopeIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
+import { ConfirmModal, ConfirmModalRef } from '@/components/nextekit/ui/modal'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
@@ -29,7 +36,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { useAsyncList } from '@react-stately/data'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { getLabelList } from '../labels/server-actions'
@@ -90,6 +97,8 @@ export const UserListClient: FC = () => {
   const [targetDelete, setTargetDelete] = useState<TypeUser>()
   const deleteModal = useDisclosure()
   const openDeleteModal = deleteModal.onOpen
+
+  const refModal = useRef<ConfirmModalRef>(null)
 
   useEffect(() => {
     console.debug('targetUpdate:', targetUpdate?.id)
@@ -228,7 +237,7 @@ export const UserListClient: FC = () => {
                           <EllipsisHorizontalIcon />
                         </Button>
                       </DropdownTrigger>
-                      <DropdownMenu aria-label='actions'>
+                      <DropdownMenu aria-label='actions' disabledKeys={user.email ? undefined : ['pwreset']}>
                         <DropdownItem
                           key='edit'
                           startContent={<PencilSquareIcon />}
@@ -237,6 +246,20 @@ export const UserListClient: FC = () => {
                           }}
                         >
                           {t('item_edit')}
+                        </DropdownItem>
+                        <DropdownItem
+                          key='pwreset'
+                          startContent={<EnvelopeIcon />}
+                          onPress={async () => {
+                            const ok = await refModal.current?.confirm({
+                              title: t('menu_password_reset'),
+                              text: t('msg_send_reset_confirm', { email: user.email }),
+                              requireCheck: true,
+                            })
+                            console.debug('modal:ok:', ok)
+                          }}
+                        >
+                          {t('menu_password_reset')}
                         </DropdownItem>
                         <DropdownItem
                           key='delete'
@@ -282,6 +305,10 @@ export const UserListClient: FC = () => {
           list.reload()
         }}
         onClose={() => setTargetDelete(undefined)}
+      />
+      <ConfirmModal
+        ref={refModal}
+        uiText={{ ok: t('item_ok'), cancel: t('item_cancel'), confirmed: t('item_confirmed') }}
       />
     </>
   )

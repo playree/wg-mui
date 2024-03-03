@@ -96,7 +96,7 @@ export const ja: LocaleItems = {
   item_default_keepalive: 'デフォルトの Persistent Keep-Alive',
   item_generate_global_cidr: '↓このIP帯域とグローバルIP帯域を指定する',
   item_last_signin_at: '最終認証',
-  item_send_email_password: 'パスワード初期設定用のメールを送信する',
+  item_send_email_password: 'パスワード初期設定用のメールを送信',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -113,6 +113,7 @@ export const ja: LocaleItems = {
   msg_create_admin: '管理者ユーザーを作成します',
   msg_initialize_wg: 'WireGuardの初期設定を行います',
   msg_password_reset: 'パスワードをリセットします\n設定したいパスワードを入力してください',
+  msg_send_reset_confirm: 'このメールアドレスにパスワードリセット用のメールを送信します\n\n${email}',
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)4～30文字',
