@@ -51,6 +51,7 @@ export const Title: FC = () => {
 
 export const UserListClient: FC = () => {
   const { t } = useLocale()
+  const sharedUI = useSharedUIContext()
 
   const list = usePageingList({
     load: async () => parseAction(getUserList()),
@@ -94,8 +95,6 @@ export const UserListClient: FC = () => {
   const [targetUpdate, setTargetUpdate] = useState<TypeUser>()
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
-
-  const sharedUI = useSharedUIContext()
 
   useEffect(() => {
     console.debug('targetUpdate:', targetUpdate?.id)

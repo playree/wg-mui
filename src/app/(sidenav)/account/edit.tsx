@@ -50,7 +50,7 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
   }, [target, props.isOpen, setValue])
 
   return (
-    <Modal {...nextProps}>
+    <Modal backdrop='blur' {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form

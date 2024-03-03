@@ -100,6 +100,7 @@ export type LocaleItemBase =
   | 'item_send_email_password'
   | 'msg_password_confirm'
   | 'msg_user_delete'
+  | 'msg_label_delete'
   | 'msg_common_error'
   | 'msg_enter_search_word'
   | 'msg_not_installed'

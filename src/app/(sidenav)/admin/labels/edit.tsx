@@ -10,7 +10,6 @@ import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
-  Checkbox,
   Input,
   Modal,
   ModalBody,
@@ -23,7 +22,7 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createLabel, deleteLabel, existsLabelName, updateLabel } from './server-actions'
+import { createLabel, existsLabelName, updateLabel } from './server-actions'
 
 // ラベル管理
 
@@ -51,7 +50,7 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
   }, [reset, props.isOpen])
 
   return (
-    <Modal {...nextProps}>
+    <Modal backdrop='blur' {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form
@@ -153,7 +152,7 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
   }, [target, props.isOpen, setValue])
 
   return (
-    <Modal {...nextProps}>
+    <Modal backdrop='blur' {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form
@@ -250,62 +249,5 @@ export const CreateLabelButtonWithModal: FC<{ updated: () => void }> = ({ update
         updated={() => updated()}
       />
     </>
-  )
-}
-
-/** 削除モーダル */
-export const DeleteLabelModal: FC<Omit<ModalProps, 'children'> & { target?: TypeLabel; updated: () => void }> = (
-  props,
-) => {
-  const { target, updated, ...nextProps } = props
-  const { t } = useLocale()
-  const [isAgree, setAgree] = useState(false)
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(() => {
-    setLoading(false)
-    setAgree(false)
-  }, [props.isOpen])
-
-  return (
-    <Modal {...nextProps}>
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className='flex flex-col gap-1'>{t('item_delete_confirm')}</ModalHeader>
-            <ModalBody className='gap-0'>
-              <div className='whitespace-pre-wrap'>{t('msg_user_delete', { username: target?.name })}</div>
-              <Checkbox className='mt-4' onChange={() => setAgree(!isAgree)} isSelected={isAgree}>
-                {t('item_confirmed')}
-              </Checkbox>
-            </ModalBody>
-            <ModalFooter>
-              <ExButton color='danger' onPress={onClose}>
-                {t('item_cancel')}
-              </ExButton>
-              <ExButton
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isDisabled={!isAgree}
-                isLoading={isLoading}
-                onPress={async () => {
-                  console.debug('delete:submit:', target)
-                  if (target) {
-                    setLoading(true)
-                    await parseAction(deleteLabel({ id: target.id }))
-                    await intervalOperation()
-                    setLoading(false)
-                    updated()
-                    onClose()
-                  }
-                }}
-              >
-                {t('item_ok')}
-              </ExButton>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
   )
 }

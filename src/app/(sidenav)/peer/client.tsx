@@ -54,7 +54,7 @@ const QrModal: FC<Omit<ModalProps, 'children'> & { target?: string }> = (props) 
   const { t } = useLocale()
 
   return (
-    <Modal {...nextProps}>
+    <Modal backdrop='blur' {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <>

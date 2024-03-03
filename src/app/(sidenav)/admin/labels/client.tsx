@@ -1,11 +1,13 @@
 'use client'
 
+import { useSharedUIContext } from '@/app/context'
 import { EllipsisHorizontalIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import type { TypeLabel } from '@/helpers/schema'
+import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import {
   Button,
@@ -26,8 +28,8 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { CreateLabelButtonWithModal, DeleteLabelModal, UpdateLabelModal } from './edit'
-import { getLabelList } from './server-actions'
+import { CreateLabelButtonWithModal, UpdateLabelModal } from './edit'
+import { deleteLabel, getLabelList } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -36,6 +38,7 @@ export const Title: FC = () => {
 
 export const LabelListClient: FC = () => {
   const { t } = useLocale()
+  const sharedUI = useSharedUIContext()
 
   const list = usePageingList({
     load: async () => parseAction(getLabelList({ withUser: 'count' })),
@@ -55,23 +58,12 @@ export const LabelListClient: FC = () => {
   const openUpdateModal = updateModal.onOpen
   const [targetUpdate, setTargetUpdate] = useState<TypeLabel>()
 
-  const [targetDelete, setTargetDelete] = useState<TypeLabel>()
-  const deleteModal = useDisclosure()
-  const openDeleteModal = deleteModal.onOpen
-
   useEffect(() => {
     console.debug('targetUpdate:', targetUpdate?.id)
     if (targetUpdate) {
       openUpdateModal()
     }
   }, [openUpdateModal, targetUpdate])
-
-  useEffect(() => {
-    console.debug('targetDelete:', targetDelete?.id)
-    if (targetDelete) {
-      openDeleteModal()
-    }
-  }, [openDeleteModal, targetDelete])
 
   return (
     <>
@@ -156,8 +148,19 @@ export const LabelListClient: FC = () => {
                           className='text-danger'
                           color='danger'
                           startContent={<TrashIcon />}
-                          onPress={() => {
-                            setTargetDelete(label)
+                          onPress={async () => {
+                            const ok = await sharedUI.confirmModal?.confirm({
+                              title: t('item_delete_confirm'),
+                              text: t('msg_label_delete', { name: label.name }),
+                              requireCheck: true,
+                              autoClose: false,
+                            })
+                            if (ok) {
+                              await parseAction(deleteLabel({ id: label.id }))
+                              await intervalOperation()
+                              list.reload()
+                              sharedUI.confirmModal?.close()
+                            }
                           }}
                         >
                           {t('item_delete')}
@@ -182,18 +185,6 @@ export const LabelListClient: FC = () => {
           list.reload()
         }}
         onClose={() => setTargetUpdate(undefined)}
-      />
-      <DeleteLabelModal
-        size='xl'
-        isOpen={deleteModal.isOpen}
-        onOpenChange={deleteModal.onOpenChange}
-        isDismissable={false}
-        scrollBehavior='outside'
-        target={targetDelete}
-        updated={() => {
-          list.reload()
-        }}
-        onClose={() => setTargetDelete(undefined)}
       />
     </>
   )

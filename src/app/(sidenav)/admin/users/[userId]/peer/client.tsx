@@ -1,11 +1,13 @@
 'use client'
 
+import { useSharedUIContext } from '@/app/context'
 import { EllipsisHorizontalIcon, ExclamationTriangleIcon, PencilSquareIcon, TrashIcon } from '@/components/icons'
 import { usePageingList } from '@/components/nextekit/list/paging'
 import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { TypePeer, TypeUser } from '@/helpers/schema'
+import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
 import {
   Button,
@@ -25,8 +27,8 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { CreatePeerButtonWithModal, DeletePeerModal, UpdatePeerModal } from './edit'
-import { getPeerList } from './server-actions'
+import { CreatePeerButtonWithModal, UpdatePeerModal } from './edit'
+import { deletePeer, getPeerList } from './server-actions'
 
 export const Title: FC<{ user: TypeUser }> = ({ user }) => {
   const { t } = useLocale()
@@ -39,6 +41,7 @@ export const Title: FC<{ user: TypeUser }> = ({ user }) => {
 
 export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
   const { t } = useLocale()
+  const sharedUI = useSharedUIContext()
 
   const list = usePageingList({
     load: () => parseAction(getPeerList({ userId: user.id })),
@@ -51,23 +54,12 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
   const updateModal = useDisclosure()
   const openUpdateModal = updateModal.onOpen
 
-  const [targetDelete, setTargetDelete] = useState<TypePeer>()
-  const deleteModal = useDisclosure()
-  const openDeleteModal = deleteModal.onOpen
-
   useEffect(() => {
     console.debug('targetUpdate:', targetUpdate?.ip)
     if (targetUpdate) {
       openUpdateModal()
     }
   }, [openUpdateModal, targetUpdate])
-
-  useEffect(() => {
-    console.debug('targetDelete:', targetDelete?.ip)
-    if (targetDelete) {
-      openDeleteModal()
-    }
-  }, [openDeleteModal, targetDelete])
 
   return (
     <>
@@ -151,8 +143,19 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
                             className='text-danger'
                             color='danger'
                             startContent={<TrashIcon />}
-                            onPress={() => {
-                              setTargetDelete(peer)
+                            onPress={async () => {
+                              const ok = await sharedUI.confirmModal?.confirm({
+                                title: t('item_delete_confirm'),
+                                text: t('msg_peer_delete', { peer: peer.ip }),
+                                requireCheck: true,
+                                autoClose: false,
+                              })
+                              if (ok) {
+                                await parseAction(deletePeer({ ip: peer.ip }))
+                                await intervalOperation()
+                                list.reload()
+                                sharedUI.confirmModal?.close()
+                              }
                             }}
                           >
                             {t('item_delete')}
@@ -178,18 +181,6 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
           list.reload()
         }}
         onClose={() => setTargetUpdate(undefined)}
-      />
-      <DeletePeerModal
-        size='xl'
-        isOpen={deleteModal.isOpen}
-        onOpenChange={deleteModal.onOpenChange}
-        isDismissable={false}
-        scrollBehavior='outside'
-        target={targetDelete}
-        updated={() => {
-          list.reload()
-        }}
-        onClose={() => setTargetDelete(undefined)}
       />
     </>
   )

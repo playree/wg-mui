@@ -100,6 +100,7 @@ export const en: DefaultLocaleItems = {
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
+  msg_label_delete: 'Delete ${name}.\n*All linked information will be deleted.',
   msg_common_error: 'An error has occurred',
   msg_enter_search_word: 'Enter search word',
   msg_not_installed: 'Not installed',
