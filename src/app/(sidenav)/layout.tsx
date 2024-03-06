@@ -13,7 +13,7 @@ const SideNavLayout: FC<{ children: ReactNode }> = async ({ children }) => {
 
   return (
     <SideNavbar menu={<Menu />} getMenu={getMenu} className='bg-white dark:bg-black'>
-      <div className='mx-auto max-w-3xl'>{children}</div>
+      <div className='mx-auto max-w-4xl'>{children}</div>
     </SideNavbar>
   )
 }

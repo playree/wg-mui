@@ -34,6 +34,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
 import { useAsyncList } from '@react-stately/data'
@@ -162,6 +163,7 @@ export const UserListClient: FC = () => {
               <TableColumn key='isAdmin' width={120} allowsSorting>
                 {t('item_isadmin')}
               </TableColumn>
+              <TableColumn key='email'>{t('item_email')}</TableColumn>
               <TableColumn>{t('item_label')}</TableColumn>
               <TableColumn>{t('item_peer')}</TableColumn>
               <TableColumn key='lastSignInAt' allowsSorting>
@@ -180,6 +182,13 @@ export const UserListClient: FC = () => {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>
                     <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
+                  </TableCell>
+                  <TableCell>
+                    {user.email && (
+                      <ExButton isSmart isIconOnly color='default' variant='flat' tooltip={user.email}>
+                        <EnvelopeIcon />
+                      </ExButton>
+                    )}
                   </TableCell>
                   <TableCell>
                     {user.labelList?.map((value) => {
