@@ -13,11 +13,14 @@ const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         console.debug('authorize:', credentials)
-        const name = credentials?.username
+        const name = credentials?.username || ''
         const password = credentials?.password || ''
 
+        // @を含む場合はメールアドレスとして認証
+        const where = name.indexOf('@') > -1 ? { email: name } : { name }
+
         // パスワード認証
-        const user = await prisma.user.findUnique({ where: { name } })
+        const user = await prisma.user.findUnique({ where })
         if (!user) {
           return null
         }

@@ -30,6 +30,7 @@ export const ja: LocaleItems = {
   item_true: 'あり',
   item_false: 'なし',
   item_username: 'ユーザー名',
+  item_username_email: 'ユーザー名 / Eメール',
   item_password: 'パスワード',
   item_email: 'Eメール',
   item_isadmin: '管理者権限',

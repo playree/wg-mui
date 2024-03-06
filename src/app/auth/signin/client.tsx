@@ -63,7 +63,7 @@ export const SignInClient: FC<{ isGoogleEnabled: boolean }> = ({ isGoogleEnabled
               control={control}
               name='username'
               autoFocus
-              label={t('item_username')}
+              label={t('item_username_email')}
               autoComplete='username'
               errorMessage={fet(errors.username)}
             />

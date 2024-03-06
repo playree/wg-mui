@@ -30,6 +30,7 @@ export type LocaleItemBase =
   | 'item_false'
   | 'item_signin'
   | 'item_username'
+  | 'item_username_email'
   | 'item_password'
   | 'item_email'
   | 'item_isadmin'

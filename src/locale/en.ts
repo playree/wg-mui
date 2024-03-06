@@ -30,6 +30,7 @@ export const en: DefaultLocaleItems = {
   item_true: 'True',
   item_false: 'False',
   item_username: 'User name',
+  item_username_email: 'Username / Email',
   item_password: 'Password',
   item_email: 'Email',
   item_isadmin: 'Is administrater',
