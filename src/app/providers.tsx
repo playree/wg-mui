@@ -7,6 +7,7 @@ import { localeConfig } from '@/locale/config'
 import { NextUIProvider } from '@nextui-org/react'
 import { ThemeProvider as NextThemesProvider } from 'next-themes'
 import { ThemeProviderProps } from 'next-themes/dist/types'
+import { useRouter } from 'next/navigation'
 import { FC, ReactNode } from 'react'
 
 import { SharedUIProvider } from './context'
@@ -17,8 +18,10 @@ export interface ProvidersProps {
 }
 
 export const Providers: FC<ProvidersProps> = ({ children, themeProps }) => {
+  const router = useRouter()
+
   return (
-    <NextUIProvider>
+    <NextUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
         <AuthProvider authProps={authProps}>
           <LocaleProvider config={localeConfig}>
