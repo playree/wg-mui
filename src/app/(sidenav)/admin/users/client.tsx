@@ -34,7 +34,6 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
 import { useAsyncList } from '@react-stately/data'

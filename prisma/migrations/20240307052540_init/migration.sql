@@ -3,11 +3,28 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
-    "isNotInit" BOOLEAN NOT NULL DEFAULT true,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
     "email" TEXT,
     "updatedAt" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CreateTable
+CREATE TABLE "LastSignIn" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "provider" TEXT NOT NULL,
+    "updatedAt" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "LastSignIn_id_fkey" FOREIGN KEY ("id") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "PasswordReset" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "onetimeId" TEXT NOT NULL,
+    "updatedAt" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "PasswordReset_id_fkey" FOREIGN KEY ("id") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -42,6 +59,8 @@ CREATE TABLE "WgConf" (
     "postDown" TEXT,
     "endPoint" TEXT NOT NULL,
     "dns" TEXT,
+    "defaultAllowedIPs" TEXT,
+    "defaultKeepalive" INTEGER NOT NULL DEFAULT 25,
     "updatedAt" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -49,16 +68,14 @@ CREATE TABLE "WgConf" (
 -- CreateTable
 CREATE TABLE "Peer" (
     "ip" TEXT NOT NULL PRIMARY KEY,
-    "userId" TEXT NOT NULL,
+    "userId" TEXT,
     "privateKey" TEXT NOT NULL,
     "publicKey" TEXT NOT NULL,
-    "allowedIPs" TEXT,
-    "persistentKeepalive" INTEGER NOT NULL,
     "remarks" TEXT,
     "isDeleting" BOOLEAN NOT NULL DEFAULT false,
     "updatedAt" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Peer_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Peer_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -66,6 +83,9 @@ CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PasswordReset_onetimeId_key" ON "PasswordReset"("onetimeId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Label_name_key" ON "Label"("name");
