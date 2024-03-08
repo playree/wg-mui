@@ -1,6 +1,6 @@
 'use client'
 
-import { FC, createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { FC, createContext, useCallback, useContext, useState } from 'react'
 
 import { getCookie } from '../cookie/client'
 import { LocaleConfig } from './types'
@@ -14,15 +14,16 @@ type LocaleContextType = {
 const LocaleContext = createContext<LocaleContextType>({} as LocaleContextType)
 
 const useLocaleContext = (localeConfig: LocaleConfig): LocaleContextType => {
-  const { locales, resources } = localeConfig
-  const [locale, setLocale] = useState(locales[0])
-
-  useEffect(() => {
+  const getLocale = () => {
     const localeCookie = getCookie('locale')
     if (localeCookie && localeConfig.locales.includes(localeCookie)) {
-      setLocale(localeCookie)
+      return localeCookie
     }
-  }, [localeConfig.locales])
+    return localeConfig.locales[0]
+  }
+
+  const { resources } = localeConfig
+  const [locale, setLocale] = useState(getLocale())
 
   return {
     locale,

@@ -13,13 +13,16 @@ import { LangSwitch } from '@/components/lang-switch'
 import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { textStyles } from '@/components/styles'
 import { ThemeSwitchList } from '@/components/theme-switch'
+import { fetchJson } from '@/helpers/fetch'
 import { useLocale } from '@/locale'
 import { localeConfig } from '@/locale/config'
 import { Accordion, AccordionItem, AccordionItemProps, Button, Card, CardBody } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { FC, ReactNode } from 'react'
+import { FC, ReactNode, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
+
+import type { SetLocaleApi } from '../api/locale/route'
 
 const accordionStyles: AccordionItemProps['classNames'] = {
   title: '',
@@ -60,8 +63,24 @@ export const MenuButton: FC<{
 }
 
 export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
-  const { t } = useLocale()
-  const { data: session } = useSession()
+  const { t, locale } = useLocale()
+  const { data: session, update } = useSession()
+
+  useEffect(() => {
+    if (session?.user) {
+      if (!session.user.locale) {
+        console.debug('initialize user locale:', locale)
+        fetchJson<void, SetLocaleApi>('/api/locale', {
+          method: 'POST',
+          body: { locale },
+        }).then(() => {
+          update({ locale })
+        })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div>
       <Card>

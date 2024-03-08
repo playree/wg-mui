@@ -14,20 +14,38 @@ export const corsHeaders = {
   'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 }
 
+export const resBadRequest = () => new NextResponse('Bad Request', { status: 400 })
+export const resInvalidSession = () => new NextResponse('Invalid session', { status: 403 })
+export const resPermissionDenied = () => new NextResponse('Permission denied', { status: 403 })
+
 export const validApi = <
   B extends ZodSchema = ZodSchema,
   Q extends ZodSchema = ZodSchema,
   P extends ZodSchema = ZodSchema,
->(
-  { query, body, params }: { query?: Q; body?: B; params?: P },
-  next: (req: NextRequest, items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P> }) => void,
-) => {
+>({
+  schema,
+  next,
+  requireAuth,
+  requireAdmin,
+}:
+  | {
+      schema?: { query?: Q; body?: B; params?: P }
+      next: (
+        req: NextRequest,
+        items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P>; user: Session['user'] },
+      ) => void
+      requireAuth: true
+      requireAdmin?: boolean
+    }
+  | {
+      schema: { query?: Q; body?: B; params?: P }
+      next: (req: NextRequest, items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P> }) => void
+      requireAuth: false
+      requireAdmin?: boolean
+    }) => {
   return async (req: NextRequest, { params: _params }: { params: Record<string, unknown> }) => {
-    const schema = z.object({
-      query: query || z.object({}),
-      body: body || z.object({}),
-      params: params || z.object({}),
-    })
+    console.debug(`vapi@${req.nextUrl.pathname}@${req.method}`)
+    // パラメータチェック
     const items = {
       query: {} as Record<string, unknown>,
       body: req.headers.get('Content-Type') === 'application/json' ? await req.json() : {},
@@ -36,60 +54,38 @@ export const validApi = <
     req.nextUrl.searchParams.forEach((value, key) => {
       items.query[key] = value
     })
-    const parsed = schema.safeParse(items)
+    const parsed = z
+      .object({
+        query: schema?.query || z.object({}),
+        body: schema?.body || z.object({}),
+        params: schema?.params || z.object({}),
+      })
+      .safeParse(items)
     if (!parsed.success) {
       const errorMessage = JSON.parse(parsed.error.message)
       console.warn('validation error', parsed.error.message)
       return NextResponse.json(errorMessage, { status: 400 })
     }
 
-    return next(req, items)
-  }
-}
-
-export const validAuthApi = <
-  B extends ZodSchema = ZodSchema,
-  Q extends ZodSchema = ZodSchema,
-  P extends ZodSchema = ZodSchema,
->(
-  { query, body, params }: { query?: Q; body?: B; params?: P },
-  next: (
-    req: NextRequest,
-    items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P>; user: Session['user'] },
-  ) => void,
-  requireAdmin = false,
-) => {
-  return async (req: NextRequest, { params: _params }: { params: Record<string, unknown> }) => {
-    const user = await getSessionUser()
-    if (!user) {
-      return new NextResponse('Invalid session', { status: 403 })
-    }
-    if (requireAdmin && !user.isAdmin) {
-      return new NextResponse('Permission denied', { status: 403 })
+    const parsedItems = {
+      query: parsed.data.query,
+      body: parsed.data.body,
+      params: parsed.data.params,
     }
 
-    const schema = z.object({
-      query: query || z.object({}),
-      body: body || z.object({}),
-      params: params || z.object({}),
-    })
-    const items = {
-      query: {} as Record<string, unknown>,
-      body: req.headers.get('Content-Type') === 'application/json' ? await req.json() : {},
-      params: _params || {},
-      user,
-    }
-    req.nextUrl.searchParams.forEach((value, key) => {
-      items.query[key] = value
-    })
-    const parsed = schema.safeParse(items)
-    if (!parsed.success) {
-      const errorMessage = JSON.parse(parsed.error.message)
-      console.warn('validation error', parsed.error.message)
-      return NextResponse.json(errorMessage, { status: 400 })
+    // 認証チェック
+    if (requireAuth) {
+      const user = await getSessionUser()
+      if (!user) {
+        return resInvalidSession()
+      }
+      if (requireAdmin && !user.isAdmin) {
+        return resPermissionDenied()
+      }
+      return next(req, { ...parsedItems, user })
     }
 
-    return next(req, items)
+    return next(req, parsedItems)
   }
 }
 
@@ -150,7 +146,7 @@ export const validAction = <REQ extends ZodSchema = ZodVoid, RES = void>(
 ) => {
   return async (req: z.infer<REQ>): Promise<ActionResult<RES>> => {
     const pathname = headers().get('x-pathname') || ''
-    console.debug(`va@${pathname}@${name}`)
+    console.debug(`vact@${pathname}@${name}`)
 
     try {
       if (requireAuth) {

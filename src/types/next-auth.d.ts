@@ -5,6 +5,7 @@ declare module 'next-auth/jwt' {
   interface JWT {
     name: string
     isAdmin: boolean
+    locale?: string
   }
 }
 
@@ -14,6 +15,7 @@ declare module 'next-auth' {
       id: string
       name: string
       isAdmin: boolean
+      locale?: string
       email?: string | null
     }
   }

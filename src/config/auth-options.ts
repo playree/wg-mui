@@ -1,6 +1,7 @@
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
-import { NextAuthOptions, Profile, Session, getServerSession } from 'next-auth'
+import { NextAuthOptions, Profile, Session } from 'next-auth'
+import { getServerSession } from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
@@ -73,6 +74,7 @@ const authOptions: NextAuthOptions = {
         token.sub = user.id
         token.name = user.name
         token.isAdmin = user.isAdmin
+        token.locale = user.locale || undefined
         token.email = user.email
         console.debug('set token:', token.sub)
       } else {
@@ -88,6 +90,7 @@ const authOptions: NextAuthOptions = {
         session.user.id = token.sub
         session.user.name = token.name
         session.user.isAdmin = token.isAdmin
+        session.user.locale = token.locale
         session.user.email = token.email
         console.debug('set session:', JSON.stringify(session.user))
       } else {

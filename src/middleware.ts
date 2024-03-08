@@ -12,14 +12,15 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
     console.debug('mw:locale')
     if (request.method.toUpperCase() === 'GET') {
       if (!request.cookies.has(localeConfig.cookie.name)) {
-        const detectedLang =
-          acceptLanguageParser.pick(
-            localeConfig.locales,
-            request.headers.get('accept-language') ?? localeConfig.locales[0],
-            {
-              loose: true,
-            },
-          ) ?? localeConfig.locales[0]
+        const detectedLang = request.nextauth?.token?.locale
+          ? request.nextauth.token?.locale
+          : acceptLanguageParser.pick(
+              localeConfig.locales,
+              request.headers.get('accept-language') ?? localeConfig.locales[0],
+              {
+                loose: true,
+              },
+            ) ?? localeConfig.locales[0]
 
         console.debug('set locale cookie:', detectedLang)
         response.cookies.set({

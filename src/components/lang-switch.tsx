@@ -1,7 +1,10 @@
 'use client'
 
+import type { SetLocaleApi } from '@/app/api/locale/route'
+import { fetchJson } from '@/helpers/fetch'
 import { Button } from '@nextui-org/button'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/dropdown'
+import { useSession } from 'next-auth/react'
 import { FC, useEffect, useState } from 'react'
 
 import { setCookie } from './nextekit/cookie/client'
@@ -14,6 +17,7 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; si
   size = 'md',
 }) => {
   const { locale, setLocale } = useLocale()
+  const { data: session } = useSession()
   const [selectedKeys, setSelectedKeys] = useState(new Set([locale]))
   const [selectedValue, setSelectedValue] = useState('')
 
@@ -41,6 +45,19 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; si
           setSelectedKeys(new Set([keyString]))
           setCookie(localeConfig.cookie.name, keyString, { maxAge: localeConfig.cookie.maxAge, path: '/' })
           setLocale(keyString)
+
+          if (session?.user) {
+            if (keyString !== session.user.locale) {
+              // ユーザーのロケール情報を更新
+              if (session?.user) {
+                console.debug('update user locale:', keyString)
+                fetchJson<void, SetLocaleApi>('/api/locale', {
+                  method: 'POST',
+                  body: { locale: keyString },
+                })
+              }
+            }
+          }
           return
         }}
       >
