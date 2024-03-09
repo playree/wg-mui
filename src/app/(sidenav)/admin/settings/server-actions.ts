@@ -1,7 +1,10 @@
 'use server'
 
+import { setKeyValueJson } from '@/helpers/key-value'
+import { getLocaleValueSchema } from '@/helpers/schema'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
+import { getLocaleValue } from '@/locale/locale-value'
 import { getIpForward } from '@/server-actions/cmd'
 
 /**
@@ -93,5 +96,30 @@ export const organizePeers = validAction('organizePeers', {
   next: async () => {
     const wgMgr = await refWgMgr()
     return wgMgr.organizePeers()
+  },
+})
+
+/**
+ * 設定取得
+ */
+export const getSettings = validAction('getSettings', {
+  requireAuth: true,
+  requireAdmin: true,
+  next: async () => {
+    const signinMessage = await getLocaleValue('signin_message')
+    return { signinMessage }
+  },
+})
+export type Settings = ActionResultType<typeof getSettings>
+
+/**
+ * サインインメッセージ更新
+ */
+export const updateSigninMessage = validAction('updateSigninMessage', {
+  schema: getLocaleValueSchema(200),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req }) => {
+    await setKeyValueJson('signin_message', JSON.stringify(req) === '{}' ? null : req)
   },
 })

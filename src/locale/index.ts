@@ -99,6 +99,7 @@ export type LocaleItemBase =
   | 'item_generate_global_cidr'
   | 'item_last_signin_at'
   | 'item_send_email_password'
+  | 'item_signin_message'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'
@@ -135,6 +136,7 @@ export type LocaleItemError =
   | '@invalid_ip'
   | '@invalid_allowed_ips'
   | '@invalid_keepalive'
+  | '@invalid_string_too_long'
   | '@already_exists'
 export const el = (item: LocaleItemError) => item
 

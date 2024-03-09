@@ -98,6 +98,7 @@ export const en: DefaultLocaleItems = {
   item_generate_global_cidr: 'Specify this IP band and global IP band',
   item_last_signin_at: 'Last SignIn',
   item_send_email_password: 'Send an email for initial password setting',
+  item_signin_message: 'Sign in message',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -128,11 +129,12 @@ export const en: DefaultLocaleItems = {
   '@invalid_interface_name': '1-60 alphanumeric characters (.-_)',
   '@invalid_address': 'Invalid CIDR format (ex. 192.168.1.1/24',
   '@invalid_port': '1-65535',
-  '@invalid_private_key': 'alphanumeric characters',
+  '@invalid_private_key': 'Alphanumeric characters',
   '@invalid_end_point': 'Invalid URL format',
   '@invalid_dns': 'Invalid DNS format',
   '@invalid_ip': 'Invalid IP format (ex. 192.168.1.1',
   '@invalid_allowed_ips': 'Invalid format',
   '@invalid_keepalive': '0-600',
+  '@invalid_string_too_long': 'String too long',
   '@already_exists': 'Already exists',
 }

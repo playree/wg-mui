@@ -1,5 +1,6 @@
 import { el } from '@/locale'
-import { z } from 'zod'
+import { localeConfig } from '@/locale/config'
+import { ZodRawShape, z } from 'zod'
 
 /**
  * undefined変換
@@ -191,3 +192,13 @@ export const scUpdatePassword = z.object({
   password: zPassword,
 })
 export type UpdatePassword = z.infer<typeof scUpdatePassword>
+
+// ロケール
+export const getLocaleValueSchema = (max: number) => {
+  const obj: ZodRawShape = {}
+  localeConfig.locales.forEach((lc) => {
+    obj[lc] = z.string().max(max, '@invalid_string_too_long').or(zEmpty).transform(convUndefined)
+  })
+  return z.object(obj)
+}
+export type LocaleValue = z.infer<ReturnType<typeof getLocaleValueSchema>>

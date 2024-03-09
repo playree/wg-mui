@@ -98,6 +98,7 @@ export const ja: LocaleItems = {
   item_generate_global_cidr: '↓このIP帯域とグローバルIP帯域を指定する',
   item_last_signin_at: '最終認証',
   item_send_email_password: 'パスワード初期設定用のメールを送信',
+  item_signin_message: 'サインインメッセージ',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -134,5 +135,6 @@ export const ja: LocaleItems = {
   '@invalid_ip': 'IPフォーマット不正 例)192.168.1.1',
   '@invalid_allowed_ips': 'フォーマット不正',
   '@invalid_keepalive': '1～65535',
+  '@invalid_string_too_long': '文字列が長すぎます',
   '@already_exists': '既に存在しています',
 }

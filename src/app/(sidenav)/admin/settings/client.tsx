@@ -1,18 +1,49 @@
 'use client'
 
-import { ArrowPathIcon, CheckCircleIcon, PlayCircleIcon, StopCircleIcon, XCircleIcon } from '@/components/icons'
+import {
+  ArrowPathIcon,
+  CheckBadgeIcon,
+  CheckCircleIcon,
+  PlayCircleIcon,
+  StopCircleIcon,
+  XCircleIcon,
+} from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
+import { LocaleValue, getLocaleValueSchema } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
-import { Divider, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { localeConfig } from '@/locale/config'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Accordion,
+  AccordionItem,
+  Divider,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  Textarea,
+} from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
-import { SystemInfo, disableWgAutoStart, ebableWgAutoStart, organizePeers, startWg, stopWg } from './server-actions'
+import {
+  Settings,
+  SystemInfo,
+  disableWgAutoStart,
+  ebableWgAutoStart,
+  organizePeers,
+  startWg,
+  stopWg,
+  updateSigninMessage,
+} from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -30,7 +61,7 @@ export const SystemInfoClient: FC<{
 
   return (
     <>
-      <Table aria-label='system info' hideHeader>
+      <Table aria-label='system info' hideHeader className=' mx-2'>
         <TableHeader>
           <TableColumn>item</TableColumn>
           <TableColumn>status</TableColumn>
@@ -191,5 +222,88 @@ export const SystemInfoClient: FC<{
         </TableBody>
       </Table>
     </>
+  )
+}
+
+const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) => {
+  const { t, fet } = useLocale()
+  const [isEdited, setEdited] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LocaleValue>({
+    resolver: zodResolver(getLocaleValueSchema(200)),
+    mode: 'onChange',
+    defaultValues: values,
+  })
+
+  return (
+    <form
+      onSubmit={handleSubmit(async (req) => {
+        console.debug('FormSigninMessage:submit:', req)
+        setLoading(true)
+        await parseAction(updateSigninMessage(req))
+        await intervalOperation()
+        setLoading(false)
+        setEdited(false)
+      })}
+    >
+      <div className={gridStyles()}>
+        {localeConfig.locales.map((lc) => (
+          <div key={lc} className='col-span-12'>
+            <Controller
+              control={control}
+              name={lc}
+              render={({ field: { onChange, value } }) => (
+                <Textarea
+                  label={lc}
+                  type='text'
+                  variant='bordered'
+                  size='sm'
+                  minRows={2}
+                  errorMessage={fet(errors[lc])}
+                  onChange={(event) => {
+                    if (!isEdited) {
+                      setEdited(true)
+                    }
+                    onChange(event)
+                  }}
+                  value={value || ''}
+                  classNames={{ input: 'text-xs' }}
+                />
+              )}
+            />
+          </div>
+        ))}
+        <div className='col-span-12 text-right'>
+          <ExButton
+            type='submit'
+            variant='flat'
+            color='success'
+            isSmart
+            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            isLoading={isLoading}
+            isDisabled={!isEdited}
+          >
+            {t('item_update')}
+          </ExButton>
+        </div>
+      </div>
+    </form>
+  )
+}
+
+export const SettingsClient: FC<{ settings: Settings }> = ({ settings: { signinMessage } }) => {
+  const { t } = useLocale()
+
+  return (
+    <Accordion variant='splitted'>
+      <AccordionItem key='signin-message' aria-label='ac signin-message' title={t('item_signin_message')}>
+        <FormSigninMessage values={signinMessage} />
+      </AccordionItem>
+    </Accordion>
   )
 }

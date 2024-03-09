@@ -4,8 +4,8 @@ import { parseAction } from '@/helpers/action'
 import { Metadata } from 'next'
 import { FC, Suspense } from 'react'
 
-import { SystemInfoClient, Title } from './client'
-import { getSystemInfo } from './server-actions'
+import { SettingsClient, SystemInfoClient, Title } from './client'
+import { getSettings, getSystemInfo } from './server-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -15,6 +15,11 @@ export const metadata: Metadata = {
 const StatusView: FC = async () => {
   const info = await parseAction(getSystemInfo())
   return <SystemInfoClient info={info} />
+}
+
+const SettingsView: FC = async () => {
+  const settings = await parseAction(getSettings())
+  return <SettingsClient settings={settings} />
 }
 
 const SettingsPage: FC = () => {
@@ -28,6 +33,11 @@ const SettingsPage: FC = () => {
       <div className='flex min-h-[200px] w-full'>
         <Suspense fallback={<Loading />}>
           <StatusView />
+        </Suspense>
+      </div>
+      <div className='flex min-h-[200px] w-full'>
+        <Suspense fallback={<Loading />}>
+          <SettingsView />
         </Suspense>
       </div>
     </div>
