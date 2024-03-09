@@ -118,7 +118,7 @@ export const en: DefaultLocaleItems = {
   msg_send_reset_confirm: 'A password reset email will be sent to this email address\n\n${email}',
 
   '@required_field': 'Required field',
-  '@invalid_username': '4-30 alphanumeric characters (.-_)',
+  '@invalid_username': '2-30 alphanumeric characters (.-_)',
   '@invalid_password': '8-30 alphanumeric characters',
   '@invalid_email': 'Invalid email format',
   '@invalid_username_or_password': 'Incorrect username or password',

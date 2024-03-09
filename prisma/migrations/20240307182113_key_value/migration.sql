@@ -1,7 +1,0 @@
--- CreateTable
-CREATE TABLE "KeyValue" (
-    "key" TEXT NOT NULL PRIMARY KEY,
-    "value" TEXT NOT NULL,
-    "updatedAt" DATETIME NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-);

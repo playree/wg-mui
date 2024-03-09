@@ -118,7 +118,7 @@ export const ja: LocaleItems = {
   msg_send_reset_confirm: 'このメールアドレスにパスワードリセット用のメールを送信します\n\n${email}',
 
   '@required_field': '必須入力項目',
-  '@invalid_username': '半角英数記号(.-_)4～30文字',
+  '@invalid_username': '半角英数記号(.-_)2～30文字',
   '@invalid_password': '半角英数記号8～30文字',
   '@invalid_email': 'Eメールフォーマット不正',
   '@invalid_username_or_password': 'ユーザー名またはパスワードが間違っています',

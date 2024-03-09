@@ -33,7 +33,7 @@ export const zAllOrCount = z.union([z.literal('all'), z.literal('count')])
 
 export const zUsername = z
   .string()
-  .min(4, el('@invalid_username'))
+  .min(2, el('@invalid_username'))
   .max(30, el('@invalid_username'))
   .regex(rePattern1String, el('@invalid_username'))
 export const zUsernameConfirm = z.string().min(1, el('@required_field'))

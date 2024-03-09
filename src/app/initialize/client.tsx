@@ -79,6 +79,7 @@ export const InitializeAdmin: FC = () => {
               control={control}
               name='username'
               label={t('item_username')}
+              autoComplete='username'
               errorMessage={fet(errors.username)}
               isRequired
             />

@@ -1,12 +1,17 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 export const RedirectComponent: FC<{
   redirectUrl: string
 }> = ({ redirectUrl }) => {
   const router = useRouter()
-  router.replace(redirectUrl)
+
+  useEffect(() => {
+    router.replace(redirectUrl)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return <></>
 }
