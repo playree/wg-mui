@@ -1,6 +1,5 @@
 import { matchCondition } from '@/components/nextekit/auth/util'
 import { match } from '@/components/nextekit/utils'
-import acceptLanguageParser from 'accept-language-parser'
 import { type NextRequestWithAuth, withAuth } from 'next-auth/middleware'
 import { type NextFetchEvent, NextResponse } from 'next/server'
 
@@ -12,24 +11,17 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
     console.debug('mw:locale')
     if (request.method.toUpperCase() === 'GET') {
       if (!request.cookies.has(localeConfig.cookie.name)) {
-        const detectedLang = request.nextauth?.token?.locale
-          ? request.nextauth.token?.locale
-          : acceptLanguageParser.pick(
-              localeConfig.locales,
-              request.headers.get('accept-language') ?? localeConfig.locales[0],
-              {
-                loose: true,
-              },
-            ) ?? localeConfig.locales[0]
-
-        console.debug('set locale cookie:', detectedLang)
-        response.cookies.set({
-          name: localeConfig.cookie.name,
-          value: detectedLang,
-          path: '/',
-          httpOnly: false,
-          maxAge: localeConfig.cookie.maxAge,
-        })
+        // ロケールCookieが存在しない場合かつ、ユーザーのロケールが取得できる場合にはCookieを発行
+        if (request.nextauth?.token?.locale) {
+          console.debug('set locale cookie:', request.nextauth.token.locale)
+          response.cookies.set({
+            name: localeConfig.cookie.name,
+            value: request.nextauth.token.locale,
+            path: '/',
+            httpOnly: false,
+            maxAge: localeConfig.cookie.maxAge,
+          })
+        }
       }
     }
   }

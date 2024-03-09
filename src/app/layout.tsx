@@ -2,6 +2,7 @@ import { getAppName } from '@/helpers/env'
 import '@/styles/globals.css'
 import { Metadata } from 'next'
 import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
+import { headers } from 'next/headers'
 import { twMerge } from 'tailwind-merge'
 
 import { Providers } from './providers'
@@ -32,11 +33,13 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const acceptLanguage = headers().get('accept-language')
+
   return (
     <html lang='ja' className={`${NotoSansJp.variable} ${RobotoMono.variable}`} suppressHydrationWarning>
       <head />
       <body className={twMerge('min-h-screen bg-background font-noto antialiased')}>
-        <Providers themeProps={{ attribute: 'class' }}>
+        <Providers themeProps={{ attribute: 'class' }} acceptLanguage={acceptLanguage}>
           <div className='relative flex h-screen flex-col'>{children}</div>
         </Providers>
       </body>
