@@ -10,7 +10,6 @@ import { parseAction } from '@/helpers/action'
 import { InitializeWgConf, UserPassword, scInitializeWgConf, scUserPassword } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
-import { localeConfig } from '@/locale/config'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Textarea } from '@nextui-org/react'
 import { Address4 } from 'ip-address'
@@ -58,7 +57,7 @@ export const InitializeAdmin: FC = () => {
         <span className='mr-8 text-lg'>{t('menu_initial_setting')}</span>
         <div className='right-0 flex flex-auto justify-end'>
           <ThemeSwitchList size='sm' className='mr-2' />
-          <LangSwitch localeConfig={localeConfig} size='sm' />
+          <LangSwitch size='sm' />
         </div>
       </div>
 
@@ -158,7 +157,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
         <span className='mr-8 text-lg'>{t('menu_initial_setting')}</span>
         <div className='right-0 flex flex-auto justify-end'>
           <ThemeSwitchList size='sm' className='mr-2' />
-          <LangSwitch localeConfig={localeConfig} size='sm' />
+          <LangSwitch size='sm' />
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 'use client'
 
-import type { SetLocaleApi } from '@/app/api/locale/route'
 import { fetchJson } from '@/helpers/fetch'
+import { SetLocaleApi } from '@/helpers/schema'
 import { Button } from '@nextui-org/button'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/dropdown'
 import { useSession } from 'next-auth/react'
@@ -9,14 +9,9 @@ import { FC, useEffect, useState } from 'react'
 
 import { setCookie } from './nextekit/cookie/client'
 import { useLocale } from './nextekit/locale/client'
-import { LocaleConfig } from './nextekit/locale/types'
 
-export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; size?: 'sm' | 'md' | 'lg' }> = ({
-  localeConfig,
-  className,
-  size = 'md',
-}) => {
-  const { locale, setLocale } = useLocale()
+export const LangSwitch: FC<{ className?: string; size?: 'sm' | 'md' | 'lg' }> = ({ className, size = 'md' }) => {
+  const { locale, lcConfig, setLocale } = useLocale()
   const { data: session } = useSession()
   const [selectedKeys, setSelectedKeys] = useState(new Set([locale]))
   const [selectedValue, setSelectedValue] = useState('')
@@ -43,7 +38,7 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; si
         onAction={(key) => {
           const keyString = key.toString()
           setSelectedKeys(new Set([keyString]))
-          setCookie(localeConfig.cookie.name, keyString, { maxAge: localeConfig.cookie.maxAge, path: '/' })
+          setCookie(lcConfig.cookie.name, keyString, { maxAge: lcConfig.cookie.maxAge, path: '/' })
           setLocale(keyString)
 
           if (session?.user) {
@@ -61,7 +56,7 @@ export const LangSwitch: FC<{ localeConfig: LocaleConfig; className?: string; si
           return
         }}
       >
-        {localeConfig.locales.map((lc) => {
+        {lcConfig.locales.map((lc) => {
           return <DropdownItem key={lc}>{lc}</DropdownItem>
         })}
       </DropdownMenu>

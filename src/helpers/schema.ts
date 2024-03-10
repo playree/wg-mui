@@ -202,3 +202,7 @@ export const getLocaleValueSchema = (max: number) => {
   return z.object(obj)
 }
 export type LocaleValue = z.infer<ReturnType<typeof getLocaleValueSchema>>
+
+// API
+export const scSetLocaleApi = zReq({ locale: zString })
+export type SetLocaleApi = z.infer<typeof scSetLocaleApi>

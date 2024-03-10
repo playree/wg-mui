@@ -51,7 +51,7 @@ export const Title: FC = () => {
 
 export const UserListClient: FC = () => {
   const { t } = useLocale()
-  const sharedUI = useSharedUIContext()
+  const { confirmModal } = useSharedUIContext()
 
   const list = usePageingList({
     load: async () => parseAction(getUserList()),
@@ -248,7 +248,7 @@ export const UserListClient: FC = () => {
                           key='pwreset'
                           startContent={<EnvelopeIcon />}
                           onPress={async () => {
-                            const ok = await sharedUI.confirmModal?.confirm({
+                            const ok = await confirmModal?.current?.confirm({
                               title: t('menu_password_reset'),
                               text: t('msg_send_reset_confirm', { email: user.email }),
                               requireCheck: true,
@@ -257,7 +257,7 @@ export const UserListClient: FC = () => {
                             if (ok) {
                               await parseAction(resetPassword({ id: user.id }))
                               await intervalOperation()
-                              sharedUI.confirmModal?.close()
+                              confirmModal?.current?.close()
                             }
                           }}
                         >
@@ -269,7 +269,8 @@ export const UserListClient: FC = () => {
                           color='danger'
                           startContent={<TrashIcon />}
                           onPress={async () => {
-                            const ok = await sharedUI.confirmModal?.confirm({
+                            console.debug('@@', confirmModal)
+                            const ok = await confirmModal?.current?.confirm({
                               title: t('item_delete_confirm'),
                               text: t('msg_user_delete', { username: user.name }),
                               requireCheck: true,
@@ -279,7 +280,7 @@ export const UserListClient: FC = () => {
                               await parseAction(deleteUser({ id: user.id }))
                               await intervalOperation()
                               list.reload()
-                              sharedUI.confirmModal?.close()
+                              confirmModal?.current?.close()
                             }
                           }}
                         >

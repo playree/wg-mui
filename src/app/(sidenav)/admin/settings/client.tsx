@@ -15,7 +15,6 @@ import { parseAction } from '@/helpers/action'
 import { LocaleValue, getLocaleValueSchema } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
-import { localeConfig } from '@/locale/config'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Accordion,
@@ -226,7 +225,7 @@ export const SystemInfoClient: FC<{
 }
 
 const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) => {
-  const { t, fet } = useLocale()
+  const { t, fet, lcConfig } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
 
@@ -252,7 +251,7 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
       })}
     >
       <div className={gridStyles()}>
-        {localeConfig.locales.map((lc) => (
+        {lcConfig.locales.map((lc) => (
           <div key={lc} className='col-span-12'>
             <Controller
               control={control}

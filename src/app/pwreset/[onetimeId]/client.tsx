@@ -10,7 +10,6 @@ import { parseAction } from '@/helpers/action'
 import { UpdatePassword, scUpdatePassword } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale'
-import { localeConfig } from '@/locale/config'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
@@ -46,7 +45,7 @@ export const PasswordResetClient: FC<{ onetimeId: string }> = ({ onetimeId }) =>
         <span className='mr-8 text-lg'>{t('menu_password_reset')}</span>
         <div className='right-0 flex flex-auto justify-end'>
           <ThemeSwitchList size='sm' className='mr-2' />
-          <LangSwitch localeConfig={localeConfig} size='sm' />
+          <LangSwitch size='sm' />
         </div>
       </div>
       <form

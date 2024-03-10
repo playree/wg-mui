@@ -14,15 +14,13 @@ import { SignOutLink } from '@/components/nextekit/auth/ui'
 import { textStyles } from '@/components/styles'
 import { ThemeSwitchList } from '@/components/theme-switch'
 import { fetchJson } from '@/helpers/fetch'
+import { SetLocaleApi } from '@/helpers/schema'
 import { useLocale } from '@/locale'
-import { localeConfig } from '@/locale/config'
 import { Accordion, AccordionItem, AccordionItemProps, Button, Card, CardBody } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { FC, ReactNode, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
-
-import type { SetLocaleApi } from '../api/locale/route'
 
 const accordionStyles: AccordionItemProps['classNames'] = {
   title: '',
@@ -95,7 +93,7 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
         className='flex p-2'
       >
         <ThemeSwitchList size='sm' className='mr-2' />
-        <LangSwitch localeConfig={localeConfig} size='sm' />
+        <LangSwitch size='sm' />
       </div>
 
       <div // サインアウト

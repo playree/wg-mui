@@ -1,13 +1,14 @@
 'use client'
 
 import acceptLanguageParser from 'accept-language-parser'
-import { FC, createContext, useCallback, useContext, useState } from 'react'
+import { FC, createContext, useCallback, useContext, useRef, useState } from 'react'
 
 import { getCookie } from '../cookie/client'
 import { LocaleConfig } from './types'
 
 type LocaleContextType = {
   locale: string
+  lcConfig: LocaleConfig
   setLocale: (locale: string) => void
   t: (item: string, values?: { [key: string]: string | number | null | undefined }) => string
 }
@@ -30,18 +31,20 @@ const useLocaleContext = (localeConfig: LocaleConfig, acceptLanguage: string | n
     )
   }
 
-  const { resources } = localeConfig
   const [locale, setLocale] = useState(getLocale())
+  const lcConfig = useRef(localeConfig)
 
   return {
     locale,
+    lcConfig: lcConfig.current,
     setLocale: useCallback((current: string) => {
       setLocale(current)
     }, []),
     t: useCallback(
       (item, values) => {
+        const { resources, locales } = lcConfig.current
         if (resources[locale]) {
-          const template = resources[locale][item] || resources[localeConfig.locales[0]][item] || ''
+          const template = resources[locale][item] || resources[locales[0]][item] || ''
           return !values
             ? template
             : new Function(...Object.keys(values), `return \`${template}\`;`)(
@@ -50,7 +53,7 @@ const useLocaleContext = (localeConfig: LocaleConfig, acceptLanguage: string | n
         }
         return ''
       },
-      [locale, localeConfig.locales, resources],
+      [locale],
     ),
   }
 }
@@ -65,10 +68,9 @@ export const LocaleProvider: FC<{
 }
 
 export const useLocale = <T extends string = string>() => {
-  const { locale, setLocale, t } = useContext(LocaleContext)
+  const { t, ...context } = useContext(LocaleContext)
   return {
-    locale,
-    setLocale,
+    ...context,
     t: t as (item: T, values?: { [key: string]: string | number | null | undefined }) => string,
   }
 }
