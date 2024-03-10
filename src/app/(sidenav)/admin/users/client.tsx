@@ -248,7 +248,7 @@ export const UserListClient: FC = () => {
                           key='pwreset'
                           startContent={<EnvelopeIcon />}
                           onPress={async () => {
-                            const ok = await confirmModal?.current?.confirm({
+                            const ok = await confirmModal().confirm({
                               title: t('menu_password_reset'),
                               text: t('msg_send_reset_confirm', { email: user.email }),
                               requireCheck: true,
@@ -257,7 +257,7 @@ export const UserListClient: FC = () => {
                             if (ok) {
                               await parseAction(resetPassword({ id: user.id }))
                               await intervalOperation()
-                              confirmModal?.current?.close()
+                              confirmModal().close()
                             }
                           }}
                         >
@@ -269,8 +269,7 @@ export const UserListClient: FC = () => {
                           color='danger'
                           startContent={<TrashIcon />}
                           onPress={async () => {
-                            console.debug('@@', confirmModal)
-                            const ok = await confirmModal?.current?.confirm({
+                            const ok = await confirmModal().confirm({
                               title: t('item_delete_confirm'),
                               text: t('msg_user_delete', { username: user.name }),
                               requireCheck: true,
@@ -280,7 +279,7 @@ export const UserListClient: FC = () => {
                               await parseAction(deleteUser({ id: user.id }))
                               await intervalOperation()
                               list.reload()
-                              confirmModal?.current?.close()
+                              confirmModal().close()
                             }
                           }}
                         >

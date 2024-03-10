@@ -2,10 +2,14 @@
 
 import { ConfirmModal, ConfirmModalRef } from '@/components/nextekit/ui/modal'
 import { useLocale } from '@/locale'
-import { FC, ReactNode, RefObject, createContext, useContext, useRef } from 'react'
+import { FC, ReactNode, createContext, useContext, useRef } from 'react'
 
-const SharedUIContext = createContext<{ confirmModal: RefObject<ConfirmModalRef> | null }>({
-  confirmModal: null,
+const defaultConfirmModalRef: ConfirmModalRef = {
+  confirm: async () => false,
+  close: () => {},
+}
+const SharedUIContext = createContext<{ confirmModal: () => ConfirmModalRef }>({
+  confirmModal: () => defaultConfirmModalRef,
 })
 
 export const useSharedUIContext = () => {
@@ -14,7 +18,7 @@ export const useSharedUIContext = () => {
 
 export const SharedUIProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const { t } = useLocale()
-  const refModal = useRef<ConfirmModalRef>(null)
+  const refModal = useRef<ConfirmModalRef>(defaultConfirmModalRef)
 
   return (
     <>
@@ -24,7 +28,7 @@ export const SharedUIProvider: FC<{ children: ReactNode }> = ({ children }) => {
       />
       <SharedUIContext.Provider
         value={{
-          confirmModal: refModal,
+          confirmModal: () => refModal.current,
         }}
       >
         {children}

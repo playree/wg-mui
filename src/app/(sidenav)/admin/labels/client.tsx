@@ -38,7 +38,7 @@ export const Title: FC = () => {
 
 export const LabelListClient: FC = () => {
   const { t } = useLocale()
-  const sharedUI = useSharedUIContext()
+  const { confirmModal } = useSharedUIContext()
 
   const list = usePageingList({
     load: async () => parseAction(getLabelList({ withUser: 'count' })),
@@ -149,7 +149,7 @@ export const LabelListClient: FC = () => {
                           color='danger'
                           startContent={<TrashIcon />}
                           onPress={async () => {
-                            const ok = await sharedUI.confirmModal?.confirm({
+                            const ok = await confirmModal().confirm({
                               title: t('item_delete_confirm'),
                               text: t('msg_label_delete', { name: label.name }),
                               requireCheck: true,
@@ -159,7 +159,7 @@ export const LabelListClient: FC = () => {
                               await parseAction(deleteLabel({ id: label.id }))
                               await intervalOperation()
                               list.reload()
-                              sharedUI.confirmModal?.close()
+                              confirmModal().close()
                             }
                           }}
                         >

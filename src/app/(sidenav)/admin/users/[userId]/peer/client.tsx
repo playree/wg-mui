@@ -41,7 +41,7 @@ export const Title: FC<{ user: TypeUser }> = ({ user }) => {
 
 export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
   const { t } = useLocale()
-  const sharedUI = useSharedUIContext()
+  const { confirmModal } = useSharedUIContext()
 
   const list = usePageingList({
     load: () => parseAction(getPeerList({ userId: user.id })),
@@ -144,7 +144,7 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
                             color='danger'
                             startContent={<TrashIcon />}
                             onPress={async () => {
-                              const ok = await sharedUI.confirmModal?.confirm({
+                              const ok = await confirmModal().confirm({
                                 title: t('item_delete_confirm'),
                                 text: t('msg_peer_delete', { peer: peer.ip }),
                                 requireCheck: true,
@@ -154,7 +154,7 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
                                 await parseAction(deletePeer({ ip: peer.ip }))
                                 await intervalOperation()
                                 list.reload()
-                                sharedUI.confirmModal?.close()
+                                confirmModal().close()
                               }
                             }}
                           >
