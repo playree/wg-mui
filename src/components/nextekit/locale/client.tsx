@@ -24,10 +24,11 @@ const useLocaleContext = (localeConfig: LocaleConfig, acceptLanguage: string | n
     }
 
     // accept-languageを優先し、それ以外はlocalesの0番目をデフォルトとする
+    const defaultLocale = localeConfig.locales[0]
     return (
-      acceptLanguageParser.pick(localeConfig.locales, acceptLanguage ?? localeConfig.locales[0], {
+      acceptLanguageParser.pick(localeConfig.locales, acceptLanguage ?? defaultLocale, {
         loose: true,
-      }) || localeConfig.locales[0]
+      }) || defaultLocale
     )
   }
 
@@ -43,15 +44,14 @@ const useLocaleContext = (localeConfig: LocaleConfig, acceptLanguage: string | n
     t: useCallback(
       (item, values) => {
         const { resources, locales } = lcConfig.current
-        if (resources[locale]) {
-          const template = resources[locale][item] || resources[locales[0]][item] || ''
-          return !values
-            ? template
-            : new Function(...Object.keys(values), `return \`${template}\`;`)(
-                ...Object.values(values).map((value) => value ?? ''),
-              )
-        }
-        return ''
+        const lc = resources[locale] ? locale : locales[0]
+
+        const template = resources[lc][item] || resources[locales[0]][item] || ''
+        return !values
+          ? template
+          : new Function(...Object.keys(values), `return \`${template}\`;`)(
+              ...Object.values(values).map((value) => value ?? ''),
+            )
       },
       [locale],
     ),

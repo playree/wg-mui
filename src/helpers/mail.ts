@@ -1,7 +1,9 @@
+import { t } from '@/locale/utils'
 import sgMail from '@sendgrid/mail'
 
 import { getAppName } from './env'
 import { errSystemError } from './error'
+import { TypeUser } from './schema'
 
 type SendEmail = {
   to: string | { name?: string; email: string }
@@ -50,22 +52,18 @@ const sendEmail = async (param: Omit<SendEmail, 'from'>) => {
  * @param to
  * @param onetimeId
  */
-export const sendEmailPasswordReset = async (param: { username: string; to: string; onetimeId: string }) => {
+export const sendEmailPasswordReset = async (param: { user: TypeUser; to: string; onetimeId: string }) => {
   if (!process.env.SENDGRID_API_KEY) {
     throw errSystemError('SENDGRID_API_KEY not set')
   }
-  const { username, to, onetimeId } = param
+  const { user, to, onetimeId } = param
 
   const url = new URL(`/pwreset/${onetimeId}`, process.env.NEXTAUTH_URL)
+  const locale = user.locale || ''
+  console.debug('@mail:local:', locale)
   await sendEmail({
     to,
-    subject: `[${getAppName()}] Password Reset`,
-    text: `username: ${username}
-
-Please reset your password from the URL below.
-This URL will expire in 48 hours.
-
-${url}
-`,
+    subject: t(locale, 'mail_password_reset_subject', { appname: getAppName() }),
+    text: t(locale, 'mail_password_reset_body', { username: user.name, url: url.toString() }),
   })
 }

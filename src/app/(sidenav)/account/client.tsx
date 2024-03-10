@@ -57,6 +57,11 @@ export const AccountViewClient: FC<{ account: TypeUser }> = ({ account }) => {
           <div className='col-span-2'></div>
           <Divider className='col-span-12' />
 
+          <div className='col-span-3'>{t('item_locale')}</div>
+          <div className='col-span-7'>{account.locale || ''}</div>
+          <div className='col-span-2'></div>
+          <Divider className='col-span-12' />
+
           <div className='col-span-3'>{t('item_email')}</div>
           <div className='col-span-7'>{account.email}</div>
           <div className='col-span-2'></div>

@@ -21,14 +21,14 @@ export const getUserList = validAction('getUserList', {
 const resetPwd = async (userId: string) => {
   const user = await prisma.user.get(userId)
   if (user?.email) {
-    // パスワード初期設定用メール送信
+    // パスワード設定用メール送信
     const passwordReset = await prisma.passwordReset.upsert({
       where: { id: user.id },
       create: { id: user.id, onetimeId: randomUUID() },
       update: { onetimeId: randomUUID() },
     })
     await sendEmailPasswordReset({
-      username: user.name,
+      user,
       to: user.email,
       onetimeId: passwordReset.onetimeId,
     })

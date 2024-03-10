@@ -12,7 +12,7 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { LocaleValue, getLocaleValueSchema } from '@/helpers/schema'
+import { LocaleForm, getLocaleFormSchema } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -233,8 +233,8 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LocaleValue>({
-    resolver: zodResolver(getLocaleValueSchema(200)),
+  } = useForm<LocaleForm>({
+    resolver: zodResolver(getLocaleFormSchema(200)),
     mode: 'onChange',
     defaultValues: values,
   })

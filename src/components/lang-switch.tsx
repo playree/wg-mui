@@ -42,15 +42,13 @@ export const LangSwitch: FC<{ className?: string; size?: 'sm' | 'md' | 'lg' }> =
           setLocale(keyString)
 
           if (session?.user) {
-            if (keyString !== session.user.locale) {
-              // ユーザーのロケール情報を更新
-              if (session?.user) {
-                console.debug('update user locale:', keyString)
-                fetchJson<void, SetLocaleApi>('/api/locale', {
-                  method: 'POST',
-                  body: { locale: keyString },
-                })
-              }
+            // ユーザーのロケール情報を更新
+            if (session?.user) {
+              console.debug('update user locale:', keyString)
+              fetchJson<void, SetLocaleApi>('/api/locale', {
+                method: 'POST',
+                body: { locale: keyString },
+              })
             }
           }
           return

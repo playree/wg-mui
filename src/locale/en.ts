@@ -1,13 +1,12 @@
-import { DefaultLocaleItems } from '.'
+import { LocaleItems } from '.'
 
-export const en: DefaultLocaleItems = {
+export const en: LocaleItems = {
   menu_initial_setting: 'Initial Setting',
   menu_dashboard: 'Dashboard',
   menu_users: 'Users',
   menu_labels: 'Labels',
   menu_peers: 'Peers',
   menu_settings: 'Settings',
-  menu_locale: 'Locale',
   menu_theme: 'Theme',
   menu_signout: 'Sign Out',
   menu_peer: 'Peer(Connect)',
@@ -99,6 +98,7 @@ export const en: DefaultLocaleItems = {
   item_last_signin_at: 'Last SignIn',
   item_send_email_password: 'Send an email for initial password setting',
   item_signin_message: 'Sign in message',
+  item_locale: 'Locale',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -117,6 +117,16 @@ export const en: DefaultLocaleItems = {
   msg_initialize_wg: 'Perform initial settings for WireGuard',
   msg_password_reset: 'Reset your password\nPlease enter the password you want to set',
   msg_send_reset_confirm: 'A password reset email will be sent to this email address\n\n${email}',
+
+  mail_password_reset_subject: '[${appname}] Please set a password',
+  mail_password_reset_body: `username: \${username}
+
+You have started using the service or have been requested to reset your password.
+Please use the service by setting a password from the URL below.
+This URL will expire in 48 hours.
+
+\${url}
+`,
 
   '@required_field': 'Required field',
   '@invalid_username': '2-30 alphanumeric characters (.-_)',

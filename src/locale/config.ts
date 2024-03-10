@@ -4,8 +4,8 @@ import { en } from './en'
 import { ja } from './ja'
 
 export const localeConfig: LocaleConfig = {
-  locales: ['en', 'ja'],
-  resources: { en, ja },
+  locales: ['ja', 'en'],
+  resources: { ja, en },
   cookie: {
     name: 'locale',
     maxAge: 86400 * 365,

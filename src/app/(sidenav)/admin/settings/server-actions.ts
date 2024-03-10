@@ -1,10 +1,9 @@
 'use server'
 
-import { setKeyValueJson } from '@/helpers/key-value'
-import { getLocaleValueSchema } from '@/helpers/schema'
+import { getLocaleFormSchema } from '@/helpers/schema'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
-import { getLocaleValue } from '@/locale/locale-value'
+import { getLocaleValue, setLocaleValue } from '@/locale/server'
 import { getIpForward } from '@/server-actions/cmd'
 
 /**
@@ -116,10 +115,10 @@ export type Settings = ActionResultType<typeof getSettings>
  * サインインメッセージ更新
  */
 export const updateSigninMessage = validAction('updateSigninMessage', {
-  schema: getLocaleValueSchema(200),
+  schema: getLocaleFormSchema(200),
   requireAuth: true,
   requireAdmin: true,
   next: async ({ req }) => {
-    await setKeyValueJson('signin_message', JSON.stringify(req) === '{}' ? null : req)
+    await setLocaleValue('signin_message', JSON.stringify(req) === '{}' ? null : req)
   },
 })

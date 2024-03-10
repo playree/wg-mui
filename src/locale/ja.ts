@@ -1,13 +1,12 @@
-import { LocaleItems } from '.'
+import { DefaultLocaleItems } from '.'
 
-export const ja: LocaleItems = {
+export const ja: DefaultLocaleItems = {
   menu_initial_setting: '初期設定',
   menu_dashboard: 'ダッシュボード',
   menu_users: 'ユーザー管理',
   menu_labels: 'ラベル管理',
   menu_peers: 'ピア一覧',
   menu_settings: '設定',
-  menu_locale: '言語',
   menu_theme: 'テーマ',
   menu_signout: 'サインアウト',
   menu_peer: 'ピア(接続)',
@@ -99,6 +98,7 @@ export const ja: LocaleItems = {
   item_last_signin_at: '最終認証',
   item_send_email_password: 'パスワード初期設定用のメールを送信',
   item_signin_message: 'サインインメッセージ',
+  item_locale: '言語',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -117,6 +117,16 @@ export const ja: LocaleItems = {
   msg_initialize_wg: 'WireGuardの初期設定を行います',
   msg_password_reset: 'パスワードをリセットします\n設定したいパスワードを入力してください',
   msg_send_reset_confirm: 'このメールアドレスにパスワードリセット用のメールを送信します\n\n${email}',
+
+  mail_password_reset_subject: '[${appname}] パスワード設定',
+  mail_password_reset_body: `ユーザー名: \${username}
+
+サービスのご利用が開始、またはパスワード再設定が要求されました。
+下記URLよりパスワードを設定してサービスをご利用ください。
+このURLの有効期限は48時間です。
+
+\${url}
+`,
 
   '@required_field': '必須入力項目',
   '@invalid_username': '半角英数記号(.-_)2～30文字',

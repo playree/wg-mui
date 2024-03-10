@@ -114,6 +114,7 @@ export type TypeUser = {
   id: string
   name: string
   isAdmin: boolean
+  locale: string | null
   email: string | null
   labelList?: {
     id: string
@@ -194,14 +195,14 @@ export const scUpdatePassword = z.object({
 export type UpdatePassword = z.infer<typeof scUpdatePassword>
 
 // ロケール
-export const getLocaleValueSchema = (max: number) => {
+export const getLocaleFormSchema = (max: number) => {
   const obj: ZodRawShape = {}
   localeConfig.locales.forEach((lc) => {
     obj[lc] = z.string().max(max, '@invalid_string_too_long').or(zEmpty).transform(convUndefined)
   })
   return z.object(obj)
 }
-export type LocaleValue = z.infer<ReturnType<typeof getLocaleValueSchema>>
+export type LocaleForm = z.infer<ReturnType<typeof getLocaleFormSchema>>
 
 // API
 export const scSetLocaleApi = zReq({ locale: zString })

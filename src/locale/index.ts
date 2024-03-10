@@ -5,7 +5,6 @@ export type LocaleItemBase =
   | 'menu_labels'
   | 'menu_peers'
   | 'menu_settings'
-  | 'menu_locale'
   | 'menu_theme'
   | 'menu_signout'
   | 'menu_peer'
@@ -98,6 +97,7 @@ export type LocaleItemBase =
   | 'item_last_signin_at'
   | 'item_send_email_password'
   | 'item_signin_message'
+  | 'item_locale'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'
@@ -114,6 +114,8 @@ export type LocaleItemBase =
   | 'msg_initialize_wg'
   | 'msg_password_reset'
   | 'msg_send_reset_confirm'
+  | 'mail_password_reset_subject'
+  | 'mail_password_reset_body'
 
 export type LocaleItemError =
   | '@required_field'
