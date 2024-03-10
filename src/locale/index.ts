@@ -1,5 +1,3 @@
-import { useLocale as ul } from '@/components/nextekit/locale/client'
-
 export type LocaleItemBase =
   | 'menu_initial_setting'
   | 'menu_dashboard'
@@ -143,16 +141,3 @@ export const el = (item: LocaleItemError) => item
 export type LocaleItem = LocaleItemBase | LocaleItemError
 export type DefaultLocaleItems = Record<LocaleItem, string>
 export type LocaleItems = Partial<Record<LocaleItem, string>>
-export const useLocale = () => {
-  const ulItem = ul<LocaleItem>()
-  const fet = (fieldError?: { message?: string }) => {
-    if (fieldError) {
-      return ulItem.t(fieldError.message as LocaleItem) || fieldError.message
-    }
-    return undefined
-  }
-  return {
-    ...ulItem,
-    fet,
-  }
-}

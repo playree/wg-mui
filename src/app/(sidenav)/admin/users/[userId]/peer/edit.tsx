@@ -8,7 +8,7 @@ import { parseAction } from '@/helpers/action'
 import { requireSelect } from '@/helpers/client'
 import { CreatePeer, TypePeer, TypeUser, UpdatePeer, scCreatePeer, scUpdatePeer } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
-import { useLocale } from '@/locale'
+import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Input,

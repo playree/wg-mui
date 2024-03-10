@@ -1,7 +1,7 @@
 'use client'
 
 import { ConfirmModal, ConfirmModalRef } from '@/components/nextekit/ui/modal'
-import { useLocale } from '@/locale'
+import { useLocale } from '@/locale/client'
 import { FC, ReactNode, createContext, useContext, useRef } from 'react'
 
 const defaultConfirmModalRef: ConfirmModalRef = {

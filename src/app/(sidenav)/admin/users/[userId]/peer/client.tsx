@@ -8,7 +8,7 @@ import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { TypePeer, TypeUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
-import { useLocale } from '@/locale'
+import { useLocale } from '@/locale/client'
 import {
   Button,
   Dropdown,

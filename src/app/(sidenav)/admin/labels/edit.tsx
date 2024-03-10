@@ -7,7 +7,7 @@ import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { CreateLabel, TypeLabel, UpdateLabel, scCreateLabel, scUpdateLabel } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
-import { useLocale } from '@/locale'
+import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Input,

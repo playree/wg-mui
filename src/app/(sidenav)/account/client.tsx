@@ -6,7 +6,7 @@ import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles, iconSizes } from '@/components/styles'
 import { dayformat } from '@/helpers/day'
 import { TypeUser } from '@/helpers/schema'
-import { useLocale } from '@/locale'
+import { useLocale } from '@/locale/client'
 import { Card, CardBody, Divider, useDisclosure } from '@nextui-org/react'
 import { FC, useEffect, useState } from 'react'
 

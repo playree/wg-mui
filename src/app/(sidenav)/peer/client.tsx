@@ -13,7 +13,7 @@ import { gridStyles, textStyles } from '@/components/styles'
 import { getQrImgString } from '@/helpers/qr'
 import { TypePeer } from '@/helpers/schema'
 import { PeerStatus } from '@/helpers/wgmgr'
-import { useLocale } from '@/locale'
+import { useLocale } from '@/locale/client'
 import {
   Card,
   CardBody,
