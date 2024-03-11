@@ -16,11 +16,27 @@ export const getSystemInfo = validAction('getSystemInfo', {
     const wgMgr = await refWgMgr()
     const wgVersion = await wgMgr.getWgVersion()
     const ipForward = await getIpForward()
+    const isGoogleEnabled = !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
+    const sendMail = {
+      enabled: false,
+      from: process.env.MAIL_FROM || '',
+      type: '',
+    }
+    switch (process.env.MAIL_SEND) {
+      case 'sendgrid':
+        if (process.env.SENDGRID_API_KEY) {
+          sendMail.enabled = true
+          sendMail.type = 'SendGrid'
+        }
+        break
+    }
     return {
       wgVersion,
       isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
       isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
       ipForward,
+      isGoogleEnabled,
+      sendMail,
     }
   },
 })

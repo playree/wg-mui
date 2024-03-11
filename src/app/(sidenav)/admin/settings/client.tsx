@@ -60,7 +60,7 @@ export const SystemInfoClient: FC<{
 
   return (
     <>
-      <Table aria-label='system info' hideHeader className=' mx-2'>
+      <Table aria-label='system info' hideHeader className='mx-2 mb-2'>
         <TableHeader>
           <TableColumn>item</TableColumn>
           <TableColumn>status</TableColumn>
@@ -214,9 +214,29 @@ export const SystemInfoClient: FC<{
               </div>
             </TableCell>
           </TableRow>
-          <TableRow>
+          <TableRow className='border-b-1 border-gray-500'>
             <TableCell>IP Forward</TableCell>
             <TableCell>{info.ipForward || ''}</TableCell>
+          </TableRow>
+          <TableRow className='border-b-1 border-gray-500'>
+            <TableCell>{t('item_google_signin')}</TableCell>
+            <TableCell>
+              <OnOffChip
+                isEnable={info.isGoogleEnabled}
+                messageOn={t('item_enabled')}
+                messageOff={t('item_disabled')}
+              />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>{t('item_send_mail')}</TableCell>
+            <TableCell>
+              <OnOffChip
+                isEnable={info.sendMail.enabled}
+                messageOn={info.sendMail.type}
+                messageOff={t('item_disabled')}
+              />
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>

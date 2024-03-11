@@ -71,6 +71,8 @@ export const ja: DefaultLocaleItems = {
   item_autostart_off: '自動起動OFF',
   item_enable: '有効化',
   item_disable: '無効化',
+  item_enabled: '有効',
+  item_disabled: '無効',
   item_refresh: '更新',
   item_download_file: 'ファイルをダウンロード',
   item_scan_qr: 'QRコードをスキャン',
@@ -99,6 +101,7 @@ export const ja: DefaultLocaleItems = {
   item_send_email_password: 'パスワード初期設定用のメールを送信',
   item_signin_message: 'サインインメッセージ',
   item_locale: '言語',
+  item_send_mail: 'メール送信',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

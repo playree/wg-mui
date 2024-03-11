@@ -71,6 +71,8 @@ export const en: LocaleItems = {
   item_autostart_off: 'Auto Start OFF',
   item_enable: 'Enable',
   item_disable: 'Disable',
+  item_enabled: 'Enabled',
+  item_disabled: 'Disabled',
   item_refresh: 'Refresh',
   item_download_file: 'Download File',
   item_scan_qr: 'Scan from QR code',
@@ -99,6 +101,7 @@ export const en: LocaleItems = {
   item_send_email_password: 'Send an email for initial password setting',
   item_signin_message: 'Sign in message',
   item_locale: 'Locale',
+  item_send_mail: 'Send E-Mail',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
