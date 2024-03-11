@@ -3,7 +3,12 @@ import { Metadata } from 'next'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
-import { AppInfoViewClient, LinodeTransferInfoViewClient, ServerInfoViewClient } from './client'
+import {
+  AppInfoViewClient,
+  LinodeTransferInfoViewClient,
+  ServerInfoViewClient,
+  TopPageNoticeViewClient,
+} from './client'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -13,6 +18,7 @@ export const metadata: Metadata = {
 const HomePage: FC = () => {
   return (
     <div className={twMerge(gridStyles(), 'mt-4 w-full')}>
+      <TopPageNoticeViewClient />
       <AppInfoViewClient />
       <ServerInfoViewClient />
       <LinodeTransferInfoViewClient />

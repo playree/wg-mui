@@ -13,9 +13,11 @@ import {
   AppInfo,
   LinodeTransferInfo,
   ServerInfo,
+  TopPageNotice,
   getAppInfo,
   getLinodeTransferInfo,
   getServerInfo,
+  getTopPageNotice,
 } from './server-actions'
 
 export const AppInfoViewClient: FC = () => {
@@ -83,6 +85,35 @@ export const ServerInfoViewClient: FC = () => {
   )
 }
 
+export const TopPageNoticeViewClient: FC = () => {
+  const { t, lvt } = useLocale()
+  const [info, setInfo] = useState<TopPageNotice>()
+
+  useEffect(() => {
+    parseAction(getTopPageNotice()).then((res) => setInfo(res))
+  }, [])
+
+  const notice = info ? lvt(info.topPageNotice) : undefined
+
+  return (
+    <div className='col-span-12' hidden={notice === ''}>
+      {info ? (
+        <Card>
+          <CardHeader className='py-2'>
+            <span className='font-bold'>{t('item_top_page_notice')}</span>
+          </CardHeader>
+          <Divider />
+          <CardBody>
+            <div className='whitespace-pre-wrap'>{notice}</div>
+          </CardBody>
+        </Card>
+      ) : (
+        <Loading />
+      )}
+    </div>
+  )
+}
+
 export const LinodeTransferInfoViewClient: FC = () => {
   const { t } = useLocale()
   const [info, setInfo] = useState<LinodeTransferInfo>()
@@ -92,7 +123,7 @@ export const LinodeTransferInfoViewClient: FC = () => {
   }, [])
 
   return (
-    <div className='col-span-12 md:col-span-6'>
+    <div className='col-span-12 md:col-span-6' hidden={info === null}>
       {info ? (
         <Card>
           <CardHeader className='py-2'>

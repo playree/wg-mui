@@ -101,6 +101,7 @@ export type LocaleItemBase =
   | 'item_signin_message'
   | 'item_locale'
   | 'item_send_mail'
+  | 'item_top_page_notice'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'

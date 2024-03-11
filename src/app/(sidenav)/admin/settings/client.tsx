@@ -42,6 +42,7 @@ import {
   startWg,
   stopWg,
   updateSigninMessage,
+  updateTopPageNotice,
 } from './server-actions'
 
 export const Title: FC = () => {
@@ -315,13 +316,87 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
   )
 }
 
-export const SettingsClient: FC<{ settings: Settings }> = ({ settings: { signinMessage } }) => {
+const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) => {
+  const { t, fet, lcConfig } = useLocale()
+  const [isEdited, setEdited] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LocaleForm>({
+    resolver: zodResolver(getLocaleFormSchema(200)),
+    mode: 'onChange',
+    defaultValues: values,
+  })
+
+  return (
+    <form
+      onSubmit={handleSubmit(async (req) => {
+        console.debug('FormTopPageNotice:submit:', req)
+        setLoading(true)
+        await parseAction(updateTopPageNotice(req))
+        await intervalOperation()
+        setLoading(false)
+        setEdited(false)
+      })}
+    >
+      <div className={gridStyles()}>
+        {lcConfig.locales.map((lc) => (
+          <div key={lc} className='col-span-12'>
+            <Controller
+              control={control}
+              name={lc}
+              render={({ field: { onChange, value } }) => (
+                <Textarea
+                  label={lc}
+                  type='text'
+                  variant='bordered'
+                  size='sm'
+                  minRows={2}
+                  errorMessage={fet(errors[lc])}
+                  onChange={(event) => {
+                    if (!isEdited) {
+                      setEdited(true)
+                    }
+                    onChange(event)
+                  }}
+                  value={value || ''}
+                  classNames={{ input: 'text-xs' }}
+                />
+              )}
+            />
+          </div>
+        ))}
+        <div className='col-span-12 text-right'>
+          <ExButton
+            type='submit'
+            variant='flat'
+            color='success'
+            isSmart
+            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            isLoading={isLoading}
+            isDisabled={!isEdited}
+          >
+            {t('item_update')}
+          </ExButton>
+        </div>
+      </div>
+    </form>
+  )
+}
+
+export const SettingsClient: FC<{ settings: Settings }> = ({ settings: { signinMessage, topPageNotice } }) => {
   const { t } = useLocale()
 
   return (
     <Accordion variant='splitted'>
       <AccordionItem key='signin-message' aria-label='ac signin-message' title={t('item_signin_message')}>
         <FormSigninMessage values={signinMessage} />
+      </AccordionItem>
+      <AccordionItem key='top-page-notice' aria-label='ac top-page-notice' title={t('item_top_page_notice')}>
+        <FormTopPageNotice values={topPageNotice} />
       </AccordionItem>
     </Accordion>
   )

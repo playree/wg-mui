@@ -122,7 +122,8 @@ export const getSettings = validAction('getSettings', {
   requireAdmin: true,
   next: async () => {
     const signinMessage = await getLocaleValue('signin_message')
-    return { signinMessage }
+    const topPageNotice = await getLocaleValue('top_page_notice')
+    return { signinMessage, topPageNotice }
   },
 })
 export type Settings = ActionResultType<typeof getSettings>
@@ -136,5 +137,17 @@ export const updateSigninMessage = validAction('updateSigninMessage', {
   requireAdmin: true,
   next: async ({ req }) => {
     await setLocaleValue('signin_message', JSON.stringify(req) === '{}' ? null : req)
+  },
+})
+
+/**
+ * トップページ通知更新
+ */
+export const updateTopPageNotice = validAction('updateTopPageNotice', {
+  schema: getLocaleFormSchema(200),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req }) => {
+    await setLocaleValue('top_page_notice', JSON.stringify(req) === '{}' ? null : req)
   },
 })

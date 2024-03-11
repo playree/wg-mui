@@ -102,6 +102,7 @@ export const en: LocaleItems = {
   item_signin_message: 'Sign in message',
   item_locale: 'Locale',
   item_send_mail: 'Send E-Mail',
+  item_top_page_notice: 'Announcement',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',

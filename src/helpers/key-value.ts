@@ -2,7 +2,7 @@ import { prisma } from './prisma'
 
 export type KeyString = ''
 export type KeyNumber = ''
-export type KeyJson = 'signin_message'
+export type KeyJson = 'signin_message' | 'top_page_notice'
 
 export const getKeyValueJson = async <T extends Record<string, unknown>>(key: KeyJson) => {
   const kv = await prisma.keyValue.findUnique({ where: { key } })

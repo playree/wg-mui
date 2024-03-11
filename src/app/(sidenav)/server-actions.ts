@@ -1,7 +1,8 @@
 'use server'
 
-import { errCommunication, errNotFound } from '@/helpers/error'
+import { errCommunication } from '@/helpers/error'
 import { ActionResultType, validAction } from '@/helpers/server'
+import { getLocaleValue } from '@/locale/server'
 import os from 'os'
 
 import pkg from '../../../package.json'
@@ -34,6 +35,20 @@ export const getServerInfo = validAction('getServerInfo', {
   },
 })
 export type ServerInfo = ActionResultType<typeof getServerInfo>
+
+/**
+ * トップページ通知取得
+ */
+export const getTopPageNotice = validAction('getTopPageNotice', {
+  requireAuth: true,
+  next: async () => {
+    const topPageNotice = await getLocaleValue('top_page_notice')
+    return {
+      topPageNotice,
+    }
+  },
+})
+export type TopPageNotice = ActionResultType<typeof getTopPageNotice>
 
 /**
  * Linode Transfer情報取得
@@ -74,7 +89,7 @@ export const getLinodeTransferInfo = validAction('getLinodeTransferInfo', {
         throw errCommunication('Linode Transfer')
       }
     }
-    throw errNotFound()
+    return null
   },
 })
 export type LinodeTransferInfo = ActionResultType<typeof getLinodeTransferInfo>
