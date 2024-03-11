@@ -14,18 +14,19 @@ import { SharedUIProvider } from './context'
 
 export interface ProvidersProps {
   children: ReactNode
+  defaultLocale: string
   themeProps?: ThemeProviderProps
   acceptLanguage: string | null
 }
 
-export const Providers: FC<ProvidersProps> = ({ children, themeProps, acceptLanguage }) => {
+export const Providers: FC<ProvidersProps> = ({ children, defaultLocale, themeProps, acceptLanguage }) => {
   const router = useRouter()
 
   return (
     <NextUIProvider navigate={router.push}>
       <NextThemesProvider {...themeProps}>
         <AuthProvider authProps={authProps}>
-          <LocaleProvider config={localeConfig} acceptLanguage={acceptLanguage}>
+          <LocaleProvider config={localeConfig} defaultLocale={defaultLocale} acceptLanguage={acceptLanguage}>
             <SharedUIProvider>{children}</SharedUIProvider>
           </LocaleProvider>
         </AuthProvider>

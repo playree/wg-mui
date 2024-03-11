@@ -1,4 +1,4 @@
-import { t } from '@/locale/utils'
+import { t } from '@/locale/server'
 import sgMail from '@sendgrid/mail'
 
 import { getAppName } from './env'

@@ -1,4 +1,5 @@
 import { getAppName } from '@/helpers/env'
+import { defaultLocale } from '@/locale/server'
 import '@/styles/globals.css'
 import { Metadata } from 'next'
 import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
@@ -39,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='ja' className={`${NotoSansJp.variable} ${RobotoMono.variable}`} suppressHydrationWarning>
       <head />
       <body className={twMerge('min-h-screen bg-background font-noto antialiased')}>
-        <Providers themeProps={{ attribute: 'class' }} acceptLanguage={acceptLanguage}>
+        <Providers themeProps={{ attribute: 'class' }} defaultLocale={defaultLocale} acceptLanguage={acceptLanguage}>
           <div className='relative flex h-screen flex-col'>{children}</div>
         </Providers>
       </body>
