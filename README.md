@@ -5,6 +5,7 @@
 - [モジュール構成](#モジュール構成)
 - [推奨環境](#推奨環境)
 - [ビルド](#ビルド)
+- [環境変数](#環境変数)
 - [起動](#起動)
   - [PM2](#pm2)
     - [PM2のインストール](#pm2のインストール)
@@ -44,6 +45,31 @@ Next.jsの最新機能を率先して利用して開発しています。
 yarn install
 yarn migrate
 yarn build
+```
+
+# 環境変数
+
+`.env`
+
+```conf
+APP_NAME=sample VPN
+NEXTAUTH_URL=http://localhost:63001
+NEXTAUTH_SECRET=xxxx
+DEFAULT_LOCALE=ja
+
+GOOGLE_CLIENT_ID=xxx
+GOOGLE_CLIENT_SECRET=xxx
+
+LINODE_ID=00000000
+LINODE_PERSONAL_ACCESS_TOKEN=xxx
+LINODE_ACCESS_INTERVAL=180
+
+MAIL_SEND=sendgrid
+MAIL_FROM=vpn@sample.dev
+SENDGRID_API_KEY=SG.xxx
+
+DEBUG_LINODE_DUMMY={"used":1200109071,"quota":4662,"billable":0,"total":5005784383488}
+DEBUG_SEND_EMAIL=true
 ```
 
 # 起動

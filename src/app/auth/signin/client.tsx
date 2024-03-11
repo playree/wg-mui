@@ -3,7 +3,7 @@
 import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon, GoogleIcon } from '@/components/icons'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { Message } from '@/components/nextekit/ui/message'
-import { gridStyles } from '@/components/styles'
+import { gridStyles, textStyles } from '@/components/styles'
 import { Signin, scSignin } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,9 +12,12 @@ import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FC, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { twMerge } from 'tailwind-merge'
 
-export const SignInClient: FC<{ isGoogleEnabled: boolean }> = ({ isGoogleEnabled }) => {
-  const { t, fet } = useLocale()
+import { SSResource } from './server-actions'
+
+export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, signinMessage } }) => {
+  const { t, fet, lvt } = useLocale()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || undefined
   const router = useRouter()
@@ -101,6 +104,9 @@ export const SignInClient: FC<{ isGoogleEnabled: boolean }> = ({ isGoogleEnabled
               </Button>
             </div>
           )}
+          <div className={twMerge(textStyles({ color: 'light' }), 'col-span-12 p-2 text-center text-sm')}>
+            {lvt(signinMessage)}
+          </div>
         </form>
       </CardBody>
     </Card>

@@ -10,8 +10,12 @@ export const useLocale = () => {
     }
     return undefined
   }
+  const lvt = (localeValue: Record<string, string>) => {
+    return localeValue[ulItem.locale] || localeValue[ulItem.defaultLocale] || ''
+  }
   return {
     ...ulItem,
     fet,
+    lvt,
   }
 }
