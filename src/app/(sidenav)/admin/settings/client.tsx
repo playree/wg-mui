@@ -1,5 +1,6 @@
 'use client'
 
+import { useSharedUIContext } from '@/app/context'
 import {
   ArrowPathIcon,
   CheckBadgeIcon,
@@ -55,6 +56,7 @@ export const SystemInfoClient: FC<{
 }> = ({ info }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
+  const { confirmModal } = useSharedUIContext()
   const [isLoadingWgStart, setLoadingWgStart] = useState(false)
   const [isLoadingWgAutoStartEnable, setLoadingWgAutoStartEnable] = useState(false)
   const [isLoadingWgReboot, setLoadingWgReboot] = useState(false)
@@ -96,7 +98,13 @@ export const SystemInfoClient: FC<{
                       isLoading={isLoadingWgStart}
                       onPress={async () => {
                         console.debug('WireGuard Stop:')
-                        if (window.confirm(t('msg_wg_stop_confirm'))) {
+                        const ok = await confirmModal().confirm({
+                          title: t('item_confirme'),
+                          text: t('msg_wg_stop_confirm'),
+                          requireCheck: true,
+                          autoClose: true,
+                        })
+                        if (ok) {
                           setLoadingWgStart(true)
                           await parseAction(stopWg())
                           await intervalOperation()
@@ -138,7 +146,13 @@ export const SystemInfoClient: FC<{
                     isLoading={isLoadingWgReboot}
                     onPress={async () => {
                       console.debug('WireGuard Reboot:')
-                      if (window.confirm(t('msg_wg_restart_confirm'))) {
+                      const ok = await confirmModal().confirm({
+                        title: t('item_confirme'),
+                        text: t('msg_wg_restart_confirm'),
+                        requireCheck: true,
+                        autoClose: true,
+                      })
+                      if (ok) {
                         setLoadingWgReboot(true)
                         await parseAction(stopWg())
                         await parseAction(startWg())
@@ -181,7 +195,13 @@ export const SystemInfoClient: FC<{
                       isLoading={isLoadingWgAutoStartEnable}
                       onPress={async () => {
                         console.debug('WireGuard AutoStart Disable:')
-                        if (window.confirm(t('msg_wg_autostart_disable_confirm'))) {
+                        const ok = await confirmModal().confirm({
+                          title: t('item_confirme'),
+                          text: t('msg_wg_autostart_disable_confirm'),
+                          requireCheck: true,
+                          autoClose: true,
+                        })
+                        if (ok) {
                           setLoadingWgAutoStartEnable(true)
                           await parseAction(disableWgAutoStart())
                           await intervalOperation()
