@@ -36,6 +36,7 @@ export const en: LocaleItems = {
   item_generate: 'Generate',
   item_action: 'Action',
   item_delete_confirm: 'Delete confirmation',
+  item_confirme: 'Confirme',
   item_confirmed: 'Confirmed',
   item_change_password: 'Change password',
   item_label: 'Label',

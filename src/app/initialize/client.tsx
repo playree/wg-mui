@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
+import { useSharedUIContext } from '../context'
 import {
   changeConfDir,
   checkConfDir,
@@ -125,6 +126,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
+  const { confirmModal } = useSharedUIContext()
 
   const {
     control,
@@ -169,8 +171,14 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
           // ConfDirのアクセス権確認
           const exeUser = await parseAction(checkConfDir({ confDirPath: req.confDirPath }))
           if (exeUser) {
+            const ok = await confirmModal().confirm({
+              title: t('item_confirme'),
+              text: t('msg_conf_dir_permission_confirm', { user: exeUser, path: req.confDirPath }),
+              requireCheck: false,
+              autoClose: true,
+            })
             // アクセス権がない場合
-            if (!window.confirm(t('msg_conf_dir_permission_confirm', { user: exeUser, path: req.confDirPath }))) {
+            if (!ok) {
               setLoading(false)
               return
             }

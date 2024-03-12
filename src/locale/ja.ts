@@ -36,6 +36,7 @@ export const ja: DefaultLocaleItems = {
   item_generate: '自動生成',
   item_action: '操作',
   item_delete_confirm: '削除確認',
+  item_confirme: '確認',
   item_confirmed: '確認しました',
   item_change_password: 'パスワード変更',
   item_label: 'ラベル',
