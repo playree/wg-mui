@@ -26,7 +26,7 @@ import { AsyncListData } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
-import { createUser, existsUserName, updateUser } from './server-actions'
+import { createUser, existsEmail, existsUserName, updateUser } from './server-actions'
 
 // ユーザー管理
 
@@ -69,16 +69,27 @@ const CreateUserModal: FC<
               console.debug('create:submit:', req)
               setLoading(true)
               // nameの重複チェック
-              const exist = await parseAction(existsUserName({ name: req.name }))
-              if (exist) {
+              if (await parseAction(existsUserName({ name: req.name }))) {
                 // 重複チェックエラー
                 setError('name', { message: '@already_exists' })
-              } else {
-                await parseAction(createUser(req))
-                await intervalOperation()
-                updated()
-                onClose()
+                setLoading(false)
+                return
               }
+
+              // emailの重複チェック
+              if (req.email) {
+                if (await parseAction(existsEmail({ email: req.email }))) {
+                  // 重複チェックエラー
+                  setError('email', { message: '@already_exists' })
+                  setLoading(false)
+                  return
+                }
+              }
+
+              await parseAction(createUser(req))
+              await intervalOperation()
+              updated()
+              onClose()
               setLoading(false)
             })}
           >
@@ -258,16 +269,27 @@ export const UpdateUserModal: FC<
               console.debug('update:submit:', req)
               setLoading(true)
               // nameの重複チェック
-              const exist = await parseAction(existsUserName({ name: req.name, excludeId: req.id }))
-              if (exist) {
+              if (await parseAction(existsUserName({ name: req.name, excludeId: req.id }))) {
                 // 重複チェックエラー
                 setError('name', { message: '@already_exists' })
-              } else {
-                await parseAction(updateUser(req))
-                await intervalOperation()
-                updated()
-                onClose()
+                setLoading(false)
+                return
               }
+
+              // emailの重複チェック
+              if (req.email) {
+                if (await parseAction(existsEmail({ email: req.email, excludeId: req.id }))) {
+                  // 重複チェックエラー
+                  setError('email', { message: '@already_exists' })
+                  setLoading(false)
+                  return
+                }
+              }
+
+              await parseAction(updateUser(req))
+              await intervalOperation()
+              updated()
+              onClose()
               setLoading(false)
             })}
           >

@@ -98,6 +98,22 @@ export const existsUserName = validAction('existsUserName', {
 })
 
 /**
+ * メールアドレスの存在確認(管理者権限)
+ */
+export const existsEmail = validAction('existsEmail', {
+  schema: zReq({ email: zString, excludeId: zUUID.optional() }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req: { email, excludeId } }) => {
+    const user = await prisma.user.findUnique({ where: { email } })
+    if (user) {
+      return excludeId ? user.id !== excludeId : true
+    }
+    return false
+  },
+})
+
+/**
  * パスワードリセット(管理者権限)
  */
 export const resetPassword = validAction('resetPassword', {
