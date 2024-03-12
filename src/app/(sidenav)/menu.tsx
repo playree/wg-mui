@@ -4,6 +4,8 @@ import {
   CloudIcon,
   Cog6ToothIcon,
   ComputerDesktopIcon,
+  CubeIcon,
+  GithubIcon,
   Squares2x2Icon,
   TagIcon,
   UserCircleIcon,
@@ -18,6 +20,7 @@ import { SetLocaleApi } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
 import { Accordion, AccordionItem, AccordionItemProps, Button, Card, CardBody } from '@nextui-org/react'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FC, ReactNode, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -135,6 +138,20 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
             </div>
           </AccordionItem>
         </Accordion>
+      </div>
+      <div className='absolute inset-x-0 bottom-0 h-4 bg-gradient-to-r from-gray-200 dark:from-gray-900'>
+        <footer
+          className={twMerge(textStyles({ color: 'superlight' }), 'flex items-center justify-center gap-x-4 text-xs')}
+        >
+          <div className='flex'>
+            <CubeIcon size={16} className='mr-1' />
+            <span className='font-bold'>WG-MUI</span>
+          </div>
+          <Link href='https://github.com/playree/wg-mui' className='flex'>
+            <GithubIcon size={16} className='mr-1' />
+            <span className='font-bold'>GitHub</span>
+          </Link>
+        </footer>
       </div>
     </div>
   )

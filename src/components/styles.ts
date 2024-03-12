@@ -11,6 +11,7 @@ export const textStyles = tv({
   variants: {
     color: {
       light: 'text-gray-600 dark:text-gray-400',
+      superlight: 'text-gray-400 dark:text-gray-600',
       red: 'text-red-800 dark:text-red-400',
     },
   },
