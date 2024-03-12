@@ -1,6 +1,7 @@
 'use server'
 
 import { errNotFound } from '@/helpers/error'
+import { formatSafeFilename } from '@/helpers/format'
 import { prisma } from '@/helpers/prisma'
 import { zIp, zReq } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
@@ -32,6 +33,9 @@ export const getUserPeerConf = validAction('getUserPeerConf', {
       throw errNotFound()
     }
     const wgMgr = await refWgMgr()
-    return wgMgr.getPeerConf(peer)
+    return {
+      conf: wgMgr.getPeerConf(peer),
+      filename: `${formatSafeFilename(process.env.APP_NAME || '', 20)}_${peer.ip.replaceAll('.', '-')}.conf`,
+    }
   },
 })

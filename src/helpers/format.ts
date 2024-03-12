@@ -37,3 +37,13 @@ export const formatTime = (sec: number) => {
     .toString()
     .padStart(2, '0')}`
 }
+
+const marks = ['\\', '/', ':', '*', '?', ' ', '<', '>', '|']
+export const formatSafeFilename = (str: string, num?: number) => {
+  let ret = str
+  marks.forEach((value) => (ret = ret.replaceAll(value, '-')))
+  if (num) {
+    ret = ret.substring(0, num)
+  }
+  return ret
+}

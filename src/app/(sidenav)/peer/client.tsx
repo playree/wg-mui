@@ -10,6 +10,7 @@ import {
 } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles, textStyles } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { getQrImgString } from '@/helpers/qr'
 import { TypePeer } from '@/helpers/schema'
 import { PeerStatus } from '@/helpers/wgmgr'
@@ -106,18 +107,16 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
                 <div className='col-span-12 pl-4'>
                   <ExButton
                     onPress={async () => {
-                      const res = await getUserPeerConf({ ip: peer.ip })
-                      if (res.ok) {
-                        const blob = new Blob([res.data], { type: 'text/plain' })
-                        const url = URL.createObjectURL(blob)
-                        const a = document.createElement('a')
-                        document.body.appendChild(a)
-                        a.download = `${peer.ip.replace('.', '-')}.conf`
-                        a.href = url
-                        a.click()
-                        a.remove()
-                        URL.revokeObjectURL(url)
-                      }
+                      const res = await parseAction(getUserPeerConf({ ip: peer.ip }))
+                      const blob = new Blob([res.conf], { type: 'text/plain' })
+                      const url = URL.createObjectURL(blob)
+                      const a = document.createElement('a')
+                      document.body.appendChild(a)
+                      a.download = res.filename
+                      a.href = url
+                      a.click()
+                      a.remove()
+                      URL.revokeObjectURL(url)
                     }}
                   >
                     <DocumentArrowDownIcon />
@@ -125,11 +124,9 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
                   </ExButton>
                   <ExButton
                     onPress={async () => {
-                      const res = await getUserPeerConf({ ip: peer.ip })
-                      if (res.ok) {
-                        const qr = await getQrImgString(res.data)
-                        setTargetQr(qr)
-                      }
+                      const res = await parseAction(getUserPeerConf({ ip: peer.ip }))
+                      const qr = await getQrImgString(res.conf)
+                      setTargetQr(qr)
                     }}
                   >
                     <QrCodeIcon />
