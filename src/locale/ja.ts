@@ -104,6 +104,7 @@ export const ja: DefaultLocaleItems = {
   item_locale: '言語',
   item_send_mail: 'メール送信',
   item_top_page_notice: 'アナウンス',
+  item_download_client_tools: 'クライアンツールのダウンロード',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

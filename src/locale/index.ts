@@ -103,6 +103,7 @@ export type LocaleItemBase =
   | 'item_locale'
   | 'item_send_mail'
   | 'item_top_page_notice'
+  | 'item_download_client_tools'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'

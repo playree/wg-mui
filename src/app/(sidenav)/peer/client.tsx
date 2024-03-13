@@ -21,6 +21,7 @@ import {
   CardHeader,
   Divider,
   Image,
+  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -91,7 +92,12 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
 
   return (
     <>
-      <div className={twMerge(gridStyles(), 'mt-4 w-full')}>
+      <div className={twMerge(gridStyles(), 'w-full')}>
+        <div className='col-span-12 my-2 ml-2'>
+          <Link href='https://www.wireguard.com/install/' isExternal showAnchorIcon>
+            {t('item_download_client_tools')}
+          </Link>
+        </div>
         {peerList.map((peer) => {
           return (
             <Card key={peer.ip} className='col-span-12'>
