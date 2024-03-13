@@ -139,9 +139,12 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
           </AccordionItem>
         </Accordion>
       </div>
-      <div className='absolute inset-x-0 bottom-0 h-4 bg-gradient-to-r from-gray-200 dark:from-gray-900'>
+      <div className='absolute inset-x-0 bottom-0 h-5 bg-gradient-to-r from-gray-200 dark:from-gray-900'>
         <footer
-          className={twMerge(textStyles({ color: 'superlight' }), 'flex items-center justify-center gap-x-4 text-xs')}
+          className={twMerge(
+            textStyles({ color: 'superlight' }),
+            'flex h-full items-center justify-center gap-x-4 text-xs',
+          )}
         >
           <div className='flex'>
             <CubeIcon size={16} className='mr-1' />
