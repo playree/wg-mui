@@ -271,14 +271,14 @@ exit 0
     return undefined
   }
 
-  getPeerConf(peer: Peer) {
+  getPeerConf(peer: Peer, useDNS: boolean) {
     return (
       stringify(
         {
           Interface: {
             PrivateKey: peer.privateKey,
             Address: `${peer.ip}/${this.ip4.subnetMask}`,
-            DNS: this.conf.dns || undefined,
+            DNS: useDNS ? this.conf.dns || undefined : undefined,
           },
           Peer: {
             PublicKey: this.conf.publicKey,
