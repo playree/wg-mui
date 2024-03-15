@@ -29,6 +29,14 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
 
 const middlewareWithAuth = withAuth(
   async (request) => {
+    if (request.nextauth.token?.sub && request.nextauth.token.sub.indexOf('@') === 0) {
+      const [oauthType, userId] = request.nextauth.token.sub.split(':')
+      if (oauthType === '@google') {
+        // Google連携
+        return NextResponse.redirect(new URL(`/linkgoogle/${userId}`, request.url))
+      }
+    }
+
     const requestHeaders = new Headers(request.headers)
     requestHeaders.set('x-pathname', request.nextUrl.pathname)
     const response = NextResponse.next({ request: { headers: requestHeaders } })

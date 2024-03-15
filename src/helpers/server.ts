@@ -32,7 +32,7 @@ export const validApi = <
       schema?: { query?: Q; body?: B; params?: P }
       next: (
         req: NextRequest,
-        items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P>; user: Session['user'] },
+        items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P>; user: NonNullable<Session['user']> },
       ) => void
       requireAuth: true
       requireAdmin?: boolean
@@ -133,7 +133,7 @@ export const validAction = <REQ extends ZodSchema = ZodVoid, RES = void>(
   }:
     | {
         schema?: REQ
-        next: (param: { req: z.infer<REQ>; user: Session['user'] }) => Promise<RES>
+        next: (param: { req: z.infer<REQ>; user: NonNullable<Session['user']> }) => Promise<RES>
         requireAuth: true
         requireAdmin?: boolean
       }

@@ -106,6 +106,8 @@ export type LocaleItemBase =
   | 'item_send_mail'
   | 'item_top_page_notice'
   | 'item_download_client_tools'
+  | 'item_link_google'
+  | 'item_signin_with_password'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'
@@ -122,6 +124,8 @@ export type LocaleItemBase =
   | 'msg_initialize_wg'
   | 'msg_password_reset'
   | 'msg_send_reset_confirm'
+  | 'msg_link_google'
+  | 'msg_linked_google'
   | 'mail_password_reset_subject'
   | 'mail_password_reset_body'
 

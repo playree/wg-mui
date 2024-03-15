@@ -1,5 +1,7 @@
+import { isGoogleSimpleLogin } from '@/helpers/env'
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
+import { randomUUID } from 'crypto'
 import { NextAuthOptions, Profile, Session } from 'next-auth'
 import { getServerSession } from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
@@ -52,8 +54,39 @@ const authOptions: NextAuthOptions = {
       let user
       if (account?.provider === 'google') {
         const profile: (Profile & { email_verified?: boolean }) | undefined = param.profile
-        if (profile?.email_verified && profile?.email) {
-          user = await prisma.user.findUnique({ where: { email: profile.email } })
+        if (token.sub && profile?.email_verified && profile?.email) {
+          if (isGoogleSimpleLogin()) {
+            // 簡易連携の場合
+            user = await prisma.user.findUnique({ where: { email: profile.email } })
+          } else {
+            // Google連携済みアカウントを検索
+            const linkGoogle = await prisma.linkGoogle.findUnique({
+              where: { sub: token.sub, enabled: true },
+              include: { user: true },
+            })
+            if (linkGoogle) {
+              // Google連携済みアカウントあり
+              user = linkGoogle.user
+            } else {
+              // Google連携済みアカウントなし
+              // 連携対象の検索
+              const linkUser = await prisma.user.findUnique({
+                where: { email: profile.email },
+                include: { linkGoogle: true },
+              })
+              if (linkUser && !linkUser.linkGoogle?.enabled) {
+                // メールアドレスが一致、連携未登録の場合、Google連携情報(enabled=false)を登録
+                const tmpLinkGoogle = await prisma.linkGoogle.upsert({
+                  where: { id: linkUser.id },
+                  create: { id: linkUser.id, sub: token.sub, onetimeId: randomUUID() },
+                  update: { sub: token.sub, onetimeId: randomUUID() },
+                })
+                // Google連携の認証に進む
+                token.sub = `@google:${tmpLinkGoogle.onetimeId}`
+                return token
+              }
+            }
+          }
         }
       } else {
         if (token.sub) {
@@ -87,11 +120,19 @@ const authOptions: NextAuthOptions = {
     async session(param) {
       const { token, session } = param
       if (token.sub) {
-        session.user.id = token.sub
-        session.user.name = token.name
-        session.user.isAdmin = token.isAdmin
-        session.user.locale = token.locale
-        session.user.email = token.email
+        if (token.sub.indexOf('@') === 0) {
+          session.user = undefined
+          session.oauth = 'test'
+          return session
+        }
+
+        if (session.user) {
+          session.user.id = token.sub
+          session.user.name = token.name
+          session.user.isAdmin = token.isAdmin
+          session.user.locale = token.locale
+          session.user.email = token.email
+        }
         console.debug('set session:', JSON.stringify(session.user))
       } else {
         return undefined as unknown as Session

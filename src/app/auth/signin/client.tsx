@@ -10,7 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, CardBody, CardHeader } from '@nextui-org/react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { FC, useState } from 'react'
+import { FC, useCallback, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 
@@ -25,6 +25,18 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
+
+  const isOnlyPassword = useCallback((callbackUrl?: string) => {
+    if (!callbackUrl) {
+      return false
+    }
+    try {
+      const url = new URL(callbackUrl)
+      return url.pathname.indexOf('/linkgoogle/') === 0
+    } catch {
+      return false
+    }
+  }, [])
 
   const {
     control,
@@ -96,7 +108,7 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
               {t('item_signin')}
             </Button>
           </div>
-          {isGoogleEnabled && (
+          {isGoogleEnabled && !isOnlyPassword(callbackUrl) && (
             <div className='col-span-12 p-2 text-center'>
               <Button variant='ghost' color='default' onPress={() => signIn('google', { callbackUrl })}>
                 <GoogleIcon />

@@ -107,6 +107,8 @@ export const en: LocaleItems = {
   item_send_mail: 'Send E-Mail',
   item_top_page_notice: 'Announcement',
   item_download_client_tools: 'Download client tools',
+  item_link_google: 'Link with Google',
+  item_signin_with_password: 'Sign in with Password',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -123,8 +125,11 @@ export const en: LocaleItems = {
   msg_add_tunnel: 'Add a tunnel to your device',
   msg_create_admin: 'Create an admin user',
   msg_initialize_wg: 'Perform initial settings for WireGuard',
-  msg_password_reset: 'Reset your password\nPlease enter the password you want to set',
-  msg_send_reset_confirm: 'A password reset email will be sent to this email address\n\n${email}',
+  msg_password_reset: 'Reset your password.\nPlease enter the password you want to set.',
+  msg_send_reset_confirm: 'A password reset email will be sent to this email address.\n\n${email}',
+  msg_link_google:
+    'We will link the user with the above email address with Google.\nTo confirm, please sign in with your password below.',
+  msg_linked_google: 'Google link has been completed.\nFrom next time onwards, you can sign in with Google.',
 
   mail_password_reset_subject: '[${appname}] Please set a password',
   mail_password_reset_body: `username: \${username}

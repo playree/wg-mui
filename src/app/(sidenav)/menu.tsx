@@ -88,7 +88,7 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
         <CardBody>
           <div className='flex items-center'>
             <UserCircleIcon className='mr-2' />
-            <div>{session?.user.name}</div>
+            <div>{session?.user?.name}</div>
           </div>
         </CardBody>
       </Card>
@@ -119,7 +119,7 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
             </div>
           </AccordionItem>
 
-          <AccordionItem isCompact={true} title={t('group_admin')} hidden={!session?.user.isAdmin}>
+          <AccordionItem isCompact={true} title={t('group_admin')} hidden={!session?.user?.isAdmin}>
             <div className='mx-2'>
               <MenuButton to='/admin/users' text={t('menu_users')} icon={<UsersIcon />} closeMenu={closeMenu} />
               <MenuButton to='/admin/labels' text={t('menu_labels')} icon={<TagIcon />} closeMenu={closeMenu} />

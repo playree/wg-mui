@@ -25,11 +25,24 @@ model User {
   peerList      Peer[]
   lastSignIn    LastSignIn?
   passwordReset PasswordReset?
+  linkGoogle    LinkGoogle?
 }
 
 model LastSignIn {
   id        String   @id
   provider  String
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  // Relation
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model LinkGoogle {
+  id        String   @id
+  sub       String   @unique
+  enabled   Boolean  @default(false)
+  onetimeId String   @unique
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 

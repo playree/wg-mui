@@ -63,7 +63,7 @@ export const SignInLink: FC<{ children: ReactNode; className?: string; iconSize?
   iconSize,
 }) => {
   return (
-    <Link className={twMerge('cursor-pointer', className)} aria-label='SignOut' onPress={() => signIn()}>
+    <Link className={twMerge('cursor-pointer', className)} aria-label='SignIn' onPress={() => signIn()}>
       <SignInIcon className='mr-1' size={iconSize} />
       {children}
     </Link>
