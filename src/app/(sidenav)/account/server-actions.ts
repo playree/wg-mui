@@ -1,23 +1,28 @@
 'use server'
 
+import { isGoogleEnabled, isGoogleSimpleLogin } from '@/helpers/env'
 import { errInvalidSession, errNotFound } from '@/helpers/error'
 import { prisma } from '@/helpers/prisma'
 import { scUpdatePassword } from '@/helpers/schema'
-import { validAction } from '@/helpers/server'
+import { ActionResultType, validAction } from '@/helpers/server'
 
 /**
  * アカウント取得
  */
 export const getAccount = validAction('getAccount', {
   requireAuth: true,
-  next: async ({ user }) => {
-    const account = await prisma.user.get(user.id)
-    if (!account) {
+  next: async ({ user: { id } }) => {
+    const user = await prisma.user.get(id)
+    if (!user) {
       throw errNotFound()
     }
-    return account
+
+    const linkGoogle = await prisma.linkGoogle.findUnique({ where: { id: user.id } })
+
+    return { user, isLinkedGoogle: isGoogleEnabled() && !isGoogleSimpleLogin() ? !!linkGoogle?.enabled : undefined }
   },
 })
+export type Account = ActionResultType<typeof getAccount>
 
 /**
  * パスワード変更

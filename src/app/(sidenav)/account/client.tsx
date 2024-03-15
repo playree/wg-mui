@@ -5,19 +5,19 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles, iconSizes } from '@/components/styles'
 import { dayformat } from '@/helpers/day'
-import { TypeUser } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
 import { Card, CardBody, Divider, useDisclosure } from '@nextui-org/react'
 import { FC, useEffect, useState } from 'react'
 
 import { ChangePasswordModal } from './edit'
+import { Account } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_account')}</span>
 }
 
-export const AccountViewClient: FC<{ account: TypeUser }> = ({ account }) => {
+export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, isLinkedGoogle } }) => {
   const { t } = useLocale()
 
   const [targetChangePwd, setTargetChangePwd] = useState<string>()
@@ -36,13 +36,13 @@ export const AccountViewClient: FC<{ account: TypeUser }> = ({ account }) => {
       <Card className='mt-2 w-full'>
         <CardBody className={gridStyles()}>
           <div className='col-span-3'>{t('item_username')}</div>
-          <div className='col-span-7'>{account.name}</div>
+          <div className='col-span-7'>{user.name}</div>
           <div className='col-span-2'></div>
           <Divider className='col-span-12' />
 
           <div className='col-span-3'>{t('item_password')}</div>
           <div className='col-span-7'>
-            <ExButton isSmart onPress={() => setTargetChangePwd(account.id)}>
+            <ExButton isSmart onPress={() => setTargetChangePwd(user.id)}>
               <KeyIcon size={iconSizes.sm} />
               {t('item_change_password')}
             </ExButton>
@@ -52,23 +52,34 @@ export const AccountViewClient: FC<{ account: TypeUser }> = ({ account }) => {
 
           <div className='col-span-3'>{t('item_isadmin')}</div>
           <div className='col-span-7'>
-            <OnOffChip isEnable={account.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
+            <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
           </div>
           <div className='col-span-2'></div>
           <Divider className='col-span-12' />
 
           <div className='col-span-3'>{t('item_locale')}</div>
-          <div className='col-span-7'>{account.locale || ''}</div>
+          <div className='col-span-7'>{user.locale || ''}</div>
           <div className='col-span-2'></div>
           <Divider className='col-span-12' />
 
           <div className='col-span-3'>{t('item_email')}</div>
-          <div className='col-span-7'>{account.email}</div>
+          <div className='col-span-7'>{user.email}</div>
           <div className='col-span-2'></div>
           <Divider className='col-span-12' />
 
+          {isLinkedGoogle !== undefined && (
+            <>
+              <div className='col-span-3'>{t('item_link_google')}</div>
+              <div className='col-span-7'>
+                <OnOffChip isEnable={isLinkedGoogle} messageOn={t('item_enabled')} messageOff={t('item_disabled')} />
+              </div>
+              <div className='col-span-2'></div>
+              <Divider className='col-span-12' />
+            </>
+          )}
+
           <div className='col-span-3'>{t('item_updated_at')}</div>
-          <div className='col-span-7'>{dayformat(account.updatedAt, 'jp-simple')}</div>
+          <div className='col-span-7'>{dayformat(user.updatedAt, 'jp-simple')}</div>
           <div className='col-span-2'></div>
         </CardBody>
       </Card>
