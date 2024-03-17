@@ -35,6 +35,15 @@ export const updatePassword = validAction('updatePassword', {
       throw errInvalidSession()
     }
     await prisma.user.updatePassword(req.id, req.password)
-    return
+  },
+})
+
+/**
+ * Google連携解除
+ */
+export const unlinkGoogle = validAction('unlinkGoogle', {
+  requireAuth: true,
+  next: async ({ user: { id } }) => {
+    await prisma.linkGoogle.delete({ where: { id } })
   },
 })

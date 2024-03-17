@@ -108,6 +108,7 @@ export type LocaleItemBase =
   | 'item_download_client_tools'
   | 'item_link_google'
   | 'item_signin_with_password'
+  | 'item_unlink'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'
@@ -126,6 +127,7 @@ export type LocaleItemBase =
   | 'msg_send_reset_confirm'
   | 'msg_link_google'
   | 'msg_linked_google'
+  | 'msg_unlink_google_confirm'
   | 'mail_password_reset_subject'
   | 'mail_password_reset_body'
 

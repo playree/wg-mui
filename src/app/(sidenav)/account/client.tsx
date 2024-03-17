@@ -1,16 +1,20 @@
 'use client'
 
-import { KeyIcon } from '@/components/icons'
+import { useSharedUIContext } from '@/app/context'
+import { BoltSlashIcon, KeyIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles, iconSizes } from '@/components/styles'
+import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
+import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { Card, CardBody, Divider, useDisclosure } from '@nextui-org/react'
+import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 
 import { ChangePasswordModal } from './edit'
-import { Account } from './server-actions'
+import { Account, unlinkGoogle } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -19,10 +23,13 @@ export const Title: FC = () => {
 
 export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, isLinkedGoogle } }) => {
   const { t } = useLocale()
+  const { refresh } = useRouter()
+  const { confirmModal } = useSharedUIContext()
 
   const [targetChangePwd, setTargetChangePwd] = useState<string>()
   const changePwdModal = useDisclosure()
   const openChangePwdModal = changePwdModal.onOpen
+  const [isLoadingUnlinkGoogle, setLoadingUnlinkGoogle] = useState(false)
 
   useEffect(() => {
     console.debug('targetChangePwd:', targetChangePwd)
@@ -70,10 +77,39 @@ export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, i
           {isLinkedGoogle !== undefined && (
             <>
               <div className='col-span-3'>{t('item_link_google')}</div>
-              <div className='col-span-7'>
+              <div className='col-span-5'>
                 <OnOffChip isEnable={isLinkedGoogle} messageOn={t('item_enabled')} messageOff={t('item_disabled')} />
               </div>
-              <div className='col-span-2'></div>
+              <div className='col-span-4 flex items-center'>
+                <Divider orientation='vertical' className='mr-2' />
+                <ExButton
+                  className='ml-2'
+                  variant='solid'
+                  color='danger'
+                  isSmart
+                  startContent={isLoadingUnlinkGoogle ? undefined : <BoltSlashIcon />}
+                  isLoading={isLoadingUnlinkGoogle}
+                  isDisabled={!isLinkedGoogle}
+                  onPress={async () => {
+                    console.debug('Unlink Google:')
+                    const ok = await confirmModal().confirm({
+                      title: t('item_confirme'),
+                      text: t('msg_unlink_google_confirm'),
+                      requireCheck: true,
+                      autoClose: true,
+                    })
+                    if (ok) {
+                      setLoadingUnlinkGoogle(true)
+                      await parseAction(unlinkGoogle())
+                      await intervalOperation()
+                      setLoadingUnlinkGoogle(false)
+                      refresh()
+                    }
+                  }}
+                >
+                  {t('item_unlink')}
+                </ExButton>
+              </div>
               <Divider className='col-span-12' />
             </>
           )}

@@ -109,6 +109,7 @@ export const en: LocaleItems = {
   item_download_client_tools: 'Download client tools',
   item_link_google: 'Link with Google',
   item_signin_with_password: 'Sign in with Password',
+  item_unlink: 'Unlink',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -130,6 +131,7 @@ export const en: LocaleItems = {
   msg_link_google:
     'We will link the user with the above email address with Google.\nTo confirm, please sign in with your password below.',
   msg_linked_google: 'Google link has been completed.\nFrom next time onwards, you can sign in with Google.',
+  msg_unlink_google_confirm: 'Do you want to unlink from Google?',
 
   mail_password_reset_subject: '[${appname}] Please set a password',
   mail_password_reset_body: `username: \${username}
