@@ -1,4 +1,4 @@
-import { isGoogleSimpleLogin } from '@/helpers/env'
+import { getGoogleConfig, isGoogleEnabled, isGoogleSimpleLogin } from '@/helpers/env'
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
 import { randomUUID } from 'crypto'
@@ -141,13 +141,8 @@ const authOptions: NextAuthOptions = {
     },
   },
 }
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-  authOptions.providers.push(
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-  )
+if (isGoogleEnabled()) {
+  authOptions.providers.push(GoogleProvider(getGoogleConfig()))
 }
 export { authOptions }
 

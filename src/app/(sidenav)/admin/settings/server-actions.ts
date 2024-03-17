@@ -1,5 +1,6 @@
 'use server'
 
+import { isGoogleEnabled } from '@/helpers/env'
 import { getLocaleFormSchema } from '@/helpers/schema'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
@@ -16,7 +17,6 @@ export const getSystemInfo = validAction('getSystemInfo', {
     const wgMgr = await refWgMgr()
     const wgVersion = await wgMgr.getWgVersion()
     const ipForward = await getIpForward()
-    const isGoogleEnabled = !!(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET)
     const sendMail = {
       enabled: false,
       from: process.env.MAIL_FROM || '',
@@ -35,7 +35,7 @@ export const getSystemInfo = validAction('getSystemInfo', {
       isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
       isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
       ipForward,
-      isGoogleEnabled,
+      isGoogleEnabled: isGoogleEnabled(),
       sendMail,
     }
   },
