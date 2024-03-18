@@ -5,21 +5,25 @@ import {
   ArrowPathIcon,
   CheckBadgeIcon,
   CheckCircleIcon,
+  CommandLineIcon,
   PlayCircleIcon,
   StopCircleIcon,
   XCircleIcon,
 } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
+import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { LocaleForm, getLocaleFormSchema } from '@/helpers/schema'
+import { LocaleForm, WgConfPostScript, getLocaleFormSchema, scWgConfPostScript } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Accordion,
   AccordionItem,
+  Card,
+  CardBody,
   Divider,
   Table,
   TableBody,
@@ -39,9 +43,11 @@ import {
   SystemInfo,
   disableWgAutoStart,
   ebableWgAutoStart,
+  getPostUpDownScript,
   organizePeers,
   startWg,
   stopWg,
+  updatePostUpDownScript,
   updateSigninMessage,
   updateTopPageNotice,
 } from './server-actions'
@@ -49,6 +55,124 @@ import {
 export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_settings')}</span>
+}
+
+const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }) => {
+  const { t, fet } = useLocale()
+  const [isEdited, setEdited] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<WgConfPostScript>({
+    resolver: zodResolver(scWgConfPostScript),
+    mode: 'onChange',
+    defaultValues: { postUp: safeWgConf.postUp || '', postDown: safeWgConf.postDown || '' },
+  })
+
+  return (
+    <Card className='mx-2 mb-2 w-full'>
+      <CardBody>
+        <div className={gridStyles()}>
+          <div className='col-span-12'>
+            <div className='mb-2'>{t('item_wg_conf')}</div>
+            <Divider />
+          </div>
+          <div className='col-span-12 px-2 text-sm md:col-span-4'>
+            {t('item_interface_name')} : {safeWgConf.interfaceName}
+          </div>
+          <div className='col-span-12 px-2 text-sm md:col-span-4'>
+            {t('item_address')} : {safeWgConf.address}
+          </div>
+          <div className='col-span-12 px-2 text-sm md:col-span-4'>
+            {t('item_listen_port')} : {safeWgConf.listenPort}
+          </div>
+          <div className='col-span-12 mt-2'>
+            <Divider />
+          </div>
+        </div>
+        <Accordion isCompact>
+          <AccordionItem key='post-script' aria-label='ac post-script' title={t('item_post_up_down')}>
+            <form
+              onSubmit={handleSubmit(async (req) => {
+                console.debug('FormWgConfPostScript:submit:', req)
+                setLoading(true)
+                await parseAction(updatePostUpDownScript(req))
+                await intervalOperation()
+                setLoading(false)
+                setEdited(false)
+              })}
+            >
+              <div className={gridStyles()}>
+                <div className='col-span-12'>
+                  <ExButton
+                    color='default'
+                    variant='flat'
+                    size='sm'
+                    onPress={async () => {
+                      const script = await parseAction(getPostUpDownScript({ interfaceName: safeWgConf.interfaceName }))
+                      if (script) {
+                        setValue('postUp', script.up)
+                        setValue('postDown', script.down)
+                        if (!isEdited) {
+                          setEdited(true)
+                        }
+                      }
+                    }}
+                  >
+                    <CommandLineIcon />
+                    {t('item_generate_post_updown')}
+                  </ExButton>
+                </div>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='postUp'
+                    label={t('item_post_up')}
+                    errorMessage={fet(errors.postUp)}
+                    onChanged={() => {
+                      if (!isEdited) {
+                        setEdited(true)
+                      }
+                    }}
+                  />
+                </div>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='postDown'
+                    label={t('item_post_down')}
+                    errorMessage={fet(errors.postDown)}
+                    onChanged={() => {
+                      if (!isEdited) {
+                        setEdited(true)
+                      }
+                    }}
+                  />
+                </div>
+                <div className='col-span-12 text-right'>
+                  <ExButton
+                    type='submit'
+                    variant='flat'
+                    color='success'
+                    isSmart
+                    startContent={isLoading ? undefined : <CheckBadgeIcon />}
+                    isLoading={isLoading}
+                    isDisabled={!isEdited}
+                  >
+                    {t('item_update')}
+                  </ExButton>
+                </div>
+              </div>
+            </form>
+          </AccordionItem>
+        </Accordion>
+      </CardBody>
+    </Card>
+  )
 }
 
 export const SystemInfoClient: FC<{
@@ -170,7 +294,7 @@ export const SystemInfoClient: FC<{
               </div>
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-500'>
+          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
             <TableCell>
               <div></div>
             </TableCell>
@@ -235,11 +359,11 @@ export const SystemInfoClient: FC<{
               </div>
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-500'>
+          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
             <TableCell>IP Forward</TableCell>
             <TableCell>{info.ipForward || ''}</TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-500'>
+          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
             <TableCell>{t('item_google_signin')}</TableCell>
             <TableCell>
               <OnOffChip
@@ -261,6 +385,8 @@ export const SystemInfoClient: FC<{
           </TableRow>
         </TableBody>
       </Table>
+
+      <FormWgConfPostScript safeWgConf={info.safeWgConf} />
     </>
   )
 }

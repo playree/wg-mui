@@ -168,6 +168,13 @@ export const scInitializeWgConf = z.object({
 })
 export type InitializeWgConf = z.infer<typeof scInitializeWgConf>
 
+// WG Conf PostScript
+export const scWgConfPostScript = z.object({
+  postUp: zPostUp,
+  postDown: zPostDown,
+})
+export type WgConfPostScript = z.infer<typeof scWgConfPostScript>
+
 // Peer作成
 export const scCreatePeer = z.object({
   ip: zIp,

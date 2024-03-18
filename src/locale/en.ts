@@ -51,6 +51,7 @@ export const en: LocaleItems = {
   item_listen_port: 'Listen Port',
   item_post_up: 'PostUp',
   item_post_down: 'PostDown',
+  item_post_up_down: 'PostUp/Down script',
   item_generate_post_updown: 'Generate PostUp/Down script',
   item_private_key: 'Private Key',
   item_end_point: 'End point',
@@ -110,6 +111,7 @@ export const en: LocaleItems = {
   item_link_google: 'Link with Google',
   item_signin_with_password: 'Sign in with Password',
   item_unlink: 'Unlink',
+  item_wg_conf: 'WireGuard Config',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',

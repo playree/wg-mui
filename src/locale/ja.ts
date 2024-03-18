@@ -51,6 +51,7 @@ export const ja: DefaultLocaleItems = {
   item_listen_port: 'Listen Port',
   item_post_up: 'PostUp',
   item_post_down: 'PostDown',
+  item_post_up_down: 'PostUp/Downスクリプト',
   item_generate_post_updown: '↓PostUp/Downスクリプトを自動生成',
   item_private_key: '秘密鍵',
   item_end_point: 'エンドポイントアドレス',
@@ -110,6 +111,7 @@ export const ja: DefaultLocaleItems = {
   item_link_google: 'Google連携',
   item_signin_with_password: 'パスワードでサインイン',
   item_unlink: '連携解除',
+  item_wg_conf: 'WireGuard設定',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

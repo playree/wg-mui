@@ -1,11 +1,12 @@
 'use server'
 
 import { isGoogleEnabled } from '@/helpers/env'
-import { getLocaleFormSchema } from '@/helpers/schema'
+import { prisma } from '@/helpers/prisma'
+import { getLocaleFormSchema, scWgConfPostScript, zInterfaceName, zReq } from '@/helpers/schema'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
 import { getLocaleValue, setLocaleValue } from '@/locale/server'
-import { getIpForward } from '@/server-actions/cmd'
+import { getDefaultNetworkInterface, getIpForward } from '@/server-actions/cmd'
 
 /**
  * システム情報取得(管理者権限)
@@ -32,6 +33,13 @@ export const getSystemInfo = validAction('getSystemInfo', {
     }
     return {
       wgVersion,
+      safeWgConf: {
+        interfaceName: wgMgr.conf.interfaceName,
+        address: wgMgr.conf.address,
+        listenPort: wgMgr.conf.listenPort,
+        postUp: wgMgr.conf.postUp,
+        postDown: wgMgr.conf.postDown,
+      },
       isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
       isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
       ipForward,
@@ -149,5 +157,38 @@ export const updateTopPageNotice = validAction('updateTopPageNotice', {
   requireAdmin: true,
   next: async ({ req }) => {
     await setLocaleValue('top_page_notice', JSON.stringify(req) === '{}' ? null : req)
+  },
+})
+
+/**
+ * PostUp/Downスクリプト生成
+ */
+export const getPostUpDownScript = validAction('getPostUpDownScript', {
+  schema: zReq({ interfaceName: zInterfaceName }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req: { interfaceName } }) => {
+    const nif = await getDefaultNetworkInterface()
+    if (nif) {
+      return {
+        up: `iptables -A FORWARD -i ${interfaceName} -j ACCEPT; iptables -t nat -A POSTROUTING -o ${nif} -j MASQUERADE`,
+        down: `iptables -D FORWARD -i ${interfaceName} -j ACCEPT; iptables -t nat -D POSTROUTING -o ${nif} -j MASQUERADE`,
+      }
+    }
+    return undefined
+  },
+})
+
+/**
+ * PostUp/Downスクリプト更新
+ */
+export const updatePostUpDownScript = validAction('updatePostUpDownScript', {
+  schema: scWgConfPostScript,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req: { postUp, postDown } }) => {
+    await prisma.wgConf.update({ where: { id: 'main' }, data: { postUp, postDown } })
+    const wgMgr = await refWgMgr()
+    wgMgr.saveConf()
   },
 })

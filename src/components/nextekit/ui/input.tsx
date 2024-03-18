@@ -1,4 +1,5 @@
 import { Input, InputProps } from '@nextui-org/react'
+import { ChangeEvent } from 'react'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 
 export const InputCtrl = <
@@ -9,10 +10,12 @@ export const InputCtrl = <
   name,
   type = 'text',
   variant = 'bordered',
+  onChanged,
   ...props
 }: InputProps & {
   control?: Control<TFieldValues>
   name: TName
+  onChanged?: (e: ChangeEvent<HTMLInputElement>) => void
 }) => {
   return (
     <Controller
@@ -23,7 +26,21 @@ export const InputCtrl = <
           {...props}
           type={type}
           variant={variant}
-          onChange={type === 'number' ? (e) => onChange(Number(e.target.value)) : onChange}
+          onChange={
+            type === 'number'
+              ? (e) => {
+                  if (onChanged) {
+                    onChanged(e)
+                  }
+                  onChange(Number(e.target.value))
+                }
+              : (e) => {
+                  if (onChanged) {
+                    onChanged(e)
+                  }
+                  onChange(e)
+                }
+          }
           value={value || (type === 'number' ? '0' : '')}
         />
       )}
