@@ -1,10 +1,10 @@
 'use server'
 
+import { withinMinutes } from '@/helpers/day'
 import { errNotFound } from '@/helpers/error'
 import { prisma } from '@/helpers/prisma'
 import { scUpdatePassword, zReq, zUUID } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
-import dayjs from 'dayjs'
 
 const getOnetime = async (onetimeId: string) => {
   const onetime = await prisma.passwordReset.findUnique({ where: { onetimeId } })
@@ -12,11 +12,8 @@ const getOnetime = async (onetimeId: string) => {
     return undefined
   }
 
-  const now = dayjs()
-  const target = dayjs(onetime.updatedAt)
-  const diff = now.diff(target, 'minute')
-  console.debug('isEnabledOnetimeId:diff:', diff)
-  return diff < 48 * 60 ? onetime : undefined
+  // 有効期限2日
+  return withinMinutes(onetime.updatedAt, 48 * 60) ? onetime : undefined
 }
 
 /**

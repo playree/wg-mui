@@ -13,3 +13,11 @@ export const dayformat = (date: Date, format?: 'jp-simple') => {
   }
   return dayjs(date).tz('Asia/Tokyo').format()
 }
+
+/** xx分以内かのチェック */
+export const withinMinutes = (date: Date, min: number) => {
+  const now = dayjs()
+  const target = dayjs(date)
+  const diff = now.diff(target, 'minute')
+  return diff <= min
+}

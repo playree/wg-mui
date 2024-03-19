@@ -29,12 +29,16 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
 
 const middlewareWithAuth = withAuth(
   async (request) => {
+    // 連携シーケンス
     if (request.nextauth.token?.sub && request.nextauth.token.sub.indexOf('@') === 0) {
       const [oauthType, userId] = request.nextauth.token.sub.split(':')
       if (oauthType === '@google') {
         // Google連携
         return NextResponse.redirect(new URL(`/linkgoogle/${userId}`, request.url))
       }
+      const url = request.nextUrl.clone()
+      url.pathname = '/404'
+      return NextResponse.rewrite(url)
     }
 
     const requestHeaders = new Headers(request.headers)
@@ -48,6 +52,12 @@ const middlewareWithAuth = withAuth(
     callbacks: {
       authorized({ req, token }) {
         console.debug('mw:auth:token:', JSON.stringify(token))
+
+        if (token?.sub && token.sub.indexOf('@') === 0) {
+          // 連携シーケンスの場合は一旦通過
+          return true
+        }
+
         // 管理者権限の確認
         if (matchCondition(req.nextUrl.pathname, authProps.targetAdmin)) {
           console.debug('mw:auth:admin:', token?.isAdmin)

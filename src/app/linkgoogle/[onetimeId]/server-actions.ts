@@ -1,11 +1,11 @@
 'use server'
 
 import { getSessionUser } from '@/config/auth-options'
+import { withinMinutes } from '@/helpers/day'
 import { errInvalidSession } from '@/helpers/error'
 import { prisma } from '@/helpers/prisma'
 import { zReq, zUUID } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
-import dayjs from 'dayjs'
 
 /**
  * OnetimeIdに紐づくユーザーの取得
@@ -18,11 +18,8 @@ export const getOnetimeGoogleUser = validAction('getOnetimeGoogleUser', {
       include: { user: { select: { id: true, email: true } } },
     })
     if (linkGoogle?.user) {
-      const now = dayjs()
-      const target = dayjs(linkGoogle.updatedAt)
-      const diff = now.diff(target, 'minute')
-      // 有効期限30分
-      return diff < 30 ? linkGoogle.user : undefined
+      // 有効期限15分
+      return withinMinutes(linkGoogle.updatedAt, 15) ? linkGoogle.user : undefined
     }
     return undefined
   },
@@ -46,11 +43,8 @@ export const enableLinkGoogle = validAction('enableLinkGoogle', {
       throw errInvalidSession()
     }
 
-    const now = dayjs()
-    const target = dayjs(linkGoogle.updatedAt)
-    const diff = now.diff(target, 'minute')
-    // 有効期限30分
-    if (diff >= 30) {
+    // 有効期限15分
+    if (!withinMinutes(linkGoogle.updatedAt, 15)) {
       throw errInvalidSession()
     }
 
