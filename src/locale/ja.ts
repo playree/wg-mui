@@ -112,6 +112,7 @@ export const ja: DefaultLocaleItems = {
   item_signin_with_password: 'パスワードでサインイン',
   item_unlink: '連携解除',
   item_wg_conf: 'WireGuard設定',
+  item_for_clients: 'クライアント向け',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

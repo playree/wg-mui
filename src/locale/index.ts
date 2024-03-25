@@ -111,6 +111,7 @@ export type LocaleItemBase =
   | 'item_signin_with_password'
   | 'item_unlink'
   | 'item_wg_conf'
+  | 'item_for_clients'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'

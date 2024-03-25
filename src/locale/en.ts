@@ -112,6 +112,7 @@ export const en: LocaleItems = {
   item_signin_with_password: 'Sign in with Password',
   item_unlink: 'Unlink',
   item_wg_conf: 'WireGuard Config',
+  item_for_clients: 'For clients',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',

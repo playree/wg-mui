@@ -175,6 +175,15 @@ export const scWgConfPostScript = z.object({
 })
 export type WgConfPostScript = z.infer<typeof scWgConfPostScript>
 
+// WG Conf For Clients
+export const scWgConfForClients = z.object({
+  endPoint: zEndPoint,
+  dns: zDns,
+  defaultAllowedIPs: zAllowedIPs,
+  defaultKeepalive: zKeepalive,
+})
+export type WgConfForClients = z.infer<typeof scWgConfForClients>
+
 // Peer作成
 export const scCreatePeer = z.object({
   ip: zIp,

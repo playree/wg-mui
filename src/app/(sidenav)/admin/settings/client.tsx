@@ -15,7 +15,15 @@ import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { LocaleForm, WgConfPostScript, getLocaleFormSchema, scWgConfPostScript } from '@/helpers/schema'
+import { GLOBAL_CIDR } from '@/helpers/const'
+import {
+  LocaleForm,
+  WgConfForClients,
+  WgConfPostScript,
+  getLocaleFormSchema,
+  scWgConfForClients,
+  scWgConfPostScript,
+} from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -33,6 +41,7 @@ import {
   TableRow,
   Textarea,
 } from '@nextui-org/react'
+import { Address4 } from 'ip-address'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -47,9 +56,10 @@ import {
   organizePeers,
   startWg,
   stopWg,
-  updatePostUpDownScript,
   updateSigninMessage,
   updateTopPageNotice,
+  updateWgConfForClients,
+  updateWgConfPostScript,
 } from './server-actions'
 
 export const Title: FC = () => {
@@ -74,6 +84,208 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
   })
 
   return (
+    <form
+      onSubmit={handleSubmit(async (req) => {
+        console.debug('FormWgConfPostScript:submit:', req)
+        setLoading(true)
+        await parseAction(updateWgConfPostScript(req))
+        await intervalOperation()
+        setLoading(false)
+        setEdited(false)
+      })}
+    >
+      <div className={gridStyles()}>
+        <div className='col-span-12'>
+          <ExButton
+            color='default'
+            variant='flat'
+            size='sm'
+            onPress={async () => {
+              const script = await parseAction(getPostUpDownScript({ interfaceName: safeWgConf.interfaceName }))
+              if (script) {
+                setValue('postUp', script.up)
+                setValue('postDown', script.down)
+                if (!isEdited) {
+                  setEdited(true)
+                }
+              }
+            }}
+          >
+            <CommandLineIcon />
+            {t('item_generate_post_updown')}
+          </ExButton>
+        </div>
+        <div className='col-span-12'>
+          <InputCtrl
+            control={control}
+            name='postUp'
+            label={t('item_post_up')}
+            errorMessage={fet(errors.postUp)}
+            onChanged={() => {
+              if (!isEdited) {
+                setEdited(true)
+              }
+            }}
+          />
+        </div>
+        <div className='col-span-12'>
+          <InputCtrl
+            control={control}
+            name='postDown'
+            label={t('item_post_down')}
+            errorMessage={fet(errors.postDown)}
+            onChanged={() => {
+              if (!isEdited) {
+                setEdited(true)
+              }
+            }}
+          />
+        </div>
+        <div className='col-span-12 mb-2 text-right'>
+          <ExButton
+            type='submit'
+            variant='flat'
+            color='success'
+            isSmart
+            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            isLoading={isLoading}
+            isDisabled={!isEdited}
+          >
+            {t('item_update')}
+          </ExButton>
+        </div>
+      </div>
+    </form>
+  )
+}
+
+const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }) => {
+  const { t, fet } = useLocale()
+  const [isEdited, setEdited] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<WgConfForClients>({
+    resolver: zodResolver(scWgConfForClients),
+    mode: 'onChange',
+    defaultValues: {
+      endPoint: safeWgConf.endPoint,
+      dns: safeWgConf.dns || '',
+      defaultAllowedIPs: safeWgConf.defaultAllowedIPs || '',
+      defaultKeepalive: safeWgConf.defaultKeepalive,
+    },
+  })
+
+  return (
+    <form
+      onSubmit={handleSubmit(async (req) => {
+        console.debug('FormWgConfForClients:submit:', req)
+        setLoading(true)
+        await parseAction(updateWgConfForClients(req))
+        await intervalOperation()
+        setLoading(false)
+        setEdited(false)
+      })}
+    >
+      <div className={gridStyles()}>
+        <div className='col-span-12 md:col-span-6'>
+          <InputCtrl
+            control={control}
+            name='endPoint'
+            label={t('item_end_point')}
+            errorMessage={fet(errors.endPoint)}
+            isRequired
+            onChanged={() => {
+              if (!isEdited) {
+                setEdited(true)
+              }
+            }}
+          />
+        </div>
+        <div className='col-span-12 md:col-span-6'>
+          <InputCtrl
+            control={control}
+            name='defaultKeepalive'
+            type='number'
+            label={t('item_default_keepalive')}
+            errorMessage={fet(errors.defaultKeepalive)}
+            isRequired
+            min={0}
+            max={600}
+            onChanged={() => {
+              if (!isEdited) {
+                setEdited(true)
+              }
+            }}
+          />
+        </div>
+        <div className='col-span-12'>
+          <ExButton
+            color='default'
+            variant='flat'
+            size='sm'
+            onPress={async () => {
+              const ifip = new Address4(safeWgConf.address)
+              setValue('defaultAllowedIPs', `${ifip.startAddress().address}${ifip.subnet}, ${GLOBAL_CIDR}`)
+              if (!isEdited) {
+                setEdited(true)
+              }
+            }}
+          >
+            <CommandLineIcon />
+            {t('item_generate_global_cidr')}
+          </ExButton>
+        </div>
+        <div className='col-span-12'>
+          <Controller
+            control={control}
+            name='defaultAllowedIPs'
+            render={({ field: { onChange, value } }) => (
+              <Textarea
+                label={t('item_default_allowed_ips')}
+                type='text'
+                variant='bordered'
+                size='sm'
+                minRows={2}
+                errorMessage={fet(errors.defaultAllowedIPs)}
+                onChange={(event) => {
+                  if (!isEdited) {
+                    setEdited(true)
+                  }
+                  onChange(event)
+                }}
+                value={value || ''}
+                classNames={{ input: 'text-xs' }}
+              />
+            )}
+          />
+        </div>
+        <div className='col-span-12 mb-2 text-right'>
+          <ExButton
+            type='submit'
+            variant='flat'
+            color='success'
+            isSmart
+            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            isLoading={isLoading}
+            isDisabled={!isEdited}
+          >
+            {t('item_update')}
+          </ExButton>
+        </div>
+      </div>
+    </form>
+  )
+}
+
+const FormWgConf: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }) => {
+  const { t } = useLocale()
+
+  return (
     <Card className='mx-2 mb-2 w-full'>
       <CardBody>
         <div className={gridStyles()}>
@@ -96,78 +308,10 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
         </div>
         <Accordion isCompact>
           <AccordionItem key='post-script' aria-label='ac post-script' title={t('item_post_up_down')}>
-            <form
-              onSubmit={handleSubmit(async (req) => {
-                console.debug('FormWgConfPostScript:submit:', req)
-                setLoading(true)
-                await parseAction(updatePostUpDownScript(req))
-                await intervalOperation()
-                setLoading(false)
-                setEdited(false)
-              })}
-            >
-              <div className={gridStyles()}>
-                <div className='col-span-12'>
-                  <ExButton
-                    color='default'
-                    variant='flat'
-                    size='sm'
-                    onPress={async () => {
-                      const script = await parseAction(getPostUpDownScript({ interfaceName: safeWgConf.interfaceName }))
-                      if (script) {
-                        setValue('postUp', script.up)
-                        setValue('postDown', script.down)
-                        if (!isEdited) {
-                          setEdited(true)
-                        }
-                      }
-                    }}
-                  >
-                    <CommandLineIcon />
-                    {t('item_generate_post_updown')}
-                  </ExButton>
-                </div>
-                <div className='col-span-12'>
-                  <InputCtrl
-                    control={control}
-                    name='postUp'
-                    label={t('item_post_up')}
-                    errorMessage={fet(errors.postUp)}
-                    onChanged={() => {
-                      if (!isEdited) {
-                        setEdited(true)
-                      }
-                    }}
-                  />
-                </div>
-                <div className='col-span-12'>
-                  <InputCtrl
-                    control={control}
-                    name='postDown'
-                    label={t('item_post_down')}
-                    errorMessage={fet(errors.postDown)}
-                    onChanged={() => {
-                      if (!isEdited) {
-                        setEdited(true)
-                      }
-                    }}
-                  />
-                </div>
-                <div className='col-span-12 text-right'>
-                  <ExButton
-                    type='submit'
-                    variant='flat'
-                    color='success'
-                    isSmart
-                    startContent={isLoading ? undefined : <CheckBadgeIcon />}
-                    isLoading={isLoading}
-                    isDisabled={!isEdited}
-                  >
-                    {t('item_update')}
-                  </ExButton>
-                </div>
-              </div>
-            </form>
+            <FormWgConfPostScript safeWgConf={safeWgConf} />
+          </AccordionItem>
+          <AccordionItem key='for-clinets' aria-label='ac for-clinets' title={t('item_for_clients')}>
+            <FormWgConfForClients safeWgConf={safeWgConf} />
           </AccordionItem>
         </Accordion>
       </CardBody>
@@ -386,7 +530,7 @@ export const SystemInfoClient: FC<{
         </TableBody>
       </Table>
 
-      <FormWgConfPostScript safeWgConf={info.safeWgConf} />
+      <FormWgConf safeWgConf={info.safeWgConf} />
     </>
   )
 }

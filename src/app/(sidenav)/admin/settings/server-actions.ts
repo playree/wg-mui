@@ -2,7 +2,7 @@
 
 import { isGoogleEnabled } from '@/helpers/env'
 import { prisma } from '@/helpers/prisma'
-import { getLocaleFormSchema, scWgConfPostScript, zInterfaceName, zReq } from '@/helpers/schema'
+import { getLocaleFormSchema, scWgConfForClients, scWgConfPostScript, zInterfaceName, zReq } from '@/helpers/schema'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
 import { getLocaleValue, setLocaleValue } from '@/locale/server'
@@ -39,6 +39,10 @@ export const getSystemInfo = validAction('getSystemInfo', {
         listenPort: wgMgr.conf.listenPort,
         postUp: wgMgr.conf.postUp,
         postDown: wgMgr.conf.postDown,
+        endPoint: wgMgr.conf.endPoint,
+        dns: wgMgr.conf.dns,
+        defaultAllowedIPs: wgMgr.conf.defaultAllowedIPs,
+        defaultKeepalive: wgMgr.conf.defaultKeepalive,
       },
       isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
       isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
@@ -182,13 +186,25 @@ export const getPostUpDownScript = validAction('getPostUpDownScript', {
 /**
  * PostUp/Downスクリプト更新
  */
-export const updatePostUpDownScript = validAction('updatePostUpDownScript', {
+export const updateWgConfPostScript = validAction('updateWgConfPostScript', {
   schema: scWgConfPostScript,
   requireAuth: true,
   requireAdmin: true,
-  next: async ({ req: { postUp, postDown } }) => {
-    await prisma.wgConf.update({ where: { id: 'main' }, data: { postUp, postDown } })
+  next: async ({ req }) => {
+    await prisma.wgConf.update({ where: { id: 'main' }, data: req })
     const wgMgr = await refWgMgr()
     wgMgr.saveConf()
+  },
+})
+
+/**
+ * クライアント向け設定更新
+ */
+export const updateWgConfForClients = validAction('updateWgConfForClients', {
+  schema: scWgConfForClients,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req }) => {
+    await prisma.wgConf.update({ where: { id: 'main' }, data: req })
   },
 })
