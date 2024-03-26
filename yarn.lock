@@ -3720,6 +3720,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/url-join@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "@types/url-join@npm:4.0.3"
+  checksum: 10c0/7f0f86693070355ce731ec3861d47c03eaae09ab0ea1a72dde6b38a2a17089941acc59bac9ea2472376b6f96e189478da0a7ed29e2d282d1543382e92408d6ca
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/eslint-plugin@npm:^7.2.0":
   version: 7.2.0
   resolution: "@typescript-eslint/eslint-plugin@npm:7.2.0"
@@ -10368,6 +10375,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"url-join@npm:4.0.1":
+  version: 4.0.1
+  resolution: "url-join@npm:4.0.1"
+  checksum: 10c0/ac65e2c7c562d7b49b68edddcf55385d3e922bc1dd5d90419ea40b53b6de1607d1e45ceb71efb9d60da02c681d13c6cb3a1aa8b13fc0c989dfc219df97ee992d
+  languageName: node
+  linkType: hard
+
 "use-callback-ref@npm:^1.3.0":
   version: 1.3.0
   resolution: "use-callback-ref@npm:1.3.0"
@@ -10490,6 +10504,7 @@ __metadata:
     "@types/qrcode": "npm:^1.5.5"
     "@types/react": "npm:^18.2.65"
     "@types/react-dom": "npm:^18.2.21"
+    "@types/url-join": "npm:^4.0.3"
     "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
     "@typescript-eslint/parser": "npm:^7.2.0"
     accept-language-parser: "npm:^1.5.0"
@@ -10527,6 +10542,7 @@ __metadata:
     tailwindcss: "npm:^3.4.1"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.4.2"
+    url-join: "npm:4.0.1"
     zod: "npm:^3.22.4"
   languageName: unknown
   linkType: soft

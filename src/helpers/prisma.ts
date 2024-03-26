@@ -1,9 +1,14 @@
 import { Label, LastSignIn, Peer, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
+import { randomUUID } from 'crypto'
 
 import { hashPassword } from './password'
 import { CreateUser, TypeUser, UpdateUser } from './schema'
 
 export type AllOrCount = 'all' | 'count'
+
+export const OAUTH_TYPE_GOOGLE = 'google'
+export const OAUTH_TYPE_GITLAB = 'gitlab'
+export type OAuthType = 'google' | 'gitlab'
 
 const convCreateLabelList = (target: string[]) => {
   return target
@@ -129,6 +134,22 @@ export const prisma = new PrismaClient().$extends({
           },
         })
       },
+      async getUserLinkOAuth(type: OAuthType, email: string) {
+        const user = await prisma.user.findUnique({
+          where: { email },
+          include: { linkOAuthList: true },
+        })
+        if (user) {
+          const { linkOAuthList, ...nextUser } = user
+          for (const linkOAuth of linkOAuthList) {
+            if (linkOAuth.type === type) {
+              return { ...nextUser, linkOAuth }
+            }
+          }
+          return { ...nextUser, linkOAuth: undefined }
+        }
+        return null
+      },
     },
     label: {
       async getAllList(withUser?: AllOrCount) {
@@ -159,6 +180,45 @@ export const prisma = new PrismaClient().$extends({
             createdAt: true,
           },
         })
+      },
+    },
+    linkOAuth: {
+      async get(type: OAuthType, userId: string) {
+        return prisma.linkOAuth.findUnique({
+          where: { id_type: { id: userId, type } },
+        })
+      },
+      async enable(type: OAuthType, userId: string) {
+        return prisma.linkOAuth.update({
+          where: { id_type: { id: userId, type } },
+          data: { enabled: true },
+        })
+      },
+      async getEnabled(type: OAuthType, sub: string) {
+        return prisma.linkOAuth.findUnique({
+          where: { type_sub: { type, sub }, enabled: true },
+          include: { user: true },
+        })
+      },
+      async isEnabled(type: OAuthType, userId: string) {
+        const link = await prisma.linkOAuth.findUnique({ where: { id_type: { id: userId, type } } })
+        return !!link?.enabled
+      },
+      async registOneTime(type: OAuthType, userId: string, sub: string) {
+        return prisma.linkOAuth.upsert({
+          where: { id_type: { id: userId, type } },
+          create: { id: userId, type, sub, onetimeId: randomUUID() },
+          update: { sub, onetimeId: randomUUID() },
+        })
+      },
+      async getOnetimeUser(onetimeId: string) {
+        return prisma.linkOAuth.findUnique({
+          where: { onetimeId },
+          include: { user: { select: { id: true, email: true } } },
+        })
+      },
+      async unlink(type: OAuthType, userId: string) {
+        return prisma.linkOAuth.delete({ where: { id_type: { id: userId, type } } })
       },
     },
   },

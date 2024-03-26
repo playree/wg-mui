@@ -25,7 +25,7 @@ model User {
   peerList      Peer[]
   lastSignIn    LastSignIn?
   passwordReset PasswordReset?
-  linkGoogle    LinkGoogle?
+  linkOAuthList LinkOAuth[]
 }
 
 model LastSignIn {
@@ -38,9 +38,10 @@ model LastSignIn {
   user User @relation(fields: [id], references: [id], onDelete: Cascade)
 }
 
-model LinkGoogle {
-  id        String   @id
-  sub       String   @unique
+model LinkOAuth {
+  id        String
+  type      String
+  sub       String
   enabled   Boolean  @default(false)
   onetimeId String   @unique
   updatedAt DateTime @updatedAt
@@ -48,6 +49,9 @@ model LinkGoogle {
 
   // Relation
   user User @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  @@id([id, type])
+  @@unique([type, sub])
 }
 
 model PasswordReset {

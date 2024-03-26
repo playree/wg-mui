@@ -89,6 +89,7 @@ export const ja: DefaultLocaleItems = {
   item_send: '送信',
   item_deleting: '削除中',
   item_google_signin: 'Googleでサインイン',
+  item_gitlab_signin: 'GitLabでサインイン',
   item_app_info: 'アプリ情報',
   item_app_version: 'バージョン',
   item_app_buildno: 'ビルドNo',

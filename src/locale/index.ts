@@ -88,6 +88,7 @@ export type LocaleItemBase =
   | 'item_send'
   | 'item_deleting'
   | 'item_google_signin'
+  | 'item_gitlab_signin'
   | 'item_app_info'
   | 'item_app_version'
   | 'item_app_buildno'

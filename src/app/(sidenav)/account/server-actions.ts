@@ -17,9 +17,9 @@ export const getAccount = validAction('getAccount', {
       throw errNotFound()
     }
 
-    const linkGoogle = await prisma.linkGoogle.findUnique({ where: { id: user.id } })
+    const isLinkedGoogle = await prisma.linkOAuth.isEnabled('google', user.id)
 
-    return { user, isLinkedGoogle: isGoogleEnabled() && !isGoogleSimpleLogin() ? !!linkGoogle?.enabled : undefined }
+    return { user, isLinkedGoogle: isGoogleEnabled() && !isGoogleSimpleLogin() ? isLinkedGoogle : undefined }
   },
 })
 export type Account = ActionResultType<typeof getAccount>
@@ -44,6 +44,6 @@ export const updatePassword = validAction('updatePassword', {
 export const unlinkGoogle = validAction('unlinkGoogle', {
   requireAuth: true,
   next: async ({ user: { id } }) => {
-    await prisma.linkGoogle.delete({ where: { id } })
+    await prisma.linkOAuth.unlink('google', id)
   },
 })

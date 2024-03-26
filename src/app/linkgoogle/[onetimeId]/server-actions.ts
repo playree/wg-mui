@@ -13,13 +13,10 @@ import { validAction } from '@/helpers/server'
 export const getOnetimeGoogleUser = validAction('getOnetimeGoogleUser', {
   schema: zReq({ onetimeId: zUUID }),
   next: async ({ req: { onetimeId } }) => {
-    const linkGoogle = await prisma.linkGoogle.findUnique({
-      where: { onetimeId },
-      include: { user: { select: { id: true, email: true } } },
-    })
-    if (linkGoogle?.user) {
+    const link = await prisma.linkOAuth.getOnetimeUser(onetimeId)
+    if (link?.user) {
       // 有効期限15分
-      return withinMinutes(linkGoogle.updatedAt, 15) ? linkGoogle.user : undefined
+      return withinMinutes(link.updatedAt, 15) ? link.user : undefined
     }
     return undefined
   },
@@ -34,7 +31,7 @@ export const enableLinkGoogle = validAction('enableLinkGoogle', {
     if (!user) {
       throw errInvalidSession()
     }
-    const linkGoogle = await prisma.linkGoogle.findUnique({ where: { id: user.id } })
+    const linkGoogle = await prisma.linkOAuth.get('google', user.id)
     if (linkGoogle?.enabled === true) {
       // 有効化済み
       return
@@ -48,6 +45,6 @@ export const enableLinkGoogle = validAction('enableLinkGoogle', {
       throw errInvalidSession()
     }
 
-    await prisma.linkGoogle.update({ where: { id: user.id }, data: { enabled: true } })
+    await prisma.linkOAuth.enable('google', user.id)
   },
 })

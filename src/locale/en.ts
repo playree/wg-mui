@@ -89,6 +89,7 @@ export const en: LocaleItems = {
   item_send: 'Send',
   item_deleting: 'Deleting',
   item_google_signin: 'Sign in with Google',
+  item_gitlab_signin: 'Sign in with GitLab',
   item_app_info: 'App Infomation',
   item_app_version: 'Version',
   item_app_buildno: 'Build No',

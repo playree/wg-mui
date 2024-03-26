@@ -1,6 +1,6 @@
 'use client'
 
-import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon, GoogleIcon } from '@/components/icons'
+import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon, GitLabIcon, GoogleIcon } from '@/components/icons'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { Message } from '@/components/nextekit/ui/message'
 import { gridStyles, textStyles } from '@/components/styles'
@@ -16,7 +16,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { SSResource } from './server-actions'
 
-export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, signinMessage } }) => {
+export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, isGitLabEnabled, signinMessage } }) => {
   const { t, fet, lvt } = useLocale()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || undefined
@@ -102,17 +102,25 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
               errorMessage={fet(errors.password)}
             />
           </div>
-          <div className='col-span-12 p-2 text-center'>
+          <div className='col-span-12 pt-2 text-center'>
             <Button type='submit' color='primary'>
               <ArrowLeftOnRectangleIcon />
               {t('item_signin')}
             </Button>
           </div>
           {isGoogleEnabled && !isOnlyPassword(callbackUrl) && (
-            <div className='col-span-12 p-2 text-center'>
+            <div className='col-span-12 pt-2 text-center'>
               <Button variant='ghost' color='default' onPress={() => signIn('google', { callbackUrl })}>
                 <GoogleIcon />
                 {t('item_google_signin')}
+              </Button>
+            </div>
+          )}
+          {isGitLabEnabled && !isOnlyPassword(callbackUrl) && (
+            <div className='col-span-12 pt-2 text-center'>
+              <Button variant='ghost' color='default' onPress={() => signIn('gitlab', { callbackUrl })}>
+                <GitLabIcon />
+                {t('item_gitlab_signin')}
               </Button>
             </div>
           )}

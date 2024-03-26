@@ -1,11 +1,19 @@
-import { getGoogleConfig, isGoogleEnabled, isGoogleSimpleLogin } from '@/helpers/env'
+import {
+  getGitLabConfig,
+  getGitLabUrl,
+  getGoogleConfig,
+  isGitLabEnabled,
+  isGoogleEnabled,
+  isGoogleSimpleLogin,
+} from '@/helpers/env'
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
-import { randomUUID } from 'crypto'
 import { NextAuthOptions, Profile, Session } from 'next-auth'
 import { getServerSession } from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
+
+import { GitLabSelfProvider } from './gitlab-self-provider'
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -60,27 +68,17 @@ const authOptions: NextAuthOptions = {
             user = await prisma.user.findUnique({ where: { email: profile.email } })
           } else {
             // Google連携済みアカウントを検索
-            const linkGoogle = await prisma.linkGoogle.findUnique({
-              where: { sub: token.sub, enabled: true },
-              include: { user: true },
-            })
+            const linkGoogle = await prisma.linkOAuth.getEnabled('google', token.sub)
             if (linkGoogle) {
               // Google連携済みアカウントあり
               user = linkGoogle.user
             } else {
               // Google連携済みアカウントなし
               // 連携対象の検索
-              const linkUser = await prisma.user.findUnique({
-                where: { email: profile.email },
-                include: { linkGoogle: true },
-              })
-              if (linkUser && !linkUser.linkGoogle?.enabled) {
+              const linkUser = await prisma.user.getUserLinkOAuth('google', profile.email)
+              if (linkUser && !linkUser.linkOAuth?.enabled) {
                 // メールアドレスが一致、連携未登録の場合、Google連携情報(enabled=false)を登録
-                const tmpLinkGoogle = await prisma.linkGoogle.upsert({
-                  where: { id: linkUser.id },
-                  create: { id: linkUser.id, sub: token.sub, onetimeId: randomUUID() },
-                  update: { sub: token.sub, onetimeId: randomUUID() },
-                })
+                const tmpLinkGoogle = await prisma.linkOAuth.registOneTime('google', linkUser.id, token.sub)
                 // Google連携の認証に進む
                 token.sub = `@google:${tmpLinkGoogle.onetimeId}`
                 return token
@@ -88,6 +86,8 @@ const authOptions: NextAuthOptions = {
             }
           }
         }
+      } else if (account?.provider === 'gitlab') {
+        console.debug('@@param', param)
       } else {
         if (token.sub) {
           user = await prisma.user.findUnique({ where: { id: token.sub } })
@@ -143,6 +143,9 @@ const authOptions: NextAuthOptions = {
 }
 if (isGoogleEnabled()) {
   authOptions.providers.push(GoogleProvider(getGoogleConfig()))
+}
+if (isGitLabEnabled()) {
+  authOptions.providers.push(GitLabSelfProvider(getGitLabUrl(), getGitLabConfig()))
 }
 export { authOptions }
 

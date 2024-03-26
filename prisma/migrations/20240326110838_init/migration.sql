@@ -20,6 +20,20 @@ CREATE TABLE "LastSignIn" (
 );
 
 -- CreateTable
+CREATE TABLE "LinkOAuth" (
+    "id" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "sub" TEXT NOT NULL,
+    "enabled" BOOLEAN NOT NULL DEFAULT false,
+    "onetimeId" TEXT NOT NULL,
+    "updatedAt" DATETIME NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ("id", "type"),
+    CONSTRAINT "LinkOAuth_id_fkey" FOREIGN KEY ("id") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateTable
 CREATE TABLE "PasswordReset" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "onetimeId" TEXT NOT NULL,
@@ -92,6 +106,12 @@ CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "LinkOAuth_onetimeId_key" ON "LinkOAuth"("onetimeId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "LinkOAuth_type_sub_key" ON "LinkOAuth"("type", "sub");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "PasswordReset_onetimeId_key" ON "PasswordReset"("onetimeId");

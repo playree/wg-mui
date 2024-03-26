@@ -665,6 +665,20 @@ export const BoltSlashIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ..
   </svg>
 )
 
+export const GitLabIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
+  <svg
+    fill='currentColor'
+    viewBox='0 0 280 280'
+    xmlns='http://www.w3.org/2000/svg'
+    aria-hidden='true'
+    width={size}
+    strokeWidth={strokeWidth}
+    {...props}
+  >
+    <path d='m 232.83,120.73 -0.27,-0.69 -26.14,-68.22 a 6.81,6.81 0 0 0 -2.69,-3.24 7,7 0 0 0 -8,0.43 7,7 0 0 0 -2.32,3.52 l -17.65,54 h -71.47 l -17.65,-54 A 6.86,6.86 0 0 0 84.32,49 a 7,7 0 0 0 -8,-0.43 6.87,6.87 0 0 0 -2.69,3.24 L 47.44,120 l -0.26,0.69 a 48.54,48.54 0 0 0 16.1,56.1 l 0.09,0.07 0.24,0.17 39.82,29.82 19.7,14.91 12,9.06 a 8.07,8.07 0 0 0 9.76,0 l 12,-9.06 19.7,-14.91 40.06,-30 0.1,-0.08 a 48.56,48.56 0 0 0 16.08,-56.04 z' />
+  </svg>
+)
+
 //
 
 export const MoonFilledIcon = ({ size = 24, width, height, ...props }: IconSvgProps) => (
