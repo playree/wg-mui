@@ -1,6 +1,6 @@
 'use server'
 
-import { isGitLabEnabled, isGoogleEnabled } from '@/helpers/env'
+import { isOAuthEnabled } from '@/helpers/env'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { getLocaleValue } from '@/locale/server'
 
@@ -11,8 +11,8 @@ export const getSSResource = validAction('getSSResource', {
   next: async () => {
     const signinMessage = await getLocaleValue('signin_message')
     return {
-      isGoogleEnabled: isGoogleEnabled(),
-      isGitLabEnabled: isGitLabEnabled(),
+      isGoogleEnabled: isOAuthEnabled('google'),
+      isGitLabEnabled: isOAuthEnabled('gitlab'),
       signinMessage,
     }
   },

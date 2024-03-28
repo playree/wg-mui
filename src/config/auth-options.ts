@@ -1,10 +1,10 @@
 import {
-  getGitLabConfig,
+  OAUTH_TYPE_GITLAB,
+  OAUTH_TYPE_GOOGLE,
   getGitLabUrl,
-  getGoogleConfig,
-  isGitLabEnabled,
-  isGoogleEnabled,
-  isGoogleSimpleLogin,
+  getOAuthConfig,
+  isOAuthEnabled,
+  isOAuthSimpleLogin,
 } from '@/helpers/env'
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
@@ -60,33 +60,34 @@ const authOptions: NextAuthOptions = {
       const { token, account } = param
 
       let user
-      if (account?.provider === 'google') {
+      if (account?.provider === OAUTH_TYPE_GOOGLE) {
+        const provider = account.provider
         const profile: (Profile & { email_verified?: boolean }) | undefined = param.profile
         if (token.sub && profile?.email_verified && profile?.email) {
-          if (isGoogleSimpleLogin()) {
+          if (isOAuthSimpleLogin(provider)) {
             // 簡易連携の場合
             user = await prisma.user.findUnique({ where: { email: profile.email } })
           } else {
             // Google連携済みアカウントを検索
-            const linkGoogle = await prisma.linkOAuth.getEnabled('google', token.sub)
+            const linkGoogle = await prisma.linkOAuth.getEnabled(provider, token.sub)
             if (linkGoogle) {
               // Google連携済みアカウントあり
               user = linkGoogle.user
             } else {
               // Google連携済みアカウントなし
               // 連携対象の検索
-              const linkUser = await prisma.user.getUserLinkOAuth('google', profile.email)
+              const linkUser = await prisma.user.getUserLinkOAuth(provider, profile.email)
               if (linkUser && !linkUser.linkOAuth?.enabled) {
                 // メールアドレスが一致、連携未登録の場合、Google連携情報(enabled=false)を登録
-                const tmpLinkGoogle = await prisma.linkOAuth.registOneTime('google', linkUser.id, token.sub)
+                const tmpLinkGoogle = await prisma.linkOAuth.registOneTime(provider, linkUser.id, token.sub)
                 // Google連携の認証に進む
-                token.sub = `@google:${tmpLinkGoogle.onetimeId}`
+                token.sub = `@${provider}:${tmpLinkGoogle.onetimeId}`
                 return token
               }
             }
           }
         }
-      } else if (account?.provider === 'gitlab') {
+      } else if (account?.provider === OAUTH_TYPE_GITLAB) {
         console.debug('@@param', param)
       } else {
         if (token.sub) {
@@ -141,11 +142,11 @@ const authOptions: NextAuthOptions = {
     },
   },
 }
-if (isGoogleEnabled()) {
-  authOptions.providers.push(GoogleProvider(getGoogleConfig()))
+if (isOAuthEnabled('google')) {
+  authOptions.providers.push(GoogleProvider(getOAuthConfig('google')))
 }
-if (isGitLabEnabled()) {
-  authOptions.providers.push(GitLabSelfProvider(getGitLabUrl(), getGitLabConfig()))
+if (isOAuthEnabled('gitlab')) {
+  authOptions.providers.push(GitLabSelfProvider(getGitLabUrl(), getOAuthConfig('gitlab')))
 }
 export { authOptions }
 

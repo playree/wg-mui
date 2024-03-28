@@ -1,6 +1,6 @@
 'use server'
 
-import { isGoogleEnabled, isGoogleSimpleLogin } from '@/helpers/env'
+import { isOAuthEnabled, isOAuthSimpleLogin } from '@/helpers/env'
 import { errInvalidSession, errNotFound } from '@/helpers/error'
 import { prisma } from '@/helpers/prisma'
 import { scUpdatePassword } from '@/helpers/schema'
@@ -19,7 +19,10 @@ export const getAccount = validAction('getAccount', {
 
     const isLinkedGoogle = await prisma.linkOAuth.isEnabled('google', user.id)
 
-    return { user, isLinkedGoogle: isGoogleEnabled() && !isGoogleSimpleLogin() ? isLinkedGoogle : undefined }
+    return {
+      user,
+      isLinkedGoogle: isOAuthEnabled('google') && !isOAuthSimpleLogin('google') ? isLinkedGoogle : undefined,
+    }
   },
 })
 export type Account = ActionResultType<typeof getAccount>

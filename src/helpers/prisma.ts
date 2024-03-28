@@ -1,14 +1,11 @@
 import { Label, LastSignIn, Peer, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
+import { OAuthType } from './env'
 import { hashPassword } from './password'
 import { CreateUser, TypeUser, UpdateUser } from './schema'
 
 export type AllOrCount = 'all' | 'count'
-
-export const OAUTH_TYPE_GOOGLE = 'google'
-export const OAUTH_TYPE_GITLAB = 'gitlab'
-export type OAuthType = 'google' | 'gitlab'
 
 const convCreateLabelList = (target: string[]) => {
   return target

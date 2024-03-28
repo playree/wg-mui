@@ -1,6 +1,6 @@
 'use server'
 
-import { isGoogleEnabled } from '@/helpers/env'
+import { isOAuthEnabled } from '@/helpers/env'
 import { prisma } from '@/helpers/prisma'
 import { getLocaleFormSchema, scWgConfForClients, scWgConfPostScript, zInterfaceName, zReq } from '@/helpers/schema'
 import { ActionResultType, validAction } from '@/helpers/server'
@@ -47,7 +47,7 @@ export const getSystemInfo = validAction('getSystemInfo', {
       isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
       isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
       ipForward,
-      isGoogleEnabled: isGoogleEnabled(),
+      isGoogleEnabled: isOAuthEnabled('google'),
       sendMail,
     }
   },
