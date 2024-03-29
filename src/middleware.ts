@@ -30,11 +30,11 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
 const middlewareWithAuth = withAuth(
   async (request) => {
     // 連携シーケンス
-    if (request.nextauth.token?.sub && request.nextauth.token.sub.indexOf('@') === 0) {
-      const [oauthType, userId] = request.nextauth.token.sub.split(':')
-      if (oauthType === '@google') {
+    if (request.nextauth.token?.oauth) {
+      const oauth = request.nextauth.token.oauth
+      if (oauth.type === 'google') {
         // Google連携
-        return NextResponse.redirect(new URL(`/linkgoogle/${userId}`, request.url))
+        return NextResponse.redirect(new URL(`/linkgoogle/${oauth.onetime}`, request.url))
       }
       const url = request.nextUrl.clone()
       url.pathname = '/404'

@@ -1,3 +1,4 @@
+import type { OAuthType } from '@/helpers/env'
 import 'next-auth'
 import 'next-auth/jwt'
 
@@ -6,6 +7,10 @@ declare module 'next-auth/jwt' {
     name: string
     isAdmin: boolean
     locale?: string
+    oauth?: {
+      type: OAuthType
+      onetime: string
+    }
   }
 }
 
@@ -18,6 +23,5 @@ declare module 'next-auth' {
       locale?: string
       email?: string | null
     }
-    oauth?: string
   }
 }

@@ -60,35 +60,45 @@ const authOptions: NextAuthOptions = {
       const { token, account } = param
 
       let user
-      if (account?.provider === OAUTH_TYPE_GOOGLE) {
+      if (account?.provider === OAUTH_TYPE_GOOGLE || account?.provider === OAUTH_TYPE_GITLAB) {
         const provider = account.provider
-        const profile: (Profile & { email_verified?: boolean }) | undefined = param.profile
-        if (token.sub && profile?.email_verified && profile?.email) {
-          if (isOAuthSimpleLogin(provider)) {
-            // 簡易連携の場合
-            user = await prisma.user.findUnique({ where: { email: profile.email } })
-          } else {
-            // Google連携済みアカウントを検索
-            const linkGoogle = await prisma.linkOAuth.getEnabled(provider, token.sub)
-            if (linkGoogle) {
-              // Google連携済みアカウントあり
-              user = linkGoogle.user
+
+        if (param.profile) {
+          const profile: Profile & { email_verified?: boolean } = param.profile
+
+          if (profile.email_verified === undefined) {
+            // email_verifiedが存在しない場合はtrueとみなす
+            profile.email_verified = true
+          }
+
+          if (token.sub && profile.email_verified && profile.email) {
+            if (isOAuthSimpleLogin(provider)) {
+              // 簡易連携の場合
+              user = await prisma.user.findUnique({ where: { email: profile.email } })
             } else {
-              // Google連携済みアカウントなし
-              // 連携対象の検索
-              const linkUser = await prisma.user.getUserLinkOAuth(provider, profile.email)
-              if (linkUser && !linkUser.linkOAuth?.enabled) {
-                // メールアドレスが一致、連携未登録の場合、Google連携情報(enabled=false)を登録
-                const tmpLinkGoogle = await prisma.linkOAuth.registOneTime(provider, linkUser.id, token.sub)
-                // Google連携の認証に進む
-                token.sub = `@${provider}:${tmpLinkGoogle.onetimeId}`
-                return token
+              // OAuth連携済みアカウントを検索
+              const linkOAuth = await prisma.linkOAuth.getEnabled(provider, token.sub)
+              if (linkOAuth) {
+                // OAuth連携済みアカウントあり
+                user = linkOAuth.user
+              } else {
+                // OAuth連携済みアカウントなし
+                // 連携対象の検索
+                const linkUser = await prisma.user.getUserLinkOAuth(provider, profile.email)
+                if (linkUser && !linkUser.linkOAuth?.enabled) {
+                  // メールアドレスが一致、連携未登録の場合、OAuth連携情報(enabled=false)を登録
+                  const tmpLinkOAuth = await prisma.linkOAuth.registOneTime(provider, linkUser.id, token.sub)
+                  // OAuth連携の認証に進む
+                  token.oauth = {
+                    type: provider,
+                    onetime: tmpLinkOAuth.onetimeId,
+                  }
+                  return token
+                }
               }
             }
           }
         }
-      } else if (account?.provider === OAUTH_TYPE_GITLAB) {
-        console.debug('@@param', param)
       } else {
         if (token.sub) {
           user = await prisma.user.findUnique({ where: { id: token.sub } })
@@ -121,9 +131,8 @@ const authOptions: NextAuthOptions = {
     async session(param) {
       const { token, session } = param
       if (token.sub) {
-        if (token.sub.indexOf('@') === 0) {
+        if (token.oauth) {
           session.user = undefined
-          session.oauth = 'test'
           return session
         }
 
