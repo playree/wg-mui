@@ -53,7 +53,7 @@ const middlewareWithAuth = withAuth(
       authorized({ req, token }) {
         console.debug('mw:auth:token:', JSON.stringify(token))
 
-        if (token?.sub && token.sub.indexOf('@') === 0) {
+        if (token?.oauth) {
           // 連携シーケンスの場合は一旦通過
           return true
         }
