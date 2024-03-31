@@ -3,6 +3,7 @@
 import { CheckIcon, EyeIcon, EyeSlashIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
+import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { UpdatePassword, scUpdatePassword } from '@/helpers/schema'
@@ -10,20 +11,22 @@ import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react'
+import { zxcvbn } from '@zxcvbn-ts/core'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { updatePassword } from './server-actions'
 
-export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: string; updated: () => void }> = (
-  props,
-) => {
+export const ChangePasswordModal: FC<
+  Omit<ModalProps, 'children'> & { target?: string; updated: () => void; requiredPasswordScore: number }
+> = (props) => {
   const { target, updated, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
+  const [passwordScore, setPasswordScore] = useState(0)
 
   const {
     control,
@@ -31,6 +34,7 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
     formState: { errors },
     reset,
     setValue,
+    setError,
   } = useForm<UpdatePassword>({
     resolver: zodResolver(scUpdatePassword),
     mode: 'onChange',
@@ -40,6 +44,7 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
   useEffect(() => {
     setLoading(false)
     reset()
+    setPasswordScore(0)
   }, [reset, props.isOpen])
 
   useEffect(() => {
@@ -57,6 +62,15 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
             onSubmit={handleSubmit(async (req) => {
               console.debug('update:submit:', req)
               setLoading(true)
+              // パスワードスコアチェック
+              if (req.password) {
+                if (passwordScore < props.requiredPasswordScore) {
+                  setError('password', { message: '@invalid_password_score' })
+                  setLoading(false)
+                  return
+                }
+              }
+
               await parseAction(updatePassword(req))
               await intervalOperation()
               updated()
@@ -87,6 +101,14 @@ export const ChangePasswordModal: FC<Omit<ModalProps, 'children'> & { target?: s
                     autoComplete='new-password'
                     errorMessage={fet(errors.password)}
                     isRequired
+                    onChanged={(event) => {
+                      const res = zxcvbn(event.target.value)
+                      setPasswordScore(res.score)
+                    }}
+                  />
+                  <PasswordScore
+                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: props.requiredPasswordScore })}`}
+                    score={passwordScore}
                   />
                 </div>
               </div>

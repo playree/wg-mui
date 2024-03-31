@@ -21,7 +21,10 @@ export const Title: FC = () => {
   return <span className='mr-8 text-lg'>{t('menu_account')}</span>
 }
 
-export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, isLinkedGoogle, isLinkedGitLab } }) => {
+export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: number }> = ({
+  account: { user, isLinkedGoogle, isLinkedGitLab },
+  requiredPasswordScore,
+}) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
   const { confirmModal } = useSharedUIContext()
@@ -169,6 +172,7 @@ export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, i
         target={targetChangePwd}
         updated={() => {}}
         onClose={() => setTargetChangePwd(undefined)}
+        requiredPasswordScore={requiredPasswordScore}
       />
     </>
   )

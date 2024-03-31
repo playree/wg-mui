@@ -10,6 +10,9 @@ import { refWgMgr } from '@/helpers/wgmgr'
 import { zxcvbn } from '@zxcvbn-ts/core'
 import { randomUUID } from 'crypto'
 
+/**
+ * 設定取得(管理者権限)
+ */
 export const getSettings = validAction('getSettings', {
   requireAuth: true,
   requireAdmin: true,

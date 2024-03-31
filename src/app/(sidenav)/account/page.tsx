@@ -5,7 +5,7 @@ import { Metadata } from 'next'
 import { FC, Suspense } from 'react'
 
 import { AccountViewClient, Title } from './client'
-import { getAccount } from './server-actions'
+import { getAccount, getSettings } from './server-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -13,8 +13,9 @@ export const metadata: Metadata = {
 }
 
 const AccountView: FC = async () => {
+  const { requiredPasswordScore } = await parseAction(getSettings())
   const account = await parseAction(getAccount())
-  return <AccountViewClient account={account} />
+  return <AccountViewClient account={account} requiredPasswordScore={requiredPasswordScore} />
 }
 
 const PeerPage: FC = () => {
