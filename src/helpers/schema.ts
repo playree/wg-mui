@@ -31,6 +31,7 @@ export const zBoolean = z.boolean()
 export const zEmpty = z.string().length(0).nullish()
 
 export const zAllOrCount = z.union([z.literal('all'), z.literal('count')])
+export const zOAuthType = z.union([z.literal('google'), z.literal('gitlab')])
 
 export const zUsername = z
   .string()

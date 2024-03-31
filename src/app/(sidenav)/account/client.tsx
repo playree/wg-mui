@@ -14,14 +14,14 @@ import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 
 import { ChangePasswordModal } from './edit'
-import { Account, unlinkGoogle } from './server-actions'
+import { Account, unlinkOAuth } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_account')}</span>
 }
 
-export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, isLinkedGoogle } }) => {
+export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, isLinkedGoogle, isLinkedGitLab } }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
   const { confirmModal } = useSharedUIContext()
@@ -30,6 +30,7 @@ export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, i
   const changePwdModal = useDisclosure()
   const openChangePwdModal = changePwdModal.onOpen
   const [isLoadingUnlinkGoogle, setLoadingUnlinkGoogle] = useState(false)
+  const [isLoadingUnlinkGitLab, setLoadingUnlinkGitLab] = useState(false)
 
   useEffect(() => {
     console.debug('targetChangePwd:', targetChangePwd)
@@ -100,9 +101,49 @@ export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, i
                     })
                     if (ok) {
                       setLoadingUnlinkGoogle(true)
-                      await parseAction(unlinkGoogle())
+                      await parseAction(unlinkOAuth({ type: 'google' }))
                       await intervalOperation()
                       setLoadingUnlinkGoogle(false)
+                      refresh()
+                    }
+                  }}
+                >
+                  {t('item_unlink')}
+                </ExButton>
+              </div>
+              <Divider className='col-span-12' />
+            </>
+          )}
+
+          {isLinkedGitLab !== undefined && (
+            <>
+              <div className='col-span-3'>{t('item_link_oauth', { name: 'GitLab' })}</div>
+              <div className='col-span-5'>
+                <OnOffChip isEnable={isLinkedGitLab} messageOn={t('item_enabled')} messageOff={t('item_disabled')} />
+              </div>
+              <div className='col-span-4 flex items-center'>
+                <Divider orientation='vertical' className='mr-2' />
+                <ExButton
+                  className='ml-2'
+                  variant='solid'
+                  color='danger'
+                  isSmart
+                  startContent={isLoadingUnlinkGitLab ? undefined : <BoltSlashIcon />}
+                  isLoading={isLoadingUnlinkGitLab}
+                  isDisabled={!isLinkedGitLab}
+                  onPress={async () => {
+                    console.debug('Unlink GitLab:')
+                    const ok = await confirmModal().confirm({
+                      title: t('item_confirme'),
+                      text: t('msg_unlink_oauth_confirm', { name: 'GitLab' }),
+                      requireCheck: true,
+                      autoClose: true,
+                    })
+                    if (ok) {
+                      setLoadingUnlinkGitLab(true)
+                      await parseAction(unlinkOAuth({ type: 'gitlab' }))
+                      await intervalOperation()
+                      setLoadingUnlinkGitLab(false)
                       refresh()
                     }
                   }}
