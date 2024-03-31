@@ -30,15 +30,8 @@ const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
 const middlewareWithAuth = withAuth(
   async (request) => {
     // 連携シーケンス
-    if (request.nextauth.token?.oauth) {
-      const oauth = request.nextauth.token.oauth
-      if (oauth.type === 'google') {
-        // Google連携
-        return NextResponse.redirect(new URL(`/linkgoogle/${oauth.onetime}`, request.url))
-      }
-      const url = request.nextUrl.clone()
-      url.pathname = '/404'
-      return NextResponse.rewrite(url)
+    if (request.nextauth.token?.oauth?.onetime) {
+      return NextResponse.redirect(new URL(`/oauth/${request.nextauth.token.oauth.onetime}`, request.url))
     }
 
     const requestHeaders = new Headers(request.headers)

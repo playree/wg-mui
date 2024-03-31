@@ -76,7 +76,7 @@ export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, i
 
           {isLinkedGoogle !== undefined && (
             <>
-              <div className='col-span-3'>{t('item_link_google')}</div>
+              <div className='col-span-3'>{t('item_link_oauth', { name: 'Google' })}</div>
               <div className='col-span-5'>
                 <OnOffChip isEnable={isLinkedGoogle} messageOn={t('item_enabled')} messageOff={t('item_disabled')} />
               </div>
@@ -94,7 +94,7 @@ export const AccountViewClient: FC<{ account: Account }> = ({ account: { user, i
                     console.debug('Unlink Google:')
                     const ok = await confirmModal().confirm({
                       title: t('item_confirme'),
-                      text: t('msg_unlink_google_confirm'),
+                      text: t('msg_unlink_oauth_confirm', { name: 'Google' }),
                       requireCheck: true,
                       autoClose: true,
                     })

@@ -32,7 +32,7 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
     }
     try {
       const url = new URL(callbackUrl)
-      return url.pathname.indexOf('/linkgoogle/') === 0
+      return url.pathname.indexOf('/oauth/') === 0
     } catch {
       return false
     }

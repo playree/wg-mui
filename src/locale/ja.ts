@@ -109,7 +109,7 @@ export const ja: DefaultLocaleItems = {
   item_send_mail: 'メール送信',
   item_top_page_notice: 'アナウンス',
   item_download_client_tools: 'クライアンツールのダウンロード',
-  item_link_google: 'Google連携',
+  item_link_oauth: '${name}連携',
   item_signin_with_password: 'パスワードでサインイン',
   item_unlink: '連携解除',
   item_wg_conf: 'WireGuard設定',
@@ -132,10 +132,10 @@ export const ja: DefaultLocaleItems = {
   msg_initialize_wg: 'WireGuardの初期設定を行います',
   msg_password_reset: 'パスワードをリセットします。\n設定したいパスワードを入力してください。',
   msg_send_reset_confirm: 'このメールアドレスにパスワードリセット用のメールを送信します。\n\n${email}',
-  msg_link_google:
-    '上記メールアドレスのユーザーをGoogleと連携します。\n確認の為、下記からパスワードでサインインを行ってください。',
-  msg_linked_google: 'Google連携が完了しました。\n次回からGoogleでサインインがご利用いただけます。',
-  msg_unlink_google_confirm: 'Googleとの連携を解除しますか？',
+  msg_link_oauth:
+    '上記メールアドレスのユーザーを${name}と連携します。\n確認の為、下記からパスワードでサインインを行ってください。',
+  msg_linked_oauth: '${name}連携が完了しました。\n次回から${name}でサインインがご利用いただけます。',
+  msg_unlink_oauth_confirm: '${name}との連携を解除しますか？',
 
   mail_password_reset_subject: '[${appname}] パスワード設定',
   mail_password_reset_body: `ユーザー名: \${username}
