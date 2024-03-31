@@ -3,6 +3,7 @@
 import { CheckIcon, EyeIcon, EyeSlashIcon, UserPlusIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
+import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { CreateUser, TypeLabel, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
@@ -23,6 +24,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { AsyncListData } from '@react-stately/data'
+import { zxcvbn } from '@zxcvbn-ts/core'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
@@ -32,7 +34,11 @@ import { createUser, existsEmail, existsUserName, updateUser } from './server-ac
 
 /** 作成モーダル */
 const CreateUserModal: FC<
-  Omit<ModalProps, 'children'> & { updated: () => void; labelList: AsyncListData<TypeLabel> }
+  Omit<ModalProps, 'children'> & {
+    updated: () => void
+    labelList: AsyncListData<TypeLabel>
+    requiredPasswordScore: number
+  }
 > = (props) => {
   const { updated, labelList, ...nextProps } = props
   const { t, fet } = useLocale()
@@ -41,6 +47,7 @@ const CreateUserModal: FC<
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
   const [isSendEmail, setSendEmail] = useState(false)
+  const [passwordScore, setPasswordScore] = useState(0)
 
   const {
     control,
@@ -58,6 +65,7 @@ const CreateUserModal: FC<
   useEffect(() => {
     setLoading(false)
     reset()
+    setPasswordScore(0)
   }, [reset, props.isOpen])
 
   return (
@@ -68,6 +76,15 @@ const CreateUserModal: FC<
             onSubmit={handleSubmit(async (req) => {
               console.debug('create:submit:', req)
               setLoading(true)
+              // パスワードスコアチェック
+              if (req.password) {
+                if (passwordScore < props.requiredPasswordScore) {
+                  setError('password', { message: '@invalid_password_score' })
+                  setLoading(false)
+                  return
+                }
+              }
+
               // nameの重複チェック
               if (await parseAction(existsUserName({ name: req.name }))) {
                 // 重複チェックエラー
@@ -113,6 +130,7 @@ const CreateUserModal: FC<
                     onChange={() => {
                       setSendEmail(!isSendEmail)
                       setValue('password', '')
+                      setPasswordScore(0)
                       control.setError('password', { message: undefined })
                     }}
                     isSelected={isSendEmail}
@@ -138,6 +156,15 @@ const CreateUserModal: FC<
                     type={isVisible ? 'text' : 'password'}
                     autoComplete='new-password'
                     errorMessage={fet(errors.password)}
+                    isDisabled={isSendEmail}
+                    onChanged={(event) => {
+                      const res = zxcvbn(event.target.value)
+                      setPasswordScore(res.score)
+                    }}
+                  />
+                  <PasswordScore
+                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: props.requiredPasswordScore })}`}
+                    score={passwordScore}
                     isDisabled={isSendEmail}
                   />
                 </div>
@@ -219,7 +246,12 @@ const CreateUserModal: FC<
 
 /** 更新モーダル */
 export const UpdateUserModal: FC<
-  Omit<ModalProps, 'children'> & { target?: TypeUser; updated: () => void; labelList: AsyncListData<TypeLabel> }
+  Omit<ModalProps, 'children'> & {
+    target?: TypeUser
+    updated: () => void
+    labelList: AsyncListData<TypeLabel>
+    requiredPasswordScore: number
+  }
 > = (props) => {
   const { target, updated, labelList, ...nextProps } = props
   const { t, fet } = useLocale()
@@ -228,6 +260,7 @@ export const UpdateUserModal: FC<
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
   const [isUpdatePassword, setUpdatePassword] = useState(false)
+  const [passwordScore, setPasswordScore] = useState(0)
 
   const {
     control,
@@ -245,6 +278,7 @@ export const UpdateUserModal: FC<
   useEffect(() => {
     setLoading(false)
     reset()
+    setPasswordScore(0)
     setUpdatePassword(false)
   }, [reset, props.isOpen])
 
@@ -267,6 +301,15 @@ export const UpdateUserModal: FC<
             onSubmit={handleSubmit(async (req) => {
               console.debug('update:submit:', req)
               setLoading(true)
+              // パスワードスコアチェック
+              if (req.password) {
+                if (passwordScore < props.requiredPasswordScore) {
+                  setError('password', { message: '@invalid_password_score' })
+                  setLoading(false)
+                  return
+                }
+              }
+
               // nameの重複チェック
               if (await parseAction(existsUserName({ name: req.name, excludeId: req.id }))) {
                 // 重複チェックエラー
@@ -306,12 +349,13 @@ export const UpdateUserModal: FC<
                     isRequired
                   />
                 </div>
-                <div className='col-span-5 flex items-center pl-2'>
+                <div className='col-span-12 flex items-center pl-2'>
                   <Checkbox
                     className='pl-2'
                     onChange={() => {
                       setUpdatePassword(!isUpdatePassword)
                       setValue('password', '')
+                      setPasswordScore(0)
                       control.setError('password', { message: undefined })
                     }}
                     isSelected={isUpdatePassword}
@@ -319,7 +363,7 @@ export const UpdateUserModal: FC<
                     {t('item_change_password')}
                   </Checkbox>
                 </div>
-                <div className='col-span-7'>
+                <div className='col-span-12'>
                   <InputCtrl
                     control={control}
                     name='password'
@@ -339,6 +383,15 @@ export const UpdateUserModal: FC<
                     errorMessage={fet(errors.password)}
                     isDisabled={!isUpdatePassword}
                     isRequired
+                    onChanged={(event) => {
+                      const res = zxcvbn(event.target.value)
+                      setPasswordScore(res.score)
+                    }}
+                  />
+                  <PasswordScore
+                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: props.requiredPasswordScore })}`}
+                    score={passwordScore}
+                    isDisabled={!isUpdatePassword}
                   />
                 </div>
                 <div className='col-span-12 pl-2'>
@@ -417,10 +470,11 @@ export const UpdateUserModal: FC<
 }
 
 /** ユーザー作成ボタン */
-export const CreateUserButtonWithModal: FC<{ updated: () => void; labelList: AsyncListData<TypeLabel> }> = ({
-  updated,
-  labelList,
-}) => {
+export const CreateUserButtonWithModal: FC<{
+  updated: () => void
+  labelList: AsyncListData<TypeLabel>
+  requiredPasswordScore: number
+}> = ({ updated, labelList, requiredPasswordScore }) => {
   const { t } = useLocale()
   const editModal = useDisclosure()
   return (
@@ -436,6 +490,7 @@ export const CreateUserButtonWithModal: FC<{ updated: () => void; labelList: Asy
         scrollBehavior='outside'
         updated={() => updated()}
         labelList={labelList}
+        requiredPasswordScore={requiredPasswordScore}
       />
     </>
   )

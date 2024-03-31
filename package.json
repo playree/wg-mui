@@ -22,6 +22,7 @@
     "@react-aria/visually-hidden": "^3.8.5",
     "@react-stately/data": "3.10.3",
     "@sendgrid/mail": "^8.1.1",
+    "@zxcvbn-ts/core": "^3.0.4",
     "accept-language-parser": "^1.5.0",
     "autoprefixer": "^10.4.18",
     "bcrypt": "^5.1.1",

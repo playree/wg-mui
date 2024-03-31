@@ -114,6 +114,7 @@ export const ja: DefaultLocaleItems = {
   item_unlink: '連携解除',
   item_wg_conf: 'WireGuard設定',
   item_for_clients: 'クライアント向け',
+  item_password_score: 'パスワードスコア',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -136,6 +137,7 @@ export const ja: DefaultLocaleItems = {
     '上記メールアドレスのユーザーを${name}と連携します。\n確認の為、下記からパスワードでサインインを行ってください。',
   msg_linked_oauth: '${name}連携が完了しました。\n次回から${name}でサインインがご利用いただけます。',
   msg_unlink_oauth_confirm: '${name}との連携を解除しますか？',
+  msg_password_score_required: '${score}以上が必要',
 
   mail_password_reset_subject: '[${appname}] パスワード設定',
   mail_password_reset_body: `ユーザー名: \${username}
@@ -165,5 +167,6 @@ export const ja: DefaultLocaleItems = {
   '@invalid_allowed_ips': 'フォーマット不正',
   '@invalid_keepalive': '1～65535',
   '@invalid_string_too_long': '文字列が長すぎます',
+  '@invalid_password_score': 'パスワードスコアが不足しています',
   '@already_exists': '既に存在しています',
 }

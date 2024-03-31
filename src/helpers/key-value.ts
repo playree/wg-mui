@@ -16,3 +16,8 @@ export const setKeyValueJson = async (key: KeyJson, jsonValue: Record<string, un
     update: { value: jsonValue ? JSON.stringify(jsonValue) : '' },
   })
 }
+
+export const getRequiredPasswordScore = async () => {
+  // @todo 暫定
+  return 3
+}

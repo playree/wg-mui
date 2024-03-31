@@ -113,6 +113,7 @@ export type LocaleItemBase =
   | 'item_unlink'
   | 'item_wg_conf'
   | 'item_for_clients'
+  | 'item_password_score'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'
@@ -132,6 +133,7 @@ export type LocaleItemBase =
   | 'msg_link_oauth'
   | 'msg_linked_oauth'
   | 'msg_unlink_oauth_confirm'
+  | 'msg_password_score_required'
   | 'mail_password_reset_subject'
   | 'mail_password_reset_body'
 
@@ -155,6 +157,7 @@ export type LocaleItemError =
   | '@invalid_allowed_ips'
   | '@invalid_keepalive'
   | '@invalid_string_too_long'
+  | '@invalid_password_score'
   | '@already_exists'
 export const el = (item: LocaleItemError) => item
 

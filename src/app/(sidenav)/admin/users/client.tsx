@@ -49,7 +49,7 @@ export const Title: FC = () => {
   return <span className='mr-8 text-lg'>{t('menu_users')}</span>
 }
 
-export const UserListClient: FC = () => {
+export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ requiredPasswordScore }) => {
   const { t } = useLocale()
   const { confirmModal } = useSharedUIContext()
 
@@ -134,7 +134,11 @@ export const UserListClient: FC = () => {
           </Select>
         </div>
         <div className='col-span-2 flex flex-row-reverse items-center'>
-          <CreateUserButtonWithModal updated={() => list.reload()} labelList={labelList} />
+          <CreateUserButtonWithModal
+            updated={() => list.reload()}
+            labelList={labelList}
+            requiredPasswordScore={requiredPasswordScore}
+          />
         </div>
         <div className='col-span-12'>
           <Table
@@ -305,6 +309,7 @@ export const UserListClient: FC = () => {
           list.reload()
         }}
         labelList={labelList}
+        requiredPasswordScore={requiredPasswordScore}
         onClose={() => setTargetUpdate(undefined)}
       />
     </>

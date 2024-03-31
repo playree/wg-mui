@@ -1,11 +1,24 @@
 'use server'
 
+import { errValidation } from '@/helpers/error'
+import { getRequiredPasswordScore } from '@/helpers/key-value'
 import { sendEmailPasswordReset } from '@/helpers/mail'
 import { prisma } from '@/helpers/prisma'
 import { scCreateUser, scUpdateUser, zReq, zString, zUUID } from '@/helpers/schema'
 import { validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
+import { zxcvbn } from '@zxcvbn-ts/core'
 import { randomUUID } from 'crypto'
+
+export const getSettings = validAction('getSettings', {
+  requireAuth: true,
+  requireAdmin: true,
+  next: async () => {
+    return {
+      requiredPasswordScore: await getRequiredPasswordScore(),
+    }
+  },
+})
 
 /**
  * ユーザーリスト取得(管理者権限)
@@ -43,6 +56,14 @@ export const createUser = validAction('createUser', {
   requireAuth: true,
   requireAdmin: true,
   next: async ({ req }) => {
+    // パスワードスコアチェック
+    if (req.password) {
+      const res = zxcvbn(req.password)
+      if (res.score < (await getRequiredPasswordScore())) {
+        throw errValidation('password score')
+      }
+    }
+
     const user = await prisma.user.createUser(req)
     if (!req.password && req.email) {
       // パスワード初期設定用メール送信
@@ -60,6 +81,14 @@ export const updateUser = validAction('updateUser', {
   requireAuth: true,
   requireAdmin: true,
   next: async ({ req }) => {
+    // パスワードスコアチェック
+    if (req.password) {
+      const res = zxcvbn(req.password)
+      if (res.score < (await getRequiredPasswordScore())) {
+        throw errValidation('password score')
+      }
+    }
+
     return prisma.user.updateUser(req)
   },
 })

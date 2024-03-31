@@ -114,6 +114,7 @@ export const en: LocaleItems = {
   item_unlink: 'Unlink',
   item_wg_conf: 'WireGuard Config',
   item_for_clients: 'For clients',
+  item_password_score: 'Password Score',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -136,6 +137,7 @@ export const en: LocaleItems = {
     'We will link the user with the above email address with ${name}.\nTo confirm, please sign in with your password below.',
   msg_linked_oauth: '${name} link has been completed.\nFrom next time onwards, you can sign in with ${name}.',
   msg_unlink_oauth_confirm: 'Do you want to unlink from ${oauth}?',
+  msg_password_score_required: '${score} or more required',
 
   mail_password_reset_subject: '[${appname}] Please set a password',
   mail_password_reset_body: `username: \${username}
@@ -165,5 +167,6 @@ This URL will expire in 48 hours.
   '@invalid_allowed_ips': 'Invalid format',
   '@invalid_keepalive': '0-600',
   '@invalid_string_too_long': 'String too long',
+  '@invalid_password_score': 'Insufficient password score',
   '@already_exists': 'Already exists',
 }
