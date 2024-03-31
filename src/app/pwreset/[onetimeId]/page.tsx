@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import { FC } from 'react'
 
 import { PasswordResetClient } from './client'
-import { isEnabledOnetimeId } from './server-actions'
+import { getSettings, isEnabledOnetimeId } from './server-actions'
 
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
@@ -21,6 +21,8 @@ const PasswordResetPage: FC<{ params: { onetimeId: string } }> = async ({ params
     return notFound()
   }
 
-  return <PasswordResetClient onetimeId={onetimeId}></PasswordResetClient>
+  const { requiredPasswordScore } = await parseAction(getSettings())
+
+  return <PasswordResetClient onetimeId={onetimeId} requiredPasswordScore={requiredPasswordScore}></PasswordResetClient>
 }
 export default PasswordResetPage

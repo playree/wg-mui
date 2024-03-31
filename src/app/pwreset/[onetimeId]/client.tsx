@@ -4,6 +4,7 @@ import { CheckIcon, Cog6ToothIcon, EyeIcon, EyeSlashIcon } from '@/components/ic
 import { LangSwitch } from '@/components/lang-switch'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
+import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { ThemeSwitchList } from '@/components/theme-switch'
 import { parseAction } from '@/helpers/action'
@@ -11,24 +12,30 @@ import { UpdatePassword, scUpdatePassword } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { zxcvbn } from '@zxcvbn-ts/core'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { resetPassword } from './server-actions'
 
-export const PasswordResetClient: FC<{ onetimeId: string }> = ({ onetimeId }) => {
+export const PasswordResetClient: FC<{ onetimeId: string; requiredPasswordScore: number }> = ({
+  onetimeId,
+  requiredPasswordScore,
+}) => {
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
   const router = useRouter()
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
+  const [passwordScore, setPasswordScore] = useState(0)
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<UpdatePassword>({
     resolver: zodResolver(scUpdatePassword),
     mode: 'onChange',
@@ -52,6 +59,15 @@ export const PasswordResetClient: FC<{ onetimeId: string }> = ({ onetimeId }) =>
         onSubmit={handleSubmit(async (req) => {
           console.debug('create:submit:', req)
           setLoading(true)
+          // パスワードスコアチェック
+          if (req.password) {
+            if (passwordScore < requiredPasswordScore) {
+              setError('password', { message: '@invalid_password_score' })
+              setLoading(false)
+              return
+            }
+          }
+
           await parseAction(resetPassword(req))
           await intervalOperation()
           setLoading(false)
@@ -80,10 +96,18 @@ export const PasswordResetClient: FC<{ onetimeId: string }> = ({ onetimeId }) =>
               autoComplete='new-password'
               errorMessage={fet(errors.password)}
               isRequired
+              onChanged={(event) => {
+                const res = zxcvbn(event.target.value)
+                setPasswordScore(res.score)
+              }}
+            />
+            <PasswordScore
+              label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: requiredPasswordScore })}`}
+              score={passwordScore}
             />
           </div>
 
-          <div className='col-span-12 text-center'>
+          <div className='col-span-12 mt-4 text-center'>
             <ExButton
               type='submit'
               variant='solid'

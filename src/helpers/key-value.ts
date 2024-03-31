@@ -19,5 +19,5 @@ export const setKeyValueJson = async (key: KeyJson, jsonValue: Record<string, un
 
 export const getRequiredPasswordScore = async () => {
   // @todo 暫定
-  return 3
+  return 4
 }
