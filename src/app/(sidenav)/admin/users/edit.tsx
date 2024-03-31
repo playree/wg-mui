@@ -139,7 +139,6 @@ const CreateUserModal: FC<
                     autoComplete='new-password'
                     errorMessage={fet(errors.password)}
                     isDisabled={isSendEmail}
-                    isRequired
                   />
                 </div>
                 <div className='col-span-12 pl-2'>
