@@ -48,6 +48,7 @@ export const getSystemInfo = validAction('getSystemInfo', {
       isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
       ipForward,
       isGoogleEnabled: isOAuthEnabled('google'),
+      isGitLabEnabled: isOAuthEnabled('gitlab'),
       sendMail,
     }
   },

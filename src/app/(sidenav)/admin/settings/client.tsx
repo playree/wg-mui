@@ -517,6 +517,16 @@ export const SystemInfoClient: FC<{
               />
             </TableCell>
           </TableRow>
+          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+            <TableCell>{t('item_gitlab_signin')}</TableCell>
+            <TableCell>
+              <OnOffChip
+                isEnable={info.isGitLabEnabled}
+                messageOn={t('item_enabled')}
+                messageOff={t('item_disabled')}
+              />
+            </TableCell>
+          </TableRow>
           <TableRow>
             <TableCell>{t('item_send_mail')}</TableCell>
             <TableCell>
