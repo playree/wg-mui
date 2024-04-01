@@ -307,10 +307,20 @@ const FormWgConf: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }
           </div>
         </div>
         <Accordion isCompact>
-          <AccordionItem key='post-script' aria-label='ac post-script' title={t('item_post_up_down')}>
+          <AccordionItem
+            onKeyDown={(e) => e.stopPropagation()}
+            key='post-script'
+            aria-label='ac post-script'
+            title={t('item_post_up_down')}
+          >
             <FormWgConfPostScript safeWgConf={safeWgConf} />
           </AccordionItem>
-          <AccordionItem key='for-clinets' aria-label='ac for-clinets' title={t('item_for_clients')}>
+          <AccordionItem
+            onKeyDown={(e) => e.stopPropagation()}
+            key='for-clinets'
+            aria-label='ac for-clinets'
+            title={t('item_for_clients')}
+          >
             <FormWgConfForClients safeWgConf={safeWgConf} />
           </AccordionItem>
         </Accordion>
@@ -692,10 +702,20 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings: { signinM
 
   return (
     <Accordion variant='splitted'>
-      <AccordionItem key='signin-message' aria-label='ac signin-message' title={t('item_signin_message')}>
+      <AccordionItem
+        onKeyDown={(e) => e.stopPropagation()}
+        key='signin-message'
+        aria-label='ac signin-message'
+        title={t('item_signin_message')}
+      >
         <FormSigninMessage values={signinMessage} />
       </AccordionItem>
-      <AccordionItem key='top-page-notice' aria-label='ac top-page-notice' title={t('item_top_page_notice')}>
+      <AccordionItem
+        onKeyDown={(e) => e.stopPropagation()}
+        key='top-page-notice'
+        aria-label='ac top-page-notice'
+        title={t('item_top_page_notice')}
+      >
         <FormTopPageNotice values={topPageNotice} />
       </AccordionItem>
     </Accordion>

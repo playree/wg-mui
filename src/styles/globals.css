@@ -1,3 +1,100 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.markdown {
+  @apply break-words leading-normal;
+}
+
+.markdown > * + * {
+  @apply mb-4 mt-0;
+}
+
+.markdown li + li {
+  @apply mt-1;
+}
+
+.markdown li > p + p {
+  @apply mt-6;
+}
+
+.markdown strong {
+  @apply font-semibold;
+}
+
+.markdown a {
+  @apply font-semibold text-blue-600;
+}
+
+.markdown strong a {
+  @apply font-bold;
+}
+
+.markdown h1 {
+  @apply mb-4 mt-6 border-b pb-2 text-2xl font-semibold leading-tight;
+}
+
+.markdown h2 {
+  @apply mb-4 mt-6 border-b pb-2 text-lg font-semibold leading-tight;
+}
+
+.markdown h3 {
+  @apply mb-4 mt-6 text-base font-semibold leading-snug;
+}
+
+.markdown h4 {
+  @apply mb-4 mt-6 text-sm font-semibold leading-none;
+}
+
+.markdown h5 {
+  @apply mb-4 mt-6 text-xs font-semibold leading-tight;
+}
+
+.markdown h6 {
+  @apply mb-4 mt-6 text-xs font-semibold leading-tight text-gray-500 dark:text-gray-400;
+}
+
+.markdown blockquote {
+  @apply border-l-4 border-gray-300 pl-4 pr-4 text-sm text-gray-600 dark:border-gray-600 dark:text-gray-300;
+}
+
+.markdown code {
+  @apply inline rounded bg-gray-200 px-1 py-5 font-mono text-sm dark:bg-gray-800;
+}
+
+.markdown pre {
+  @apply rounded bg-gray-100 p-4 dark:bg-gray-800;
+}
+
+.markdown pre code {
+  @apply block overflow-visible rounded-none bg-transparent p-0;
+}
+
+.markdown ul {
+  @apply list-disc pl-8 text-sm;
+}
+
+.markdown ol {
+  @apply list-decimal pl-8 text-sm;
+}
+
+.markdown kbd {
+  @apply inline-block rounded border px-1 py-5 align-middle font-mono text-xs font-normal shadow;
+}
+
+.markdown table {
+  @apply border-gray-600 text-sm dark:border-gray-300;
+}
+
+.markdown th {
+  @apply border px-3 py-1;
+}
+
+.markdown td {
+  @apply border px-3 py-1;
+}
+
+/* Override pygments style background color. */
+.markdown .highlight pre {
+  @apply bg-gray-100 dark:bg-gray-800 !important;
+}
