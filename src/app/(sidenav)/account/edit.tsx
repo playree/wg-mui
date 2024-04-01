@@ -20,7 +20,7 @@ import { updatePassword } from './server-actions'
 export const ChangePasswordModal: FC<
   Omit<ModalProps, 'children'> & { target?: string; updated: () => void; requiredPasswordScore: number }
 > = (props) => {
-  const { target, updated, ...nextProps } = props
+  const { target, updated, requiredPasswordScore, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
@@ -64,7 +64,7 @@ export const ChangePasswordModal: FC<
               setLoading(true)
               // パスワードスコアチェック
               if (req.password) {
-                if (passwordScore < props.requiredPasswordScore) {
+                if (passwordScore < requiredPasswordScore) {
                   setError('password', { message: '@invalid_password_score' })
                   setLoading(false)
                   return
@@ -107,7 +107,7 @@ export const ChangePasswordModal: FC<
                     }}
                   />
                   <PasswordScore
-                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: props.requiredPasswordScore })}`}
+                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: requiredPasswordScore })}`}
                     score={passwordScore}
                   />
                 </div>

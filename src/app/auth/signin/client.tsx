@@ -3,7 +3,7 @@
 import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon, GitLabIcon, GoogleIcon } from '@/components/icons'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { Message } from '@/components/nextekit/ui/message'
-import { gridStyles, textStyles } from '@/components/styles'
+import { gridStyles } from '@/components/styles'
 import { Signin, scSignin } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,6 +12,8 @@ import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FC, useCallback, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { twMerge } from 'tailwind-merge'
 
 import { SSResource } from './server-actions'
@@ -124,9 +126,9 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
               </Button>
             </div>
           )}
-          <div className={twMerge(textStyles({ color: 'light' }), 'col-span-12 p-2 text-center text-sm')}>
+          <ReactMarkdown className={twMerge('markdown col-span-12 p-2 text-sm')} remarkPlugins={[remarkGfm]}>
             {lvt(signinMessage)}
-          </div>
+          </ReactMarkdown>
         </form>
       </CardBody>
     </Card>

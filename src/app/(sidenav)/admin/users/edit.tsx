@@ -40,7 +40,7 @@ const CreateUserModal: FC<
     requiredPasswordScore: number
   }
 > = (props) => {
-  const { updated, labelList, ...nextProps } = props
+  const { updated, labelList, requiredPasswordScore, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
@@ -78,7 +78,7 @@ const CreateUserModal: FC<
               setLoading(true)
               // パスワードスコアチェック
               if (req.password) {
-                if (passwordScore < props.requiredPasswordScore) {
+                if (passwordScore < requiredPasswordScore) {
                   setError('password', { message: '@invalid_password_score' })
                   setLoading(false)
                   return
@@ -163,7 +163,7 @@ const CreateUserModal: FC<
                     }}
                   />
                   <PasswordScore
-                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: props.requiredPasswordScore })}`}
+                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: requiredPasswordScore })}`}
                     score={passwordScore}
                     isDisabled={isSendEmail}
                   />
@@ -253,7 +253,7 @@ export const UpdateUserModal: FC<
     requiredPasswordScore: number
   }
 > = (props) => {
-  const { target, updated, labelList, ...nextProps } = props
+  const { target, updated, labelList, requiredPasswordScore, ...nextProps } = props
   const { t, fet } = useLocale()
   const [isLoading, setLoading] = useState(false)
 
@@ -303,7 +303,7 @@ export const UpdateUserModal: FC<
               setLoading(true)
               // パスワードスコアチェック
               if (req.password) {
-                if (passwordScore < props.requiredPasswordScore) {
+                if (passwordScore < requiredPasswordScore) {
                   setError('password', { message: '@invalid_password_score' })
                   setLoading(false)
                   return
@@ -389,7 +389,7 @@ export const UpdateUserModal: FC<
                     }}
                   />
                   <PasswordScore
-                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: props.requiredPasswordScore })}`}
+                    label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: requiredPasswordScore })}`}
                     score={passwordScore}
                     isDisabled={!isUpdatePassword}
                   />
