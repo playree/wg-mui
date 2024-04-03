@@ -13,7 +13,7 @@ import {
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { InputCtrl } from '@/components/nextekit/ui/input'
-import { gridStyles } from '@/components/styles'
+import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { GLOBAL_CIDR } from '@/helpers/const'
 import {
@@ -582,6 +582,9 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
       })}
     >
       <div className={gridStyles()}>
+        <div className={twMerge(textStyles({ color: 'light' }), 'col-span-12 px-2 text-right text-xs')}>
+          {t('msg_markdown_available')}
+        </div>
         {lcConfig.locales.map((lc) => (
           <div key={lc} className='col-span-12'>
             <Controller
@@ -653,6 +656,9 @@ const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) =
       })}
     >
       <div className={gridStyles()}>
+        <div className={twMerge(textStyles({ color: 'light' }), 'col-span-12 px-2 text-right text-xs')}>
+          {t('msg_markdown_available')}
+        </div>
         {lcConfig.locales.map((lc) => (
           <div key={lc} className='col-span-12'>
             <Controller

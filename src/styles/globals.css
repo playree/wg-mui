@@ -59,7 +59,7 @@
 }
 
 .markdown code {
-  @apply inline rounded bg-gray-200 px-1 py-5 font-mono text-sm dark:bg-gray-800;
+  @apply inline rounded bg-gray-200 px-1 font-mono dark:bg-gray-800;
 }
 
 .markdown pre {

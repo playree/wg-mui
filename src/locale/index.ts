@@ -134,6 +134,7 @@ export type LocaleItemBase =
   | 'msg_linked_oauth'
   | 'msg_unlink_oauth_confirm'
   | 'msg_password_score_required'
+  | 'msg_markdown_available'
   | 'mail_password_reset_subject'
   | 'mail_password_reset_body'
 

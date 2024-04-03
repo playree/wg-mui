@@ -138,6 +138,7 @@ export const en: LocaleItems = {
   msg_linked_oauth: '${name} link has been completed.\nFrom next time onwards, you can sign in with ${name}.',
   msg_unlink_oauth_confirm: 'Do you want to unlink from ${oauth}?',
   msg_password_score_required: '${score} or more required',
+  msg_markdown_available: 'Markdown format is available',
 
   mail_password_reset_subject: '[${appname}] Please set a password',
   mail_password_reset_body: `username: \${username}

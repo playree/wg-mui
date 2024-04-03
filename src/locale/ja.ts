@@ -138,6 +138,7 @@ export const ja: DefaultLocaleItems = {
   msg_linked_oauth: '${name}連携が完了しました。\n次回から${name}でサインインがご利用いただけます。',
   msg_unlink_oauth_confirm: '${name}との連携を解除しますか？',
   msg_password_score_required: '${score}以上が必要',
+  msg_markdown_available: 'Markdown記法がご利用頂けます',
 
   mail_password_reset_subject: '[${appname}] パスワード設定',
   mail_password_reset_body: `ユーザー名: \${username}
