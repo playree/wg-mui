@@ -3,7 +3,7 @@
 import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon, GitLabIcon, GoogleIcon } from '@/components/icons'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { Message } from '@/components/nextekit/ui/message'
-import { gridStyles } from '@/components/styles'
+import { gridStyles, textStyles } from '@/components/styles'
 import { Signin, scSignin } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -126,7 +126,10 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
               </Button>
             </div>
           )}
-          <ReactMarkdown className={twMerge('markdown col-span-12 p-2 text-sm')} remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown
+            className={twMerge(textStyles({ color: 'light' }), 'markdown col-span-12 p-2')}
+            remarkPlugins={[remarkGfm]}
+          >
             {lvt(signinMessage)}
           </ReactMarkdown>
         </form>
