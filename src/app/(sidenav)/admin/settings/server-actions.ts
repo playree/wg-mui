@@ -1,8 +1,16 @@
 'use server'
 
 import { isOAuthEnabled } from '@/helpers/env'
+import { getEnabledReleaseNote, setEnabledReleaseNote } from '@/helpers/key-value'
 import { prisma } from '@/helpers/prisma'
-import { getLocaleFormSchema, scWgConfForClients, scWgConfPostScript, zInterfaceName, zReq } from '@/helpers/schema'
+import {
+  getLocaleFormSchema,
+  scDashboardSettings,
+  scWgConfForClients,
+  scWgConfPostScript,
+  zInterfaceName,
+  zReq,
+} from '@/helpers/schema'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { refWgMgr } from '@/helpers/wgmgr'
 import { getLocaleValue, setLocaleValue } from '@/locale/server'
@@ -136,7 +144,14 @@ export const getSettings = validAction('getSettings', {
   next: async () => {
     const signinMessage = await getLocaleValue('signin_message')
     const topPageNotice = await getLocaleValue('top_page_notice')
-    return { signinMessage, topPageNotice }
+    const enabledReleaseNote = await getEnabledReleaseNote()
+    return {
+      signinMessage,
+      topPageNotice,
+      dashboard: {
+        enabledReleaseNote,
+      },
+    }
   },
 })
 export type Settings = ActionResultType<typeof getSettings>
@@ -207,5 +222,17 @@ export const updateWgConfForClients = validAction('updateWgConfForClients', {
   requireAdmin: true,
   next: async ({ req }) => {
     await prisma.wgConf.update({ where: { id: 'main' }, data: req })
+  },
+})
+
+/**
+ * ダッシュボード設定更新
+ */
+export const updateDashbordSettings = validAction('updateDashbordSettings', {
+  schema: scDashboardSettings,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req }) => {
+    await setEnabledReleaseNote(req.enabledReleaseNote)
   },
 })

@@ -115,6 +115,11 @@ export const en: LocaleItems = {
   item_wg_conf: 'WireGuard Config',
   item_for_clients: 'For clients',
   item_password_score: 'Password Score',
+  item_release_notes: 'Release notes',
+  item_view_release_notes: 'View release notes',
+  item_view_disabled: 'Disabled',
+  item_view_enabled_all: 'Enabled',
+  item_view_enabled_admin: 'Enabled for admin only',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',

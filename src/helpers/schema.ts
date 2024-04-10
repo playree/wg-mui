@@ -32,6 +32,7 @@ export const zEmpty = z.string().length(0).nullish()
 
 export const zAllOrCount = z.union([z.literal('all'), z.literal('count')])
 export const zOAuthType = z.union([z.literal('google'), z.literal('gitlab')])
+export const zEnabledType = z.union([z.literal('disabled'), z.literal('enabled_all'), z.literal('enabled_admin')])
 
 export const zUsername = z
   .string()
@@ -224,3 +225,9 @@ export type LocaleForm = z.infer<ReturnType<typeof getLocaleFormSchema>>
 // API
 export const scSetLocaleApi = zReq({ locale: zString })
 export type SetLocaleApi = z.infer<typeof scSetLocaleApi>
+
+// ダッシュボード設定
+export const scDashboardSettings = z.object({
+  enabledReleaseNote: zEnabledType,
+})
+export type DashboardSettings = z.infer<typeof scDashboardSettings>

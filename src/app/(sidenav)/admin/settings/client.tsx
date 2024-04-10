@@ -15,12 +15,16 @@ import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
+import { requireSelect } from '@/helpers/client'
 import { GLOBAL_CIDR } from '@/helpers/const'
+import { EnabledType } from '@/helpers/key-value'
 import {
+  DashboardSettings,
   LocaleForm,
   WgConfForClients,
   WgConfPostScript,
   getLocaleFormSchema,
+  scDashboardSettings,
   scWgConfForClients,
   scWgConfPostScript,
 } from '@/helpers/schema'
@@ -33,6 +37,8 @@ import {
   Card,
   CardBody,
   Divider,
+  Select,
+  SelectItem,
   Table,
   TableBody,
   TableCell,
@@ -56,6 +62,7 @@ import {
   organizePeers,
   startWg,
   stopWg,
+  updateDashbordSettings,
   updateSigninMessage,
   updateTopPageNotice,
   updateWgConfForClients,
@@ -703,7 +710,81 @@ const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) =
   )
 }
 
-export const SettingsClient: FC<{ settings: Settings }> = ({ settings: { signinMessage, topPageNotice } }) => {
+const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ values }) => {
+  const { t } = useLocale()
+  const [isEdited, setEdited] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  const { control, handleSubmit } = useForm<DashboardSettings>({
+    resolver: zodResolver(scDashboardSettings),
+    mode: 'onChange',
+    defaultValues: values,
+  })
+
+  return (
+    <form
+      onSubmit={handleSubmit(async (req) => {
+        console.debug('FormDashboard:submit:', req)
+        setLoading(true)
+        await parseAction(updateDashbordSettings(req))
+        await intervalOperation()
+        setLoading(false)
+        setEdited(false)
+      })}
+    >
+      <div className={gridStyles()}>
+        <div className='col-span-6 px-2'>
+          <Controller
+            control={control}
+            name='enabledReleaseNote'
+            render={({ field: { onChange, value } }) => (
+              <Select
+                label={t('item_view_release_notes')}
+                labelPlacement='outside'
+                variant='bordered'
+                onChange={requireSelect((event) => {
+                  if (!isEdited) {
+                    setEdited(true)
+                  }
+                  onChange(event)
+                })}
+                selectedKeys={new Set([value])}
+                isRequired
+              >
+                <SelectItem key='disabled' value='disabled'>
+                  {t('item_view_disabled')}
+                </SelectItem>
+                <SelectItem key='enabled_all' value='enabled_all'>
+                  {t('item_view_enabled_all')}
+                </SelectItem>
+                <SelectItem key='enabled_admin' value='enabled_admin'>
+                  {t('item_view_enabled_admin')}
+                </SelectItem>
+              </Select>
+            )}
+          />
+        </div>
+        <div className='col-span-12 text-right'>
+          <ExButton
+            type='submit'
+            variant='flat'
+            color='success'
+            isSmart
+            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            isLoading={isLoading}
+            isDisabled={!isEdited}
+          >
+            {t('item_update')}
+          </ExButton>
+        </div>
+      </div>
+    </form>
+  )
+}
+
+export const SettingsClient: FC<{ settings: Settings }> = ({
+  settings: { signinMessage, topPageNotice, dashboard },
+}) => {
   const { t } = useLocale()
 
   return (
@@ -723,6 +804,14 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings: { signinM
         title={t('item_top_page_notice')}
       >
         <FormTopPageNotice values={topPageNotice} />
+      </AccordionItem>
+      <AccordionItem
+        onKeyDown={(e) => e.stopPropagation()}
+        key='dashboard'
+        aria-label='ac dashboard'
+        title={t('menu_dashboard')}
+      >
+        <FormDashboard values={dashboard} />
       </AccordionItem>
     </Accordion>
   )

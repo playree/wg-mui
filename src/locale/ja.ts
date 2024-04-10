@@ -115,6 +115,11 @@ export const ja: DefaultLocaleItems = {
   item_wg_conf: 'WireGuard設定',
   item_for_clients: 'クライアント向け',
   item_password_score: 'パスワードスコア',
+  item_release_notes: 'リリースノート',
+  item_view_release_notes: 'リリースノートの表示',
+  item_view_disabled: '表示しない',
+  item_view_enabled_all: '表示する',
+  item_view_enabled_admin: '管理者のみ表示する',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
