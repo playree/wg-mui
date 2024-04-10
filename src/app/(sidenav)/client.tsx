@@ -31,7 +31,7 @@ export const AppInfoViewClient: FC = () => {
   }, [])
 
   return (
-    <div className='col-span-12 md:col-span-6'>
+    <div>
       {info ? (
         <Card>
           <CardHeader className='py-2'>
@@ -61,7 +61,7 @@ export const ServerInfoViewClient: FC = () => {
   }, [])
 
   return (
-    <div className='col-span-12 md:col-span-6'>
+    <div>
       {info ? (
         <Card>
           <CardHeader className='py-2'>
@@ -98,7 +98,7 @@ export const TopPageNoticeViewClient: FC = () => {
   const notice = info ? lvt(info.topPageNotice) : undefined
 
   return (
-    <div className='col-span-12' hidden={notice === ''}>
+    <div hidden={notice === ''}>
       {info ? (
         <Card>
           <CardHeader className='py-2'>
@@ -127,7 +127,7 @@ export const LinodeTransferInfoViewClient: FC = () => {
   }, [])
 
   return (
-    <div className='col-span-12 md:col-span-6' hidden={info === null}>
+    <div hidden={info === null}>
       {info ? (
         <Card>
           <CardHeader className='py-2'>
@@ -144,6 +144,59 @@ export const LinodeTransferInfoViewClient: FC = () => {
 
             <div className='col-span-4 text-sm font-bold'>{t('item_transfer_billable')} :</div>
             <div className='col-span-8'>{info.billable}GiB</div>
+          </CardBody>
+        </Card>
+      ) : (
+        <Loading />
+      )}
+    </div>
+  )
+}
+
+export const ReleaseNoteViewClient: FC = () => {
+  const { t } = useLocale()
+  const [notes, setNotes] = useState<
+    {
+      id: string
+      name: string
+      body: string
+    }[]
+  >()
+
+  useEffect(() => {
+    fetch('https://api.github.com/repos/playree/wg-mui/releases', {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+      next: {
+        revalidate: 180,
+      },
+    })
+      .then((res) => res.json())
+      .then((json) => setNotes(json))
+  }, [])
+
+  return (
+    <div>
+      {notes ? (
+        <Card className='max-h-96'>
+          <CardHeader className='py-2'>
+            <span className='font-bold'>{t('item_release_notes')}</span>
+          </CardHeader>
+          <Divider />
+          <CardBody>
+            {notes.map((note) => {
+              return (
+                <>
+                  <div className=' text-sm font-bold'>{note.name}</div>
+                  <ReactMarkdown key={note.id} className='markdown' remarkPlugins={[remarkGfm]}>
+                    {note.body}
+                  </ReactMarkdown>
+                  <Divider className='my-2' />
+                </>
+              )
+            })}
           </CardBody>
         </Card>
       ) : (
