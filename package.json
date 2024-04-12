@@ -17,7 +17,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.2.10",
-    "@prisma/client": "^5.11.0",
+    "@prisma/client": "^5.12.1",
     "@react-aria/ssr": "^3.8.0",
     "@react-aria/visually-hidden": "^3.8.5",
     "@react-stately/data": "3.10.3",
@@ -47,7 +47,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwind-variants": "^0.2.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5.4.2",
+    "typescript": "^5.4.5",
     "url-join": "4.0.1",
     "zod": "^3.22.4"
   },
@@ -73,7 +73,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.12",
-    "prisma": "^5.11.0",
+    "prisma": "^5.12.1",
     "ts-node": "^10.9.2"
   },
   "exclude": [
