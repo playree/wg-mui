@@ -13,7 +13,7 @@ import { validAction } from '@/helpers/server'
 export const getSettings = validAction('getSettings', {
   next: async () => {
     return {
-      requiredPasswordScore: await getRequiredPasswordScore(),
+      requiredPasswordScore: Number(await getRequiredPasswordScore()),
     }
   },
 })

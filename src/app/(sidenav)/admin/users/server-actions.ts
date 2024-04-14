@@ -18,7 +18,7 @@ export const getSettings = validAction('getSettings', {
   requireAdmin: true,
   next: async () => {
     return {
-      requiredPasswordScore: await getRequiredPasswordScore(),
+      requiredPasswordScore: Number(await getRequiredPasswordScore()),
     }
   },
 })
@@ -62,7 +62,7 @@ export const createUser = validAction('createUser', {
     // パスワードスコアチェック
     if (req.password) {
       const res = zxcvbn(req.password)
-      if (res.score < (await getRequiredPasswordScore())) {
+      if (res.score < Number(await getRequiredPasswordScore())) {
         throw errValidation('password score')
       }
     }
@@ -87,7 +87,7 @@ export const updateUser = validAction('updateUser', {
     // パスワードスコアチェック
     if (req.password) {
       const res = zxcvbn(req.password)
-      if (res.score < (await getRequiredPasswordScore())) {
+      if (res.score < Number(await getRequiredPasswordScore())) {
         throw errValidation('password score')
       }
     }

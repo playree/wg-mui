@@ -120,6 +120,10 @@ export const en: LocaleItems = {
   item_view_disabled: 'Disabled',
   item_view_enabled_all: 'Enabled',
   item_view_enabled_admin: 'Enabled for admin only',
+  item_user_settings: 'User Settings',
+  item_required_password_score: 'Required password score',
+  item_password_score_mid: '3(MID)',
+  item_password_score_high: '4(HIGH)',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -150,6 +154,14 @@ export const en: LocaleItems = {
 
 You have started using the service or have been requested to reset your password.
 Please use the service by setting a password from the URL below.
+This URL will expire in 48 hours.
+
+\${url}
+`,
+  mail_email_confirm_subject: '[${appname}] Confirm email address',
+  mail_email_confirm_body: `username: \${username}
+
+Please complete the change of email address from the URL below.
 This URL will expire in 48 hours.
 
 \${url}

@@ -231,3 +231,9 @@ export const scDashboardSettings = z.object({
   enabledReleaseNote: zEnabledType,
 })
 export type DashboardSettings = z.infer<typeof scDashboardSettings>
+
+// ユーザー設定
+export const scUserSettings = z.object({
+  requiredPasswordScore: z.union([z.literal('3'), z.literal('4')]),
+})
+export type UserSettings = z.infer<typeof scUserSettings>

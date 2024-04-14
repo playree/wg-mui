@@ -1,11 +1,17 @@
 'use server'
 
 import { isOAuthEnabled } from '@/helpers/env'
-import { getEnabledReleaseNote, setEnabledReleaseNote } from '@/helpers/key-value'
+import {
+  getEnabledReleaseNote,
+  getRequiredPasswordScore,
+  setEnabledReleaseNote,
+  setRequiredPasswordScore,
+} from '@/helpers/key-value'
 import { prisma } from '@/helpers/prisma'
 import {
   getLocaleFormSchema,
   scDashboardSettings,
+  scUserSettings,
   scWgConfForClients,
   scWgConfPostScript,
   zInterfaceName,
@@ -145,9 +151,13 @@ export const getSettings = validAction('getSettings', {
     const signinMessage = await getLocaleValue('signin_message')
     const topPageNotice = await getLocaleValue('top_page_notice')
     const enabledReleaseNote = await getEnabledReleaseNote()
+    const requiredPasswordScore = await getRequiredPasswordScore()
     return {
       signinMessage,
       topPageNotice,
+      user: {
+        requiredPasswordScore,
+      },
       dashboard: {
         enabledReleaseNote,
       },
@@ -234,5 +244,17 @@ export const updateDashbordSettings = validAction('updateDashbordSettings', {
   requireAdmin: true,
   next: async ({ req }) => {
     await setEnabledReleaseNote(req.enabledReleaseNote)
+  },
+})
+
+/**
+ * ユーザー設定更新
+ */
+export const updateUserSettings = validAction('updateUserSettings', {
+  schema: scUserSettings,
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req }) => {
+    await setRequiredPasswordScore(req.requiredPasswordScore)
   },
 })

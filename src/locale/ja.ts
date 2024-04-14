@@ -120,6 +120,10 @@ export const ja: DefaultLocaleItems = {
   item_view_disabled: '表示しない',
   item_view_enabled_all: '表示する',
   item_view_enabled_admin: '管理者のみ表示する',
+  item_user_settings: 'ユーザー設定',
+  item_required_password_score: '必要とするパスワードスコア',
+  item_password_score_mid: '3(中)',
+  item_password_score_high: '4(高)',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -150,6 +154,14 @@ export const ja: DefaultLocaleItems = {
 
 サービスのご利用が開始、またはパスワード再設定が要求されました。
 下記URLよりパスワードを設定してサービスをご利用ください。
+このURLの有効期限は48時間です。
+
+\${url}
+`,
+  mail_email_confirm_subject: '[${appname}] メールアドレス確認',
+  mail_email_confirm_body: `ユーザー名: \${username}
+
+下記URLよりメールアドレスの変更を完了してください。
 このURLの有効期限は48時間です。
 
 \${url}

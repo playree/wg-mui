@@ -119,6 +119,10 @@ export type LocaleItemBase =
   | 'item_view_disabled'
   | 'item_view_enabled_all'
   | 'item_view_enabled_admin'
+  | 'item_user_settings'
+  | 'item_required_password_score'
+  | 'item_password_score_mid'
+  | 'item_password_score_high'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'
@@ -142,6 +146,8 @@ export type LocaleItemBase =
   | 'msg_markdown_available'
   | 'mail_password_reset_subject'
   | 'mail_password_reset_body'
+  | 'mail_email_confirm_subject'
+  | 'mail_email_confirm_body'
 
 export type LocaleItemError =
   | '@required_field'
