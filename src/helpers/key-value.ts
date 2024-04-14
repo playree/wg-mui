@@ -1,14 +1,16 @@
 import { prisma } from './prisma'
 
-export type KeyString = 'enabled_release_note'
-export type KeyNumber = ''
+export type KeyString = 'enabled_release_note' | 'password_score'
+export type KeyNumber = 'password_score'
+export type KeyBoolean = ''
 export type KeyJson = 'signin_message' | 'top_page_notice'
 
 export type EnabledType = 'disabled' | 'enabled_all' | 'enabled_admin'
+export type PasswordScore = '3' | '4'
 
-export const getKeyValueString = async <T extends string = string>(key: KeyString) => {
+export const getKeyValueString = async <T extends string = string>(key: KeyString, defaultValue: T) => {
   const kv = await prisma.keyValue.findUnique({ where: { key } })
-  return kv?.value ? (kv.value as T) : undefined
+  return kv?.value ? (kv.value as T) : defaultValue
 }
 
 export const setKeyValueString = async (key: KeyString, value: string) => {
@@ -16,6 +18,19 @@ export const setKeyValueString = async (key: KeyString, value: string) => {
     where: { key },
     create: { key, value },
     update: { value },
+  })
+}
+
+export const getKeyValueNumber = async <T extends number = number>(key: KeyNumber, defaultValue: T) => {
+  const kv = await prisma.keyValue.findUnique({ where: { key } })
+  return kv?.value ? (Number(kv.value) as T) : defaultValue
+}
+
+export const setKeyValueNumber = async (key: KeyNumber, value: number) => {
+  await prisma.keyValue.upsert({
+    where: { key },
+    create: { key, value: String(value) },
+    update: { value: String(value) },
   })
 }
 
@@ -33,12 +48,14 @@ export const setKeyValueJson = async (key: KeyJson, jsonValue: Record<string, un
 }
 
 export const getRequiredPasswordScore = async () => {
-  // @todo 暫定
-  return 4
+  return getKeyValueString<PasswordScore>('password_score', '4')
+}
+export const setRequiredPasswordScore = async (score: PasswordScore) => {
+  await setKeyValueString('password_score', score)
 }
 
 export const getEnabledReleaseNote = async () => {
-  return (await getKeyValueString<EnabledType>('enabled_release_note')) || 'disabled'
+  return getKeyValueString<EnabledType>('enabled_release_note', 'disabled')
 }
 export const setEnabledReleaseNote = async (status: EnabledType) => {
   await setKeyValueString('enabled_release_note', status)

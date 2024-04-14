@@ -17,14 +17,16 @@ import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { requireSelect } from '@/helpers/client'
 import { GLOBAL_CIDR } from '@/helpers/const'
-import { EnabledType } from '@/helpers/key-value'
+import { EnabledType, PasswordScore } from '@/helpers/key-value'
 import {
   DashboardSettings,
   LocaleForm,
+  UserSettings,
   WgConfForClients,
   WgConfPostScript,
   getLocaleFormSchema,
   scDashboardSettings,
+  scUserSettings,
   scWgConfForClients,
   scWgConfPostScript,
 } from '@/helpers/schema'
@@ -65,6 +67,7 @@ import {
   updateDashbordSettings,
   updateSigninMessage,
   updateTopPageNotice,
+  updateUserSettings,
   updateWgConfForClients,
   updateWgConfPostScript,
 } from './server-actions'
@@ -782,20 +785,95 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
   )
 }
 
-export const SettingsClient: FC<{ settings: Settings }> = ({
-  settings: { signinMessage, topPageNotice, dashboard },
-}) => {
+const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }> = ({ values }) => {
+  const { t } = useLocale()
+  const [isEdited, setEdited] = useState(false)
+  const [isLoading, setLoading] = useState(false)
+
+  const { control, handleSubmit } = useForm<UserSettings>({
+    resolver: zodResolver(scUserSettings),
+    mode: 'onChange',
+    defaultValues: values,
+  })
+
+  return (
+    <form
+      onSubmit={handleSubmit(async (req) => {
+        console.debug('FormDashboard:submit:', req)
+        setLoading(true)
+        await parseAction(updateUserSettings(req))
+        await intervalOperation()
+        setLoading(false)
+        setEdited(false)
+      })}
+    >
+      <div className={gridStyles()}>
+        <div className='col-span-6 px-2'>
+          <Controller
+            control={control}
+            name='requiredPasswordScore'
+            render={({ field: { onChange, value } }) => (
+              <Select
+                label={t('item_required_password_score')}
+                labelPlacement='outside'
+                variant='bordered'
+                onChange={requireSelect((event) => {
+                  if (!isEdited) {
+                    setEdited(true)
+                  }
+                  onChange(event)
+                })}
+                selectedKeys={new Set([value])}
+                isRequired
+              >
+                <SelectItem key='3' value='3'>
+                  {t('item_password_score_mid')}
+                </SelectItem>
+                <SelectItem key='4' value='4'>
+                  {t('item_password_score_high')}
+                </SelectItem>
+              </Select>
+            )}
+          />
+        </div>
+        <div className='col-span-12 text-right'>
+          <ExButton
+            type='submit'
+            variant='flat'
+            color='success'
+            isSmart
+            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            isLoading={isLoading}
+            isDisabled={!isEdited}
+          >
+            {t('item_update')}
+          </ExButton>
+        </div>
+      </div>
+    </form>
+  )
+}
+
+export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
   const { t } = useLocale()
 
   return (
     <Accordion variant='splitted'>
       <AccordionItem
         onKeyDown={(e) => e.stopPropagation()}
+        key='user-settings'
+        aria-label='ac user-settings'
+        title={t('item_user_settings')}
+      >
+        <FormUserSettings values={settings.user} />
+      </AccordionItem>
+      <AccordionItem
+        onKeyDown={(e) => e.stopPropagation()}
         key='signin-message'
         aria-label='ac signin-message'
         title={t('item_signin_message')}
       >
-        <FormSigninMessage values={signinMessage} />
+        <FormSigninMessage values={settings.signinMessage} />
       </AccordionItem>
       <AccordionItem
         onKeyDown={(e) => e.stopPropagation()}
@@ -803,7 +881,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({
         aria-label='ac top-page-notice'
         title={t('item_top_page_notice')}
       >
-        <FormTopPageNotice values={topPageNotice} />
+        <FormTopPageNotice values={settings.topPageNotice} />
       </AccordionItem>
       <AccordionItem
         onKeyDown={(e) => e.stopPropagation()}
@@ -811,7 +889,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({
         aria-label='ac dashboard'
         title={t('menu_dashboard')}
       >
-        <FormDashboard values={dashboard} />
+        <FormDashboard values={settings.dashboard} />
       </AccordionItem>
     </Accordion>
   )

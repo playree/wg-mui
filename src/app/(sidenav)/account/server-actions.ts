@@ -56,7 +56,7 @@ export const updatePassword = validAction('updatePassword', {
     // パスワードスコアチェック
     if (req.password) {
       const res = zxcvbn(req.password)
-      if (res.score < (await getRequiredPasswordScore())) {
+      if (res.score < Number(await getRequiredPasswordScore())) {
         throw errValidation('password score')
       }
     }
