@@ -41,6 +41,7 @@ import {
   Divider,
   Select,
   SelectItem,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -736,7 +737,7 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
       })}
     >
       <div className={gridStyles()}>
-        <div className='col-span-6 px-2'>
+        <div className='col-span-12 px-2'>
           <Controller
             control={control}
             name='enabledReleaseNote'
@@ -808,7 +809,7 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
       })}
     >
       <div className={gridStyles()}>
-        <div className='col-span-6 px-2'>
+        <div className='col-span-12 px-2'>
           <Controller
             control={control}
             name='requiredPasswordScore'
@@ -833,6 +834,25 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
                   {t('item_password_score_high')}
                 </SelectItem>
               </Select>
+            )}
+          />
+        </div>
+        <div className='col-span-12 px-2'>
+          <Controller
+            control={control}
+            name='allowedChangeEmail'
+            render={({ field: { onChange, value } }) => (
+              <Switch
+                onValueChange={(event) => {
+                  if (!isEdited) {
+                    setEdited(true)
+                  }
+                  onChange(event)
+                }}
+                isSelected={value}
+              >
+                {t('item_allow_change_email')}
+              </Switch>
             )}
           />
         </div>

@@ -2,7 +2,7 @@ import { prisma } from './prisma'
 
 export type KeyString = 'enabled_release_note' | 'password_score'
 export type KeyNumber = 'password_score'
-export type KeyBoolean = ''
+export type KeyBoolean = 'allowed_change_email'
 export type KeyJson = 'signin_message' | 'top_page_notice'
 
 export type EnabledType = 'disabled' | 'enabled_all' | 'enabled_admin'
@@ -34,6 +34,19 @@ export const setKeyValueNumber = async (key: KeyNumber, value: number) => {
   })
 }
 
+export const getKeyValueBoolean = async (key: KeyBoolean, defaultValue: boolean) => {
+  const kv = await prisma.keyValue.findUnique({ where: { key } })
+  return kv?.value ? kv.value.toLowerCase() === 'true' : defaultValue
+}
+
+export const setKeyValueBoolean = async (key: KeyBoolean, value: boolean) => {
+  await prisma.keyValue.upsert({
+    where: { key },
+    create: { key, value: value ? 'true' : 'false' },
+    update: { value: value ? 'true' : 'false' },
+  })
+}
+
 export const getKeyValueJson = async <T extends Record<string, unknown>>(key: KeyJson) => {
   const kv = await prisma.keyValue.findUnique({ where: { key } })
   return kv?.value ? (JSON.parse(kv.value) as T) : undefined
@@ -59,4 +72,11 @@ export const getEnabledReleaseNote = async () => {
 }
 export const setEnabledReleaseNote = async (status: EnabledType) => {
   await setKeyValueString('enabled_release_note', status)
+}
+
+export const getAllowedChangeEmail = async () => {
+  return getKeyValueBoolean('allowed_change_email', false)
+}
+export const setAllowedChangeEmail = async (value: boolean) => {
+  await setKeyValueBoolean('allowed_change_email', value)
 }

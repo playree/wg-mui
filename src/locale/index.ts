@@ -123,6 +123,7 @@ export type LocaleItemBase =
   | 'item_required_password_score'
   | 'item_password_score_mid'
   | 'item_password_score_high'
+  | 'item_allow_change_email'
   | 'msg_password_confirm'
   | 'msg_user_delete'
   | 'msg_label_delete'

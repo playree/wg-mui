@@ -124,6 +124,7 @@ export const en: LocaleItems = {
   item_required_password_score: 'Required password score',
   item_password_score_mid: '3(MID)',
   item_password_score_high: '4(HIGH)',
+  item_allow_change_email: 'Allow user to change email address',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
