@@ -124,6 +124,7 @@ export const ja: DefaultLocaleItems = {
   item_required_password_score: '必要とするパスワードスコア',
   item_password_score_mid: '3(中)',
   item_password_score_high: '4(高)',
+  item_allow_change_email: 'ユーザーによるメールアドレス変更を許可する',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',

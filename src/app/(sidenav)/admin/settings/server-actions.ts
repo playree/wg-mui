@@ -2,8 +2,10 @@
 
 import { isOAuthEnabled } from '@/helpers/env'
 import {
+  getAllowedChangeEmail,
   getEnabledReleaseNote,
   getRequiredPasswordScore,
+  setAllowedChangeEmail,
   setEnabledReleaseNote,
   setRequiredPasswordScore,
 } from '@/helpers/key-value'
@@ -152,11 +154,13 @@ export const getSettings = validAction('getSettings', {
     const topPageNotice = await getLocaleValue('top_page_notice')
     const enabledReleaseNote = await getEnabledReleaseNote()
     const requiredPasswordScore = await getRequiredPasswordScore()
+    const allowedChangeEmail = await getAllowedChangeEmail()
     return {
       signinMessage,
       topPageNotice,
       user: {
         requiredPasswordScore,
+        allowedChangeEmail,
       },
       dashboard: {
         enabledReleaseNote,
@@ -256,5 +260,6 @@ export const updateUserSettings = validAction('updateUserSettings', {
   requireAdmin: true,
   next: async ({ req }) => {
     await setRequiredPasswordScore(req.requiredPasswordScore)
+    await setAllowedChangeEmail(req.allowedChangeEmail)
   },
 })
