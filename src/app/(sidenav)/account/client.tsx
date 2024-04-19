@@ -1,7 +1,7 @@
 'use client'
 
 import { useSharedUIContext } from '@/app/context'
-import { BoltSlashIcon, KeyIcon } from '@/components/icons'
+import { BoltSlashIcon, KeyIcon, PencilSquareIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles, iconSizes } from '@/components/styles'
@@ -10,6 +10,7 @@ import { dayformat } from '@/helpers/day'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { Card, CardBody, Divider, useDisclosure } from '@nextui-org/react'
+import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 
@@ -27,7 +28,7 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
 }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
-  const { confirmModal } = useSharedUIContext()
+  const { confirmModal, toast } = useSharedUIContext()
 
   const [targetChangePwd, setTargetChangePwd] = useState<string>()
   const changePwdModal = useDisclosure()
@@ -47,35 +48,46 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
       <Card className='mt-2 w-full'>
         <CardBody className={gridStyles()}>
           <div className='col-span-3'>{t('item_username')}</div>
-          <div className='col-span-7'>{user.name}</div>
-          <div className='col-span-2'></div>
+          <div className='col-span-9'>{user.name}</div>
           <Divider className='col-span-12' />
 
           <div className='col-span-3'>{t('item_password')}</div>
-          <div className='col-span-7'>
-            <ExButton isSmart onPress={() => setTargetChangePwd(user.id)}>
-              <KeyIcon size={iconSizes.sm} />
+          <div className='col-span-9'>
+            <ExButton
+              isSmart
+              onPress={() => setTargetChangePwd(user.id)}
+              startContent={<KeyIcon size={iconSizes.sm} />}
+            >
               {t('item_change_password')}
             </ExButton>
           </div>
-          <div className='col-span-2'></div>
           <Divider className='col-span-12' />
 
           <div className='col-span-3'>{t('item_isadmin')}</div>
-          <div className='col-span-7'>
+          <div className='col-span-9'>
             <OnOffChip isEnable={user.isAdmin} messageOn={t('item_true')} messageOff={t('item_false')} />
           </div>
-          <div className='col-span-2'></div>
           <Divider className='col-span-12' />
 
           <div className='col-span-3'>{t('item_locale')}</div>
-          <div className='col-span-7'>{user.locale || ''}</div>
-          <div className='col-span-2'></div>
+          <div className='col-span-9'>{user.locale || ''}</div>
           <Divider className='col-span-12' />
 
           <div className='col-span-3'>{t('item_email')}</div>
-          <div className='col-span-7'>{user.email}</div>
-          <div className='col-span-2'></div>
+          <div className='col-span-9'>
+            {user.email}
+            <ExButton
+              isSmart
+              onPress={() => {
+                toast().show({ message: dayjs().format() })
+              }}
+              startContent={<PencilSquareIcon size={iconSizes.sm} />}
+              variant='flat'
+              className='ml-4'
+            >
+              {t('item_edit')}
+            </ExButton>
+          </div>
           <Divider className='col-span-12' />
 
           {isLinkedGoogle !== undefined && (
