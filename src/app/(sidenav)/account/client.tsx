@@ -10,7 +10,6 @@ import { dayformat } from '@/helpers/day'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { Card, CardBody, Divider, useDisclosure } from '@nextui-org/react'
-import dayjs from 'dayjs'
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 
@@ -28,7 +27,7 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
 }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
-  const { confirmModal, toast } = useSharedUIContext()
+  const { confirmModal } = useSharedUIContext()
 
   const [targetChangePwd, setTargetChangePwd] = useState<string>()
   const changePwdModal = useDisclosure()
@@ -79,18 +78,7 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
             <ExButton
               isSmart
               onPress={() => {
-                toast().info({ message: dayjs().format() })
-              }}
-              startContent={<PencilSquareIcon size={iconSizes.sm} />}
-              variant='flat'
-              className='ml-4'
-            >
-              {t('item_edit')}
-            </ExButton>
-            <ExButton
-              isSmart
-              onPress={() => {
-                toast().error({ message: 'test' })
+                // toast().info({ message: dayjs().format() })
               }}
               startContent={<PencilSquareIcon size={iconSizes.sm} />}
               variant='flat'
