@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const AccountView: FC = async () => {
   const { requiredPasswordScore } = await parseAction(getSettings())
   const account = await parseAction(getAccount())
-  return <AccountViewClient account={account} requiredPasswordScore={requiredPasswordScore} />
+  return <AccountViewClient account={account} requiredPasswordScore={Number(requiredPasswordScore)} />
 }
 
 const PeerPage: FC = () => {
