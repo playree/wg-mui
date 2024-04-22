@@ -79,7 +79,18 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
             <ExButton
               isSmart
               onPress={() => {
-                toast().show({ message: dayjs().format() })
+                toast().info({ message: dayjs().format() })
+              }}
+              startContent={<PencilSquareIcon size={iconSizes.sm} />}
+              variant='flat'
+              className='ml-4'
+            >
+              {t('item_edit')}
+            </ExButton>
+            <ExButton
+              isSmart
+              onPress={() => {
+                toast().error({ message: 'test' })
               }}
               startContent={<PencilSquareIcon size={iconSizes.sm} />}
               variant='flat'
