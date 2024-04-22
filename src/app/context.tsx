@@ -10,7 +10,8 @@ const defaultConfirmModalRef: ConfirmModalRef = {
   close: () => {},
 }
 const defaultToastRef: ToastRef = {
-  show: () => {},
+  info: () => {},
+  error: () => {},
 }
 const SharedUIContext = createContext<{
   confirmModal: () => ConfirmModalRef
