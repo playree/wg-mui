@@ -125,6 +125,9 @@ export const ja: DefaultLocaleItems = {
   item_password_score_mid: '3(中)',
   item_password_score_high: '4(高)',
   item_allow_change_email: 'ユーザーによるメールアドレス変更を許可する',
+  item_change_email: 'メールアドレス変更',
+  item_not_set: '未設定',
+  item_send_confirm_mail: '確認メールを送信',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -149,6 +152,7 @@ export const ja: DefaultLocaleItems = {
   msg_unlink_oauth_confirm: '${name}との連携を解除しますか？',
   msg_password_score_required: '${score}以上が必要',
   msg_markdown_available: 'Markdown記法がご利用頂けます',
+  msg_send_confirm_mail: '確認メールを送信しました。\nメールのURLから変更を完了させてください。',
 
   mail_password_reset_subject: '[${appname}] パスワード設定',
   mail_password_reset_body: `ユーザー名: \${username}

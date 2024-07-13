@@ -131,6 +131,14 @@ export const prisma = new PrismaClient().$extends({
           },
         })
       },
+      async updateEmail(id: string, email: string) {
+        await prisma.user.update({
+          where: { id },
+          data: {
+            email,
+          },
+        })
+      },
       async getUserLinkOAuth(type: OAuthType, email: string) {
         const user = await prisma.user.findUnique({
           where: { email },

@@ -54,6 +54,7 @@ export const zPasswordUpdate = z
   .transform(convUndefined)
 export const zPasswordConfirm = z.string().min(1, el('@required_field'))
 export const zEmail = z.string().email(el('@invalid_email')).or(zEmpty).transform(convNull)
+export const zEmailChange = z.string().email(el('@invalid_email'))
 
 export const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
 export const zExplanation = z.string().max(80, el('@invalid_label_name'))
@@ -211,6 +212,13 @@ export const scUpdatePassword = z.object({
   password: zPassword,
 })
 export type UpdatePassword = z.infer<typeof scUpdatePassword>
+
+// メールアドレス更新
+export const scUpdateEmail = z.object({
+  id: zUUID,
+  email: zEmailChange,
+})
+export type UpdateEmail = z.infer<typeof scUpdateEmail>
 
 // ロケール
 export const getLocaleFormSchema = (max: number) => {
