@@ -25,6 +25,7 @@ model User {
   peerList      Peer[]
   lastSignIn    LastSignIn?
   passwordReset PasswordReset?
+  emailConfirm  EmailConfirm?
   linkOAuthList LinkOAuth[]
 }
 
@@ -57,6 +58,17 @@ model LinkOAuth {
 model PasswordReset {
   id        String   @id
   onetimeId String   @unique
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  // Relation
+  user User @relation(fields: [id], references: [id], onDelete: Cascade)
+}
+
+model EmailConfirm {
+  id        String   @id
+  onetimeId String   @unique
+  email     String
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 

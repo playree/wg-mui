@@ -22,7 +22,7 @@ const CheckIcon: FC = () => (
   </svg>
 )
 
-type ConfirmParam = { title: string; text: string; requireCheck?: boolean; autoClose?: boolean }
+type ConfirmParam = { title: string; text: string; requireCheck?: boolean; autoClose?: boolean; onlyOk?: boolean }
 
 export type ConfirmModalRef = {
   confirm: (param: ConfirmParam) => Promise<boolean>
@@ -80,18 +80,20 @@ export const ConfirmModal = forwardRef<
           )}
         </ModalBody>
         <ModalFooter>
-          <ExButton
-            color='danger'
-            onPress={() => {
-              if (response.current) {
-                response.current(false)
-                response.current = undefined
-              }
-              setConfirmParam(undefined)
-            }}
-          >
-            {uiText?.cancel || 'Cancel'}
-          </ExButton>
+          {!confirmParam?.onlyOk && (
+            <ExButton
+              color='danger'
+              onPress={() => {
+                if (response.current) {
+                  response.current(false)
+                  response.current = undefined
+                }
+                setConfirmParam(undefined)
+              }}
+            >
+              {uiText?.cancel || 'Cancel'}
+            </ExButton>
+          )}
           <ExButton
             variant='solid'
             startContent={isLoading ? undefined : <CheckIcon />}

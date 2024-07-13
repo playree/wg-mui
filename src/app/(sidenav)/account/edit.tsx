@@ -1,12 +1,12 @@
 'use client'
 
-import { CheckIcon, EyeIcon, EyeSlashIcon } from '@/components/icons'
+import { CheckIcon, EyeIcon, EyeSlashIcon, PaperAirplaneIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { UpdatePassword, scUpdatePassword } from '@/helpers/schema'
+import { UpdateEmail, UpdatePassword, scUpdateEmail, scUpdatePassword } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,7 +15,7 @@ import { zxcvbn } from '@zxcvbn-ts/core'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-import { updatePassword } from './server-actions'
+import { changeEmail, existsEmail, updatePassword } from './server-actions'
 
 export const ChangePasswordModal: FC<
   Omit<ModalProps, 'children'> & { target?: string; updated: () => void; requiredPasswordScore: number }
@@ -124,6 +124,99 @@ export const ChangePasswordModal: FC<
                 isLoading={isLoading}
               >
                 {t('item_ok')}
+              </ExButton>
+            </ModalFooter>
+          </form>
+        )}
+      </ModalContent>
+    </Modal>
+  )
+}
+
+export const ChangeEmailModal: FC<Omit<ModalProps, 'children'> & { target?: string; updated: () => void }> = (
+  props,
+) => {
+  const { target, updated, ...nextProps } = props
+  const { t, fet } = useLocale()
+  const [isLoading, setLoading] = useState(false)
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue,
+    setError,
+  } = useForm<UpdateEmail>({
+    resolver: zodResolver(scUpdateEmail),
+    mode: 'onChange',
+    defaultValues: { id: '', email: '' },
+  })
+
+  useEffect(() => {
+    setLoading(false)
+    reset()
+  }, [reset, props.isOpen])
+
+  useEffect(() => {
+    console.debug('target:', target)
+    if (target) {
+      setValue('id', target)
+    }
+  }, [target, props.isOpen, setValue])
+
+  return (
+    <Modal backdrop='blur' {...nextProps}>
+      <ModalContent>
+        {(onClose) => (
+          <form
+            onSubmit={handleSubmit(async (req) => {
+              console.debug('update:submit:', req)
+              setLoading(true)
+              // emailの重複チェック
+              if (req.email) {
+                if (await parseAction(existsEmail({ email: req.email, excludeId: req.id }))) {
+                  // 重複チェックエラー
+                  setError('email', { message: '@already_exists' })
+                  setLoading(false)
+                  return
+                }
+              }
+
+              await parseAction(changeEmail(req))
+              await intervalOperation()
+              updated()
+              onClose()
+              setLoading(false)
+            })}
+          >
+            <ModalHeader className='flex flex-col gap-1'>{t('item_change_email')}</ModalHeader>
+            <ModalBody>
+              <div className={gridStyles()}>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='email'
+                    label={t('item_email')}
+                    variant='bordered'
+                    errorMessage={fet(errors.email)}
+                    autoComplete='email'
+                    required
+                  />
+                </div>
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <ExButton color='danger' onPress={onClose}>
+                {t('item_cancel')}
+              </ExButton>
+              <ExButton
+                type='submit'
+                variant='solid'
+                startContent={isLoading ? undefined : <PaperAirplaneIcon />}
+                isLoading={isLoading}
+              >
+                {t('item_send_confirm_mail')}
               </ExButton>
             </ModalFooter>
           </form>

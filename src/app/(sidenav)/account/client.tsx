@@ -13,7 +13,7 @@ import { Card, CardBody, Divider, useDisclosure } from '@nextui-org/react'
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 
-import { ChangePasswordModal } from './edit'
+import { ChangeEmailModal, ChangePasswordModal } from './edit'
 import { Account, unlinkOAuth } from './server-actions'
 
 export const Title: FC = () => {
@@ -32,6 +32,11 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
   const [targetChangePwd, setTargetChangePwd] = useState<string>()
   const changePwdModal = useDisclosure()
   const openChangePwdModal = changePwdModal.onOpen
+
+  const [targetChangeEmail, setTargetChangeEmail] = useState<string>()
+  const changeEmailModal = useDisclosure()
+  const openChangeEmailModal = changeEmailModal.onOpen
+
   const [isLoadingUnlinkGoogle, setLoadingUnlinkGoogle] = useState(false)
   const [isLoadingUnlinkGitLab, setLoadingUnlinkGitLab] = useState(false)
 
@@ -41,6 +46,13 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
       openChangePwdModal()
     }
   }, [openChangePwdModal, targetChangePwd])
+
+  useEffect(() => {
+    console.debug('targetChangeEmail:', targetChangeEmail)
+    if (targetChangeEmail) {
+      openChangeEmailModal()
+    }
+  }, [openChangeEmailModal, targetChangeEmail])
 
   return (
     <>
@@ -56,6 +68,7 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
               isSmart
               onPress={() => setTargetChangePwd(user.id)}
               startContent={<KeyIcon size={iconSizes.sm} />}
+              variant='flat'
             >
               {t('item_change_password')}
             </ExButton>
@@ -74,12 +87,10 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
 
           <div className='col-span-3'>{t('item_email')}</div>
           <div className='col-span-9'>
-            {user.email}
+            {user.email ?? t('item_not_set')}
             <ExButton
               isSmart
-              onPress={() => {
-                // toast().info({ message: dayjs().format() })
-              }}
+              onPress={() => setTargetChangeEmail(user.id)}
               startContent={<PencilSquareIcon size={iconSizes.sm} />}
               variant='flat'
               className='ml-4'
@@ -184,6 +195,23 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
         updated={() => {}}
         onClose={() => setTargetChangePwd(undefined)}
         requiredPasswordScore={requiredPasswordScore}
+      />
+      <ChangeEmailModal
+        size='xl'
+        isOpen={changeEmailModal.isOpen}
+        onOpenChange={changeEmailModal.onOpenChange}
+        isDismissable={false}
+        scrollBehavior='outside'
+        target={targetChangeEmail}
+        updated={() => {
+          confirmModal().confirm({
+            title: t('item_confirme'),
+            text: t('msg_send_confirm_mail'),
+            autoClose: true,
+            onlyOk: true,
+          })
+        }}
+        onClose={() => setTargetChangeEmail(undefined)}
       />
     </>
   )
