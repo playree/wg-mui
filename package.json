@@ -17,7 +17,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@nextui-org/react": "^2.2.10",
-    "@prisma/client": "^5.12.1",
+    "@prisma/client": "^5.16.2",
     "@react-aria/ssr": "^3.8.0",
     "@react-aria/visually-hidden": "^3.8.5",
     "@react-stately/data": "3.10.3",
@@ -73,11 +73,11 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.13",
-    "prisma": "^5.12.1",
+    "prisma": "^5.16.2",
     "ts-node": "^10.9.2"
   },
   "exclude": [
     "./prisma/seed.ts"
   ],
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.3.1"
 }
