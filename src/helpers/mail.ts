@@ -79,7 +79,7 @@ export const sendEmailConfirm = async (param: { username: string; locale?: strin
   }
   const { username, locale = '', to, onetimeId } = param
 
-  const url = new URL(`/mlconfirm/${onetimeId}`, process.env.NEXTAUTH_URL)
+  const url = new URL(`/mlchange/${onetimeId}`, process.env.NEXTAUTH_URL)
   console.debug('@mail:locale:', locale)
   await sendEmail({
     to,

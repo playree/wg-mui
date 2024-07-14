@@ -12,6 +12,7 @@ export const en: LocaleItems = {
   menu_peer: 'Peer(Connect)',
   menu_account: 'Account',
   menu_password_reset: 'Reset Password',
+  menu_email_change: 'Change Email',
   group_user: 'User',
   group_admin: 'Admin',
   item_user: 'User',
@@ -127,7 +128,7 @@ export const en: LocaleItems = {
   item_allow_change_email: 'Allow user to change email address',
   item_change_email: 'Change email address',
   item_not_set: 'Not set',
-  item_send_confirm_mail: 'Send a confirmation email',
+  item_send_confirm_email: 'Send a confirmation email',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -152,8 +153,9 @@ export const en: LocaleItems = {
   msg_unlink_oauth_confirm: 'Do you want to unlink from ${oauth}?',
   msg_password_score_required: '${score} or more required',
   msg_markdown_available: 'Markdown format is available',
-  msg_send_confirm_mail:
+  msg_send_confirm_email:
     'A confirmation email has been sent.\nPlease use the URL in the email to complete the changes.',
+  msg_confirmed_email: 'Email: ${email}\nhas been confirmed.\nYour email address has been changed.',
 
   mail_password_reset_subject: '[${appname}] Please set a password',
   mail_password_reset_body: `username: \${username}

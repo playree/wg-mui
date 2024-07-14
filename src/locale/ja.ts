@@ -12,6 +12,7 @@ export const ja: DefaultLocaleItems = {
   menu_peer: 'ピア(接続)',
   menu_account: 'アカウント',
   menu_password_reset: 'パスワードリセット',
+  menu_email_change: 'メールアドレス変更',
   group_user: 'ユーザー',
   group_admin: '管理者',
   item_user: '一般ユーザー',
@@ -127,7 +128,7 @@ export const ja: DefaultLocaleItems = {
   item_allow_change_email: 'ユーザーによるメールアドレス変更を許可する',
   item_change_email: 'メールアドレス変更',
   item_not_set: '未設定',
-  item_send_confirm_mail: '確認メールを送信',
+  item_send_confirm_email: '確認メールを送信',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -152,7 +153,8 @@ export const ja: DefaultLocaleItems = {
   msg_unlink_oauth_confirm: '${name}との連携を解除しますか？',
   msg_password_score_required: '${score}以上が必要',
   msg_markdown_available: 'Markdown記法がご利用頂けます',
-  msg_send_confirm_mail: '確認メールを送信しました。\nメールのURLから変更を完了させてください。',
+  msg_send_confirm_email: '確認メールを送信しました。\nメールのURLから変更を完了させてください。',
+  msg_confirmed_email: 'メールアドレス: ${email}\nを確認しました。\nメールアドレスの変更を完了しました。',
 
   mail_password_reset_subject: '[${appname}] パスワード設定',
   mail_password_reset_body: `ユーザー名: \${username}
