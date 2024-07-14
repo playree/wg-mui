@@ -42,6 +42,7 @@ export const InputCtrl = <
                 }
           }
           value={value || (type === 'number' ? '0' : '')}
+          isInvalid={!!props.errorMessage}
         />
       )}
     />
