@@ -216,7 +216,7 @@ export const ChangeEmailModal: FC<Omit<ModalProps, 'children'> & { target?: stri
                 startContent={isLoading ? undefined : <PaperAirplaneIcon />}
                 isLoading={isLoading}
               >
-                {t('item_send_confirm_mail')}
+                {t('item_send_confirm_email')}
               </ExButton>
             </ModalFooter>
           </form>

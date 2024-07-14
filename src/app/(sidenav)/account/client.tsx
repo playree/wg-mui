@@ -206,7 +206,7 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
         updated={() => {
           confirmModal().confirm({
             title: t('item_confirme'),
-            text: t('msg_send_confirm_mail'),
+            text: t('msg_send_confirm_email'),
             autoClose: true,
             onlyOk: true,
           })
