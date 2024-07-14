@@ -29,7 +29,7 @@
     "clsx": "^2.1.1",
     "cookie": "^0.6.0",
     "dayjs": "^1.11.11",
-    "framer-motion": "^10.18.0",
+    "framer-motion": "^11.3.2",
     "intl-messageformat": "^10.5.14",
     "ip-address": "^9.0.5",
     "js-ini": "^1.6.0",
