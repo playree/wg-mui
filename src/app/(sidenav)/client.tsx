@@ -189,7 +189,7 @@ export const ReleaseNoteViewClient: FC = () => {
             {notes.map((note) => {
               return (
                 <div key={note.id}>
-                  <div className=' text-sm font-bold'>{note.name}</div>
+                  <div className='text-sm font-bold'>{note.name}</div>
                   <ReactMarkdown className='markdown' remarkPlugins={[remarkGfm]}>
                     {note.body}
                   </ReactMarkdown>

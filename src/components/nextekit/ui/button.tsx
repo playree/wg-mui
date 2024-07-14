@@ -34,7 +34,7 @@ export const ExButton: FC<
       size={size}
       color={color}
       variant={variant}
-      className={twMerge(isSmart ? ' h-fit px-2 py-1' : '', className)}
+      className={twMerge(isSmart ? 'h-fit px-2 py-1' : '', className)}
       {...props}
       onPress={
         href && !isLink
