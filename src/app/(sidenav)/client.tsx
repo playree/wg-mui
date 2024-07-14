@@ -188,13 +188,13 @@ export const ReleaseNoteViewClient: FC = () => {
           <CardBody>
             {notes.map((note) => {
               return (
-                <>
+                <div key={note.id}>
                   <div className=' text-sm font-bold'>{note.name}</div>
-                  <ReactMarkdown key={note.id} className='markdown' remarkPlugins={[remarkGfm]}>
+                  <ReactMarkdown className='markdown' remarkPlugins={[remarkGfm]}>
                     {note.body}
                   </ReactMarkdown>
                   <Divider className='my-2' />
-                </>
+                </div>
               )
             })}
           </CardBody>
