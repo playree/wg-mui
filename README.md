@@ -21,7 +21,7 @@ Next.jsの最新機能を率先して利用して開発しています。
 
 # モジュール構成
 
-- [Next.js](https://nextjs.org/) v14.1.x \
+- [Next.js](https://nextjs.org/) v14.2.5 \
   出来るだけ最新機能を利用して開発しています。
   - Using App Router
   - Using Server Components
@@ -75,7 +75,7 @@ DEBUG_SEND_EMAIL=true
 # 起動
 
 ```sh
-yarn start
+./wg-mui.sh
 ```
 
 ## PM2
