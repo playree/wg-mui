@@ -2,7 +2,7 @@
 
 import { isOAuthEnabled, isOAuthSimpleLogin } from '@/helpers/env'
 import { errInvalidSession, errNotFound, errValidation } from '@/helpers/error'
-import { getRequiredPasswordScore } from '@/helpers/key-value'
+import { getAllowedChangeEmail, getRequiredPasswordScore } from '@/helpers/key-value'
 import { sendEmailConfirm } from '@/helpers/mail'
 import { prisma } from '@/helpers/prisma'
 import { scUpdateEmail, scUpdatePassword, zOAuthType, zReq, zString, zUUID } from '@/helpers/schema'
@@ -18,6 +18,7 @@ export const getSettings = validAction('getSettings', {
   next: async () => {
     return {
       requiredPasswordScore: await getRequiredPasswordScore(),
+      allowedChangeEmail: await getAllowedChangeEmail(),
     }
   },
 })
@@ -101,6 +102,10 @@ export const changeEmail = validAction('changeEmail', {
   requireAuth: true,
   next: async ({ req, user }) => {
     if (req.id !== user.id) {
+      throw errInvalidSession()
+    }
+
+    if (!(await getAllowedChangeEmail())) {
       throw errInvalidSession()
     }
 
