@@ -21,10 +21,11 @@ export const Title: FC = () => {
   return <span className='mr-8 text-lg'>{t('menu_account')}</span>
 }
 
-export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: number }> = ({
-  account: { user, isLinkedGoogle, isLinkedGitLab },
-  requiredPasswordScore,
-}) => {
+export const AccountViewClient: FC<{
+  account: Account
+  requiredPasswordScore: number
+  allowedChangeEmail: boolean
+}> = ({ account: { user, isLinkedGoogle, isLinkedGitLab }, requiredPasswordScore, allowedChangeEmail }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
   const { confirmModal } = useSharedUIContext()
@@ -88,15 +89,17 @@ export const AccountViewClient: FC<{ account: Account; requiredPasswordScore: nu
           <div className='col-span-3'>{t('item_email')}</div>
           <div className='col-span-9'>
             {user.email ?? t('item_not_set')}
-            <ExButton
-              isSmart
-              onPress={() => setTargetChangeEmail(user.id)}
-              startContent={<PencilSquareIcon size={iconSizes.sm} />}
-              variant='flat'
-              className='ml-4'
-            >
-              {t('item_edit')}
-            </ExButton>
+            {allowedChangeEmail && (
+              <ExButton
+                isSmart
+                onPress={() => setTargetChangeEmail(user.id)}
+                startContent={<PencilSquareIcon size={iconSizes.sm} />}
+                variant='flat'
+                className='ml-4'
+              >
+                {t('item_edit')}
+              </ExButton>
+            )}
           </div>
           <Divider className='col-span-12' />
 
