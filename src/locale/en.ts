@@ -114,7 +114,7 @@ export const en: LocaleItems = {
   item_signin_with_password: 'Sign in with Password',
   item_unlink: 'Unlink',
   item_wg_conf: 'WireGuard Config',
-  item_for_clients: 'For clients',
+  item_for_clients: 'For clients settings',
   item_password_score: 'Password Score',
   item_release_notes: 'Release notes',
   item_view_release_notes: 'View release notes',
@@ -129,6 +129,7 @@ export const en: LocaleItems = {
   item_change_email: 'Change email address',
   item_not_set: 'Not set',
   item_send_confirm_email: 'Send a confirmation email',
+  item_dashboard_settings: 'Dashboard Settings',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -156,6 +157,12 @@ export const en: LocaleItems = {
   msg_send_confirm_email:
     'A confirmation email has been sent.\nPlease use the URL in the email to complete the changes.',
   msg_confirmed_email: 'Email: ${email}\nhas been confirmed.\nYour email address has been changed.',
+  msg_updated: 'Updated ${item}',
+  msg_wg_started: 'WireGuard has been started',
+  msg_wg_stoped: 'WireGuard has been stopped',
+  msg_wg_restarted: 'WireGuard has been restarted',
+  msg_wg_autostart_enabled: 'Autostart enabled',
+  msg_wg_autostart_disabled: 'Autostart disabled',
 
   mail_password_reset_subject: '[${appname}] Please set a password',
   mail_password_reset_body: `username: \${username}

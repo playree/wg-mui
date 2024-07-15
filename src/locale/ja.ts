@@ -114,7 +114,7 @@ export const ja: DefaultLocaleItems = {
   item_signin_with_password: 'パスワードでサインイン',
   item_unlink: '連携解除',
   item_wg_conf: 'WireGuard設定',
-  item_for_clients: 'クライアント向け',
+  item_for_clients: 'クライアント向け設定',
   item_password_score: 'パスワードスコア',
   item_release_notes: 'リリースノート',
   item_view_release_notes: 'リリースノートの表示',
@@ -129,6 +129,7 @@ export const ja: DefaultLocaleItems = {
   item_change_email: 'メールアドレス変更',
   item_not_set: '未設定',
   item_send_confirm_email: '確認メールを送信',
+  item_dashboard_settings: 'ダッシュボード設定',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -155,6 +156,12 @@ export const ja: DefaultLocaleItems = {
   msg_markdown_available: 'Markdown記法がご利用頂けます',
   msg_send_confirm_email: '確認メールを送信しました。\nメールのURLから変更を完了させてください。',
   msg_confirmed_email: 'メールアドレス: ${email}\nを確認しました。\nメールアドレスの変更を完了しました。',
+  msg_updated: '${item} を更新しました',
+  msg_wg_started: 'WireGuardを起動しました',
+  msg_wg_stoped: 'WireGuardを停止しました',
+  msg_wg_restarted: 'WireGuardを再起動しました',
+  msg_wg_autostart_enabled: '自動起動を有効化しました',
+  msg_wg_autostart_disabled: '自動起動を無効化しました',
 
   mail_password_reset_subject: '[${appname}] パスワード設定',
   mail_password_reset_body: `ユーザー名: \${username}
