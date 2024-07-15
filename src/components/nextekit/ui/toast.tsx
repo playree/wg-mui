@@ -104,7 +104,10 @@ export const Toast = forwardRef<ToastRef>((props, ref) => {
   }
 
   return (
-    <div className='fixed bottom-1 right-1 flex max-w-80 flex-col flex-wrap-reverse text-right' style={{ zIndex: 99 }}>
+    <div
+      className={twMerge('fixed bottom-1 right-1 flex max-w-96 flex-col flex-wrap-reverse text-right')}
+      style={{ zIndex: 99 }}
+    >
       <AnimatePresence>
         {messageList.map((msg) => (
           <motion.div

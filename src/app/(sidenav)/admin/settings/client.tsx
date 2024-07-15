@@ -82,6 +82,7 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
   const { t, fet } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -103,6 +104,7 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
         await intervalOperation()
         setLoading(false)
         setEdited(false)
+        toast().info({ message: t('msg_updated', { item: t('item_post_up_down') }) })
       })}
     >
       <div className={gridStyles()}>
@@ -174,6 +176,7 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
   const { t, fet } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -200,6 +203,7 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
         await intervalOperation()
         setLoading(false)
         setEdited(false)
+        toast().info({ message: t('msg_updated', { item: t('item_for_clients') }) })
       })}
     >
       <div className={gridStyles()}>
@@ -345,7 +349,7 @@ export const SystemInfoClient: FC<{
 }> = ({ info }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
-  const { confirmModal } = useSharedUIContext()
+  const { confirmModal, toast } = useSharedUIContext()
   const [isLoadingWgStart, setLoadingWgStart] = useState(false)
   const [isLoadingWgAutoStartEnable, setLoadingWgAutoStartEnable] = useState(false)
   const [isLoadingWgReboot, setLoadingWgReboot] = useState(false)
@@ -399,6 +403,7 @@ export const SystemInfoClient: FC<{
                           await intervalOperation()
                           setLoadingWgStart(false)
                           refresh()
+                          toast().info({ message: t('msg_wg_stoped') })
                         }
                       }}
                     >
@@ -420,6 +425,7 @@ export const SystemInfoClient: FC<{
                         console.debug('organizeList:', organizeList)
                         setLoadingWgStart(false)
                         refresh()
+                        toast().info({ message: t('msg_wg_started') })
                       }}
                     >
                       {t('item_start')}
@@ -450,6 +456,7 @@ export const SystemInfoClient: FC<{
                         console.debug('organizeList:', organizeList)
                         setLoadingWgReboot(false)
                         refresh()
+                        toast().info({ message: t('msg_wg_restarted') })
                       }
                     }}
                   >
@@ -496,6 +503,7 @@ export const SystemInfoClient: FC<{
                           await intervalOperation()
                           setLoadingWgAutoStartEnable(false)
                           refresh()
+                          toast().info({ message: t('msg_wg_autostart_disabled') })
                         }
                       }}
                     >
@@ -515,6 +523,7 @@ export const SystemInfoClient: FC<{
                         await intervalOperation()
                         setLoadingWgAutoStartEnable(false)
                         refresh()
+                        toast().info({ message: t('msg_wg_autostart_enabled') })
                       }}
                     >
                       {t('item_enable')}
@@ -570,6 +579,7 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
   const { t, fet, lcConfig } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -590,6 +600,7 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
         await intervalOperation()
         setLoading(false)
         setEdited(false)
+        toast().info({ message: t('msg_updated', { item: t('item_top_page_notice') }) })
       })}
     >
       <div className={gridStyles()}>
@@ -644,6 +655,7 @@ const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) =
   const { t, fet, lcConfig } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -664,6 +676,7 @@ const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) =
         await intervalOperation()
         setLoading(false)
         setEdited(false)
+        toast().info({ message: t('msg_updated', { item: t('item_top_page_notice') }) })
       })}
     >
       <div className={gridStyles()}>
@@ -718,6 +731,7 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
   const { t } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const { toast } = useSharedUIContext()
 
   const { control, handleSubmit } = useForm<DashboardSettings>({
     resolver: zodResolver(scDashboardSettings),
@@ -734,6 +748,7 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
         await intervalOperation()
         setLoading(false)
         setEdited(false)
+        toast().info({ message: t('msg_updated', { item: t('item_dashboard_settings') }) })
       })}
     >
       <div className={gridStyles()}>
@@ -790,6 +805,7 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
   const { t } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const { toast } = useSharedUIContext()
 
   const { control, handleSubmit } = useForm<UserSettings>({
     resolver: zodResolver(scUserSettings),
@@ -806,6 +822,7 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
         await intervalOperation()
         setLoading(false)
         setEdited(false)
+        toast().info({ message: t('msg_updated', { item: t('item_user_settings') }) })
       })}
     >
       <div className={gridStyles()}>
@@ -907,7 +924,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         onKeyDown={(e) => e.stopPropagation()}
         key='dashboard'
         aria-label='ac dashboard'
-        title={t('menu_dashboard')}
+        title={t('item_dashboard_settings')}
       >
         <FormDashboard values={settings.dashboard} />
       </AccordionItem>
