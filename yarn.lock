@@ -3421,6 +3421,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/nodemailer@npm:^6":
+  version: 6.4.15
+  resolution: "@types/nodemailer@npm:6.4.15"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/553e613fe08fd663bff1fb3647a8ebbcc4ca297a6249296a43f3c92499158acad5955689be2096ff3fe72f145e80d749c1fc66d5549fe665d7ceb6d0946f2a26
+  languageName: node
+  linkType: hard
+
 "@types/prop-types@npm:*":
   version: 15.7.9
   resolution: "@types/prop-types@npm:15.7.9"
@@ -8838,6 +8847,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^6.9.14":
+  version: 6.9.14
+  resolution: "nodemailer@npm:6.9.14"
+  checksum: 10c0/2542986849bc6ec2bf12fb7b72226da0ce9c6a0946216dea020d9eedee3ac1a4eb2413f59772a3ddd4bb9188d5ce859167a030c065719473f71319e052a319dc
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^5.0.0":
   version: 5.0.0
   resolution: "nopt@npm:5.0.0"
@@ -11545,6 +11561,7 @@ __metadata:
     "@types/bcrypt": "npm:^5.0.2"
     "@types/cookie": "npm:^0.6.0"
     "@types/node": "npm:^20.14.10"
+    "@types/nodemailer": "npm:^6"
     "@types/qrcode": "npm:^1.5.5"
     "@types/react": "npm:^18.3.3"
     "@types/react-dom": "npm:^18.3.0"
@@ -11573,6 +11590,7 @@ __metadata:
     next: "npm:^14.2.5"
     next-auth: "npm:^4.24.7"
     next-themes: "npm:^0.2.1"
+    nodemailer: "npm:^6.9.14"
     path-to-regexp: "npm:^7.1.0"
     postcss: "npm:^8.4.39"
     prettier: "npm:^3.3.3"
