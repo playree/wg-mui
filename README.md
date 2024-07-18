@@ -68,6 +68,17 @@ MAIL_SEND=sendgrid
 MAIL_FROM=vpn@sample.dev
 SENDGRID_API_KEY=SG.xxx
 
+MAIL_SEND=sendmail
+MAIL_FROM=vpn@sample.dev
+SENDMAIL_PATH=/usr/sbin/sendmail
+
+MAIL_SEND=smtp
+MAIL_FROM=vpn@sample.dev
+SMTP_HOST=smtp.sample.dev
+SMTP_PORT=465
+SMTP_USER=test_user
+SMTP_PASS=test_pass
+
 DEBUG_LINODE_DUMMY={"used":1200109071,"quota":4662,"billable":0,"total":5005784383488}
 DEBUG_SEND_EMAIL=true
 ```
