@@ -14,8 +14,9 @@ import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Textarea } from '@nextui-org/react'
 import { Address4 } from 'ip-address'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 
 import { useSharedUIContext } from '../context'
@@ -66,8 +67,14 @@ export const InitializeAdmin: FC = () => {
           setLoading(true)
           await parseAction(createAdminUser(req))
           await intervalOperation()
-          setLoading(false)
-          router.refresh()
+          await signIn('credentials', {
+            redirect: false,
+            username: req.username,
+            password: req.password,
+          }).then(() => {
+            setLoading(false)
+            router.refresh()
+          })
         })}
       >
         <div className={gridStyles()}>
@@ -118,6 +125,14 @@ export const InitializeAdmin: FC = () => {
       </form>
     </div>
   )
+}
+
+export const SigninRedirect: FC = () => {
+  useEffect(() => {
+    signIn()
+  }, [])
+
+  return <></>
 }
 
 export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
