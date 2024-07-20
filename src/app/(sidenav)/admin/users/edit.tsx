@@ -228,12 +228,7 @@ const CreateUserModal: FC<
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
                 {t('item_ok')}
               </ExButton>
             </ModalFooter>
@@ -453,12 +448,7 @@ export const UpdateUserModal: FC<
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
                 {t('item_ok')}
               </ExButton>
             </ModalFooter>

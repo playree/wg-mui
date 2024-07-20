@@ -117,12 +117,7 @@ export const ChangePasswordModal: FC<
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
                 {t('item_ok')}
               </ExButton>
             </ModalFooter>
@@ -210,12 +205,7 @@ export const ChangeEmailModal: FC<Omit<ModalProps, 'children'> & { target?: stri
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <PaperAirplaneIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<PaperAirplaneIcon />} isLoading={isLoading}>
                 {t('item_send_confirm_email')}
               </ExButton>
             </ModalFooter>

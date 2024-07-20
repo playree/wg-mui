@@ -100,12 +100,7 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
                 {t('item_ok')}
               </ExButton>
             </ModalFooter>
@@ -215,12 +210,7 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
                 {t('item_ok')}
               </ExButton>
             </ModalFooter>

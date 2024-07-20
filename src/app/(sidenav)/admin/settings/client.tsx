@@ -160,7 +160,7 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
             variant='flat'
             color='success'
             isSmart
-            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            startContent={<CheckBadgeIcon />}
             isLoading={isLoading}
             isDisabled={!isEdited}
           >
@@ -285,7 +285,7 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
             variant='flat'
             color='success'
             isSmart
-            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            startContent={<CheckBadgeIcon />}
             isLoading={isLoading}
             isDisabled={!isEdited}
           >
@@ -639,7 +639,7 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
             variant='flat'
             color='success'
             isSmart
-            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            startContent={<CheckBadgeIcon />}
             isLoading={isLoading}
             isDisabled={!isEdited}
           >
@@ -715,7 +715,7 @@ const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) =
             variant='flat'
             color='success'
             isSmart
-            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            startContent={<CheckBadgeIcon />}
             isLoading={isLoading}
             isDisabled={!isEdited}
           >
@@ -789,7 +789,7 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
             variant='flat'
             color='success'
             isSmart
-            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            startContent={<CheckBadgeIcon />}
             isLoading={isLoading}
             isDisabled={!isEdited}
           >
@@ -879,7 +879,7 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
             variant='flat'
             color='success'
             isSmart
-            startContent={isLoading ? undefined : <CheckBadgeIcon />}
+            startContent={<CheckBadgeIcon />}
             isLoading={isLoading}
             isDisabled={!isEdited}
           >
