@@ -14,7 +14,6 @@ export const PasswordScore: FC<{
     <Progress
       radius='sm'
       size='sm'
-      isStriped
       maxValue={4}
       label={label}
       value={score}
