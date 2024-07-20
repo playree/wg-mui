@@ -96,7 +96,7 @@ export const ConfirmModal = forwardRef<
           )}
           <ExButton
             variant='solid'
-            startContent={isLoading ? undefined : <CheckIcon />}
+            startContent={<CheckIcon />}
             isDisabled={!isAgree}
             isLoading={isLoading}
             onPress={async () => {

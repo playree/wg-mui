@@ -108,12 +108,7 @@ export const PasswordResetClient: FC<{ onetimeId: string; requiredPasswordScore:
           </div>
 
           <div className='col-span-12 mt-4 text-center'>
-            <ExButton
-              type='submit'
-              variant='solid'
-              startContent={isLoading ? undefined : <CheckIcon />}
-              isLoading={isLoading}
-            >
+            <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
               {t('item_ok')}
             </ExButton>
           </div>

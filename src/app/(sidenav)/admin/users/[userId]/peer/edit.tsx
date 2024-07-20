@@ -142,12 +142,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
                 {t('item_ok')}
               </ExButton>
             </ModalFooter>
@@ -233,12 +228,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
               <ExButton color='danger' onPress={onClose}>
                 {t('item_cancel')}
               </ExButton>
-              <ExButton
-                type='submit'
-                variant='solid'
-                startContent={isLoading ? undefined : <CheckIcon />}
-                isLoading={isLoading}
-              >
+              <ExButton type='submit' variant='solid' startContent={<CheckIcon />} isLoading={isLoading}>
                 {t('item_ok')}
               </ExButton>
             </ModalFooter>

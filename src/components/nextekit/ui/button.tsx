@@ -25,6 +25,8 @@ export const ExButton: FC<
   isSmart,
   isLink,
   className,
+  startContent,
+  isLoading,
   ...props
 }) => {
   const router = useRouter()
@@ -45,6 +47,8 @@ export const ExButton: FC<
       }
       as={isLink ? Link : undefined}
       href={isLink ? href : undefined}
+      startContent={isLoading ? undefined : startContent}
+      isLoading={isLoading}
     >
       {children}
     </Button>
