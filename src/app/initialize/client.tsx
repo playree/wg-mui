@@ -4,6 +4,7 @@ import { CheckIcon, Cog6ToothIcon, CommandLineIcon, EyeIcon, EyeSlashIcon, KeyIc
 import { LangSwitch } from '@/components/lang-switch'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
+import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { ThemeSwitchList } from '@/components/theme-switch'
 import { parseAction } from '@/helpers/action'
@@ -12,7 +13,8 @@ import { InitializeWgConf, UserPassword, scInitializeWgConf, scUserPassword } fr
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Textarea } from '@nextui-org/react'
+import { Link, Textarea } from '@nextui-org/react'
+import { zxcvbn } from '@zxcvbn-ts/core'
 import { Address4 } from 'ip-address'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -36,11 +38,14 @@ export const InitializeAdmin: FC = () => {
 
   const [isVisible, setIsVisible] = useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
+  const [passwordScore, setPasswordScore] = useState(0)
+  const requiredPasswordScore = 4
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<UserPassword>({
     resolver: zodResolver(scUserPassword),
     mode: 'onChange',
@@ -65,6 +70,16 @@ export const InitializeAdmin: FC = () => {
         onSubmit={handleSubmit(async (req) => {
           console.debug('create:submit:', req)
           setLoading(true)
+
+          // パスワードスコアチェック
+          if (req.password) {
+            if (passwordScore < requiredPasswordScore) {
+              setError('password', { message: '@invalid_password_score' })
+              setLoading(false)
+              return
+            }
+          }
+
           await parseAction(createAdminUser(req))
           await intervalOperation()
           await signIn('credentials', {
@@ -108,10 +123,18 @@ export const InitializeAdmin: FC = () => {
               autoComplete='new-password'
               errorMessage={fet(errors.password)}
               isRequired
+              onChanged={(event) => {
+                const res = zxcvbn(event.target.value)
+                setPasswordScore(res.score)
+              }}
+            />
+            <PasswordScore
+              label={`${t('item_password_score')} = ${passwordScore} ( ${t('msg_password_score_required', { score: requiredPasswordScore })}`}
+              score={passwordScore}
             />
           </div>
 
-          <div className='col-span-12 text-center'>
+          <div className='col-span-12 mt-4 text-center'>
             <ExButton
               type='submit'
               variant='solid'
@@ -133,6 +156,43 @@ export const SigninRedirect: FC = () => {
   }, [])
 
   return <></>
+}
+
+export const WgNotInstall: FC = () => {
+  const { t } = useLocale()
+  const router = useRouter()
+
+  return (
+    <div className='mx-auto mt-4 w-full max-w-xl'>
+      <div className='mb-4 flex items-center pl-8 lg:pl-0'>
+        <Cog6ToothIcon className='mr-2' />
+        <span className='mr-8 text-lg'>{t('menu_initial_setting')}</span>
+        <div className='right-0 flex flex-auto justify-end'>
+          <ThemeSwitchList size='sm' className='mr-2' />
+          <LangSwitch size='sm' />
+        </div>
+      </div>
+
+      <div className={gridStyles()}>
+        <div className='col-span-12 mb-2 whitespace-pre-line'>{t('msg_wg_install')}</div>
+        <div className='col-span-12'>
+          <Link isExternal href='https://www.wireguard.com/install/'>
+            https://www.wireguard.com/install/
+          </Link>
+        </div>
+        <div className='col-span-12 mt-4 text-center'>
+          <ExButton
+            variant='solid'
+            onPress={() => {
+              router.refresh()
+            }}
+          >
+            {t('item_wg_install_next')}
+          </ExButton>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {

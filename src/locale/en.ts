@@ -130,6 +130,7 @@ export const en: LocaleItems = {
   item_not_set: 'Not set',
   item_send_confirm_email: 'Send a confirmation email',
   item_dashboard_settings: 'Dashboard Settings',
+  item_wg_install_next: `Now that it's installed, next`,
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -163,6 +164,7 @@ export const en: LocaleItems = {
   msg_wg_restarted: 'WireGuard has been restarted',
   msg_wg_autostart_enabled: 'Autostart enabled',
   msg_wg_autostart_disabled: 'Autostart disabled',
+  msg_wg_install: 'Wireguard is not installed.\nPlease install it by referring to the following URL.',
 
   mail_password_reset_subject: '[${appname}] Please set a password',
   mail_password_reset_body: `username: \${username}
