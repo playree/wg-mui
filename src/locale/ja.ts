@@ -131,6 +131,7 @@ export const ja: DefaultLocaleItems = {
   item_send_confirm_email: '確認メールを送信',
   item_dashboard_settings: 'ダッシュボード設定',
   item_wg_install_next: 'インストールしたので次へ',
+  item_cant_delete: '削除できません',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -164,6 +165,7 @@ export const ja: DefaultLocaleItems = {
   msg_wg_autostart_enabled: '自動起動を有効化しました',
   msg_wg_autostart_disabled: '自動起動を無効化しました',
   msg_wg_install: 'Wireguardがインストールされていません。\n下記URLを参考にインストールを行ってください。',
+  msg_cant_delete: '最後の管理者は削除できません',
 
   mail_password_reset_subject: '[${appname}] パスワード設定',
   mail_password_reset_body: `ユーザー名: \${username}

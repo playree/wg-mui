@@ -104,6 +104,11 @@ export const deleteUser = validAction('deleteUser', {
   requireAuth: true,
   requireAdmin: true,
   next: async ({ req: { id } }) => {
+    // 削除判定
+    if (!(await checkDelete(id))) {
+      throw errValidation(`can't delete`)
+    }
+
     // ピアの削除
     const wgMgr = await refWgMgr()
     await wgMgr.deletePeerByUser(id)
@@ -154,5 +159,27 @@ export const resetPassword = validAction('resetPassword', {
   requireAdmin: true,
   next: async ({ req: { id } }) => {
     await resetPwd(id)
+  },
+})
+
+const checkDelete = async (id: string) => {
+  const user = await prisma.user.get(id)
+  if (user?.isAdmin) {
+    // 管理者を削除する場合、管理者が残り一人なら削除不可
+    const adminList = await prisma.user.findMany({ where: { isAdmin: true } })
+    return adminList.length > 1
+  }
+  return true
+}
+
+/**
+ * 削除可能判定(管理者権限)
+ */
+export const checkDeleteUser = validAction('checkDeleteUser', {
+  schema: zReq({ id: zUUID }),
+  requireAuth: true,
+  requireAdmin: true,
+  next: async ({ req: { id } }) => {
+    return checkDelete(id)
   },
 })

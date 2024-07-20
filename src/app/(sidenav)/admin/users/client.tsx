@@ -42,7 +42,7 @@ import { twMerge } from 'tailwind-merge'
 
 import { getLabelList } from '../labels/server-actions'
 import { CreateUserButtonWithModal, UpdateUserModal } from './edit'
-import { deleteUser, getUserList, resetPassword } from './server-actions'
+import { checkDeleteUser, deleteUser, getUserList, resetPassword } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -273,6 +273,16 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                           color='danger'
                           startContent={<TrashIcon />}
                           onPress={async () => {
+                            // 削除可能判定
+                            if (!(await parseAction(checkDeleteUser({ id: user.id })))) {
+                              await confirmModal().confirm({
+                                title: t('item_cant_delete'),
+                                text: t('msg_cant_delete'),
+                                onlyOk: true,
+                              })
+                              return
+                            }
+
                             const ok = await confirmModal().confirm({
                               title: t('item_delete_confirm'),
                               text: t('msg_user_delete', { username: user.name }),
