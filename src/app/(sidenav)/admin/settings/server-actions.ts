@@ -46,6 +46,18 @@ export const getSystemInfo = validAction('getSystemInfo', {
           sendMail.type = 'SendGrid'
         }
         break
+      case 'sendmail':
+        if (process.env.SENDMAIL_PATH) {
+          sendMail.enabled = true
+          sendMail.type = 'Sendmail'
+        }
+        break
+      case 'smtp':
+        if (process.env.SMTP_HOST) {
+          sendMail.enabled = true
+          sendMail.type = 'SMTP'
+        }
+        break
     }
     return {
       wgVersion,
