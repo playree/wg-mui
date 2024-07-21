@@ -6,6 +6,7 @@
 - [推奨環境](#推奨環境)
 - [ビルド](#ビルド)
 - [環境変数](#環境変数)
+  - [設定サンプル](#設定サンプル)
   - [必須項目](#必須項目)
     - [APP\_NAME](#app_name)
       - [設定例](#設定例)
@@ -32,6 +33,7 @@
   - [PM2](#pm2)
     - [PM2のインストール](#pm2のインストール)
     - [PM2で起動](#pm2で起動)
+- [初期設定](#初期設定)
 - [開発用](#開発用)
   - [パッケージ更新](#パッケージ更新)
   - [yarn更新](#yarn更新)
@@ -72,21 +74,25 @@ yarn build
 
 # 環境変数
 
+ビルドが完了したら、`.env`ファイルを作成し下記環境変数の設定を行ってください。
+
 `.env`
+
+## 設定サンプル
 
 ```conf
 APP_NAME=sample VPN
-NEXTAUTH_URL=https://xxx.sample.dev
-NEXTAUTH_SECRET=xxxx
+NEXTAUTH_URL=https://vpn.sample.dev
+NEXTAUTH_SECRET=xxx
 DEFAULT_LOCALE=ja
 
-GOOGLE_CLIENT_ID=xxx
-GOOGLE_CLIENT_SECRET=xxx
+GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-xxx
 GOOGLE_SIMPLE_LOGIN=true
 
 GITLAB_URL=https://gitlab.sample.dev
 GITLAB_CLIENT_ID=xxx
-GITLAB_CLIENT_SECRET=xxx
+GITLAB_CLIENT_SECRET=gloas-xxx
 GITLAB_SIMPLE_LOGIN=true
 
 LINODE_ID=00000000
@@ -94,22 +100,8 @@ LINODE_PERSONAL_ACCESS_TOKEN=xxx
 LINODE_ACCESS_INTERVAL=180
 
 MAIL_SEND=sendgrid
-MAIL_FROM=vpn@sample.dev
+MAIL_FROM=vpn@automail.sample.dev
 SENDGRID_API_KEY=SG.xxx
-
-MAIL_SEND=sendmail
-MAIL_FROM=vpn@sample.dev
-SENDMAIL_PATH=/usr/sbin/sendmail
-
-MAIL_SEND=smtp
-MAIL_FROM=vpn@sample.dev
-SMTP_HOST=smtp.sample.dev
-SMTP_PORT=465
-SMTP_USER=test_user
-SMTP_PASS=test_pass
-
-DEBUG_LINODE_DUMMY={"used":1200109071,"quota":4662,"billable":0,"total":5005784383488}
-DEBUG_SEND_EMAIL=true
 ```
 
 ## 必須項目
@@ -280,6 +272,8 @@ LINODE_ACCESS_INTERVAL=180
 
 ## PM2
 
+アプリを永続化して起動したいなら、PM2で起動させてください。
+
 ### PM2のインストール
 
 ```sh
@@ -291,6 +285,17 @@ npm install -g pm2
 ```sh
 pm2 start ./wg-mui.sh
 ```
+
+# 初期設定
+
+起動したら下記URLにアクセスし、初期設定を行ってください。
+
+`NEXTAUTH_URL /initialize` (例. `https://vpn.sample.dev/initialize`)
+
+管理者ユーザーの作成とWiregurdの初期設定を行います。
+
+---
+
 
 # 開発用
 
