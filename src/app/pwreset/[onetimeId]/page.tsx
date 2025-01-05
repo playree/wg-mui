@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   title: 'Reset Password',
 }
 
-const PasswordResetPage: FC<{ params: { onetimeId: string } }> = async ({ params: { onetimeId } }) => {
+const PasswordResetPage: FC<{ params: Promise<{ onetimeId: string }> }> = async (props) => {
+  const params = await props.params
+  const { onetimeId } = params
+
   try {
     const enabled = await parseAction(isEnabledOnetimeId({ onetimeId }))
     if (!enabled) {

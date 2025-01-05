@@ -12,7 +12,10 @@ export const metadata: Metadata = {
   title: 'Peer Management',
 }
 
-const PeerManagementPage: FC<{ params: { userId: string } }> = async ({ params: { userId } }) => {
+const PeerManagementPage: FC<{ params: Promise<{ userId: string }> }> = async (props) => {
+  const params = await props.params
+  const { userId } = params
+
   const user = await parseAction(getUser({ id: userId }))
   if (!user) {
     return notFound()

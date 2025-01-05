@@ -1,5 +1,5 @@
 import { IconSvgProps } from '@/types'
-import React, { FC } from 'react'
+import { FC } from 'react'
 
 export const UserCircleIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (
   <svg

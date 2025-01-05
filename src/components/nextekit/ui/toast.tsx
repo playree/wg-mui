@@ -74,7 +74,7 @@ const ExclamationTriangleIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2,
 
 export const Toast = forwardRef<ToastRef>((props, ref) => {
   const [messageList, setMessageList] = useState<ToastMessage[]>([])
-  const tid = useRef<NodeJS.Timeout>()
+  const tid = useRef<NodeJS.Timeout>(undefined)
 
   useEffect(() => {
     tid.current = setTimeout(() => {
