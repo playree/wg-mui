@@ -6,6 +6,7 @@ import { Noto_Sans_JP, Roboto_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import { twMerge } from 'tailwind-merge'
 
+import { ReactNode } from 'react'
 import { Providers } from './providers'
 
 const NotoSansJp = Noto_Sans_JP({
@@ -33,8 +34,8 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const acceptLanguage = headers().get('accept-language')
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const acceptLanguage = (await headers()).get('accept-language')
 
   return (
     <html lang='ja' className={`${NotoSansJp.variable} ${RobotoMono.variable}`} suppressHydrationWarning>

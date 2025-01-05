@@ -12,7 +12,10 @@ export const metadata: Metadata = {
   title: 'Link OAuth',
 }
 
-const LinkOAuthPage: FC<{ params: { onetimeId: string } }> = async ({ params: { onetimeId } }) => {
+const LinkOAuthPage: FC<{ params: Promise<{ onetimeId: string }> }> = async (props) => {
+  const params = await props.params
+  const { onetimeId } = params
+
   const targetUser = await parseAction(getOnetimeUser({ onetimeId }))
   if (!targetUser || !targetUser.email) {
     return notFound()

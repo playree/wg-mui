@@ -3,7 +3,7 @@ import DefaultErrorPage from 'next/error'
 import { usePathname } from 'next/navigation'
 import React, { FC, useEffect } from 'react'
 
-import { MatchCondition, matchCondition } from './util'
+import { MatchCondition, matchCondition } from './utils'
 
 export type AuthProps = {
   targetAuth?: MatchCondition

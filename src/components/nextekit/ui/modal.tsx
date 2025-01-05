@@ -35,7 +35,7 @@ export const ConfirmModal = forwardRef<
 >((props, ref) => {
   const { uiText, ...nextProps } = props
   const [confirmParam, setConfirmParam] = useState<ConfirmParam>()
-  const response = useRef<(value: boolean | PromiseLike<boolean>) => void>()
+  const response = useRef<(value: boolean | PromiseLike<boolean>) => void>(undefined)
   const [isAgree, setAgree] = useState(false)
   const [isLoading, setLoading] = useState(false)
 

@@ -1,4 +1,4 @@
-import { matchCondition } from '@/components/nextekit/auth/util'
+import { matchCondition } from '@/components/nextekit/auth/utils'
 import { match } from '@/components/nextekit/utils'
 import { type NextRequestWithAuth, withAuth } from 'next-auth/middleware'
 import { type NextFetchEvent, NextResponse } from 'next/server'

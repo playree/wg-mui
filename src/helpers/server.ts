@@ -43,13 +43,13 @@ export const validApi = <
       requireAuth: false
       requireAdmin?: boolean
     }) => {
-  return async (req: NextRequest, { params: _params }: { params: Record<string, unknown> }) => {
+  return async (req: NextRequest, { params: _params }: { params: Promise<Record<string, unknown>> }) => {
     console.debug(`vapi@${req.nextUrl.pathname}@${req.method}`)
     // パラメータチェック
     const items = {
       query: {} as Record<string, unknown>,
       body: req.headers.get('Content-Type') === 'application/json' ? await req.json() : {},
-      params: _params || {},
+      params: (await _params) || {},
     }
     req.nextUrl.searchParams.forEach((value, key) => {
       items.query[key] = value
@@ -145,7 +145,7 @@ export const validAction = <REQ extends ZodSchema = ZodVoid, RES = void>(
       },
 ) => {
   return async (req: z.infer<REQ>): Promise<ActionResult<RES>> => {
-    const pathname = headers().get('x-pathname') || ''
+    const pathname = (await headers()).get('x-pathname') || ''
     console.debug(`vact@${pathname}@${name}`)
 
     try {

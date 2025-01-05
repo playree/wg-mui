@@ -1,5 +1,5 @@
-import { OAuthConfig, OAuthUserConfig } from 'next-auth/providers/'
 import { GitLabProfile } from 'next-auth/providers/gitlab'
+import { OAuthConfig, OAuthUserConfig } from 'next-auth/providers/oauth'
 import urljoin from 'url-join'
 
 export const GitLabSelfProvider = <P extends GitLabProfile>(

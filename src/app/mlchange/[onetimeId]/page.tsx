@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   title: 'Email Change',
 }
 
-const EmailConfirmPage: FC<{ params: { onetimeId: string } }> = async ({ params: { onetimeId } }) => {
+const EmailConfirmPage: FC<{ params: Promise<{ onetimeId: string }> }> = async (props) => {
+  const params = await props.params
+  const { onetimeId } = params
+
   try {
     const email = await parseAction(changeEmail({ onetimeId }))
     if (!email) {
