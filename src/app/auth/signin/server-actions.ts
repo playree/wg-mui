@@ -3,6 +3,7 @@
 import { isOAuthEnabled } from '@/helpers/env'
 import { ActionResultType, validAction } from '@/helpers/server'
 import { getLocaleValue } from '@/locale/server'
+import { cookies } from 'next/headers'
 
 /**
  * サーバーサイドリソース取得
@@ -18,3 +19,13 @@ export const getSSResource = validAction('getSSResource', {
   },
 })
 export type SSResource = ActionResultType<typeof getSSResource>
+
+/**
+ * Cookie(next-auth.session-token)削除
+ */
+export const deleteSessionToken = validAction('deleteSessionToken', {
+  next: async () => {
+    const cookieStore = await cookies()
+    cookieStore.delete('next-auth.session-token')
+  },
+})

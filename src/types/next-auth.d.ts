@@ -11,6 +11,7 @@ declare module 'next-auth/jwt' {
       type: OAuthType
       onetime: string
     }
+    isError?: boolean
   }
 }
 
@@ -23,5 +24,6 @@ declare module 'next-auth' {
       locale?: string
       email?: string | null
     }
+    isError?: boolean
   }
 }

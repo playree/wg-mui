@@ -99,6 +99,13 @@ const authOptions: NextAuthOptions = {
             }
           }
         }
+
+        if (!user) {
+          // OAuthログインNG
+          token.sub = undefined
+          token.isError = true
+          return token
+        }
       } else {
         if (token.sub) {
           user = await prisma.user.findUnique({ where: { id: token.sub } })
@@ -145,7 +152,10 @@ const authOptions: NextAuthOptions = {
         }
         console.debug('set session:', JSON.stringify(session.user))
       } else {
-        return undefined as unknown as Session
+        if (token.isError) {
+          return { isError: true } as Session
+        }
+        return {} as Session
       }
       return session
     },

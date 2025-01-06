@@ -17,23 +17,26 @@ const AuthHandler: FC<{ children: React.ReactNode; authProps: AuthProps }> = ({ 
 
   useEffect(() => {
     console.debug('requireAuth: ', pathname, requireAuth, status)
-    if (requireAuth && status === 'unauthenticated') {
-      signIn()
+    if (requireAuth) {
+      if (status === 'unauthenticated') {
+        signIn()
+      }
+      if (status === 'authenticated') {
+        if (session?.user === undefined) {
+          signIn()
+        } else {
+          console.debug('authenticated:', session)
+        }
+      }
     }
-  }, [pathname, requireAuth, status])
-
-  useEffect(() => {
-    if (session) {
-      console.debug('authenticated:', session)
-    }
-  }, [session])
+  }, [pathname, requireAuth, session, status])
 
   if (status !== 'loading' && !requireAuth) {
     // 認証不要
     return children
   }
 
-  if (status === 'authenticated') {
+  if (status === 'authenticated' && session.user) {
     if (matchCondition(pathname, authProps.targetAdmin) && !session.user?.isAdmin) {
       // 管理者権限が不足
       return <DefaultErrorPage statusCode={403} />
