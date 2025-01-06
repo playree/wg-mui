@@ -1,6 +1,6 @@
 'use client'
 
-import { CookieSerializeOptions, serialize } from 'cookie'
+import { serialize, SerializeOptions } from 'cookie'
 
 export const getCookies = () => {
   const cookies: Record<string, string> = {}
@@ -14,6 +14,6 @@ export const getCookies = () => {
 
 export const getCookie = (key: string) => getCookies()[key]
 
-export const setCookie = (key: string, value: string, options?: CookieSerializeOptions) => {
+export const setCookie = (key: string, value: string, options?: SerializeOptions) => {
   document.cookie = serialize(key, value, options)
 }
