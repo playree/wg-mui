@@ -1,7 +1,7 @@
 {
   "name": "wg-mui",
-  "version": "0.2.1",
-  "buildno": "2024072102",
+  "version": "0.3.0",
+  "buildno": "2025010601",
   "private": true,
   "scripts": {
     "dev": "PORT=63001 next dev --turbopack",
@@ -18,9 +18,9 @@
     "@hookform/resolvers": "^3.9.1",
     "@nextui-org/react": "2.4.8",
     "@prisma/client": "^6.1.0",
-    "@react-aria/ssr": "^3.9.4",
-    "@react-aria/visually-hidden": "^3.8.12",
-    "@react-stately/data": "3.11.4",
+    "@react-aria/ssr": "^3.9.7",
+    "@react-aria/visually-hidden": "^3.8.18",
+    "@react-stately/data": "3.12.0",
     "@sendgrid/mail": "^8.1.4",
     "@zxcvbn-ts/core": "^3.0.4",
     "accept-language-parser": "^1.5.0",
