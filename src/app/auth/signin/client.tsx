@@ -4,21 +4,25 @@ import { ArrowLeftOnRectangleIcon, EyeIcon, EyeSlashIcon, GitLabIcon, GoogleIcon
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { Message } from '@/components/nextekit/ui/message'
 import { gridStyles, textStyles } from '@/components/styles'
-import { Signin, scSignin } from '@/helpers/schema'
+import { scSignin, Signin } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Card, CardBody, CardHeader } from '@nextui-org/react'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { FC, useCallback, useState } from 'react'
+import { FC, useCallback, useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { twMerge } from 'tailwind-merge'
 
-import { SSResource } from './server-actions'
+import { parseAction } from '@/helpers/action'
+import { deleteSessionToken, SSResource } from './server-actions'
 
-export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, isGitLabEnabled, signinMessage } }) => {
+export const SignInClient: FC<{ ssr: SSResource; isError: boolean }> = ({
+  ssr: { isGoogleEnabled, isGitLabEnabled, signinMessage },
+  isError,
+}) => {
   const { t, fet, lvt } = useLocale()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || undefined
@@ -50,6 +54,13 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
     defaultValues: { username: '', password: '' },
   })
 
+  useEffect(() => {
+    if (isError) {
+      setIsAuthNg(true)
+      parseAction(deleteSessionToken())
+    }
+  }, [isError])
+
   const onSubmit: SubmitHandler<Signin> = async (data) => {
     console.debug('SignIn:submit:', data)
     await signIn('credentials', {
@@ -73,7 +84,7 @@ export const SignInClient: FC<{ ssr: SSResource }> = ({ ssr: { isGoogleEnabled, 
         {t('item_signin')}
       </CardHeader>
       <CardBody>
-        {isAuthNg && <Message variant='error'>{t('@invalid_username_or_password')}</Message>}
+        {isAuthNg && <Message variant='error'>{t('@invalid_authentication_failed')}</Message>}
         <form className={gridStyles()} onSubmit={handleSubmit(onSubmit)}>
           <div className='col-span-12 p-2'>
             <InputCtrl

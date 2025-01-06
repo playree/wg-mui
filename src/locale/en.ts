@@ -190,7 +190,7 @@ This URL will expire in 48 hours.
   '@invalid_username': '2-30 alphanumeric characters (.-_)',
   '@invalid_password': '8-30 alphanumeric characters',
   '@invalid_email': 'Invalid email format',
-  '@invalid_username_or_password': 'Incorrect username or password',
+  '@invalid_authentication_failed': 'Authentication failed',
   '@invalid_label_name': '1-20 characters',
   '@invalid_explanation': 'Within 80 characters',
   '@invalid_conf_dir_path': 'Absolute path (ex. /etc/wireguard',

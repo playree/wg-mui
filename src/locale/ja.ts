@@ -189,7 +189,7 @@ export const ja: DefaultLocaleItems = {
   '@invalid_username': '半角英数記号(.-_)2～30文字',
   '@invalid_password': '半角英数記号8～30文字',
   '@invalid_email': 'Eメールフォーマット不正',
-  '@invalid_username_or_password': 'ユーザー名またはパスワードが間違っています',
+  '@invalid_authentication_failed': '認証に失敗しました',
   '@invalid_label_name': '1～20文字',
   '@invalid_explanation': '80文字以内',
   '@invalid_conf_dir_path': '絶対パス指定 例)/etc/wireguard',
