@@ -46,9 +46,10 @@ export const validApi = <
   return async (req: NextRequest, { params: _params }: { params: Promise<Record<string, unknown>> }) => {
     console.debug(`vapi@${req.nextUrl.pathname}@${req.method}`)
     // パラメータチェック
+    const contentType = req.headers.get('content-type') || req.headers.get('Content-Type')
     const items = {
       query: {} as Record<string, unknown>,
-      body: req.headers.get('Content-Type') === 'application/json' ? await req.json() : {},
+      body: contentType === 'application/json' ? await req.json() : {},
       params: (await _params) || {},
     }
     req.nextUrl.searchParams.forEach((value, key) => {

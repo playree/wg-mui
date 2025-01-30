@@ -56,7 +56,7 @@ const middlewareWithAuth = withAuth(
           console.debug('mw:auth:admin:', token?.isAdmin)
           return token?.isAdmin === true
         }
-        return !!token
+        return !!token?.sub
       },
     },
   },

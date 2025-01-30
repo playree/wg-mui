@@ -1,6 +1,6 @@
 import { SortDescriptor } from '@nextui-org/react'
 import { AsyncListLoadFunction, useAsyncList } from '@react-stately/data'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { sortFunction } from './sort'
 
@@ -22,7 +22,7 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
   rowsPerPage?: number
 }) => {
   const [page, setPage] = useState(1)
-  const [total, setTotal] = useState(1)
+  const [listLen, setListLen] = useState(0)
   const sortFunc = sort?.proc || sortFunction
 
   const list = useAsyncList({
@@ -51,9 +51,17 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
     const start = (page - 1) * rowsPerPage
     const end = start + rowsPerPage
 
-    setTotal(Math.ceil(tmpList.length / rowsPerPage))
+    setListLen(tmpList.length)
     return tmpList.slice(start, end) as T
   }, [filterState, filters, list.items, page, rowsPerPage])
+
+  const total = useMemo(() => {
+    return Math.ceil(listLen / rowsPerPage) || 1
+  }, [listLen, rowsPerPage])
+
+  useEffect(() => {
+    setPage(1)
+  }, [filters])
 
   return {
     items,
