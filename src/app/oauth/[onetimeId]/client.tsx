@@ -6,7 +6,7 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { gridStyles } from '@/components/styles'
 import { ThemeSwitchList } from '@/components/theme-switch'
 import { useLocale } from '@/locale/client'
-import { Card, CardBody } from '@nextui-org/react'
+import { Card, CardBody } from "@heroui/react"
 import { signIn } from 'next-auth/react'
 import { FC } from 'react'
 

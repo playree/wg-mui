@@ -9,7 +9,7 @@ import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
-import { Card, CardBody, Divider, useDisclosure } from '@nextui-org/react'
+import { Card, CardBody, Divider, useDisclosure } from "@heroui/react"
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 

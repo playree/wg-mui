@@ -10,7 +10,7 @@ import { UpdateEmail, UpdatePassword, scUpdateEmail, scUpdatePassword } from '@/
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from "@heroui/react"
 import { zxcvbn } from '@zxcvbn-ts/core'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'

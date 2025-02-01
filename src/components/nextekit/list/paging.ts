@@ -1,4 +1,4 @@
-import { SortDescriptor } from '@nextui-org/react'
+import { SortDescriptor } from "@heroui/react"
 import { AsyncListLoadFunction, useAsyncList } from '@react-stately/data'
 import { useEffect, useMemo, useState } from 'react'
 

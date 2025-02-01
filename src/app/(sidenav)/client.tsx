@@ -6,7 +6,7 @@ import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { formatByte, formatPercent, formatTime } from '@/helpers/format'
 import { useLocale } from '@/locale/client'
-import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react'
+import { Card, CardBody, CardHeader, Divider } from "@heroui/react"
 import { FC, useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'

@@ -7,7 +7,7 @@ import { gridStyles, textStyles } from '@/components/styles'
 import { scSignin, Signin } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Card, CardBody, CardHeader } from '@nextui-org/react'
+import { Button, Card, CardBody, CardHeader } from "@heroui/react"
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { FC, useCallback, useEffect, useState } from 'react'

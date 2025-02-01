@@ -18,7 +18,7 @@ import { ThemeSwitchList } from '@/components/theme-switch'
 import { fetchJson } from '@/helpers/fetch'
 import { SetLocaleApi } from '@/helpers/schema'
 import { useLocale } from '@/locale/client'
-import { Accordion, AccordionItem, AccordionItemProps, Button, Card, CardBody } from '@nextui-org/react'
+import { Accordion, AccordionItem, AccordionItemProps, Button, Card, CardBody } from "@heroui/react"
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'

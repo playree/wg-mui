@@ -1,4 +1,4 @@
-import { Input, InputProps } from '@nextui-org/react'
+import { Input, InputProps } from "@heroui/react"
 import { ChangeEvent } from 'react'
 import { Control, Controller, FieldPath, FieldValues } from 'react-hook-form'
 

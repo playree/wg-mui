@@ -7,7 +7,7 @@ import { gridStyles, textStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { useLocale } from '@/locale/client'
-import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react'
+import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/react"
 import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'

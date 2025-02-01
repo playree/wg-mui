@@ -1,67 +1,17 @@
 'use client'
 
 import { MoonFilledIcon, SunFilledIcon } from '@/components/icons'
-import { Button } from '@nextui-org/button'
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/dropdown'
-import { SwitchProps, useSwitch } from '@nextui-org/switch'
-import { useIsSSR } from '@react-aria/ssr'
-import { VisuallyHidden } from '@react-aria/visually-hidden'
+import { Button } from '@heroui/button'
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/dropdown'
+import { SwitchProps } from '@heroui/switch'
 import { useTheme } from 'next-themes'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
-import { twMerge } from 'tailwind-merge'
 
 import { iconSizes } from './styles'
 
 export interface ThemeSwitchProps {
   className?: string
   classNames?: SwitchProps['classNames']
-}
-
-export const ThemeSwitch: FC<ThemeSwitchProps> = ({ className, classNames }) => {
-  const { theme, setTheme } = useTheme()
-  const isSSR = useIsSSR()
-
-  const onChange = () => {
-    if (theme === 'light') {
-      setTheme('dark')
-    } else {
-      setTheme('light')
-    }
-  }
-
-  const { Component, slots, isSelected, getBaseProps, getInputProps, getWrapperProps } = useSwitch({
-    isSelected: theme === 'light',
-    'aria-label': `Switch to ${theme === 'light' ? 'dark' : 'light'} mode`,
-    onChange,
-  })
-
-  return (
-    <Component
-      {...getBaseProps({
-        className: twMerge('cursor-pointer px-px transition-opacity hover:opacity-80', className, classNames?.base),
-      })}
-    >
-      <VisuallyHidden>
-        <input {...getInputProps()} />
-      </VisuallyHidden>
-      <div
-        {...getWrapperProps()}
-        className={slots.wrapper({
-          class: twMerge(
-            [
-              'mx-0 h-auto w-auto rounded-lg bg-transparent px-0 pt-px',
-              'flex items-center justify-center',
-              'group-data-[selected=true]:bg-transparent',
-              '!text-default-500',
-            ],
-            classNames?.wrapper,
-          ),
-        })}
-      >
-        {!isSelected || isSSR ? <SunFilledIcon size={22} /> : <MoonFilledIcon size={22} />}
-      </div>
-    </Component>
-  )
 }
 
 export const ThemeSwitchList: FC<{ className?: string; size?: 'sm' | 'md' | 'lg' }> = ({ className, size = 'md' }) => {

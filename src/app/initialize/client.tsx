@@ -13,7 +13,7 @@ import { InitializeWgConf, UserPassword, scInitializeWgConf, scUserPassword } fr
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, Textarea } from '@nextui-org/react'
+import { Link, Textarea } from "@heroui/react"
 import { zxcvbn } from '@zxcvbn-ts/core'
 import { Address4 } from 'ip-address'
 import { signIn } from 'next-auth/react'
