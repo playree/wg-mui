@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, ButtonProps, Link, Tooltip } from '@nextui-org/react'
+import { Button, ButtonProps, Link, Tooltip } from "@heroui/react"
 import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'

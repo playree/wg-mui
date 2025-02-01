@@ -49,7 +49,7 @@ import {
   TableHeader,
   TableRow,
   Textarea,
-} from '@nextui-org/react'
+} from "@heroui/react"
 import { Address4 } from 'ip-address'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'

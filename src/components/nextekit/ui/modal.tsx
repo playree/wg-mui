@@ -1,6 +1,6 @@
 'use client'
 
-import { Checkbox, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@nextui-org/react'
+import { Checkbox, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from "@heroui/react"
 import { FC, forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import { ExButton } from './button'

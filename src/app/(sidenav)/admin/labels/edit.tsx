@@ -18,7 +18,7 @@ import {
   ModalHeader,
   ModalProps,
   useDisclosure,
-} from '@nextui-org/react'
+} from "@heroui/react"
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 

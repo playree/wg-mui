@@ -4,7 +4,7 @@ import { AuthProvider } from '@/components/nextekit/auth'
 import { LocaleProvider } from '@/components/nextekit/locale/client'
 import { authProps } from '@/config/auth-props'
 import { localeConfig } from '@/locale/config'
-import { NextUIProvider } from '@nextui-org/react'
+import { HeroUIProvider } from "@heroui/react"
 import { ThemeProvider, type ThemeProviderProps } from 'next-themes'
 
 import { useRouter } from 'next/navigation'
@@ -23,7 +23,7 @@ export const Providers: FC<ProvidersProps> = ({ children, defaultLocale, themePr
   const router = useRouter()
 
   return (
-    <NextUIProvider navigate={router.push}>
+    <HeroUIProvider navigate={router.push}>
       <ThemeProvider {...themeProps}>
         <AuthProvider authProps={authProps}>
           <LocaleProvider config={localeConfig} defaultLocale={defaultLocale} acceptLanguage={acceptLanguage}>
@@ -31,6 +31,6 @@ export const Providers: FC<ProvidersProps> = ({ children, defaultLocale, themePr
           </LocaleProvider>
         </AuthProvider>
       </ThemeProvider>
-    </NextUIProvider>
+    </HeroUIProvider>
   )
 }

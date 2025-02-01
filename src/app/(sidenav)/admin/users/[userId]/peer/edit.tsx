@@ -21,7 +21,7 @@ import {
   Select,
   SelectItem,
   useDisclosure,
-} from '@nextui-org/react'
+} from "@heroui/react"
 import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'

@@ -22,7 +22,7 @@ import {
   Select,
   SelectItem,
   useDisclosure,
-} from '@nextui-org/react'
+} from "@heroui/react"
 import { AsyncListData } from '@react-stately/data'
 import { zxcvbn } from '@zxcvbn-ts/core'
 import { FC, useEffect, useState } from 'react'
