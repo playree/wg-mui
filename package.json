@@ -1,7 +1,7 @@
 {
   "name": "wg-mui",
-  "version": "0.3.1",
-  "buildno": "2025010602",
+  "version": "0.3.2",
+  "buildno": "2025020101",
   "private": true,
   "scripts": {
     "dev": "PORT=63001 next dev --turbopack",
@@ -29,7 +29,7 @@
     "dayjs": "^1.11.13",
     "framer-motion": "^12.0.6",
     "intl-messageformat": "^10.7.14",
-    "ip-address": "^9.0.5",
+    "ip-address": "9.0.5",
     "js-ini": "^1.6.0",
     "next": "15.1.6",
     "next-auth": "^4.24.11",
