@@ -27,5 +27,6 @@ export const deleteSessionToken = validAction('deleteSessionToken', {
   next: async () => {
     const cookieStore = await cookies()
     cookieStore.delete('next-auth.session-token')
+    cookieStore.delete('__Secure-next-auth.session-token')
   },
 })
