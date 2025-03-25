@@ -1,7 +1,7 @@
 'use client'
 
 import { IconSvgProps } from '@/types'
-import { Link } from "@heroui/react"
+import { Link } from '@heroui/react'
 import { signIn, signOut } from 'next-auth/react'
 import { FC, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'

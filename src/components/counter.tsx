@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from "@heroui/button"
+import { Button } from '@heroui/button'
 import { useState } from 'react'
 
 export const Counter = () => {

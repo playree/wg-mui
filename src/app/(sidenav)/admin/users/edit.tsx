@@ -9,7 +9,6 @@ import { parseAction } from '@/helpers/action'
 import { CreateUser, TypeLabel, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Checkbox,
   Chip,
@@ -22,7 +21,8 @@ import {
   Select,
   SelectItem,
   useDisclosure,
-} from "@heroui/react"
+} from '@heroui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { AsyncListData } from '@react-stately/data'
 import { zxcvbn } from '@zxcvbn-ts/core'
 import { FC, useEffect, useState } from 'react'

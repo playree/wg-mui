@@ -1,4 +1,4 @@
-import { Spinner } from "@heroui/spinner"
+import { Spinner } from '@heroui/spinner'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 

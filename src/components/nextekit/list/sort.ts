@@ -1,4 +1,4 @@
-import { SortDescriptor } from "@heroui/react"
+import { SortDescriptor } from '@heroui/react'
 import { AsyncListLoadFunction } from '@react-stately/data'
 
 export const sortFunction: AsyncListLoadFunction<Record<string, unknown>, string> = async <

@@ -32,7 +32,6 @@ import {
 } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Accordion,
   AccordionItem,
@@ -49,7 +48,8 @@ import {
   TableHeader,
   TableRow,
   Textarea,
-} from "@heroui/react"
+} from '@heroui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Address4 } from 'ip-address'
 import { useRouter } from 'next/navigation'
 import { FC, useState } from 'react'

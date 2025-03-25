@@ -2,8 +2,8 @@
 
 import { fetchJson } from '@/helpers/fetch'
 import { SetLocaleApi } from '@/helpers/schema'
-import { Button } from "@heroui/button"
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/dropdown"
+import { Button } from '@heroui/button'
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/dropdown'
 import { useSession } from 'next-auth/react'
 import { FC, useEffect, useState } from 'react'
 

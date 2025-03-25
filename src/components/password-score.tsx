@@ -1,4 +1,4 @@
-import { Progress } from "@heroui/react"
+import { Progress } from '@heroui/react'
 import { FC } from 'react'
 
 import { textStyles } from './styles'

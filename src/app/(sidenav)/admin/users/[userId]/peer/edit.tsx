@@ -9,7 +9,6 @@ import { requireSelect } from '@/helpers/client'
 import { CreatePeer, TypePeer, TypeUser, UpdatePeer, scCreatePeer, scUpdatePeer } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Input,
   Modal,
@@ -21,7 +20,8 @@ import {
   Select,
   SelectItem,
   useDisclosure,
-} from "@heroui/react"
+} from '@heroui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'

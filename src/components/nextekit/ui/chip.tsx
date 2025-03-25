@@ -1,5 +1,5 @@
 import { IconSvgProps } from '@/types'
-import { Chip } from "@heroui/chip"
+import { Chip } from '@heroui/chip'
 import { FC } from 'react'
 
 const CheckCircleIcon: FC<IconSvgProps> = ({ size = 20, strokeWidth = 2, ...props }) => (

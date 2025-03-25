@@ -34,7 +34,7 @@ import {
   ModalHeader,
   ModalProps,
   useDisclosure,
-} from "@heroui/react"
+} from '@heroui/react'
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'

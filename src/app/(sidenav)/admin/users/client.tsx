@@ -35,7 +35,7 @@ import {
   TableHeader,
   TableRow,
   useDisclosure,
-} from "@heroui/react"
+} from '@heroui/react'
 import { useAsyncList } from '@react-stately/data'
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'

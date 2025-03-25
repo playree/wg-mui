@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
   useDisclosure,
-} from "@heroui/react"
+} from '@heroui/react'
 import { FC, useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
 
