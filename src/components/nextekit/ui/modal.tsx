@@ -1,8 +1,9 @@
 'use client'
 
 import { Checkbox, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, ModalProps } from '@heroui/react'
-import { FC, forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import { FC, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
 
+import { usePathname } from 'next/navigation'
 import { ExButton } from './button'
 
 const CheckIcon: FC = () => (
@@ -38,6 +39,14 @@ export const ConfirmModal = forwardRef<
   const response = useRef<(value: boolean | PromiseLike<boolean>) => void>(undefined)
   const [isAgree, setAgree] = useState(false)
   const [isLoading, setLoading] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    if (confirmParam) {
+      setConfirmParam(undefined)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   useImperativeHandle(ref, () => ({
     confirm: (param) => {

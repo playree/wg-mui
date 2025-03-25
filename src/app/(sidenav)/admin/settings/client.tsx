@@ -770,15 +770,9 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
                 selectedKeys={new Set([value])}
                 isRequired
               >
-                <SelectItem key='disabled' value='disabled'>
-                  {t('item_view_disabled')}
-                </SelectItem>
-                <SelectItem key='enabled_all' value='enabled_all'>
-                  {t('item_view_enabled_all')}
-                </SelectItem>
-                <SelectItem key='enabled_admin' value='enabled_admin'>
-                  {t('item_view_enabled_admin')}
-                </SelectItem>
+                <SelectItem key='disabled'>{t('item_view_disabled')}</SelectItem>
+                <SelectItem key='enabled_all'>{t('item_view_enabled_all')}</SelectItem>
+                <SelectItem key='enabled_admin'>{t('item_view_enabled_admin')}</SelectItem>
               </Select>
             )}
           />
@@ -844,12 +838,8 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
                 selectedKeys={new Set([value])}
                 isRequired
               >
-                <SelectItem key='3' value='3'>
-                  {t('item_password_score_mid')}
-                </SelectItem>
-                <SelectItem key='4' value='4'>
-                  {t('item_password_score_high')}
-                </SelectItem>
+                <SelectItem key='3'>{t('item_password_score_mid')}</SelectItem>
+                <SelectItem key='4'>{t('item_password_score_high')}</SelectItem>
               </Select>
             )}
           />

@@ -133,7 +133,7 @@ export const Toast = forwardRef<ToastRef>((props, ref) => {
               variant='flat'
               size='sm'
               className={twMerge(textStyles({ color: 'light' }), 'ml-2')}
-              onClick={() => {
+              onPress={() => {
                 removeToast(msg.id)
               }}
             >
