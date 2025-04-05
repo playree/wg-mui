@@ -245,7 +245,7 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
             size='sm'
             onPress={async () => {
               const ifip = new Address4(safeWgConf.address)
-              setValue('defaultAllowedIPs', `${ifip.startAddress().address}${ifip.subnet}, ${GLOBAL_CIDR}`)
+              setValue('defaultAllowedIPs', `${GLOBAL_CIDR}, ${ifip.startAddress().address}${ifip.subnet}`)
               if (!isEdited) {
                 setEdited(true)
               }

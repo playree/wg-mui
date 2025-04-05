@@ -24,9 +24,9 @@ export const getUserPeerList = validAction('getUserPeerList', {
  * 対象IPのピア設定取得
  */
 export const getUserPeerConf = validAction('getUserPeerConf', {
-  schema: zReq({ ip: zIp, useDNS: zBoolean }),
+  schema: zReq({ ip: zIp, useDNS: zBoolean, useGoogleDNS: zBoolean.optional() }),
   requireAuth: true,
-  next: async ({ req: { ip, useDNS }, user }) => {
+  next: async ({ req: { ip, useDNS, useGoogleDNS }, user }) => {
     // IPとユーザーでピア検索
     const peer = await prisma.peer.findUnique({ where: { ip, userId: user.id } })
     if (!peer) {
@@ -34,7 +34,7 @@ export const getUserPeerConf = validAction('getUserPeerConf', {
     }
     const wgMgr = await refWgMgr()
     return {
-      conf: wgMgr.getPeerConf(peer, useDNS),
+      conf: wgMgr.getPeerConf(peer, useDNS, useGoogleDNS),
       filename: `${formatSafeFilename(process.env.APP_NAME || '', 20)}_${peer.ip.replaceAll('.', '-')}.conf`,
     }
   },
