@@ -168,6 +168,26 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
                         {t('item_download_conf_file_dns')}
                       </DropdownItem>
                       <DropdownItem
+                        key='download_dns_google'
+                        startContent={<DocumentArrowDownIcon />}
+                        onPress={async () => {
+                          const res = await parseAction(
+                            getUserPeerConf({ ip: peer.ip, useDNS: true, useGoogleDNS: true }),
+                          )
+                          const blob = new Blob([res.conf], { type: 'text/plain' })
+                          const url = URL.createObjectURL(blob)
+                          const a = document.createElement('a')
+                          document.body.appendChild(a)
+                          a.download = res.filename
+                          a.href = url
+                          a.click()
+                          a.remove()
+                          URL.revokeObjectURL(url)
+                        }}
+                      >
+                        {t('item_download_conf_file_dns_google')}
+                      </DropdownItem>
+                      <DropdownItem
                         key='qr'
                         startContent={<QrCodeIcon />}
                         onPress={async () => {
@@ -188,6 +208,19 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
                         }}
                       >
                         {t('item_scan_qr_dns')}
+                      </DropdownItem>
+                      <DropdownItem
+                        key='qr_dns_google'
+                        startContent={<QrCodeIcon />}
+                        onPress={async () => {
+                          const res = await parseAction(
+                            getUserPeerConf({ ip: peer.ip, useDNS: true, useGoogleDNS: true }),
+                          )
+                          const qr = await getQrImgString(res.conf)
+                          setTargetQr(qr)
+                        }}
+                      >
+                        {t('item_scan_qr_dns_google')}
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>

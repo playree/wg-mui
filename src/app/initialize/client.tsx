@@ -385,7 +385,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
               size='sm'
               onPress={async () => {
                 const ifip = new Address4(getValues('address'))
-                setValue('defaultAllowedIPs', `${ifip.startAddress().address}${ifip.subnet}, ${GLOBAL_CIDR}`)
+                setValue('defaultAllowedIPs', `${GLOBAL_CIDR}, ${ifip.startAddress().address}${ifip.subnet}`)
               }}
             >
               <CommandLineIcon />

@@ -82,7 +82,7 @@ export const Toast = forwardRef<ToastRef>((props, ref) => {
         messageList.shift()
         setMessageList([...messageList])
       }
-    }, 3000)
+    }, 5000)
     return () => {
       if (tid.current) {
         clearTimeout(tid.current)

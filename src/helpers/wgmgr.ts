@@ -271,14 +271,15 @@ exit 0
     return undefined
   }
 
-  getPeerConf(peer: Peer, useDNS: boolean) {
+  getPeerConf(peer: Peer, useDNS: boolean, useGoogleDNS?: boolean) {
+    const dns = useGoogleDNS ? '8.8.8.8' : this.conf.dns || undefined
     return (
       stringify(
         {
           Interface: {
             PrivateKey: peer.privateKey,
             Address: `${peer.ip}/${this.ip4.subnetMask}`,
-            DNS: useDNS ? this.conf.dns || undefined : undefined,
+            DNS: useDNS ? dns : undefined,
           },
           Peer: {
             PublicKey: this.conf.publicKey,

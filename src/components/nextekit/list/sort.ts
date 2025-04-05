@@ -19,23 +19,23 @@ export const sortFunction: AsyncListLoadFunction<Record<string, unknown>, string
 
         // string
         if (typeof acol === 'string' && typeof bcol === 'string') {
-          cmp = acol < bcol ? -1 : 1
+          cmp = acol == bcol ? 0 : acol < bcol ? -1 : 1
         }
         // number
         else if (typeof acol === 'number' && typeof bcol === 'number') {
-          cmp = acol < bcol ? -1 : 1
+          cmp = acol == bcol ? 0 : acol < bcol ? -1 : 1
         }
         // boolean
         else if (typeof acol === 'boolean' && typeof bcol === 'boolean') {
-          cmp = acol < bcol ? -1 : 1
+          cmp = acol == bcol ? 0 : acol < bcol ? -1 : 1
         }
         // Date
         else if (acol instanceof Date && bcol instanceof Date) {
-          cmp = acol < bcol ? -1 : 1
+          cmp = acol == bcol ? 0 : acol < bcol ? -1 : 1
         }
         //
-        else if (acol === undefined || bcol === undefined) {
-          cmp = !acol && bcol ? -1 : 1
+        else if (!acol || !bcol) {
+          cmp = !acol && !bcol ? 0 : !!acol ? 1 : -1
         }
       }
 
