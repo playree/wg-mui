@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@heroui/react": "2.7.8",
-    "@hookform/resolvers": "^3.10.0",
+    "@hookform/resolvers": "^5.0.1",
     "@prisma/client": "^6.8.2",
     "@react-stately/data": "3.11.4",
     "@sendgrid/mail": "^8.1.5",
