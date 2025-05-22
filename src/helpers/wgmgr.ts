@@ -1,3 +1,4 @@
+import { Peer, WgConf } from '@/generated/client'
 import {
   addWgPeer,
   disableWgAutoStart,
@@ -10,7 +11,6 @@ import {
   startWg,
   stopWg,
 } from '@/server-actions/cmd'
-import { Peer, WgConf } from '@prisma/client'
 import { unlinkSync, writeFileSync } from 'fs'
 import { Address4 } from 'ip-address'
 import { IIniObject, stringify } from 'js-ini'

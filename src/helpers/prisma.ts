@@ -1,4 +1,4 @@
-import { Label, LastSignIn, Peer, Prisma, PrismaClient, User, UserLabel } from '@prisma/client'
+import { Label, LastSignIn, Peer, Prisma, PrismaClient, User, UserLabel } from '@/generated/client'
 import { randomUUID } from 'crypto'
 
 import { OAuthType } from './env'
