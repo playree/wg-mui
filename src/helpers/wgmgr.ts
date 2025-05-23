@@ -80,11 +80,11 @@ export class WgMgr {
     this.conf = wgConf
     this.ip4 = new Address4(wgConf.address)
 
-    const start = this.ip4.startAddressExclusive().bigInteger()
-    const end = this.ip4.endAddress().bigInteger()
+    const start = this.ip4.startAddressExclusive().bigInt()
+    const end = this.ip4.endAddress().bigInt()
     const addressList = []
     for (let i = start; i < end; i++) {
-      addressList.push(Address4.fromBigInteger(i).address)
+      addressList.push(Address4.fromBigInt(i).address)
     }
     this.targetAddress = addressList
   }
