@@ -12702,10 +12702,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url-join@npm:4.0.1":
-  version: 4.0.1
-  resolution: "url-join@npm:4.0.1"
-  checksum: 10c0/ac65e2c7c562d7b49b68edddcf55385d3e922bc1dd5d90419ea40b53b6de1607d1e45ceb71efb9d60da02c681d13c6cb3a1aa8b13fc0c989dfc219df97ee992d
+"url-join@npm:5.0.0":
+  version: 5.0.0
+  resolution: "url-join@npm:5.0.0"
+  checksum: 10c0/ed2b166b4b5a98adcf6828a48b6bd6df1dac4c8a464a73cf4d8e2457ed410dd8da6be0d24855b86026cd7f5c5a3657c1b7b2c7a7c5b8870af17635a41387b04c
   languageName: node
   linkType: hard
 
@@ -12857,7 +12857,7 @@ __metadata:
     tailwindcss: "npm:^3.4.17"
     ts-node: "npm:^10.9.2"
     typescript: "npm:5.8.3"
-    url-join: "npm:4.0.1"
+    url-join: "npm:5.0.0"
     zod: "npm:^3.25.23"
   languageName: unknown
   linkType: soft

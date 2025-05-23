@@ -106,9 +106,9 @@ export const TopPageNoticeViewClient: FC = () => {
           </CardHeader>
           <Divider />
           <CardBody>
-            <ReactMarkdown className='markdown' remarkPlugins={[remarkGfm]}>
-              {notice}
-            </ReactMarkdown>
+            <div className='markdown'>
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{notice}</ReactMarkdown>
+            </div>
           </CardBody>
         </Card>
       ) : (
@@ -190,9 +190,9 @@ export const ReleaseNoteViewClient: FC = () => {
               return (
                 <div key={note.id}>
                   <div className='text-sm font-bold'>{note.name}</div>
-                  <ReactMarkdown className='markdown' remarkPlugins={[remarkGfm]}>
-                    {note.body}
-                  </ReactMarkdown>
+                  <div className='markdown'>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{note.body}</ReactMarkdown>
+                  </div>
                   <Divider className='my-2' />
                 </div>
               )
