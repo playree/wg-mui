@@ -57,7 +57,7 @@ export const zEmail = z.string().email(el('@invalid_email')).or(zEmpty).transfor
 export const zEmailChange = z.string().email(el('@invalid_email'))
 
 export const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
-export const zExplanation = z.string().max(80, el('@invalid_label_name'))
+export const zExplanation = z.string().max(80, el('@invalid_explanation'))
 
 export const zConfDirPath = z
   .string()
