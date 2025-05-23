@@ -9979,10 +9979,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^6.10.1":
-  version: 6.10.1
-  resolution: "nodemailer@npm:6.10.1"
-  checksum: 10c0/e81fde258ea4f4e5646e9e3eebe89294d007939999d2d1a8c96c5488fa00bf659e46cf76fccb2697e9aa6ef9807a1ed47ff2aef6ad30b795e3849b6997066d16
+"nodemailer@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "nodemailer@npm:7.0.3"
+  checksum: 10c0/835492262328471b94a080cea43ea20f4232e19a915400cd71c7f4f4ab93a7d361775154eebe30a8fc40379eecf11a0bbc73e6cf4bbee9dccb6dd1cf7a1dc792
   languageName: node
   linkType: hard
 
@@ -10818,9 +10818,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-markdown@npm:^9.1.0":
-  version: 9.1.0
-  resolution: "react-markdown@npm:9.1.0"
+"react-markdown@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "react-markdown@npm:10.1.0"
   dependencies:
     "@types/hast": "npm:^3.0.0"
     "@types/mdast": "npm:^4.0.0"
@@ -10836,7 +10836,7 @@ __metadata:
   peerDependencies:
     "@types/react": ">=18"
     react: ">=18"
-  checksum: 10c0/5bd645d39379f776d64588105f4060c390c3c8e4ff048552c9fa0ad31b756bb3ff7c11081542dc58d840ccf183a6dd4fd4d4edab44d8c24dee8b66551a5fd30d
+  checksum: 10c0/4a5dc7d15ca6d05e9ee95318c1904f83b111a76f7588c44f50f1d54d4c97193b84e4f64c4b592057c989228238a2590306cedd0c4d398e75da49262b2b5ae1bf
   languageName: node
   linkType: hard
 
@@ -12839,7 +12839,7 @@ __metadata:
     next: "npm:15.3.2"
     next-auth: "npm:^4.24.11"
     next-themes: "npm:^0.4.6"
-    nodemailer: "npm:^6.10.1"
+    nodemailer: "npm:^7.0.3"
     path-to-regexp: "npm:6.3.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
@@ -12850,7 +12850,7 @@ __metadata:
     react: "npm:19.1.0"
     react-dom: "npm:19.1.0"
     react-hook-form: "npm:^7.56.4"
-    react-markdown: "npm:^9.1.0"
+    react-markdown: "npm:^10.1.0"
     remark-gfm: "npm:^4.0.1"
     tailwind-merge: "npm:^3.3.0"
     tailwind-variants: "npm:^0.3.1"
@@ -12858,7 +12858,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     typescript: "npm:5.8.3"
     url-join: "npm:4.0.1"
-    zod: "npm:^3.25.20"
+    zod: "npm:^3.25.23"
   languageName: unknown
   linkType: soft
 
@@ -13109,10 +13109,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.25.20":
-  version: 3.25.20
-  resolution: "zod@npm:3.25.20"
-  checksum: 10c0/f3b3e8875e1e02ca25bbfd45332aa1010f1b252b60a619c94c15bd6de637f841d344a3975d6950b2fbee68db4160ddb534cb9571c517fac17983871739085278
+"zod@npm:^3.25.23":
+  version: 3.25.23
+  resolution: "zod@npm:3.25.23"
+  checksum: 10c0/c0a9d1b215ead64fdd1f3be47bc7376be6016472ae5bd1ef56d0a579d544b785b5e266dbd30947172e5b92873b7a8bed123625eeb00aea4e5d7526d86a5a31f6
   languageName: node
   linkType: hard
 
