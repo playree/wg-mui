@@ -55,7 +55,7 @@ export const ChangePasswordModal: FC<
   }, [target, props.isOpen, setValue])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form
@@ -161,7 +161,7 @@ export const ChangeEmailModal: FC<Omit<ModalProps, 'children'> & { target?: stri
   }, [target, props.isOpen, setValue])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form
