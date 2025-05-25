@@ -33,6 +33,8 @@ export const zEmpty = z.string().length(0).nullish()
 export const zAllOrCount = z.union([z.literal('all'), z.literal('count')])
 export const zOAuthType = z.union([z.literal('google'), z.literal('gitlab')])
 export const zEnabledType = z.union([z.literal('disabled'), z.literal('enabled_all'), z.literal('enabled_admin')])
+export const zAllowdIps = z.union([z.literal('global'), z.literal('all')])
+export const zUseDns = z.union([z.literal('vpn'), z.literal('google'), z.literal('none')])
 
 export const zUsername = z
   .string()

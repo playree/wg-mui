@@ -271,20 +271,21 @@ exit 0
     return undefined
   }
 
-  getPeerConf(peer: Peer, useDNS: boolean, useGoogleDNS?: boolean) {
-    const dns = useGoogleDNS ? '8.8.8.8' : this.conf.dns || undefined
+  getPeerConf(peer: Peer, useDNS: 'vpn' | 'google' | 'none', allowdIps: 'global' | 'all', mtu: number) {
+    const dns = useDNS === 'google' ? '8.8.8.8' : useDNS === 'vpn' ? this.conf.dns || undefined : undefined
     return (
       stringify(
         {
           Interface: {
             PrivateKey: peer.privateKey,
             Address: `${peer.ip}/${this.ip4.subnetMask}`,
-            DNS: useDNS ? dns : undefined,
+            DNS: dns,
+            MTU: mtu > 0 ? mtu : undefined,
           },
           Peer: {
             PublicKey: this.conf.publicKey,
             EndPoint: this.conf.endPoint,
-            AllowedIPs: this.conf.defaultAllowedIPs || '0.0.0.0/0',
+            AllowedIPs: allowdIps === 'global' ? this.conf.defaultAllowedIPs || '0.0.0.0/0' : '0.0.0.0/0',
             PersistentKeepalive: this.conf.defaultKeepalive,
           },
         } as IIniObject,

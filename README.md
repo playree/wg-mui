@@ -50,14 +50,14 @@ Next.jsの最新機能を率先して利用して開発しています。
 
 # モジュール構成
 
-- [Next.js](https://nextjs.org/) v15.2.4 \
+- [Next.js](https://nextjs.org/) v15.3.2 \
   出来るだけ最新機能を利用して開発しています。
   - Using App Router
   - Using Server Components
   - Using Server Actions
 - [Tailwind CSS](https://tailwindcss.com/) \
   CSS Framework
-- [HeroUI(NextUI)](https://www.heroui.com/) v2.7.5 \
+- [HeroUI(NextUI)](https://www.heroui.com/) v2.7.8 \
   ベースのUIコンポーネント
 - [Prisma](https://www.prisma.io/) \
   DB接続ORM
