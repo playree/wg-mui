@@ -82,7 +82,6 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
                 <div className='col-span-12 md:col-span-6'>
                   <Select
                     label={t('item_allowed_ips')}
-                    labelPlacement='outside'
                     variant='bordered'
                     disallowEmptySelection
                     isRequired
@@ -98,7 +97,6 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
                 <div className='col-span-12 md:col-span-6'>
                   <Select
                     label={t('item_dns')}
-                    labelPlacement='outside'
                     variant='bordered'
                     disallowEmptySelection
                     isRequired
@@ -113,13 +111,7 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
                   </Select>
                 </div>
                 <div className='col-span-12 md:col-span-4'>
-                  <NumberInput
-                    label={t('item_mtu')}
-                    labelPlacement='outside'
-                    variant='bordered'
-                    value={mtu}
-                    onValueChange={setMtu}
-                  />
+                  <NumberInput label={t('item_mtu')} variant='bordered' value={mtu} onValueChange={setMtu} />
                 </div>
                 <div className='col-span-12 my-auto ml-2 md:col-span-8'>
                   <div className={twMerge(textStyles({ color: 'light' }), 'whitespace-pre-line text-xs')}>
