@@ -238,6 +238,19 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
             }}
           />
         </div>
+        <div className='col-span-12 md:col-span-6'>
+          <InputCtrl
+            control={control}
+            name='dns'
+            label={t('item_dns')}
+            errorMessage={fet(errors.dns)}
+            onChanged={() => {
+              if (!isEdited) {
+                setEdited(true)
+              }
+            }}
+          />
+        </div>
         <div className='col-span-12'>
           <ExButton
             color='default'
