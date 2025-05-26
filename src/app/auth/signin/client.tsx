@@ -137,12 +137,9 @@ export const SignInClient: FC<{ ssr: SSResource; isError: boolean }> = ({
               </Button>
             </div>
           )}
-          <ReactMarkdown
-            className={twMerge(textStyles({ color: 'light' }), 'markdown col-span-12 p-2')}
-            remarkPlugins={[remarkGfm]}
-          >
-            {lvt(signinMessage)}
-          </ReactMarkdown>
+          <div className={twMerge(textStyles({ color: 'light' }), 'markdown col-span-12 p-2')}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{lvt(signinMessage)}</ReactMarkdown>
+          </div>
         </form>
       </CardBody>
     </Card>

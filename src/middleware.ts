@@ -1,14 +1,15 @@
 import { matchCondition } from '@/components/nextekit/auth/utils'
-import { match } from '@/components/nextekit/utils'
 import { type NextRequestWithAuth, withAuth } from 'next-auth/middleware'
 import { type NextFetchEvent, NextResponse } from 'next/server'
 
 import { authProps } from './config/auth-props'
 import { localeConfig } from './locale/config'
 
+const regexLocale = /^\/(?!api\/).*$/
 const mwLocale = (request: NextRequestWithAuth, response: NextResponse) => {
-  if (match(request.nextUrl.pathname, ['/((?!api/).*)'])) {
-    console.debug('mw:locale')
+  // if (match(request.nextUrl.pathname, ['/((?!api/).*)'])) {
+  if (regexLocale.test(request.nextUrl.pathname)) {
+    console.debug('mw:locale', request.nextUrl.pathname)
     if (request.method.toUpperCase() === 'GET') {
       if (!request.cookies.has(localeConfig.cookie.name)) {
         // ロケールCookieが存在しない場合かつ、ユーザーのロケールが取得できる場合にはCookieを発行
@@ -78,12 +79,12 @@ export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) 
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - xxx.xxx (file)
-     */
-    '/((?!_next/static|_next/image|_next/webpack-hmr|api/auth/|.*\\.).*)',
+    {
+      source: '/((?!_next/static|_next/image|_next/webpack-hmr|api/auth/|.*\\.).*)',
+      missing: [
+        // Server Actions を除外する
+        { type: 'header', key: 'next-action' },
+      ],
+    },
   ],
 }

@@ -50,7 +50,7 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
   }, [reset, props.isOpen])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form
@@ -147,7 +147,7 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
   }, [target, props.isOpen, setValue])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form

@@ -69,7 +69,7 @@ const CreateUserModal: FC<
   }, [reset, props.isOpen])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form
@@ -289,7 +289,7 @@ export const UpdateUserModal: FC<
   }, [target, props.isOpen, setValue])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form

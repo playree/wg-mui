@@ -64,7 +64,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
   }, [reset, props.isOpen, setValue, freeAddressList.items])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form
@@ -193,7 +193,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
   }, [target, props.isOpen, setValue])
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <form

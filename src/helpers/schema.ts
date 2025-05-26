@@ -33,6 +33,8 @@ export const zEmpty = z.string().length(0).nullish()
 export const zAllOrCount = z.union([z.literal('all'), z.literal('count')])
 export const zOAuthType = z.union([z.literal('google'), z.literal('gitlab')])
 export const zEnabledType = z.union([z.literal('disabled'), z.literal('enabled_all'), z.literal('enabled_admin')])
+export const zAllowdIps = z.union([z.literal('default'), z.literal('all')])
+export const zUseDns = z.union([z.literal('vpn'), z.literal('google'), z.literal('none')])
 
 export const zUsername = z
   .string()
@@ -57,7 +59,7 @@ export const zEmail = z.string().email(el('@invalid_email')).or(zEmpty).transfor
 export const zEmailChange = z.string().email(el('@invalid_email'))
 
 export const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
-export const zExplanation = z.string().max(80, el('@invalid_label_name'))
+export const zExplanation = z.string().max(80, el('@invalid_explanation'))
 
 export const zConfDirPath = z
   .string()

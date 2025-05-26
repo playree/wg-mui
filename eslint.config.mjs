@@ -16,6 +16,9 @@ const eslintConfig = [
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
+  {
+    ignores: ['**/generated/**/*'],
+  },
 ]
 
 export default eslintConfig

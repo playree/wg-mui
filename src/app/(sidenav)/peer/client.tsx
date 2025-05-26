@@ -16,15 +16,10 @@ import { TypePeer } from '@/helpers/schema'
 import { PeerStatus } from '@/helpers/wgmgr'
 import { useLocale } from '@/locale/client'
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
   Divider,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
   Image,
   Link,
   Modal,
@@ -33,6 +28,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalProps,
+  NumberInput,
+  Select,
+  SelectItem,
   useDisclosure,
 } from '@heroui/react'
 import { useRouter } from 'next/navigation'
@@ -56,12 +54,150 @@ export const RefreshButton: FC = () => {
   )
 }
 
+const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (props) => {
+  const { targetIp, ...nextProps } = props
+  const { t } = useLocale()
+
+  const [allowdIps, setAllowdIps] = useState<'default' | 'all'>('default')
+  const [useDns, setUseDns] = useState<'vpn' | 'google' | 'none'>('vpn')
+  const [mtu, setMtu] = useState(0)
+  const [qr, setQr] = useState<string>()
+
+  useEffect(() => {
+    if (targetIp) {
+      setQr(undefined)
+    }
+  }, [targetIp, props.isOpen])
+
+  return (
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
+      <ModalContent>
+        {(onClose) => (
+          <>
+            <ModalHeader className='flex flex-col gap-1'>
+              {targetIp} - {t('item_conf_file')}
+            </ModalHeader>
+            <ModalBody>
+              <div className={twMerge(gridStyles(), 'w-full')}>
+                <div className='col-span-12 md:col-span-6'>
+                  <Select
+                    label={t('item_allowed_ips')}
+                    variant='bordered'
+                    disallowEmptySelection
+                    isRequired
+                    selectedKeys={new Set([allowdIps])}
+                    onSelectionChange={(e) => {
+                      setAllowdIps((e.currentKey as 'default' | 'all') || 'default')
+                    }}
+                  >
+                    <SelectItem key='default'>{t('item_allowed_ips_default')}</SelectItem>
+                    <SelectItem key='all'>{t('item_allowed_ips_all')}</SelectItem>
+                  </Select>
+                </div>
+                <div className='col-span-12 md:col-span-6'>
+                  <Select
+                    label={t('item_dns')}
+                    variant='bordered'
+                    disallowEmptySelection
+                    isRequired
+                    selectedKeys={new Set([useDns])}
+                    onSelectionChange={(e) => {
+                      setUseDns((e.currentKey as 'vpn' | 'google' | 'none') || 'vpn')
+                    }}
+                  >
+                    <SelectItem key='vpn'>{t('item_dns_vpn')}</SelectItem>
+                    <SelectItem key='google'>{t('item_dns_google')}</SelectItem>
+                    <SelectItem key='none'>{t('item_dns_none')}</SelectItem>
+                  </Select>
+                </div>
+                <div className='col-span-12 md:col-span-4'>
+                  <NumberInput label={t('item_mtu')} variant='bordered' value={mtu} onValueChange={setMtu} />
+                </div>
+                <div className='col-span-12 my-auto ml-2 md:col-span-8'>
+                  <div className={twMerge(textStyles({ color: 'light' }), 'whitespace-pre-line text-xs')}>
+                    {t('item_mtu_help')}
+                  </div>
+                  <div>
+                    <Link className='text-xs' href='https://www.speedguide.net/analyzer.php' isExternal showAnchorIcon>
+                      https://www.speedguide.net/analyzer.php
+                    </Link>
+                  </div>
+                </div>
+                <div className='col-span-12 mt-4 text-center md:col-span-6'>
+                  <ExButton
+                    variant='solid'
+                    startContent={<DocumentArrowDownIcon />}
+                    onPress={async () => {
+                      if (targetIp) {
+                        const res = await parseAction(
+                          getUserPeerConf({
+                            ip: targetIp,
+                            useDns,
+                            allowdIps,
+                            mtu,
+                          }),
+                        )
+                        const blob = new Blob([res.conf], { type: 'text/plain' })
+                        const url = URL.createObjectURL(blob)
+                        const a = document.createElement('a')
+                        document.body.appendChild(a)
+                        a.download = res.filename
+                        a.href = url
+                        a.click()
+                        a.remove()
+                        URL.revokeObjectURL(url)
+                      }
+                    }}
+                  >
+                    {t('item_download_conf_file')}
+                  </ExButton>
+                </div>
+                <div className='col-span-12 mt-4 text-center md:col-span-6'>
+                  <ExButton
+                    variant='solid'
+                    color='secondary'
+                    startContent={<QrCodeIcon />}
+                    onPress={async () => {
+                      if (targetIp) {
+                        const res = await parseAction(
+                          getUserPeerConf({
+                            ip: targetIp,
+                            useDns,
+                            allowdIps,
+                            mtu,
+                          }),
+                        )
+                        const qrString = await getQrImgString(res.conf)
+                        setQr(qrString)
+                      }
+                    }}
+                  >
+                    {t('item_scan_qr')}
+                  </ExButton>
+                </div>
+                <div className='col-span-12 mt-4 text-center'>
+                  {qr && <Image src={qr} alt='QR' width={320} classNames={{ wrapper: 'mx-auto' }} />}
+                </div>
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <ExButton variant='solid' color='default' onPress={onClose}>
+                {t('item_close')}
+              </ExButton>
+            </ModalFooter>
+          </>
+        )}
+      </ModalContent>
+    </Modal>
+  )
+}
+
 const QrModal: FC<Omit<ModalProps, 'children'> & { target?: string }> = (props) => {
   const { target, ...nextProps } = props
   const { t } = useLocale()
 
   return (
-    <Modal backdrop='blur' {...nextProps}>
+    <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -86,14 +222,23 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
 
   const [targetQr, setTargetQr] = useState<string>()
   const qrModal = useDisclosure()
-  const openQrModal = qrModal.onOpen
+
+  const [targetIp, setTargetIp] = useState<string>()
+  const confModal = useDisclosure()
 
   useEffect(() => {
     console.debug('targetQr:', !!targetQr)
     if (targetQr) {
-      openQrModal()
+      qrModal.onOpen()
     }
-  }, [openQrModal, targetQr])
+  }, [qrModal, targetQr])
+
+  useEffect(() => {
+    console.debug('targetIp:', !!targetIp)
+    if (targetIp) {
+      confModal.onOpen()
+    }
+  }, [confModal, targetIp])
 
   return (
     <>
@@ -112,118 +257,17 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
               </CardHeader>
               <CardBody className={twMerge(gridStyles(), 'pl-10')}>
                 <div className='col-span-12'>
-                  <Dropdown
-                    showArrow
-                    classNames={{
-                      base: 'before:bg-default-200',
-                      content:
-                        'py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
+                  <ExButton
+                    startContent={<PlusCircleIcon />}
+                    variant='flat'
+                    color='primary'
+                    className='h-fit px-2 py-1'
+                    onPress={() => {
+                      setTargetIp(peer.ip)
                     }}
                   >
-                    <DropdownTrigger>
-                      <Button
-                        startContent={<PlusCircleIcon />}
-                        variant='flat'
-                        color='primary'
-                        className='h-fit px-2 py-1'
-                      >
-                        {t('msg_add_tunnel')}
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label='add_tunnel'>
-                      <DropdownItem
-                        key='download'
-                        startContent={<DocumentArrowDownIcon />}
-                        onPress={async () => {
-                          const res = await parseAction(getUserPeerConf({ ip: peer.ip, useDNS: false }))
-                          const blob = new Blob([res.conf], { type: 'text/plain' })
-                          const url = URL.createObjectURL(blob)
-                          const a = document.createElement('a')
-                          document.body.appendChild(a)
-                          a.download = res.filename
-                          a.href = url
-                          a.click()
-                          a.remove()
-                          URL.revokeObjectURL(url)
-                        }}
-                      >
-                        {t('item_download_conf_file')}
-                      </DropdownItem>
-                      <DropdownItem
-                        key='download_dns'
-                        startContent={<DocumentArrowDownIcon />}
-                        onPress={async () => {
-                          const res = await parseAction(getUserPeerConf({ ip: peer.ip, useDNS: true }))
-                          const blob = new Blob([res.conf], { type: 'text/plain' })
-                          const url = URL.createObjectURL(blob)
-                          const a = document.createElement('a')
-                          document.body.appendChild(a)
-                          a.download = res.filename
-                          a.href = url
-                          a.click()
-                          a.remove()
-                          URL.revokeObjectURL(url)
-                        }}
-                      >
-                        {t('item_download_conf_file_dns')}
-                      </DropdownItem>
-                      <DropdownItem
-                        key='download_dns_google'
-                        startContent={<DocumentArrowDownIcon />}
-                        onPress={async () => {
-                          const res = await parseAction(
-                            getUserPeerConf({ ip: peer.ip, useDNS: true, useGoogleDNS: true }),
-                          )
-                          const blob = new Blob([res.conf], { type: 'text/plain' })
-                          const url = URL.createObjectURL(blob)
-                          const a = document.createElement('a')
-                          document.body.appendChild(a)
-                          a.download = res.filename
-                          a.href = url
-                          a.click()
-                          a.remove()
-                          URL.revokeObjectURL(url)
-                        }}
-                      >
-                        {t('item_download_conf_file_dns_google')}
-                      </DropdownItem>
-                      <DropdownItem
-                        key='qr'
-                        startContent={<QrCodeIcon />}
-                        onPress={async () => {
-                          const res = await parseAction(getUserPeerConf({ ip: peer.ip, useDNS: false }))
-                          const qr = await getQrImgString(res.conf)
-                          setTargetQr(qr)
-                        }}
-                      >
-                        {t('item_scan_qr')}
-                      </DropdownItem>
-                      <DropdownItem
-                        key='qr_dns'
-                        startContent={<QrCodeIcon />}
-                        onPress={async () => {
-                          const res = await parseAction(getUserPeerConf({ ip: peer.ip, useDNS: true }))
-                          const qr = await getQrImgString(res.conf)
-                          setTargetQr(qr)
-                        }}
-                      >
-                        {t('item_scan_qr_dns')}
-                      </DropdownItem>
-                      <DropdownItem
-                        key='qr_dns_google'
-                        startContent={<QrCodeIcon />}
-                        onPress={async () => {
-                          const res = await parseAction(
-                            getUserPeerConf({ ip: peer.ip, useDNS: true, useGoogleDNS: true }),
-                          )
-                          const qr = await getQrImgString(res.conf)
-                          setTargetQr(qr)
-                        }}
-                      >
-                        {t('item_scan_qr_dns_google')}
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
+                    {t('msg_add_tunnel')}
+                  </ExButton>
                 </div>
 
                 <div className='col-span-12'>
@@ -266,6 +310,15 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
         scrollBehavior='outside'
         target={targetQr}
         onClose={() => setTargetQr(undefined)}
+      />
+      <ConfModal
+        size='xl'
+        isOpen={confModal.isOpen}
+        onOpenChange={confModal.onOpenChange}
+        isDismissable={false}
+        scrollBehavior='outside'
+        targetIp={targetIp}
+        onClose={() => setTargetIp(undefined)}
       />
     </>
   )

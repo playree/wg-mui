@@ -1,3 +1,4 @@
+import { Peer, WgConf } from '@/generated/client'
 import {
   addWgPeer,
   disableWgAutoStart,
@@ -10,7 +11,6 @@ import {
   startWg,
   stopWg,
 } from '@/server-actions/cmd'
-import { Peer, WgConf } from '@prisma/client'
 import { unlinkSync, writeFileSync } from 'fs'
 import { Address4 } from 'ip-address'
 import { IIniObject, stringify } from 'js-ini'
@@ -80,11 +80,11 @@ export class WgMgr {
     this.conf = wgConf
     this.ip4 = new Address4(wgConf.address)
 
-    const start = this.ip4.startAddressExclusive().bigInteger()
-    const end = this.ip4.endAddress().bigInteger()
+    const start = this.ip4.startAddressExclusive().bigInt()
+    const end = this.ip4.endAddress().bigInt()
     const addressList = []
     for (let i = start; i < end; i++) {
-      addressList.push(Address4.fromBigInteger(i).address)
+      addressList.push(Address4.fromBigInt(i).address)
     }
     this.targetAddress = addressList
   }
@@ -271,20 +271,21 @@ exit 0
     return undefined
   }
 
-  getPeerConf(peer: Peer, useDNS: boolean, useGoogleDNS?: boolean) {
-    const dns = useGoogleDNS ? '8.8.8.8' : this.conf.dns || undefined
+  getPeerConf(peer: Peer, useDNS: 'vpn' | 'google' | 'none', allowdIps: 'default' | 'all', mtu: number) {
+    const dns = useDNS === 'google' ? '8.8.8.8' : useDNS === 'vpn' ? this.conf.dns || undefined : undefined
     return (
       stringify(
         {
           Interface: {
             PrivateKey: peer.privateKey,
             Address: `${peer.ip}/${this.ip4.subnetMask}`,
-            DNS: useDNS ? dns : undefined,
+            DNS: dns,
+            MTU: mtu > 0 ? mtu : undefined,
           },
           Peer: {
             PublicKey: this.conf.publicKey,
             EndPoint: this.conf.endPoint,
-            AllowedIPs: this.conf.defaultAllowedIPs || '0.0.0.0/0',
+            AllowedIPs: allowdIps === 'default' ? this.conf.defaultAllowedIPs || '0.0.0.0/0' : '0.0.0.0/0',
             PersistentKeepalive: this.conf.defaultKeepalive,
           },
         } as IIniObject,
