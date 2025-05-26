@@ -78,7 +78,7 @@ export const ja: DefaultLocaleItems = {
   item_disabled: '無効',
   item_refresh: '更新',
   item_conf_file: '設定ファイル',
-  item_allowed_ips_global: 'グローバルIPアドレス',
+  item_allowed_ips_default: 'デフォルトのIPアドレス',
   item_allowed_ips_all: '全てのIPアドレス',
   item_dns_none: '指定しない',
   item_dns_vpn: 'VPNのDNS',

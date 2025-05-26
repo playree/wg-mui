@@ -77,7 +77,7 @@ export type LocaleItemBase =
   | 'item_disabled'
   | 'item_refresh'
   | 'item_conf_file'
-  | 'item_allowed_ips_global'
+  | 'item_allowed_ips_default'
   | 'item_allowed_ips_all'
   | 'item_dns_none'
   | 'item_dns_vpn'

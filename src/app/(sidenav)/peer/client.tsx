@@ -58,7 +58,7 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
   const { targetIp, ...nextProps } = props
   const { t } = useLocale()
 
-  const [allowdIps, setAllowdIps] = useState<'global' | 'all'>('global')
+  const [allowdIps, setAllowdIps] = useState<'default' | 'all'>('default')
   const [useDns, setUseDns] = useState<'vpn' | 'google' | 'none'>('vpn')
   const [mtu, setMtu] = useState(0)
   const [qr, setQr] = useState<string>()
@@ -88,10 +88,10 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
                     isRequired
                     selectedKeys={new Set([allowdIps])}
                     onSelectionChange={(e) => {
-                      setAllowdIps((e.currentKey as 'global' | 'all') || 'global')
+                      setAllowdIps((e.currentKey as 'default' | 'all') || 'default')
                     }}
                   >
-                    <SelectItem key='global'>{t('item_allowed_ips_global')}</SelectItem>
+                    <SelectItem key='default'>{t('item_allowed_ips_default')}</SelectItem>
                     <SelectItem key='all'>{t('item_allowed_ips_all')}</SelectItem>
                   </Select>
                 </div>

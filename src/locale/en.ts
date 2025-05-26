@@ -78,7 +78,7 @@ export const en: LocaleItems = {
   item_disabled: 'Disabled',
   item_refresh: 'Refresh',
   item_conf_file: 'Config File',
-  item_allowed_ips_global: 'Global IP Address',
+  item_allowed_ips_default: 'Defult IP Address',
   item_allowed_ips_all: 'All IP Address',
   item_dns_none: 'Not specified',
   item_dns_vpn: 'VPN DNS',
