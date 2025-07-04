@@ -142,6 +142,7 @@ export const ja: DefaultLocaleItems = {
   item_dashboard_settings: 'ダッシュボード設定',
   item_wg_install_next: 'インストールしたので次へ',
   item_cant_delete: '削除できません',
+  item_note: '備考',
 
   msg_password_confirm: 'パスワードは完了画面で一度だけ確認できます。',
   msg_user_delete: '${username} を削除します。\n※紐づく情報はすべて削除されます。',
@@ -202,6 +203,7 @@ export const ja: DefaultLocaleItems = {
   '@invalid_authentication_failed': '認証に失敗しました',
   '@invalid_label_name': '1～20文字',
   '@invalid_explanation': '80文字以内',
+  '@invalid_note': '40文字以内',
   '@invalid_conf_dir_path': '絶対パス指定 例)/etc/wireguard',
   '@invalid_interface_name': '半角英数記号(.-_)1～60文字',
   '@invalid_address': 'CIDRフォーマット不正 例)192.168.1.1/24',

@@ -57,6 +57,7 @@ export const zPasswordUpdate = z
 export const zPasswordConfirm = z.string().min(1, el('@required_field'))
 export const zEmail = z.string().email(el('@invalid_email')).or(zEmpty).transform(convNull)
 export const zEmailChange = z.string().email(el('@invalid_email'))
+export const zNote = z.string().max(40, el('@invalid_note'))
 
 export const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
 export const zExplanation = z.string().max(80, el('@invalid_explanation'))
@@ -100,6 +101,7 @@ export const scCreateUser = z.object({
   isAdmin: z.boolean(),
   email: zEmail,
   labelList: z.set(z.string()),
+  note: zNote,
 })
 export type CreateUser = z.infer<typeof scCreateUser>
 
@@ -111,6 +113,7 @@ export const scUpdateUser = z.object({
   isAdmin: z.boolean(),
   email: zEmail,
   labelList: z.set(z.string()),
+  note: zNote,
 })
 export type UpdateUser = z.infer<typeof scUpdateUser>
 
@@ -121,6 +124,7 @@ export type TypeUser = {
   isAdmin: boolean
   locale: string | null
   email: string | null
+  note: string | null
   labelList?: {
     id: string
     name: string

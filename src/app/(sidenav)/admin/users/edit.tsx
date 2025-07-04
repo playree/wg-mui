@@ -59,7 +59,7 @@ const CreateUserModal: FC<
   } = useForm<CreateUser>({
     resolver: zodResolver(scCreateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]) },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), note: '' },
   })
 
   useEffect(() => {
@@ -122,6 +122,7 @@ const CreateUserModal: FC<
                     errorMessage={fet(errors.name)}
                     autoComplete='username'
                     isRequired
+                    maxLength={30}
                   />
                 </div>
                 <div className='col-span-12 flex items-center pl-2'>
@@ -222,6 +223,17 @@ const CreateUserModal: FC<
                     )}
                   />
                 </div>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='note'
+                    type='text'
+                    label={t('item_note')}
+                    variant='bordered'
+                    errorMessage={fet(errors.note)}
+                    maxLength={40}
+                  />
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
@@ -267,7 +279,7 @@ export const UpdateUserModal: FC<
   } = useForm<UpdateUser>({
     resolver: zodResolver(scUpdateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]) },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), note: '' },
   })
 
   useEffect(() => {
@@ -285,6 +297,7 @@ export const UpdateUserModal: FC<
       setValue('isAdmin', target.isAdmin)
       setValue('email', target.email || '')
       setValue('labelList', new Set(target.labelList?.map((value) => value.id)))
+      setValue('note', target.note || '')
     }
   }, [target, props.isOpen, setValue])
 
@@ -342,6 +355,7 @@ export const UpdateUserModal: FC<
                     errorMessage={fet(errors.name)}
                     autoComplete='username'
                     isRequired
+                    maxLength={30}
                   />
                 </div>
                 <div className='col-span-12 flex items-center pl-2'>
@@ -440,6 +454,17 @@ export const UpdateUserModal: FC<
                         )}
                       </Select>
                     )}
+                  />
+                </div>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='note'
+                    type='text'
+                    label={t('item_note')}
+                    variant='bordered'
+                    errorMessage={fet(errors.note)}
+                    maxLength={40}
                   />
                 </div>
               </div>

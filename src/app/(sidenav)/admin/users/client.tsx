@@ -172,6 +172,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
               <TableColumn key='lastSignInAt' allowsSorting>
                 {t('item_last_signin_at')}
               </TableColumn>
+              <TableColumn>{t('item_note')}</TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
               </TableColumn>
@@ -220,6 +221,9 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                   </TableCell>
                   <TableCell>
                     <div className='text-xs'>{user.lastSignInAt ? dayformat(user.lastSignInAt, 'jp-simple') : ''}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div className='text-xs'>{user.note}</div>
                   </TableCell>
                   <TableCell>
                     <div className='text-xs'>{dayformat(user.updatedAt, 'jp-simple')}</div>
