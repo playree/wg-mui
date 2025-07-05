@@ -57,7 +57,6 @@ export const zPasswordUpdate = z
 export const zPasswordConfirm = z.string().min(1, el('@required_field'))
 export const zEmail = z.string().email(el('@invalid_email')).or(zEmpty).transform(convNull)
 export const zEmailChange = z.string().email(el('@invalid_email'))
-export const zNote = z.string().max(40, el('@invalid_note')).or(zEmpty).transform(convNull)
 
 export const zLabelName = z.string().min(1, el('@invalid_label_name')).max(20, el('@invalid_label_name'))
 export const zExplanation = z.string().max(80, el('@invalid_explanation'))
@@ -79,7 +78,7 @@ export const zDns = z.string().regex(reHalfString, el('@invalid_dns')).or(zEmpty
 export const zIp = z.string().regex(reIp, el('@invalid_ip'))
 export const zAllowedIPs = z.string().regex(reHalfString, el('@invalid_allowed_ips')).or(zEmpty).transform(convNull)
 export const zKeepalive = z.number().min(0, el('@invalid_keepalive')).max(600, el('@invalid_keepalive'))
-export const zRemarks = z.string().or(zEmpty).transform(convNull)
+export const zRemarks = z.string().max(40, el('@invalid_remarks')).or(zEmpty).transform(convNull)
 export const zPostUp = z.string().or(zEmpty).transform(convNull)
 export const zPostDown = z.string().or(zEmpty).transform(convNull)
 
@@ -101,7 +100,7 @@ export const scCreateUser = z.object({
   isAdmin: z.boolean(),
   email: zEmail,
   labelList: z.set(z.string()),
-  note: zNote,
+  remarks: zRemarks,
 })
 export type CreateUser = z.infer<typeof scCreateUser>
 
@@ -113,7 +112,7 @@ export const scUpdateUser = z.object({
   isAdmin: z.boolean(),
   email: zEmail,
   labelList: z.set(z.string()),
-  note: zNote,
+  remarks: zRemarks,
 })
 export type UpdateUser = z.infer<typeof scUpdateUser>
 
@@ -124,7 +123,7 @@ export type TypeUser = {
   isAdmin: boolean
   locale: string | null
   email: string | null
-  note: string | null
+  remarks: string | null
   labelList?: {
     id: string
     name: string

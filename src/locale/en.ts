@@ -142,7 +142,6 @@ export const en: LocaleItems = {
   item_dashboard_settings: 'Dashboard Settings',
   item_wg_install_next: `Now that it's installed, next`,
   item_cant_delete: `Can't delete`,
-  item_note: 'Note',
 
   msg_password_confirm: 'The password can be confirmed only once on the completion screen.',
   msg_user_delete: 'Delete ${username}.\n*All linked information will be deleted.',
@@ -204,7 +203,7 @@ This URL will expire in 48 hours.
   '@invalid_authentication_failed': 'Authentication failed',
   '@invalid_label_name': '1-20 characters',
   '@invalid_explanation': 'Within 80 characters',
-  '@invalid_note': 'Within 40 characters',
+  '@invalid_remarks': 'Within 40 characters',
   '@invalid_conf_dir_path': 'Absolute path (ex. /etc/wireguard',
   '@invalid_interface_name': '1-60 alphanumeric characters (.-_)',
   '@invalid_address': 'Invalid CIDR format (ex. 192.168.1.1/24',

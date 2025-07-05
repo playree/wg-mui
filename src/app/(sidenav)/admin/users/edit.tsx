@@ -59,7 +59,7 @@ const CreateUserModal: FC<
   } = useForm<CreateUser>({
     resolver: zodResolver(scCreateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), note: '' },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },
   })
 
   useEffect(() => {
@@ -226,11 +226,11 @@ const CreateUserModal: FC<
                 <div className='col-span-12'>
                   <InputCtrl
                     control={control}
-                    name='note'
+                    name='remarks'
                     type='text'
-                    label={t('item_note')}
+                    label={t('item_remarks')}
                     variant='bordered'
-                    errorMessage={fet(errors.note)}
+                    errorMessage={fet(errors.remarks)}
                     maxLength={40}
                   />
                 </div>
@@ -279,7 +279,7 @@ export const UpdateUserModal: FC<
   } = useForm<UpdateUser>({
     resolver: zodResolver(scUpdateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), note: '' },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },
   })
 
   useEffect(() => {
@@ -297,7 +297,7 @@ export const UpdateUserModal: FC<
       setValue('isAdmin', target.isAdmin)
       setValue('email', target.email || '')
       setValue('labelList', new Set(target.labelList?.map((value) => value.id)))
-      setValue('note', target.note || '')
+      setValue('remarks', target.remarks || '')
     }
   }, [target, props.isOpen, setValue])
 
@@ -459,11 +459,11 @@ export const UpdateUserModal: FC<
                 <div className='col-span-12'>
                   <InputCtrl
                     control={control}
-                    name='note'
+                    name='remarks'
                     type='text'
-                    label={t('item_note')}
+                    label={t('item_remarks')}
                     variant='bordered'
-                    errorMessage={fet(errors.note)}
+                    errorMessage={fet(errors.remarks)}
                     maxLength={40}
                   />
                 </div>
