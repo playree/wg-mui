@@ -197,7 +197,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                   <TableCell>
                     {user.labelList?.map((value) => {
                       return (
-                        <Chip key={value.id} variant='faded' size='sm'>
+                        <Chip key={value.id} variant='faded' size='sm' className='m-[1px]'>
                           {value.name}
                         </Chip>
                       )

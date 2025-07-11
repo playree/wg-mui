@@ -254,6 +254,7 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
               <CardHeader className='flex py-2'>
                 <BoltIcon className='mr-2' />
                 <span className='font-bold'>{peer.ip}</span>
+                <span className='ml-2 text-sm'>- {peer.remarks}</span>
               </CardHeader>
               <CardBody className={twMerge(gridStyles(), 'pl-10')}>
                 <div className='col-span-12'>
