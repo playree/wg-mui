@@ -37,9 +37,9 @@ export const SideNavbar: FC<{
     <>
       <button
         className={twMerge(
-          'fixed z-40 ml-3 mt-2 rounded-lg bg-gray-200 p-2 text-sm text-gray-500',
-          'opacity-50 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-200',
-          'dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600 lg:hidden',
+          'fixed z-40 mt-2 ml-3 rounded-lg bg-gray-200 p-2 text-sm text-gray-500',
+          'opacity-50 hover:bg-gray-300 focus:ring-2 focus:ring-gray-200 focus:outline-hidden',
+          'lg:hidden dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600',
         )}
         onClick={() => {
           setIsOpen(true)
@@ -51,7 +51,7 @@ export const SideNavbar: FC<{
       <nav // サイドメニュー
         id='side-menu'
         className={twMerge(
-          'fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform',
+          'fixed top-0 left-0 z-40 h-screen w-64 -translate-x-full transition-transform',
           isOpen ? 'transform-none' : 'lg:translate-x-0',
         )}
       >
@@ -64,7 +64,7 @@ export const SideNavbar: FC<{
         </div>
       </nav>
       <div
-        className={twMerge('fixed inset-0 z-30 bg-gray-900 bg-opacity-50 dark:bg-opacity-80', isOpen ? '' : 'hidden')}
+        className={twMerge('bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30 bg-gray-900', isOpen ? '' : 'hidden')}
         onClick={closeMenu}
       ></div>
 

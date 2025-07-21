@@ -125,7 +125,7 @@ export const LabelListClient: FC = () => {
                       classNames={{
                         base: 'before:bg-default-200',
                         content:
-                          'py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
+                          'py-1 px-1 border border-default-200 bg-linear-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
                       }}
                     >
                       <DropdownTrigger>

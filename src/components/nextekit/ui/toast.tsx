@@ -105,7 +105,7 @@ export const Toast = forwardRef<ToastRef>((props, ref) => {
 
   return (
     <div
-      className={twMerge('fixed bottom-1 right-1 flex max-w-96 flex-col flex-wrap-reverse text-right')}
+      className={twMerge('fixed right-1 bottom-1 flex max-w-96 flex-col flex-wrap-reverse text-right')}
       style={{ zIndex: 99 }}
     >
       <AnimatePresence>
@@ -118,8 +118,8 @@ export const Toast = forwardRef<ToastRef>((props, ref) => {
             className={twMerge(
               'relative z-20 mt-2 flex w-fit items-center text-sm',
               msg.type === 'error'
-                ? 'rounded-lg bg-red-100 p-2 text-red-500 opacity-80 shadow dark:bg-red-950 dark:text-red-300'
-                : 'rounded-lg bg-blue-100 p-2 text-gray-500 opacity-80 shadow dark:bg-gray-800 dark:text-gray-400',
+                ? 'rounded-lg bg-red-100 p-2 text-red-500 opacity-80 shadow-sm dark:bg-red-950 dark:text-red-300'
+                : 'rounded-lg bg-blue-100 p-2 text-gray-500 opacity-80 shadow-sm dark:bg-gray-800 dark:text-gray-400',
             )}
           >
             {msg.type === 'error' ? (

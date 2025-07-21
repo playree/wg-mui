@@ -197,7 +197,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                   <TableCell>
                     {user.labelList?.map((value) => {
                       return (
-                        <Chip key={value.id} variant='faded' size='sm' className='m-[1px]'>
+                        <Chip key={value.id} variant='faded' size='sm' className='m-px'>
                           {value.name}
                         </Chip>
                       )
@@ -234,7 +234,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                       classNames={{
                         base: 'before:bg-default-200',
                         content:
-                          'py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
+                          'py-1 px-1 border border-default-200 bg-linear-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
                       }}
                     >
                       <DropdownTrigger>

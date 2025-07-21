@@ -1,13 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin './hero.ts';
+
+@source '../../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-noto:
+    var(--font-noto-sans-jp), BlinkMacSystemFont, Roboto, Segoe UI, Helvetica Neue, HelveticaNeue, 游ゴシック体,
+    YuGothic, 游ゴシック Medium, Yu Gothic Medium, 游ゴシック, Yu Gothic, Verdana, メイリオ, Meiryo, sans-serif;
+  --font-mono: var(--font-roboto-mono);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 .markdown {
-  @apply break-words leading-normal;
+  @apply leading-normal break-words;
 }
 
 .markdown > * + * {
-  @apply mb-4 mt-0;
+  @apply mt-0 mb-4;
 }
 
 .markdown li + li {
@@ -31,39 +59,39 @@
 }
 
 .markdown h1 {
-  @apply mb-4 mt-6 border-b pb-2 text-2xl font-semibold leading-tight;
+  @apply mt-6 mb-4 border-b pb-2 text-2xl leading-tight font-semibold;
 }
 
 .markdown h2 {
-  @apply mb-4 mt-6 border-b pb-2 text-lg font-semibold leading-tight;
+  @apply mt-6 mb-4 border-b pb-2 text-lg leading-tight font-semibold;
 }
 
 .markdown h3 {
-  @apply mb-4 mt-6 text-base font-semibold leading-snug;
+  @apply mt-6 mb-4 text-base leading-snug font-semibold;
 }
 
 .markdown h4 {
-  @apply mb-4 mt-6 text-sm font-semibold leading-none;
+  @apply mt-6 mb-4 text-sm leading-none font-semibold;
 }
 
 .markdown h5 {
-  @apply mb-4 mt-6 text-xs font-semibold leading-tight;
+  @apply mt-6 mb-4 text-xs leading-tight font-semibold;
 }
 
 .markdown h6 {
-  @apply mb-4 mt-6 text-xs font-semibold leading-tight text-gray-500 dark:text-gray-400;
+  @apply mt-6 mb-4 text-xs leading-tight font-semibold text-gray-500 dark:text-gray-400;
 }
 
 .markdown blockquote {
-  @apply border-l-4 border-gray-300 pl-4 pr-4 text-sm text-gray-600 dark:border-gray-600 dark:text-gray-300;
+  @apply border-l-4 border-gray-300 pr-4 pl-4 text-sm text-gray-600 dark:border-gray-600 dark:text-gray-300;
 }
 
 .markdown code {
-  @apply inline rounded bg-gray-200 px-1 font-mono dark:bg-gray-800;
+  @apply inline rounded-sm bg-gray-200 px-1 font-mono dark:bg-gray-800;
 }
 
 .markdown pre {
-  @apply rounded bg-gray-100 p-4 dark:bg-gray-800;
+  @apply rounded-sm bg-gray-100 p-4 dark:bg-gray-800;
 }
 
 .markdown pre code {
@@ -79,7 +107,7 @@
 }
 
 .markdown kbd {
-  @apply inline-block rounded border px-1 py-5 align-middle font-mono text-xs font-normal shadow;
+  @apply inline-block rounded-sm border px-1 py-5 align-middle font-mono text-xs font-normal shadow-sm;
 }
 
 .markdown table {
@@ -96,5 +124,5 @@
 
 /* Override pygments style background color. */
 .markdown .highlight pre {
-  @apply bg-gray-100 dark:bg-gray-800 !important;
+  @apply bg-gray-100! dark:bg-gray-800!;
 }

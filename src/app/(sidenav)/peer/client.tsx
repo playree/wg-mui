@@ -114,7 +114,7 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
                   <NumberInput label={t('item_mtu')} variant='bordered' value={mtu} onValueChange={setMtu} />
                 </div>
                 <div className='col-span-12 my-auto ml-2 md:col-span-8'>
-                  <div className={twMerge(textStyles({ color: 'light' }), 'whitespace-pre-line text-xs')}>
+                  <div className={twMerge(textStyles({ color: 'light' }), 'text-xs whitespace-pre-line')}>
                     {t('item_mtu_help')}
                   </div>
                   <div>

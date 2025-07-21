@@ -479,7 +479,7 @@ export const SystemInfoClient: FC<{
               </div>
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>
               <div></div>
             </TableCell>
@@ -546,11 +546,11 @@ export const SystemInfoClient: FC<{
               </div>
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>IP Forward</TableCell>
             <TableCell>{info.ipForward || ''}</TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>{t('item_google_signin')}</TableCell>
             <TableCell>
               <OnOffChip
@@ -560,7 +560,7 @@ export const SystemInfoClient: FC<{
               />
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>{t('item_gitlab_signin')}</TableCell>
             <TableCell>
               <OnOffChip

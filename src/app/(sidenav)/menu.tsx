@@ -139,7 +139,7 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
           </AccordionItem>
         </Accordion>
       </div>
-      <div className='absolute inset-x-0 bottom-0 h-5 bg-gradient-to-r from-gray-200 dark:from-gray-900'>
+      <div className='absolute inset-x-0 bottom-0 h-5 bg-linear-to-r from-gray-200 dark:from-gray-900'>
         <footer
           className={twMerge(
             textStyles({ color: 'superlight' }),
