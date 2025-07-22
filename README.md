@@ -55,7 +55,7 @@ Next.jsの最新機能を率先して利用して開発しています。
   - Using App Router
   - Using Server Components
   - Using Server Actions
-- [Tailwind CSS](https://tailwindcss.com/) v3 \
+- [Tailwind CSS](https://tailwindcss.com/) v4 \
   CSS Framework
 - [HeroUI(NextUI)](https://www.heroui.com/) v2.7.11 \
   ベースのUIコンポーネント
