@@ -4,7 +4,7 @@ import { AuthProvider } from '@/components/nextekit/auth'
 import { LocaleProvider } from '@/components/nextekit/locale/client'
 import { authProps } from '@/config/auth-props'
 import { localeConfig } from '@/locale/config'
-import { HeroUIProvider } from '@heroui/react'
+import { HeroUIProvider, ToastProvider } from '@heroui/react'
 import { ThemeProvider, type ThemeProviderProps } from 'next-themes'
 
 import { useRouter } from 'next/navigation'
@@ -24,6 +24,7 @@ export const Providers: FC<ProvidersProps> = ({ children, defaultLocale, themePr
 
   return (
     <HeroUIProvider navigate={router.push}>
+      <ToastProvider />
       <ThemeProvider {...themeProps}>
         <AuthProvider authProps={authProps}>
           <LocaleProvider config={localeConfig} defaultLocale={defaultLocale} acceptLanguage={acceptLanguage}>
