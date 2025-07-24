@@ -339,6 +339,7 @@ const FormWgConf: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }
             key='post-script'
             aria-label='ac post-script'
             title={t('item_post_up_down')}
+            classNames={{ trigger: 'cursor-pointer' }}
           >
             <FormWgConfPostScript safeWgConf={safeWgConf} />
           </AccordionItem>
@@ -347,6 +348,7 @@ const FormWgConf: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }
             key='for-clinets'
             aria-label='ac for-clinets'
             title={t('item_for_clients')}
+            classNames={{ trigger: 'cursor-pointer' }}
           >
             <FormWgConfForClients safeWgConf={safeWgConf} />
           </AccordionItem>
@@ -899,6 +901,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='user-settings'
         aria-label='ac user-settings'
         title={t('item_user_settings')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormUserSettings values={settings.user} />
       </AccordionItem>
@@ -907,6 +910,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='signin-message'
         aria-label='ac signin-message'
         title={t('item_signin_message')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormSigninMessage values={settings.signinMessage} />
       </AccordionItem>
@@ -915,6 +919,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='top-page-notice'
         aria-label='ac top-page-notice'
         title={t('item_top_page_notice')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormTopPageNotice values={settings.topPageNotice} />
       </AccordionItem>
@@ -923,6 +928,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='dashboard'
         aria-label='ac dashboard'
         title={t('item_dashboard_settings')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormDashboard values={settings.dashboard} />
       </AccordionItem>

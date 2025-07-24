@@ -107,7 +107,7 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
 
       <div className='mt-2'>
         <Accordion selectionMode='multiple' itemClasses={accordionStyles} defaultSelectedKeys='all' showDivider={false}>
-          <AccordionItem isCompact={true} title={t('group_user')}>
+          <AccordionItem isCompact={true} title={t('group_user')} classNames={{ trigger: 'cursor-pointer' }}>
             <div className='mx-2'>
               <MenuButton to='/' text={t('menu_dashboard')} icon={<Squares2x2Icon />} closeMenu={closeMenu} />
             </div>
@@ -119,7 +119,12 @@ export const Menu: FC<{ closeMenu?: () => void }> = ({ closeMenu }) => {
             </div>
           </AccordionItem>
 
-          <AccordionItem isCompact={true} title={t('group_admin')} hidden={!session?.user?.isAdmin}>
+          <AccordionItem
+            isCompact={true}
+            title={t('group_admin')}
+            hidden={!session?.user?.isAdmin}
+            classNames={{ trigger: 'cursor-pointer' }}
+          >
             <div className='mx-2'>
               <MenuButton to='/admin/users' text={t('menu_users')} icon={<UsersIcon />} closeMenu={closeMenu} />
               <MenuButton to='/admin/labels' text={t('menu_labels')} icon={<TagIcon />} closeMenu={closeMenu} />
