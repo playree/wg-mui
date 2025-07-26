@@ -18,6 +18,7 @@ import type { TypeUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
+  addToast,
   Button,
   Chip,
   Dropdown,
@@ -121,6 +122,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
             label={t('item_label')}
             variant='bordered'
             items={labelList.items}
+            isClearable
             onChange={(el) => {
               console.debug('select change:', el.target.value)
               list.setFilter({ label: el.target.value })
@@ -205,17 +207,15 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center'>
-                      <Chip variant='faded' size='sm'>
-                        {user.peerIpList?.length || 0}
-                      </Chip>
                       <ExButton
-                        isIconOnly
                         isSmart
+                        className='min-w-0 gap-1 px-2'
                         color='primary'
-                        tooltip={t('item_peer_management')}
+                        variant='flat'
                         href={`/admin/users/${user.id}/peer`}
                       >
                         <ComputerDesktopIcon />
+                        <span>{user.peerIpList?.length || 0}</span>
                       </ExButton>
                     </div>
                   </TableCell>
@@ -296,6 +296,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                             if (ok) {
                               await parseAction(deleteUser({ id: user.id }))
                               await intervalOperation()
+                              addToast({ description: t('msg_created', { item: user.name }), color: 'success' })
                               list.reload()
                               confirmModal().close()
                             }

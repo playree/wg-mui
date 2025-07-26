@@ -6,10 +6,11 @@ import { InputCtrl } from '@/components/nextekit/ui/input'
 import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { CreateUser, TypeLabel, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
+import { CreateUser, scCreateUser, scUpdateUser, TypeLabel, TypeUser, UpdateUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
+  addToast,
   Checkbox,
   Chip,
   Modal,
@@ -105,6 +106,7 @@ const CreateUserModal: FC<
 
               await parseAction(createUser(req))
               await intervalOperation()
+              addToast({ description: t('msg_created', { item: req.name }), color: 'success' })
               updated()
               onClose()
               setLoading(false)
@@ -156,6 +158,7 @@ const CreateUserModal: FC<
                     }
                     type={isVisible ? 'text' : 'password'}
                     autoComplete='new-password'
+                    maxLength={30}
                     errorMessage={fet(errors.password)}
                     isDisabled={isSendEmail}
                     onChanged={(event) => {
@@ -204,6 +207,7 @@ const CreateUserModal: FC<
                         selectionMode='multiple'
                         onSelectionChange={onChange}
                         selectedKeys={value}
+                        isClearable
                         renderValue={(items) => {
                           return (
                             <div className='flex flex-wrap gap-2'>
@@ -338,6 +342,7 @@ export const UpdateUserModal: FC<
 
               await parseAction(updateUser(req))
               await intervalOperation()
+              addToast({ description: t('msg_updated', { item: req.name }), color: 'success' })
               updated()
               onClose()
               setLoading(false)
@@ -494,7 +499,13 @@ export const CreateUserButtonWithModal: FC<{
   const editModal = useDisclosure()
   return (
     <>
-      <ExButton isIconOnly color='primary' tooltip={t('item_user_create')} onPress={() => editModal.onOpen()}>
+      <ExButton
+        isIconOnly
+        variant='flat'
+        color='primary'
+        tooltip={t('item_user_create')}
+        onPress={() => editModal.onOpen()}
+      >
         <UserPlusIcon />
       </ExButton>
       <CreateUserModal

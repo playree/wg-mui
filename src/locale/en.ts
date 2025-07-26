@@ -169,7 +169,9 @@ export const en: LocaleItems = {
   msg_send_confirm_email:
     'A confirmation email has been sent.\nPlease use the URL in the email to complete the changes.',
   msg_confirmed_email: 'Email: ${email}\nhas been confirmed.\nYour email address has been changed.',
+  msg_created: 'Created ${item}',
   msg_updated: 'Updated ${item}',
+  msg_deleted: 'Deleted ${item}',
   msg_wg_started: 'WireGuard has been started',
   msg_wg_stoped: 'WireGuard has been stopped',
   msg_wg_restarted: 'WireGuard has been restarted',
