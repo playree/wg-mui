@@ -169,7 +169,9 @@ export const en: LocaleItems = {
   msg_send_confirm_email:
     'A confirmation email has been sent.\nPlease use the URL in the email to complete the changes.',
   msg_confirmed_email: 'Email: ${email}\nhas been confirmed.\nYour email address has been changed.',
+  msg_created: 'Created ${item}',
   msg_updated: 'Updated ${item}',
+  msg_deleted: 'Deleted ${item}',
   msg_wg_started: 'WireGuard has been started',
   msg_wg_stoped: 'WireGuard has been stopped',
   msg_wg_restarted: 'WireGuard has been restarted',
@@ -203,6 +205,7 @@ This URL will expire in 48 hours.
   '@invalid_authentication_failed': 'Authentication failed',
   '@invalid_label_name': '1-20 characters',
   '@invalid_explanation': 'Within 80 characters',
+  '@invalid_remarks': 'Within 40 characters',
   '@invalid_conf_dir_path': 'Absolute path (ex. /etc/wireguard',
   '@invalid_interface_name': '1-60 alphanumeric characters (.-_)',
   '@invalid_address': 'Invalid CIDR format (ex. 192.168.1.1/24',

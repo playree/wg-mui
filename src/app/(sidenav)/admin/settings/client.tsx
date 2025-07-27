@@ -48,6 +48,7 @@ import {
   TableHeader,
   TableRow,
   Textarea,
+  addToast,
 } from '@heroui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Address4 } from 'ip-address'
@@ -82,7 +83,6 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
   const { t, fet } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -104,7 +104,7 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
         await intervalOperation()
         setLoading(false)
         setEdited(false)
-        toast().info({ message: t('msg_updated', { item: t('item_post_up_down') }) })
+        addToast({ description: t('msg_updated', { item: t('item_post_up_down') }), color: 'success' })
       })}
     >
       <div className={gridStyles()}>
@@ -176,7 +176,6 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
   const { t, fet } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -203,7 +202,7 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
         await intervalOperation()
         setLoading(false)
         setEdited(false)
-        toast().info({ message: t('msg_updated', { item: t('item_for_clients') }) })
+        addToast({ description: t('msg_updated', { item: t('item_for_clients') }), color: 'success' })
       })}
     >
       <div className={gridStyles()}>
@@ -340,6 +339,7 @@ const FormWgConf: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }
             key='post-script'
             aria-label='ac post-script'
             title={t('item_post_up_down')}
+            classNames={{ trigger: 'cursor-pointer' }}
           >
             <FormWgConfPostScript safeWgConf={safeWgConf} />
           </AccordionItem>
@@ -348,6 +348,7 @@ const FormWgConf: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ safeWgConf }
             key='for-clinets'
             aria-label='ac for-clinets'
             title={t('item_for_clients')}
+            classNames={{ trigger: 'cursor-pointer' }}
           >
             <FormWgConfForClients safeWgConf={safeWgConf} />
           </AccordionItem>
@@ -362,7 +363,7 @@ export const SystemInfoClient: FC<{
 }> = ({ info }) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
-  const { confirmModal, toast } = useSharedUIContext()
+  const { confirmModal } = useSharedUIContext()
   const [isLoadingWgStart, setLoadingWgStart] = useState(false)
   const [isLoadingWgAutoStartEnable, setLoadingWgAutoStartEnable] = useState(false)
   const [isLoadingWgReboot, setLoadingWgReboot] = useState(false)
@@ -416,7 +417,7 @@ export const SystemInfoClient: FC<{
                           await intervalOperation()
                           setLoadingWgStart(false)
                           refresh()
-                          toast().info({ message: t('msg_wg_stoped') })
+                          addToast({ description: t('msg_wg_stoped'), color: 'success' })
                         }
                       }}
                     >
@@ -438,7 +439,7 @@ export const SystemInfoClient: FC<{
                         console.debug('organizeList:', organizeList)
                         setLoadingWgStart(false)
                         refresh()
-                        toast().info({ message: t('msg_wg_started') })
+                        addToast({ description: t('msg_wg_started'), color: 'success' })
                       }}
                     >
                       {t('item_start')}
@@ -469,7 +470,7 @@ export const SystemInfoClient: FC<{
                         console.debug('organizeList:', organizeList)
                         setLoadingWgReboot(false)
                         refresh()
-                        toast().info({ message: t('msg_wg_restarted') })
+                        addToast({ description: t('msg_wg_restarted'), color: 'success' })
                       }
                     }}
                   >
@@ -479,7 +480,7 @@ export const SystemInfoClient: FC<{
               </div>
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>
               <div></div>
             </TableCell>
@@ -516,7 +517,7 @@ export const SystemInfoClient: FC<{
                           await intervalOperation()
                           setLoadingWgAutoStartEnable(false)
                           refresh()
-                          toast().info({ message: t('msg_wg_autostart_disabled') })
+                          addToast({ description: t('msg_wg_autostart_disabled'), color: 'success' })
                         }
                       }}
                     >
@@ -536,7 +537,7 @@ export const SystemInfoClient: FC<{
                         await intervalOperation()
                         setLoadingWgAutoStartEnable(false)
                         refresh()
-                        toast().info({ message: t('msg_wg_autostart_enabled') })
+                        addToast({ description: t('msg_wg_autostart_enabled'), color: 'success' })
                       }}
                     >
                       {t('item_enable')}
@@ -546,11 +547,11 @@ export const SystemInfoClient: FC<{
               </div>
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>IP Forward</TableCell>
             <TableCell>{info.ipForward || ''}</TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>{t('item_google_signin')}</TableCell>
             <TableCell>
               <OnOffChip
@@ -560,7 +561,7 @@ export const SystemInfoClient: FC<{
               />
             </TableCell>
           </TableRow>
-          <TableRow className='border-b-1 border-gray-300 dark:border-gray-700'>
+          <TableRow className='border-b border-gray-300 dark:border-gray-700'>
             <TableCell>{t('item_gitlab_signin')}</TableCell>
             <TableCell>
               <OnOffChip
@@ -592,7 +593,6 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
   const { t, fet, lcConfig } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -613,7 +613,7 @@ const FormSigninMessage: FC<{ values: Record<string, string> }> = ({ values }) =
         await intervalOperation()
         setLoading(false)
         setEdited(false)
-        toast().info({ message: t('msg_updated', { item: t('item_top_page_notice') }) })
+        addToast({ description: t('msg_updated', { item: t('item_top_page_notice') }), color: 'success' })
       })}
     >
       <div className={gridStyles()}>
@@ -668,7 +668,6 @@ const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) =
   const { t, fet, lcConfig } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const { toast } = useSharedUIContext()
 
   const {
     control,
@@ -689,7 +688,7 @@ const FormTopPageNotice: FC<{ values: Record<string, string> }> = ({ values }) =
         await intervalOperation()
         setLoading(false)
         setEdited(false)
-        toast().info({ message: t('msg_updated', { item: t('item_top_page_notice') }) })
+        addToast({ description: t('msg_updated', { item: t('item_top_page_notice') }), color: 'success' })
       })}
     >
       <div className={gridStyles()}>
@@ -744,7 +743,6 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
   const { t } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const { toast } = useSharedUIContext()
 
   const { control, handleSubmit } = useForm<DashboardSettings>({
     resolver: zodResolver(scDashboardSettings),
@@ -761,7 +759,7 @@ const FormDashboard: FC<{ values: { enabledReleaseNote: EnabledType } }> = ({ va
         await intervalOperation()
         setLoading(false)
         setEdited(false)
-        toast().info({ message: t('msg_updated', { item: t('item_dashboard_settings') }) })
+        addToast({ description: t('msg_updated', { item: t('item_dashboard_settings') }), color: 'success' })
       })}
     >
       <div className={gridStyles()}>
@@ -812,7 +810,6 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
   const { t } = useLocale()
   const [isEdited, setEdited] = useState(false)
   const [isLoading, setLoading] = useState(false)
-  const { toast } = useSharedUIContext()
 
   const { control, handleSubmit } = useForm<UserSettings>({
     resolver: zodResolver(scUserSettings),
@@ -829,7 +826,7 @@ const FormUserSettings: FC<{ values: { requiredPasswordScore: PasswordScore } }>
         await intervalOperation()
         setLoading(false)
         setEdited(false)
-        toast().info({ message: t('msg_updated', { item: t('item_user_settings') }) })
+        addToast({ description: t('msg_updated', { item: t('item_user_settings') }), color: 'success' })
       })}
     >
       <div className={gridStyles()}>
@@ -904,6 +901,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='user-settings'
         aria-label='ac user-settings'
         title={t('item_user_settings')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormUserSettings values={settings.user} />
       </AccordionItem>
@@ -912,6 +910,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='signin-message'
         aria-label='ac signin-message'
         title={t('item_signin_message')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormSigninMessage values={settings.signinMessage} />
       </AccordionItem>
@@ -920,6 +919,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='top-page-notice'
         aria-label='ac top-page-notice'
         title={t('item_top_page_notice')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormTopPageNotice values={settings.topPageNotice} />
       </AccordionItem>
@@ -928,6 +928,7 @@ export const SettingsClient: FC<{ settings: Settings }> = ({ settings }) => {
         key='dashboard'
         aria-label='ac dashboard'
         title={t('item_dashboard_settings')}
+        classNames={{ trigger: 'cursor-pointer' }}
       >
         <FormDashboard values={settings.dashboard} />
       </AccordionItem>

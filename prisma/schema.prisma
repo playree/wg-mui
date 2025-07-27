@@ -18,6 +18,7 @@ model User {
   isAdmin      Boolean  @default(false)
   email        String?  @unique
   locale       String?
+  remarks      String?
   updatedAt    DateTime @updatedAt
   createdAt    DateTime @default(now())
 

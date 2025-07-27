@@ -6,10 +6,11 @@ import { InputCtrl } from '@/components/nextekit/ui/input'
 import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { CreateUser, TypeLabel, TypeUser, UpdateUser, scCreateUser, scUpdateUser } from '@/helpers/schema'
+import { CreateUser, scCreateUser, scUpdateUser, TypeLabel, TypeUser, UpdateUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
+  addToast,
   Checkbox,
   Chip,
   Modal,
@@ -59,7 +60,7 @@ const CreateUserModal: FC<
   } = useForm<CreateUser>({
     resolver: zodResolver(scCreateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]) },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },
   })
 
   useEffect(() => {
@@ -105,6 +106,7 @@ const CreateUserModal: FC<
 
               await parseAction(createUser(req))
               await intervalOperation()
+              addToast({ description: t('msg_created', { item: req.name }), color: 'success' })
               updated()
               onClose()
               setLoading(false)
@@ -122,6 +124,7 @@ const CreateUserModal: FC<
                     errorMessage={fet(errors.name)}
                     autoComplete='username'
                     isRequired
+                    maxLength={30}
                   />
                 </div>
                 <div className='col-span-12 flex items-center pl-2'>
@@ -145,16 +148,17 @@ const CreateUserModal: FC<
                     label={t('item_password')}
                     variant='bordered'
                     endContent={
-                      <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+                      <button className='focus:outline-hidden' type='button' onClick={toggleVisibility}>
                         {isVisible ? (
-                          <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
+                          <EyeSlashIcon className='text-default-400 pointer-events-none text-2xl' />
                         ) : (
-                          <EyeIcon className='pointer-events-none text-2xl text-default-400' />
+                          <EyeIcon className='text-default-400 pointer-events-none text-2xl' />
                         )}
                       </button>
                     }
                     type={isVisible ? 'text' : 'password'}
                     autoComplete='new-password'
+                    maxLength={30}
                     errorMessage={fet(errors.password)}
                     isDisabled={isSendEmail}
                     onChanged={(event) => {
@@ -203,6 +207,7 @@ const CreateUserModal: FC<
                         selectionMode='multiple'
                         onSelectionChange={onChange}
                         selectedKeys={value}
+                        isClearable
                         renderValue={(items) => {
                           return (
                             <div className='flex flex-wrap gap-2'>
@@ -220,6 +225,17 @@ const CreateUserModal: FC<
                         )}
                       </Select>
                     )}
+                  />
+                </div>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='remarks'
+                    type='text'
+                    label={t('item_remarks')}
+                    variant='bordered'
+                    errorMessage={fet(errors.remarks)}
+                    maxLength={40}
                   />
                 </div>
               </div>
@@ -267,7 +283,7 @@ export const UpdateUserModal: FC<
   } = useForm<UpdateUser>({
     resolver: zodResolver(scUpdateUser),
     mode: 'onChange',
-    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]) },
+    defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },
   })
 
   useEffect(() => {
@@ -285,6 +301,7 @@ export const UpdateUserModal: FC<
       setValue('isAdmin', target.isAdmin)
       setValue('email', target.email || '')
       setValue('labelList', new Set(target.labelList?.map((value) => value.id)))
+      setValue('remarks', target.remarks || '')
     }
   }, [target, props.isOpen, setValue])
 
@@ -325,6 +342,7 @@ export const UpdateUserModal: FC<
 
               await parseAction(updateUser(req))
               await intervalOperation()
+              addToast({ description: t('msg_updated', { item: req.name }), color: 'success' })
               updated()
               onClose()
               setLoading(false)
@@ -342,6 +360,7 @@ export const UpdateUserModal: FC<
                     errorMessage={fet(errors.name)}
                     autoComplete='username'
                     isRequired
+                    maxLength={30}
                   />
                 </div>
                 <div className='col-span-12 flex items-center pl-2'>
@@ -365,11 +384,11 @@ export const UpdateUserModal: FC<
                     label={t('item_password')}
                     variant='bordered'
                     endContent={
-                      <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+                      <button className='focus:outline-hidden' type='button' onClick={toggleVisibility}>
                         {isVisible ? (
-                          <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
+                          <EyeSlashIcon className='text-default-400 pointer-events-none text-2xl' />
                         ) : (
-                          <EyeIcon className='pointer-events-none text-2xl text-default-400' />
+                          <EyeIcon className='text-default-400 pointer-events-none text-2xl' />
                         )}
                       </button>
                     }
@@ -442,6 +461,17 @@ export const UpdateUserModal: FC<
                     )}
                   />
                 </div>
+                <div className='col-span-12'>
+                  <InputCtrl
+                    control={control}
+                    name='remarks'
+                    type='text'
+                    label={t('item_remarks')}
+                    variant='bordered'
+                    errorMessage={fet(errors.remarks)}
+                    maxLength={40}
+                  />
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
@@ -469,7 +499,13 @@ export const CreateUserButtonWithModal: FC<{
   const editModal = useDisclosure()
   return (
     <>
-      <ExButton isIconOnly color='primary' tooltip={t('item_user_create')} onPress={() => editModal.onOpen()}>
+      <ExButton
+        isIconOnly
+        variant='flat'
+        color='primary'
+        tooltip={t('item_user_create')}
+        onPress={() => editModal.onOpen()}
+      >
         <UserPlusIcon />
       </ExButton>
       <CreateUserModal

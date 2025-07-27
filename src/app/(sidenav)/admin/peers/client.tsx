@@ -8,7 +8,6 @@ import { parseAction } from '@/helpers/action'
 import { dayformat } from '@/helpers/day'
 import { useLocale } from '@/locale/client'
 import { Pagination, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/react'
-import { useRouter } from 'next/navigation'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
 
@@ -17,23 +16,6 @@ import { getPeerAllList } from './server-actions'
 export const Title: FC = () => {
   const { t } = useLocale()
   return <span className='mr-8 text-lg'>{t('menu_peers')}</span>
-}
-
-export const RefreshButton: FC = () => {
-  const { t } = useLocale()
-  const { refresh } = useRouter()
-  return (
-    <ExButton
-      isIconOnly
-      isSmart
-      tooltip={t('item_refresh')}
-      onPress={async () => {
-        refresh()
-      }}
-    >
-      <ArrowPathIcon />
-    </ExButton>
-  )
 }
 
 export const PeerAllListClient: FC = () => {
@@ -52,7 +34,7 @@ export const PeerAllListClient: FC = () => {
         <div className='col-span-12 flex flex-auto flex-row-reverse'>
           <ExButton
             isIconOnly
-            isSmart
+            variant='flat'
             tooltip={t('item_refresh')}
             onPress={async () => {
               list.reload()

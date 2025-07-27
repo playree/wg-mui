@@ -102,11 +102,11 @@ export const SignInClient: FC<{ ssr: SSResource; isError: boolean }> = ({
               name='password'
               label={t('item_password')}
               endContent={
-                <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+                <button className='focus:outline-hidden' type='button' onClick={toggleVisibility}>
                   {isVisible ? (
-                    <EyeSlashIcon className='pointer-events-none text-2xl text-default-400' />
+                    <EyeSlashIcon className='text-default-400 pointer-events-none text-2xl' />
                   ) : (
-                    <EyeIcon className='pointer-events-none text-2xl text-default-400' />
+                    <EyeIcon className='text-default-400 pointer-events-none text-2xl' />
                   )}
                 </button>
               }

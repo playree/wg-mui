@@ -18,6 +18,7 @@ import type { TypeUser } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
+  addToast,
   Button,
   Chip,
   Dropdown,
@@ -121,6 +122,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
             label={t('item_label')}
             variant='bordered'
             items={labelList.items}
+            isClearable
             onChange={(el) => {
               console.debug('select change:', el.target.value)
               list.setFilter({ label: el.target.value })
@@ -172,6 +174,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
               <TableColumn key='lastSignInAt' allowsSorting>
                 {t('item_last_signin_at')}
               </TableColumn>
+              <TableColumn>{t('item_remarks')}</TableColumn>
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
               </TableColumn>
@@ -196,7 +199,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                   <TableCell>
                     {user.labelList?.map((value) => {
                       return (
-                        <Chip key={value.id} variant='faded' size='sm'>
+                        <Chip key={value.id} variant='flat' size='sm' className='m-px'>
                           {value.name}
                         </Chip>
                       )
@@ -204,22 +207,23 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                   </TableCell>
                   <TableCell>
                     <div className='flex items-center'>
-                      <Chip variant='faded' size='sm'>
-                        {user.peerIpList?.length || 0}
-                      </Chip>
                       <ExButton
-                        isIconOnly
                         isSmart
-                        color='primary'
-                        tooltip={t('item_peer_management')}
+                        className='min-w-0 gap-1 px-2'
+                        color='success'
+                        variant='flat'
                         href={`/admin/users/${user.id}/peer`}
                       >
                         <ComputerDesktopIcon />
+                        <span>{user.peerIpList?.length || 0}</span>
                       </ExButton>
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className='text-xs'>{user.lastSignInAt ? dayformat(user.lastSignInAt, 'jp-simple') : ''}</div>
+                  </TableCell>
+                  <TableCell>
+                    <div className='text-xs'>{user.remarks}</div>
                   </TableCell>
                   <TableCell>
                     <div className='text-xs'>{dayformat(user.updatedAt, 'jp-simple')}</div>
@@ -230,7 +234,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                       classNames={{
                         base: 'before:bg-default-200',
                         content:
-                          'py-1 px-1 border border-default-200 bg-gradient-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
+                          'py-1 px-1 border border-default-200 bg-linear-to-br from-white to-default-200 dark:from-default-50 dark:to-black',
                       }}
                     >
                       <DropdownTrigger>
@@ -292,6 +296,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                             if (ok) {
                               await parseAction(deleteUser({ id: user.id }))
                               await intervalOperation()
+                              addToast({ description: t('msg_created', { item: user.name }), color: 'success' })
                               list.reload()
                               confirmModal().close()
                             }

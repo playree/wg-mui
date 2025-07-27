@@ -48,7 +48,7 @@ export const RefreshButton: FC = () => {
   const { t } = useLocale()
   const { refresh } = useRouter()
   return (
-    <ExButton isIconOnly isSmart tooltip={t('item_refresh')} onPress={() => refresh()}>
+    <ExButton isIconOnly variant='flat' tooltip={t('item_refresh')} onPress={() => refresh()}>
       <ArrowPathIcon />
     </ExButton>
   )
@@ -114,7 +114,7 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
                   <NumberInput label={t('item_mtu')} variant='bordered' value={mtu} onValueChange={setMtu} />
                 </div>
                 <div className='col-span-12 my-auto ml-2 md:col-span-8'>
-                  <div className={twMerge(textStyles({ color: 'light' }), 'whitespace-pre-line text-xs')}>
+                  <div className={twMerge(textStyles({ color: 'light' }), 'text-xs whitespace-pre-line')}>
                     {t('item_mtu_help')}
                   </div>
                   <div>
@@ -254,6 +254,7 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
               <CardHeader className='flex py-2'>
                 <BoltIcon className='mr-2' />
                 <span className='font-bold'>{peer.ip}</span>
+                <span className='ml-2 text-sm'>- {peer.remarks}</span>
               </CardHeader>
               <CardBody className={twMerge(gridStyles(), 'pl-10')}>
                 <div className='col-span-12'>
