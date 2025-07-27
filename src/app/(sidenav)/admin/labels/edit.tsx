@@ -5,11 +5,11 @@ import { ExButton } from '@/components/nextekit/ui/button'
 import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { CreateLabel, TypeLabel, UpdateLabel, scCreateLabel, scUpdateLabel } from '@/helpers/schema'
+import { CreateLabel, scCreateLabel, scUpdateLabel, TypeLabel, UpdateLabel } from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
-  Input,
+  addToast,
   Modal,
   ModalBody,
   ModalContent,
@@ -20,7 +20,7 @@ import {
 } from '@heroui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FC, useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { createLabel, existsLabelName, updateLabel } from './server-actions'
 
@@ -65,6 +65,7 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
               } else {
                 await parseAction(createLabel(req))
                 await intervalOperation()
+                addToast({ description: t('msg_created', { item: req.name }), color: 'success' })
                 updated()
                 onClose()
               }
@@ -82,6 +83,7 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
                     variant='bordered'
                     errorMessage={fet(errors.name)}
                     isRequired
+                    maxLength={20}
                   />
                 </div>
                 <div className='col-span-12'>
@@ -92,6 +94,7 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
                     label={t('item_explanation')}
                     variant='bordered'
                     errorMessage={fet(errors.explanation)}
+                    maxLength={80}
                   />
                 </div>
               </div>
@@ -162,6 +165,7 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
               } else {
                 await parseAction(updateLabel(req))
                 await intervalOperation()
+                addToast({ description: t('msg_updated', { item: req.name }), color: 'success' })
                 updated()
                 onClose()
               }
@@ -172,36 +176,24 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
             <ModalBody>
               <div className={gridStyles()}>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='name'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_label_name')}
-                        variant='bordered'
-                        errorMessage={fet(errors.name)}
-                        onChange={onChange}
-                        value={value}
-                        isRequired
-                      />
-                    )}
+                    label={t('item_label_name')}
+                    variant='bordered'
+                    errorMessage={fet(errors.name)}
+                    isRequired
+                    maxLength={20}
                   />
                 </div>
                 <div className='col-span-12'>
-                  <Controller
+                  <InputCtrl
                     control={control}
                     name='explanation'
-                    render={({ field: { onChange, value } }) => (
-                      <Input
-                        type='text'
-                        label={t('item_explanation')}
-                        variant='bordered'
-                        errorMessage={fet(errors.explanation)}
-                        onChange={onChange}
-                        value={value || ''}
-                      />
-                    )}
+                    label={t('item_explanation')}
+                    variant='bordered'
+                    errorMessage={fet(errors.explanation)}
+                    maxLength={80}
                   />
                 </div>
               </div>
@@ -227,7 +219,13 @@ export const CreateLabelButtonWithModal: FC<{ updated: () => void }> = ({ update
   const editModal = useDisclosure()
   return (
     <>
-      <ExButton isIconOnly color='primary' tooltip={t('item_label_create')} onPress={() => editModal.onOpen()}>
+      <ExButton
+        isIconOnly
+        variant='flat'
+        color='primary'
+        tooltip={t('item_label_create')}
+        onPress={() => editModal.onOpen()}
+      >
         <DocumentPlusIcon />
       </ExButton>
       <CreateLabelModal

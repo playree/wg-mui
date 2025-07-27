@@ -81,7 +81,7 @@ export const LabelListClient: FC = () => {
           />
         </div>
         <div className='col-span-5'></div>
-        <div className='col-span-1 flex items-center'>
+        <div className='col-span-1 flex flex-row-reverse items-center'>
           <CreateLabelButtonWithModal updated={() => list.reload()} />
         </div>
         <div className='col-span-12'>
@@ -111,7 +111,9 @@ export const LabelListClient: FC = () => {
               <TableColumn key='updatedAt' allowsSorting>
                 {t('item_updated_at')}
               </TableColumn>
-              <TableColumn>{t('item_action')}</TableColumn>
+              <TableColumn width={120} align='center'>
+                {t('item_action')}
+              </TableColumn>
             </TableHeader>
             <TableBody items={list.items}>
               {(label) => (

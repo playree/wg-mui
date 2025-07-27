@@ -199,7 +199,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                   <TableCell>
                     {user.labelList?.map((value) => {
                       return (
-                        <Chip key={value.id} variant='faded' size='sm' className='m-px'>
+                        <Chip key={value.id} variant='flat' size='sm' className='m-px'>
                           {value.name}
                         </Chip>
                       )
@@ -210,7 +210,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
                       <ExButton
                         isSmart
                         className='min-w-0 gap-1 px-2'
-                        color='primary'
+                        color='success'
                         variant='flat'
                         href={`/admin/users/${user.id}/peer`}
                       >
