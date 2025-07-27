@@ -48,7 +48,7 @@ export const RefreshButton: FC = () => {
   const { t } = useLocale()
   const { refresh } = useRouter()
   return (
-    <ExButton isIconOnly isSmart tooltip={t('item_refresh')} onPress={() => refresh()}>
+    <ExButton isIconOnly variant='flat' tooltip={t('item_refresh')} onPress={() => refresh()}>
       <ArrowPathIcon />
     </ExButton>
   )
