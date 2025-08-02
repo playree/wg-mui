@@ -1,4 +1,4 @@
-import { getAppName } from '@/helpers/env'
+import { getEnvAppName } from '@/helpers/env'
 import { defaultLocale } from '@/locale/server'
 import '@/styles/globals.css'
 import { Metadata } from 'next'
@@ -24,7 +24,7 @@ const RobotoMono = Roboto_Mono({
 export const metadata: Metadata = {
   title: {
     default: 'WireGuard Managenent UI',
-    template: `%s - ${getAppName() || 'WG MUI'}`,
+    template: `%s - ${getEnvAppName() || 'WG MUI'}`,
   },
   description: 'WireGuard Managenent UI',
   icons: {

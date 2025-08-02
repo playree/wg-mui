@@ -1,9 +1,10 @@
 import { KeyJson, getKeyValueJson, setKeyValueJson } from '@/helpers/key-value'
 
+import { getEnvDefaultLocale } from '@/helpers/env'
 import { LocaleItem } from '.'
 import { localeConfig } from './config'
 
-export const defaultLocale = process.env.DEFAULT_LOCALE || localeConfig.locales[0]
+export const defaultLocale = getEnvDefaultLocale() || localeConfig.locales[0]
 
 export const getLocaleValue = async (key: KeyJson) => {
   const data = await getKeyValueJson(key)

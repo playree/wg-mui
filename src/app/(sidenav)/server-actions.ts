@@ -5,6 +5,12 @@ import { ActionResultType, validAction } from '@/helpers/server'
 import { getLocaleValue } from '@/locale/server'
 import os from 'os'
 
+import {
+  getEnvDebugLinodeDummy,
+  getEnvLinodeAccessInterval,
+  getEnvLinodeId,
+  getEnvLinodePersonalAccessToken,
+} from '@/helpers/env'
 import pkg from '../../../package.json'
 
 /**
@@ -56,9 +62,10 @@ export type TopPageNotice = ActionResultType<typeof getTopPageNotice>
 export const getLinodeTransferInfo = validAction('getLinodeTransferInfo', {
   requireAuth: true,
   next: async () => {
-    if (process.env.DEBUG_LINODE_DUMMY) {
+    const dummy = getEnvDebugLinodeDummy()
+    if (dummy) {
       // テスト用ダミー
-      return JSON.parse(process.env.DEBUG_LINODE_DUMMY) as {
+      return JSON.parse(dummy) as {
         used: number
         quota: number
         billable: number
@@ -66,14 +73,17 @@ export const getLinodeTransferInfo = validAction('getLinodeTransferInfo', {
       }
     }
 
-    if (process.env.LINODE_ID && process.env.LINODE_PERSONAL_ACCESS_TOKEN) {
+    const id = getEnvLinodeId()
+    const token = getEnvLinodePersonalAccessToken()
+    const interval = getEnvLinodeAccessInterval()
+    if (id && token) {
       try {
-        const res = await fetch(`https://api.linode.com/v4/linode/instances/${process.env.LINODE_ID}/transfer`, {
+        const res = await fetch(`https://api.linode.com/v4/linode/instances/${id}/transfer`, {
           headers: {
-            Authorization: `Bearer ${process.env.LINODE_PERSONAL_ACCESS_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
           next: {
-            revalidate: process.env.LINODE_ACCESS_INTERVAL ? Number(process.env.LINODE_ACCESS_INTERVAL) : 180,
+            revalidate: interval ? Number(interval) : 180,
           },
         })
         const info: {

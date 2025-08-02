@@ -1,6 +1,6 @@
 'use server'
 
-import { isOAuthEnabled, isOAuthSimpleLogin } from '@/helpers/env'
+import { isEnvOAuthEnabled, isEnvOAuthSimpleLogin } from '@/helpers/env'
 import { errInvalidSession, errNotFound, errValidation } from '@/helpers/error'
 import { getAllowedChangeEmail, getRequiredPasswordScore } from '@/helpers/key-value'
 import { sendEmailConfirm } from '@/helpers/mail'
@@ -39,8 +39,8 @@ export const getAccount = validAction('getAccount', {
 
     return {
       user,
-      isLinkedGoogle: isOAuthEnabled('google') && !isOAuthSimpleLogin('google') ? isLinkedGoogle : undefined,
-      isLinkedGitLab: isOAuthEnabled('gitlab') && !isOAuthSimpleLogin('gitlab') ? isLinkedGitLab : undefined,
+      isLinkedGoogle: isEnvOAuthEnabled('google') && !isEnvOAuthSimpleLogin('google') ? isLinkedGoogle : undefined,
+      isLinkedGitLab: isEnvOAuthEnabled('gitlab') && !isEnvOAuthSimpleLogin('gitlab') ? isLinkedGitLab : undefined,
     }
   },
 })
