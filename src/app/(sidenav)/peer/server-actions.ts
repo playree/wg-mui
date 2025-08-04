@@ -1,5 +1,6 @@
 'use server'
 
+import { getEnvAppName } from '@/helpers/env'
 import { errNotFound } from '@/helpers/error'
 import { formatSafeFilename } from '@/helpers/format'
 import { prisma } from '@/helpers/prisma'
@@ -36,7 +37,7 @@ export const getUserPeerConf = validAction('getUserPeerConf', {
     const wgMgr = await refWgMgr()
     return {
       conf: wgMgr.getPeerConf(peer, useDns, allowdIps, mtu),
-      filename: `${formatSafeFilename(process.env.APP_NAME || '', 20)}_${peer.ip.replaceAll('.', '-')}.conf`,
+      filename: `${formatSafeFilename(getEnvAppName(), 20)}_${peer.ip.replaceAll('.', '-')}.conf`,
     }
   },
 })

@@ -5,6 +5,7 @@ import { getWgVersion } from '@/server-actions/cmd'
 import { Metadata } from 'next'
 import { FC } from 'react'
 
+import { getEnvNextauthUrl } from '@/helpers/env'
 import { InitializeAdmin, InitializeSettings, SigninRedirect, WgNotInstall } from './client'
 import { existAdminUser, isInitialized } from './server-actions'
 
@@ -18,7 +19,7 @@ const InitializePage: FC = async () => {
     return <RedirectComponent redirectUrl='/' />
   }
 
-  const hostname = new URL(process.env.NEXTAUTH_URL || 'http://localhost').hostname
+  const hostname = new URL(getEnvNextauthUrl() || 'http://localhost').hostname
   const exist = await parseAction(existAdminUser())
   if (exist) {
     const user = await getSessionUser()

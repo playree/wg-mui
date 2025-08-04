@@ -2,7 +2,21 @@ import { t } from '@/locale/server'
 import sgMail from '@sendgrid/mail'
 import { createTransport } from 'nodemailer'
 
-import { getAppName } from './env'
+import {
+  getEnvAppName,
+  getEnvMailFrom,
+  getEnvMailSend,
+  getEnvNextauthUrl,
+  getEnvSendgridApiKey,
+  getEnvSendmailPath,
+  getEnvSmtpHost,
+  getEnvSmtpPass,
+  getEnvSmtpPort,
+  getEnvSmtpUser,
+  isEnvDebugSendEmail,
+  isEnvSmtpIgnoreTLS,
+  isEnvSmtpSecure,
+} from './env'
 import { errSystemError } from './error'
 import { TypeUser } from './schema'
 
@@ -18,11 +32,7 @@ type SendEmail = {
  * @param param
  */
 const sendGrid = async (param: SendEmail) => {
-  if (!process.env.SENDGRID_API_KEY) {
-    throw errSystemError('SENDGRID_API_KEY not set')
-  }
-
-  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+  sgMail.setApiKey(getEnvSendgridApiKey())
   await sgMail.send(param)
 }
 
@@ -31,14 +41,10 @@ const sendGrid = async (param: SendEmail) => {
  * @param param
  */
 const sendMail = async (param: SendEmail) => {
-  if (!process.env.SENDMAIL_PATH) {
-    throw errSystemError('SENDMAIL_PATH not set')
-  }
-
   const tp = createTransport({
     sendmail: true,
     newline: 'unix',
-    path: process.env.SENDMAIL_PATH,
+    path: getEnvSendmailPath(),
   })
   await tp.sendMail(param)
 }
@@ -48,49 +54,41 @@ const sendMail = async (param: SendEmail) => {
  * @param param
  */
 const sendSmtp = async (param: SendEmail) => {
-  if (!process.env.SMTP_HOST) {
-    throw errSystemError('SMTP_HOST not set')
-  }
-  if (!process.env.SMTP_PORT) {
-    throw errSystemError('SMTP_PORT not set')
-  }
-  if (!process.env.SMTP_USER) {
-    throw errSystemError('SMTP_USER not set')
-  }
-  if (!process.env.SMTP_PASS) {
-    throw errSystemError('SMTP_PASS not set')
-  }
+  const user = getEnvSmtpUser()
+  const pass = getEnvSmtpPass()
 
   const tp = createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: true,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
+    host: getEnvSmtpHost(),
+    port: getEnvSmtpPort(),
+    ignoreTLS: isEnvSmtpIgnoreTLS(),
+    secure: isEnvSmtpSecure(),
+    auth:
+      user && pass
+        ? {
+            user,
+            pass,
+          }
+        : undefined,
   })
   await tp.sendMail(param)
 }
 
 const sendEmail = async (param: Omit<SendEmail, 'from'>) => {
   console.debug('sendEmail:', param.subject, param.to)
-  if (!process.env.MAIL_FROM) {
-    throw errSystemError('MAIL_FROM not set')
-  }
+  const mailFrom = getEnvMailFrom()
 
-  if (process.env.DEBUG_SEND_EMAIL) {
+  if (isEnvDebugSendEmail()) {
     // デバッグ用
     console.debug('sendEmail:Debug:', param.text)
     return
   }
 
   const from = {
-    name: getAppName(),
-    email: process.env.MAIL_FROM,
-    address: process.env.MAIL_FROM,
+    name: getEnvAppName(),
+    email: mailFrom,
+    address: mailFrom,
   }
-  switch (process.env.MAIL_SEND) {
+  switch (getEnvMailSend()) {
     case 'sendgrid':
       return sendGrid({
         from,
@@ -118,12 +116,12 @@ const sendEmail = async (param: Omit<SendEmail, 'from'>) => {
 export const sendEmailPasswordReset = async (param: { user: TypeUser; to: string; onetimeId: string }) => {
   const { user, to, onetimeId } = param
 
-  const url = new URL(`/pwreset/${onetimeId}`, process.env.NEXTAUTH_URL)
+  const url = new URL(`/pwreset/${onetimeId}`, getEnvNextauthUrl())
   const locale = user.locale || ''
   console.debug('@mail:locale:', locale)
   await sendEmail({
     to,
-    subject: t(locale, 'mail_password_reset_subject', { appname: getAppName() }),
+    subject: t(locale, 'mail_password_reset_subject', { appname: getEnvAppName() }),
     text: t(locale, 'mail_password_reset_body', { username: user.name, url: url.toString() }),
   })
 }
@@ -136,11 +134,11 @@ export const sendEmailPasswordReset = async (param: { user: TypeUser; to: string
 export const sendEmailConfirm = async (param: { username: string; locale?: string; to: string; onetimeId: string }) => {
   const { username, locale = '', to, onetimeId } = param
 
-  const url = new URL(`/mlchange/${onetimeId}`, process.env.NEXTAUTH_URL)
+  const url = new URL(`/mlchange/${onetimeId}`, getEnvNextauthUrl())
   console.debug('@mail:locale:', locale)
   await sendEmail({
     to,
-    subject: t(locale, 'mail_email_confirm_subject', { appname: getAppName() }),
+    subject: t(locale, 'mail_email_confirm_subject', { appname: getEnvAppName() }),
     text: t(locale, 'mail_email_confirm_body', { username: username, url: url.toString() }),
   })
 }

@@ -1,10 +1,10 @@
 import {
   OAUTH_TYPE_GITLAB,
   OAUTH_TYPE_GOOGLE,
-  getGitLabUrl,
-  getOAuthConfig,
-  isOAuthEnabled,
-  isOAuthSimpleLogin,
+  getEnvGitLabUrl,
+  getEnvOAuthConfig,
+  isEnvOAuthEnabled,
+  isEnvOAuthSimpleLogin,
 } from '@/helpers/env'
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
@@ -72,7 +72,7 @@ const authOptions: NextAuthOptions = {
           }
 
           if (token.sub && profile.email_verified && profile.email) {
-            if (isOAuthSimpleLogin(provider)) {
+            if (isEnvOAuthSimpleLogin(provider)) {
               // 簡易連携の場合
               user = await prisma.user.findUnique({ where: { email: profile.email } })
             } else {
@@ -161,11 +161,11 @@ const authOptions: NextAuthOptions = {
     },
   },
 }
-if (isOAuthEnabled('google')) {
-  authOptions.providers.push(GoogleProvider(getOAuthConfig('google')))
+if (isEnvOAuthEnabled('google')) {
+  authOptions.providers.push(GoogleProvider(getEnvOAuthConfig('google')))
 }
-if (isOAuthEnabled('gitlab')) {
-  authOptions.providers.push(GitLabSelfProvider(getGitLabUrl(), getOAuthConfig('gitlab')))
+if (isEnvOAuthEnabled('gitlab')) {
+  authOptions.providers.push(GitLabSelfProvider(getEnvGitLabUrl(), getEnvOAuthConfig('gitlab')))
 }
 export { authOptions }
 

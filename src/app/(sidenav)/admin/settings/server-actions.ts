@@ -1,6 +1,13 @@
 'use server'
 
-import { isOAuthEnabled } from '@/helpers/env'
+import {
+  getEnvMailFrom,
+  getEnvMailSend,
+  getEnvSendgridApiKey,
+  getEnvSendmailPath,
+  getEnvSmtpHost,
+  isEnvOAuthEnabled,
+} from '@/helpers/env'
 import {
   getAllowedChangeEmail,
   getEnabledReleaseNote,
@@ -36,24 +43,24 @@ export const getSystemInfo = validAction('getSystemInfo', {
     const ipForward = await getIpForward()
     const sendMail = {
       enabled: false,
-      from: process.env.MAIL_FROM || '',
+      from: getEnvMailFrom(''),
       type: '',
     }
-    switch (process.env.MAIL_SEND) {
+    switch (getEnvMailSend()) {
       case 'sendgrid':
-        if (process.env.SENDGRID_API_KEY) {
+        if (getEnvSendgridApiKey('')) {
           sendMail.enabled = true
           sendMail.type = 'SendGrid'
         }
         break
       case 'sendmail':
-        if (process.env.SENDMAIL_PATH) {
+        if (getEnvSendmailPath('')) {
           sendMail.enabled = true
           sendMail.type = 'Sendmail'
         }
         break
       case 'smtp':
-        if (process.env.SMTP_HOST) {
+        if (getEnvSmtpHost()) {
           sendMail.enabled = true
           sendMail.type = 'SMTP'
         }
@@ -75,8 +82,8 @@ export const getSystemInfo = validAction('getSystemInfo', {
       isWgStarted: wgVersion ? await wgMgr.isWgStarted() : false,
       isWgAutoStartEnabled: wgVersion ? await wgMgr.isWgAutoStartEnabled() : false,
       ipForward,
-      isGoogleEnabled: isOAuthEnabled('google'),
-      isGitLabEnabled: isOAuthEnabled('gitlab'),
+      isGoogleEnabled: isEnvOAuthEnabled('google'),
+      isGitLabEnabled: isEnvOAuthEnabled('gitlab'),
       sendMail,
     }
   },
