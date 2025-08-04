@@ -196,6 +196,8 @@ MAIL_SEND=smtp
 MAIL_FROM=vpn@sample.dev
 SMTP_HOST=smtp.sample.dev
 SMTP_PORT=465
+# SMTP_IGNORE_TLS=false
+# SMTP_SECURE=true
 SMTP_USER=test_user
 SMTP_PASS=test_pass
 ```

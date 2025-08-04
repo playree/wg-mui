@@ -14,6 +14,8 @@ import {
   getEnvSmtpPort,
   getEnvSmtpUser,
   isEnvDebugSendEmail,
+  isEnvSmtpIgnoreTLS,
+  isEnvSmtpSecure,
 } from './env'
 import { errSystemError } from './error'
 import { TypeUser } from './schema'
@@ -58,7 +60,8 @@ const sendSmtp = async (param: SendEmail) => {
   const tp = createTransport({
     host: getEnvSmtpHost(),
     port: getEnvSmtpPort(),
-    ignoreTLS: true,
+    ignoreTLS: isEnvSmtpIgnoreTLS(),
+    secure: isEnvSmtpSecure(),
     auth:
       user && pass
         ? {

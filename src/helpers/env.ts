@@ -83,6 +83,20 @@ export const getEnvMailSend = () => process.env.MAIL_SEND
 export const getEnvSmtpUser = () => process.env.SMTP_USER
 export const getEnvSmtpPass = () => process.env.SMTP_PASS
 
+export const isEnvSmtpIgnoreTLS = () => {
+  if (process.env.SMTP_IGNORE_TLS) {
+    return process.env.SMTP_IGNORE_TLS.toLowerCase() === 'true'
+  }
+  return false
+}
+
+export const isEnvSmtpSecure = () => {
+  if (process.env.SMTP_SECURE) {
+    return process.env.SMTP_SECURE.toLowerCase() === 'true'
+  }
+  return false
+}
+
 export const getEnvMailFrom = (defaultValue?: string) => {
   if (!process.env.MAIL_FROM) {
     if (defaultValue !== undefined) {
