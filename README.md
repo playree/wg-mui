@@ -218,11 +218,15 @@ SMTP_PASS=test_pass
 
 #### 簡易認証
 
-ユーザーがGoogleアカウントでログインする為には、WG-MUIアカウントとGoogleアカウントの連携が必要になります。\
-連携する為にはWG-MUIアカウントとパスワードで一度ログインする必要があります。
+- ユーザーがGoogleアカウントでログインする為には、WG-MUIアカウントとGoogleアカウントの連携が必要になります。\
+  連携する為にはWG-MUIアカウントとパスワードで一度ログインする必要があります。
 
-`GOOGLE_SIMPLE_LOGIN`に`true`を設定すると、上記の連携操作を省略できます。\
-GoogleアカウントのメールアドレスとWG-MUIのメールアドレスが一致するアカウントとしてログインすることになります。
+- `GOOGLE_SIMPLE_LOGIN`に`true`を設定すると、上記の連携操作を省略できます。\
+  GoogleアカウントのメールアドレスとWG-MUIのメールアドレスが一致するアカウントとしてログインすることになります。
+
+- `GOOGLE_DISABLE_EMAIL_MATCH`に`true`を設定すると、メールアドレスが不一致のアカウントと連携できるようになります。\
+  連携は各ユーザーがアカウントページから行ってください。\
+  `GOOGLE_SIMPLE_LOGIN=false`の場合のみ有効です。
 
 #### 設定例
 
@@ -230,6 +234,7 @@ GoogleアカウントのメールアドレスとWG-MUIのメールアドレス�
 GOOGLE_CLIENT_ID=xxx
 GOOGLE_CLIENT_SECRET=xxx
 # GOOGLE_SIMPLE_LOGIN=true
+# GOOGLE_DISABLE_EMAIL_MATCH=true
 ```
 
 ### GitLabでログイン
@@ -244,11 +249,15 @@ GOOGLE_CLIENT_SECRET=xxx
 
 #### 簡易認証
 
-ユーザーがGitLabアカウントでログインする為には、WG-MUIアカウントとGitLabアカウントの連携が必要になります。\
-連携する為にはWG-MUIアカウントとパスワードで一度ログインする必要があります。
+- ユーザーがGitLabアカウントでログインする為には、WG-MUIアカウントとGitLabアカウントの連携が必要になります。\
+  連携する為にはWG-MUIアカウントとパスワードで一度ログインする必要があります。
 
-`GITLAB_SIMPLE_LOGIN`に`true`を設定すると、上記の連携操作を省略できます。\
-GitLabアカウントのメールアドレスとWG-MUIのメールアドレスが一致するアカウントとしてログインすることになります。
+- `GITLAB_SIMPLE_LOGIN`に`true`を設定すると、上記の連携操作を省略できます。\
+  GitLabアカウントのメールアドレスとWG-MUIのメールアドレスが一致するアカウントとしてログインすることになります。
+
+- `GITLAB_DISABLE_EMAIL_MATCH`に`true`を設定すると、メールアドレスが不一致のアカウントと連携できるようになります。\
+  連携は各ユーザーがアカウントページから行ってください。\
+  `GITLAB_SIMPLE_LOGIN=false`の場合のみ有効です。
 
 #### 設定例
 
@@ -257,6 +266,7 @@ GITLAB_URL=https://gitlab.sample.dev
 GITLAB_CLIENT_ID=xxx
 GITLAB_CLIENT_SECRET=xxx
 # GITLAB_SIMPLE_LOGIN=true
+# GITLAB_DISABLE_EMAIL_MATCH=true
 ```
 
 ### Linode連携
