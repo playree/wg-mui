@@ -1,6 +1,6 @@
 'use server'
 
-import { isEnvOAuthEnabled, isEnvOAuthSimpleLogin } from '@/helpers/env'
+import { isEnvDisableEmailMatch, isEnvOAuthEnabled, isEnvOAuthSimpleLogin } from '@/helpers/env'
 import { errInvalidSession, errNotFound, errValidation } from '@/helpers/error'
 import { getAllowedChangeEmail, getRequiredPasswordScore } from '@/helpers/key-value'
 import { sendEmailConfirm } from '@/helpers/mail'
@@ -9,6 +9,7 @@ import { scUpdateEmail, scUpdatePassword, zOAuthType, zReq, zString, zUUID } fro
 import { ActionResultType, validAction } from '@/helpers/server'
 import { zxcvbn } from '@zxcvbn-ts/core'
 import { randomUUID } from 'crypto'
+import { cookies } from 'next/headers'
 
 /**
  * 設定取得
@@ -41,6 +42,8 @@ export const getAccount = validAction('getAccount', {
       user,
       isLinkedGoogle: isEnvOAuthEnabled('google') && !isEnvOAuthSimpleLogin('google') ? isLinkedGoogle : undefined,
       isLinkedGitLab: isEnvOAuthEnabled('gitlab') && !isEnvOAuthSimpleLogin('gitlab') ? isLinkedGitLab : undefined,
+      isDisableEmailMatchGoogle: isEnvDisableEmailMatch('google'),
+      isDisableEmailMatchGitLab: isEnvDisableEmailMatch('gitlab'),
     }
   },
 })
@@ -121,5 +124,32 @@ export const changeEmail = validAction('changeEmail', {
       to: req.email,
       onetimeId: emailConfirm.onetimeId,
     })
+  },
+})
+
+/**
+ * OAuth連携の為のワンタイム登録
+ */
+export const registUserLinkOAuthOneTime = validAction('', {
+  schema: zReq({ type: zOAuthType }),
+  requireAuth: true,
+  next: async ({ req, user }) => {
+    const checkLinkOAuth = await prisma.linkOAuth.get(req.type, user.id)
+    if (checkLinkOAuth?.enabled) {
+      // 既に連携済み
+      throw errInvalidSession()
+    }
+
+    // OAuth連携情報(enabled=false)を登録
+    const linkOAuth = await prisma.linkOAuth.registOneTime(req.type, user.id)
+    const cookieStore = await cookies()
+    cookieStore.set({
+      name: 'linkot',
+      value: linkOAuth.onetimeId,
+      httpOnly: true,
+      path: '/',
+      maxAge: 60 * 5,
+    })
+    return
   },
 })

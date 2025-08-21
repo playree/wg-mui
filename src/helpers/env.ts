@@ -4,6 +4,10 @@ export const OAUTH_TYPE_GOOGLE = 'google'
 export const OAUTH_TYPE_GITLAB = 'gitlab'
 export type OAuthType = 'google' | 'gitlab'
 
+const convBoolean = (value?: string) => {
+  return value ? value.toUpperCase() !== 'FALSE' : false
+}
+
 export const getEnvAppName = () => process.env.APP_NAME || 'WG-MUI'
 export const getEnvNextauthUrl = () => process.env.NEXTAUTH_URL
 export const getEnvDefaultLocale = () => process.env.DEFAULT_LOCALE
@@ -19,9 +23,17 @@ export const isEnvOAuthEnabled = (type: OAuthType) => {
 export const isEnvOAuthSimpleLogin = (type: OAuthType) => {
   switch (type) {
     case 'google':
-      return process.env.GOOGLE_SIMPLE_LOGIN ? process.env.GOOGLE_SIMPLE_LOGIN.toUpperCase() !== 'FALSE' : false
+      return convBoolean(process.env.GOOGLE_SIMPLE_LOGIN)
     case 'gitlab':
-      return process.env.GITLAB_SIMPLE_LOGIN ? process.env.GITLAB_SIMPLE_LOGIN.toUpperCase() !== 'FALSE' : false
+      return convBoolean(process.env.GITLAB_SIMPLE_LOGIN)
+  }
+}
+export const isEnvDisableEmailMatch = (type: OAuthType) => {
+  switch (type) {
+    case 'google':
+      return convBoolean(process.env.GOOGLE_DISABLE_EMAIL_MATCH)
+    case 'gitlab':
+      return convBoolean(process.env.GITLAB_DISABLE_EMAIL_MATCH)
   }
 }
 
@@ -83,19 +95,8 @@ export const getEnvMailSend = () => process.env.MAIL_SEND
 export const getEnvSmtpUser = () => process.env.SMTP_USER
 export const getEnvSmtpPass = () => process.env.SMTP_PASS
 
-export const isEnvSmtpIgnoreTLS = () => {
-  if (process.env.SMTP_IGNORE_TLS) {
-    return process.env.SMTP_IGNORE_TLS.toLowerCase() === 'true'
-  }
-  return false
-}
-
-export const isEnvSmtpSecure = () => {
-  if (process.env.SMTP_SECURE) {
-    return process.env.SMTP_SECURE.toLowerCase() === 'true'
-  }
-  return false
-}
+export const isEnvSmtpIgnoreTLS = () => convBoolean(process.env.SMTP_IGNORE_TLS)
+export const isEnvSmtpSecure = () => convBoolean(process.env.SMTP_SECURE)
 
 export const getEnvMailFrom = (defaultValue?: string) => {
   if (!process.env.MAIL_FROM) {
@@ -107,12 +108,7 @@ export const getEnvMailFrom = (defaultValue?: string) => {
   return process.env.MAIL_FROM
 }
 
-export const isEnvDebugSendEmail = () => {
-  if (process.env.DEBUG_SEND_EMAIL) {
-    return process.env.DEBUG_SEND_EMAIL.toLowerCase() === 'true'
-  }
-  return false
-}
+export const isEnvDebugSendEmail = () => convBoolean(process.env.DEBUG_SEND_EMAIL)
 
 export const getEnvDebugLinodeDummy = () => process.env.DEBUG_LINODE_DUMMY
 export const getEnvLinodeId = () => process.env.LINODE_ID

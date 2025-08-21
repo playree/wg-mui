@@ -10,6 +10,7 @@ declare module 'next-auth/jwt' {
     oauth?: {
       type: OAuthType
       onetime: string
+      sub?: string
     }
     isError?: boolean
   }

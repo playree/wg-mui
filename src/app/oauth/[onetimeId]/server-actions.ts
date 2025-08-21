@@ -33,6 +33,7 @@ export const getOnetimeUser = validAction('getOnetimeUser', {
             oauth: {
               type: link.type,
               name: oauthName,
+              sub: link.sub,
             },
           }
         : undefined

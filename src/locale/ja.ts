@@ -122,6 +122,7 @@ export const ja: DefaultLocaleItems = {
   item_download_client_tools: 'クライアンツールのダウンロード',
   item_link_oauth: '${name}連携',
   item_signin_with_password: 'パスワードでサインイン',
+  item_link: '連携する',
   item_unlink: '連携解除',
   item_wg_conf: 'WireGuard設定',
   item_for_clients: 'クライアント向け設定',
