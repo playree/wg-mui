@@ -209,11 +209,21 @@ export const prisma = new PrismaClient().$extends({
         const link = await prisma.linkOAuth.findUnique({ where: { id_type: { id: userId, type } } })
         return !!link?.enabled
       },
-      async registOneTime(type: OAuthType, userId: string, sub: string) {
+      async registOneTime(type: OAuthType, userId: string, sub?: string) {
+        const onetimeId = randomUUID()
+        if (sub) {
+          return prisma.linkOAuth.upsert({
+            where: { id_type: { id: userId, type } },
+            create: { id: userId, type, sub, onetimeId },
+            update: { sub, onetimeId },
+          })
+        }
+
+        // subが未指定なら任意連携用(subに一時的にワンタイムを登録)
         return prisma.linkOAuth.upsert({
           where: { id_type: { id: userId, type } },
-          create: { id: userId, type, sub, onetimeId: randomUUID() },
-          update: { sub, onetimeId: randomUUID() },
+          create: { id: userId, type, sub: onetimeId, onetimeId },
+          update: { sub: onetimeId, onetimeId },
         })
       },
       async getOnetimeUser(onetimeId: string) {
@@ -224,6 +234,14 @@ export const prisma = new PrismaClient().$extends({
       },
       async unlink(type: OAuthType, userId: string) {
         return prisma.linkOAuth.delete({ where: { id_type: { id: userId, type } } })
+      },
+      async linkSub(onetimeId: string, type: OAuthType, sub: string) {
+        // 連携を有効化
+        await prisma.linkOAuth.update({
+          where: { onetimeId, type },
+          data: { sub, enabled: true },
+        })
+        return prisma.linkOAuth.getEnabled(type, sub)
       },
     },
   },

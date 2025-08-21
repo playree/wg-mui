@@ -121,6 +121,7 @@ export type LocaleItemBase =
   | 'item_download_client_tools'
   | 'item_link_oauth'
   | 'item_signin_with_password'
+  | 'item_link'
   | 'item_unlink'
   | 'item_wg_conf'
   | 'item_for_clients'

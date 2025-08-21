@@ -1,7 +1,7 @@
 'use client'
 
 import { useSharedUIContext } from '@/app/context'
-import { BoltSlashIcon, KeyIcon, PencilSquareIcon } from '@/components/icons'
+import { BoltIcon, BoltSlashIcon, KeyIcon, PencilSquareIcon } from '@/components/icons'
 import { ExButton } from '@/components/nextekit/ui/button'
 import { OnOffChip } from '@/components/nextekit/ui/chip'
 import { gridStyles, iconSizes } from '@/components/styles'
@@ -13,8 +13,9 @@ import { Card, CardBody, Divider, useDisclosure } from '@heroui/react'
 import { useRouter } from 'next/navigation'
 import { FC, useEffect, useState } from 'react'
 
+import { signIn } from 'next-auth/react'
 import { ChangeEmailModal, ChangePasswordModal } from './edit'
-import { Account, unlinkOAuth } from './server-actions'
+import { Account, registUserLinkOAuthOneTime, unlinkOAuth } from './server-actions'
 
 export const Title: FC = () => {
   const { t } = useLocale()
@@ -25,7 +26,11 @@ export const AccountViewClient: FC<{
   account: Account
   requiredPasswordScore: number
   allowedChangeEmail: boolean
-}> = ({ account: { user, isLinkedGoogle, isLinkedGitLab }, requiredPasswordScore, allowedChangeEmail }) => {
+}> = ({
+  account: { user, isLinkedGoogle, isLinkedGitLab, isDisableEmailMatchGoogle, isDisableEmailMatchGitLab },
+  requiredPasswordScore,
+  allowedChangeEmail,
+}) => {
   const { t } = useLocale()
   const { refresh } = useRouter()
   const { confirmModal } = useSharedUIContext()
@@ -111,33 +116,51 @@ export const AccountViewClient: FC<{
               </div>
               <div className='col-span-4 flex items-center'>
                 <Divider orientation='vertical' className='mr-2' />
-                <ExButton
-                  className='ml-2'
-                  variant='solid'
-                  color='danger'
-                  isSmart
-                  startContent={isLoadingUnlinkGoogle ? undefined : <BoltSlashIcon />}
-                  isLoading={isLoadingUnlinkGoogle}
-                  isDisabled={!isLinkedGoogle}
-                  onPress={async () => {
-                    console.debug('Unlink Google:')
-                    const ok = await confirmModal().confirm({
-                      title: t('item_confirme'),
-                      text: t('msg_unlink_oauth_confirm', { name: 'Google' }),
-                      requireCheck: true,
-                      autoClose: true,
-                    })
-                    if (ok) {
-                      setLoadingUnlinkGoogle(true)
-                      await parseAction(unlinkOAuth({ type: 'google' }))
-                      await intervalOperation()
-                      setLoadingUnlinkGoogle(false)
-                      refresh()
-                    }
-                  }}
-                >
-                  {t('item_unlink')}
-                </ExButton>
+                {!isLinkedGoogle && isDisableEmailMatchGoogle ? (
+                  <ExButton
+                    className='ml-2'
+                    variant='solid'
+                    color='primary'
+                    isSmart
+                    startContent={isLoadingUnlinkGoogle ? undefined : <BoltIcon />}
+                    isLoading={isLoadingUnlinkGoogle}
+                    onPress={async () => {
+                      console.debug('Link Google:')
+                      await parseAction(registUserLinkOAuthOneTime({ type: 'google' }))
+                      signIn('google')
+                    }}
+                  >
+                    {t('item_link')}
+                  </ExButton>
+                ) : (
+                  <ExButton
+                    className='ml-2'
+                    variant='solid'
+                    color='danger'
+                    isSmart
+                    startContent={isLoadingUnlinkGoogle ? undefined : <BoltSlashIcon />}
+                    isLoading={isLoadingUnlinkGoogle}
+                    isDisabled={!isLinkedGoogle}
+                    onPress={async () => {
+                      console.debug('Unlink Google:')
+                      const ok = await confirmModal().confirm({
+                        title: t('item_confirme'),
+                        text: t('msg_unlink_oauth_confirm', { name: 'Google' }),
+                        requireCheck: true,
+                        autoClose: true,
+                      })
+                      if (ok) {
+                        setLoadingUnlinkGoogle(true)
+                        await parseAction(unlinkOAuth({ type: 'google' }))
+                        await intervalOperation()
+                        setLoadingUnlinkGoogle(false)
+                        refresh()
+                      }
+                    }}
+                  >
+                    {t('item_unlink')}
+                  </ExButton>
+                )}
               </div>
               <Divider className='col-span-12' />
             </>
@@ -151,33 +174,51 @@ export const AccountViewClient: FC<{
               </div>
               <div className='col-span-4 flex items-center'>
                 <Divider orientation='vertical' className='mr-2' />
-                <ExButton
-                  className='ml-2'
-                  variant='solid'
-                  color='danger'
-                  isSmart
-                  startContent={isLoadingUnlinkGitLab ? undefined : <BoltSlashIcon />}
-                  isLoading={isLoadingUnlinkGitLab}
-                  isDisabled={!isLinkedGitLab}
-                  onPress={async () => {
-                    console.debug('Unlink GitLab:')
-                    const ok = await confirmModal().confirm({
-                      title: t('item_confirme'),
-                      text: t('msg_unlink_oauth_confirm', { name: 'GitLab' }),
-                      requireCheck: true,
-                      autoClose: true,
-                    })
-                    if (ok) {
-                      setLoadingUnlinkGitLab(true)
-                      await parseAction(unlinkOAuth({ type: 'gitlab' }))
-                      await intervalOperation()
-                      setLoadingUnlinkGitLab(false)
-                      refresh()
-                    }
-                  }}
-                >
-                  {t('item_unlink')}
-                </ExButton>
+                {!isLinkedGitLab && isDisableEmailMatchGitLab ? (
+                  <ExButton
+                    className='ml-2'
+                    variant='solid'
+                    color='primary'
+                    isSmart
+                    startContent={isLoadingUnlinkGitLab ? undefined : <BoltIcon />}
+                    isLoading={isLoadingUnlinkGitLab}
+                    onPress={async () => {
+                      console.debug('Link GitLab:')
+                      await parseAction(registUserLinkOAuthOneTime({ type: 'gitlab' }))
+                      signIn('gitlab')
+                    }}
+                  >
+                    {t('item_link')}
+                  </ExButton>
+                ) : (
+                  <ExButton
+                    className='ml-2'
+                    variant='solid'
+                    color='danger'
+                    isSmart
+                    startContent={isLoadingUnlinkGitLab ? undefined : <BoltSlashIcon />}
+                    isLoading={isLoadingUnlinkGitLab}
+                    isDisabled={!isLinkedGitLab}
+                    onPress={async () => {
+                      console.debug('Unlink GitLab:')
+                      const ok = await confirmModal().confirm({
+                        title: t('item_confirme'),
+                        text: t('msg_unlink_oauth_confirm', { name: 'GitLab' }),
+                        requireCheck: true,
+                        autoClose: true,
+                      })
+                      if (ok) {
+                        setLoadingUnlinkGitLab(true)
+                        await parseAction(unlinkOAuth({ type: 'gitlab' }))
+                        await intervalOperation()
+                        setLoadingUnlinkGitLab(false)
+                        refresh()
+                      }
+                    }}
+                  >
+                    {t('item_unlink')}
+                  </ExButton>
+                )}
               </div>
               <Divider className='col-span-12' />
             </>
