@@ -34,14 +34,16 @@ const writeConf = (confPath: string, data: IIniObject) =>
 const convKiB = (text: string) => {
   const [num, unit] = text.split(' ')
   switch (unit) {
-    case 'KiB':
+    case 'B':
       return Number(num)
-    case 'MiB':
+    case 'KiB':
       return Number(num) * 1024
-    case 'GiB':
+    case 'MiB':
       return Number(num) * 1024 * 1024
-    case 'TiB':
+    case 'GiB':
       return Number(num) * 1024 * 1024 * 1024
+    case 'TiB':
+      return Number(num) * 1024 * 1024 * 1024 * 1024
   }
   return 0
 }
