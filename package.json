@@ -1,7 +1,7 @@
 {
   "name": "wg-mui",
-  "version": "1.1.1",
-  "buildno": "2025120701",
+  "version": "1.1.2",
+  "buildno": "2025120901",
   "private": true,
   "scripts": {
     "dev": "PORT=63001 next dev --turbopack",
@@ -38,8 +38,8 @@
     "path-to-regexp": "8.2.0",
     "postcss": "^8.5.6",
     "qrcode": "^1.5.4",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "react": "19.1.2",
+    "react-dom": "19.1.2",
     "react-hook-form": "^7.62.0",
     "react-markdown": "^10.1.0",
     "react-stately": "^3.40.0",
