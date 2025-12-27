@@ -14,8 +14,10 @@
       - [設定例](#設定例-1)
     - [NEXTAUTH\_SECRET](#nextauth_secret)
       - [設定例](#設定例-2)
-    - [DEFAULT\_LOCALE](#default_locale)
+    - [DATABASE\_URL](#database_url)
       - [設定例](#設定例-3)
+    - [DEFAULT\_LOCALE](#default_locale)
+      - [設定例](#設定例-4)
     - [MAIL\_SEND](#mail_send)
       - [設定例(sendgrid)](#設定例sendgrid)
       - [設定例(sendmail)](#設定例sendmail)
@@ -23,12 +25,12 @@
   - [オプション項目](#オプション項目)
     - [Googleでログイン](#googleでログイン)
       - [簡易認証](#簡易認証)
-      - [設定例](#設定例-4)
+      - [設定例](#設定例-5)
     - [GitLabでログイン](#gitlabでログイン)
       - [簡易認証](#簡易認証-1)
-      - [設定例](#設定例-5)
-    - [Linode連携](#linode連携)
       - [設定例](#設定例-6)
+    - [Linode連携](#linode連携)
+      - [設定例](#設定例-7)
 - [起動](#起動)
   - [PM2](#pm2)
     - [PM2のインストール](#pm2のインストール)
@@ -94,6 +96,7 @@ APP_NAME=sample VPN
 NEXTAUTH_URL=https://vpn.sample.dev
 NEXTAUTH_SECRET=xxx
 DEFAULT_LOCALE=ja
+DATABASE_URL=file:./db/wg-mui.sqlite
 
 GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=GOCSPX-xxx
@@ -149,6 +152,16 @@ $ openssl rand -base64 32
 
 ```conf
 NEXTAUTH_SECRET=H/F+hWCWhXeX78paTLdm+Mo71JLinVlk68VWszlp1D8=
+```
+
+### DATABASE_URL
+
+DBファイルの場所を指定してください。
+
+#### 設定例
+
+```conf
+DATABASE_URL=file:./db/wg-mui.sqlite
 ```
 
 ### DEFAULT_LOCALE
