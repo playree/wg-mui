@@ -6,7 +6,16 @@ import { InputCtrl } from '@/components/nextekit/ui/input'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
 import { requireSelect } from '@/helpers/client'
-import { CreatePeer, TypePeer, TypeUser, UpdatePeer, scCreatePeer, scUpdatePeer } from '@/helpers/schema'
+import {
+  CreatePeerIn,
+  CreatePeerOut,
+  TypePeer,
+  TypeUser,
+  UpdatePeerIn,
+  UpdatePeerOut,
+  scCreatePeer,
+  scUpdatePeer,
+} from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
@@ -46,7 +55,7 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
     formState: { errors },
     setValue,
     reset,
-  } = useForm<CreatePeer>({
+  } = useForm<CreatePeerIn, unknown, CreatePeerOut>({
     resolver: zodResolver(scCreatePeer),
     mode: 'onChange',
     defaultValues: {
@@ -171,7 +180,7 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
     formState: { errors },
     setValue,
     reset,
-  } = useForm<UpdatePeer>({
+  } = useForm<UpdatePeerIn, unknown, UpdatePeerOut>({
     resolver: zodResolver(scUpdatePeer),
     mode: 'onChange',
     defaultValues: {

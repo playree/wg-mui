@@ -2,7 +2,7 @@ import { getSessionUser } from '@/config/auth-options'
 import { Session } from 'next-auth'
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
-import { ZodSchema, ZodVoid, z } from 'zod'
+import { z } from 'zod'
 
 import { ClientError, errInvalidSession, errPermissionDenied, errSystemError, errValidation } from './error'
 
@@ -19,9 +19,9 @@ export const resInvalidSession = () => new NextResponse('Invalid session', { sta
 export const resPermissionDenied = () => new NextResponse('Permission denied', { status: 403 })
 
 export const validApi = <
-  B extends ZodSchema = ZodSchema,
-  Q extends ZodSchema = ZodSchema,
-  P extends ZodSchema = ZodSchema,
+  B extends z.ZodObject = z.ZodObject,
+  Q extends z.ZodObject = z.ZodObject,
+  P extends z.ZodObject = z.ZodObject,
 >({
   schema,
   next,
@@ -38,7 +38,7 @@ export const validApi = <
       requireAdmin?: boolean
     }
   | {
-      schema: { query?: Q; body?: B; params?: P }
+      schema?: { query?: Q; body?: B; params?: P }
       next: (req: NextRequest, items: { query: z.infer<Q>; body: z.infer<B>; params: z.infer<P> }) => void
       requireAuth: false
       requireAdmin?: boolean
@@ -69,9 +69,9 @@ export const validApi = <
     }
 
     const parsedItems = {
-      query: parsed.data.query,
-      body: parsed.data.body,
-      params: parsed.data.params,
+      query: parsed.data.query as z.infer<Q>,
+      body: parsed.data.body as z.infer<B>,
+      params: parsed.data.params as z.infer<P>,
     }
 
     // 認証チェック
@@ -113,18 +113,18 @@ export type ActionResultType<T extends (...args: any) => any> = FindFromUnion<
   true
 >['data']
 
-const parseSchema = (schema: ZodSchema | undefined, data: unknown) => {
+const parseSchema = <S extends z.core.$ZodLooseShape = z.ZodVoid>(schema: S | undefined, data: unknown) => {
   if (schema) {
     const parsed = schema.safeParse(data)
     if (!parsed.success) {
       throw errValidation(parsed.error.message)
     }
-    return parsed.data
+    return parsed.data as z.infer<S>
   }
-  return {}
+  return {} as z.infer<S>
 }
 
-export const validAction = <REQ extends ZodSchema = ZodVoid, RES = void>(
+export const validAction = <REQ extends z.core.$ZodLooseShape = z.ZodVoid, RES = void>(
   name: string,
   {
     schema,

@@ -6,7 +6,16 @@ import { InputCtrl } from '@/components/nextekit/ui/input'
 import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { CreateUser, scCreateUser, scUpdateUser, TypeLabel, TypeUser, UpdateUser } from '@/helpers/schema'
+import {
+  CreateUserIn,
+  CreateUserOut,
+  scCreateUser,
+  scUpdateUser,
+  TypeLabel,
+  TypeUser,
+  UpdateUserIn,
+  UpdateUserOut,
+} from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
@@ -57,7 +66,7 @@ const CreateUserModal: FC<
     setError,
     reset,
     setValue,
-  } = useForm<CreateUser>({
+  } = useForm<CreateUserIn, unknown, CreateUserOut>({
     resolver: zodResolver(scCreateUser),
     mode: 'onChange',
     defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },
@@ -280,7 +289,7 @@ export const UpdateUserModal: FC<
     formState: { errors },
     setError,
     reset,
-  } = useForm<UpdateUser>({
+  } = useForm<UpdateUserIn, unknown, UpdateUserOut>({
     resolver: zodResolver(scUpdateUser),
     mode: 'onChange',
     defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },

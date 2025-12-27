@@ -3,7 +3,7 @@ import { randomUUID } from 'crypto'
 
 import { OAuthType } from './env'
 import { hashPassword } from './password'
-import { CreateUser, TypeUser, UpdateUser } from './schema'
+import { CreateUserIn, TypeUser, UpdateUser } from './schema'
 
 export type AllOrCount = 'all' | 'count'
 
@@ -75,7 +75,7 @@ export const prisma = new PrismaClient().$extends({
         })
         return userList.map((value) => convUser(value))
       },
-      async createUser(data: CreateUser) {
+      async createUser(data: CreateUserIn) {
         const { password, labelList, ...input } = data
 
         // Labelの紐付け

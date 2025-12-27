@@ -9,7 +9,13 @@ import { gridStyles } from '@/components/styles'
 import { ThemeSwitchList } from '@/components/theme-switch'
 import { parseAction } from '@/helpers/action'
 import { GLOBAL_CIDR } from '@/helpers/const'
-import { InitializeWgConf, UserPassword, scInitializeWgConf, scUserPassword } from '@/helpers/schema'
+import {
+  InitializeWgConfIn,
+  InitializeWgConfOut,
+  UserPassword,
+  scInitializeWgConf,
+  scUserPassword,
+} from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import { Link, Textarea } from '@heroui/react'
@@ -202,7 +208,7 @@ export const InitializeSettings: FC<{ hostname: string }> = ({ hostname }) => {
     formState: { errors },
     setValue,
     getValues,
-  } = useForm<InitializeWgConf>({
+  } = useForm<InitializeWgConfIn, unknown, InitializeWgConfOut>({
     resolver: zodResolver(scInitializeWgConf),
     mode: 'onChange',
     defaultValues: {
