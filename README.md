@@ -60,7 +60,7 @@ Next.jsの最新機能を率先して利用して開発しています。
   CSS Framework
 - [HeroUI(NextUI)](https://www.heroui.com/) v2.8.7 \
   ベースのUIコンポーネント
-- [Prisma](https://www.prisma.io/) \
+- [Prisma](https://www.prisma.io/) v7 \
   DB接続ORM
 - [Auth.js](https://authjs.dev/) \
   認証機能
@@ -76,6 +76,7 @@ WireGuardが動作するサーバー上で動かす必要があります。
 
 ```sh
 yarn install
+yarn generate
 yarn migrate
 yarn build
 ```
@@ -324,6 +325,7 @@ pm2 start ./wg-mui.sh
   ```
 - 最新テーブル構成の適用
   ```sh
+  yarn generate
   yarn migrate
   ```
 

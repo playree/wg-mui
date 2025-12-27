@@ -1,4 +1,5 @@
 import { Label, LastSignIn, Peer, Prisma, PrismaClient, User, UserLabel } from '@/generated/client'
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import { randomUUID } from 'crypto'
 
 import { OAuthType } from './env'
@@ -52,7 +53,10 @@ const convUser = (
 
 export type GetUserOption = { withLabel?: boolean; withPeer?: boolean; withLastSignIn?: boolean }
 
-export const prisma = new PrismaClient().$extends({
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || 'file:./db/wg-mui.sqlite',
+})
+export const prisma = new PrismaClient({ adapter }).$extends({
   model: {
     user: {
       async get(id: string) {
