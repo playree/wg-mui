@@ -31,15 +31,15 @@
     "intl-messageformat": "^10.7.16",
     "ip-address": "10.0.1",
     "js-ini": "^1.6.0",
-    "next": "15.5.7",
-    "next-auth": "^4.24.11",
+    "next": "16.1.1",
+    "next-auth": "^4.24.13",
     "next-themes": "^0.4.6",
     "nodemailer": "^7.0.5",
     "path-to-regexp": "8.2.0",
     "postcss": "^8.5.6",
     "qrcode": "^1.5.4",
-    "react": "19.1.2",
-    "react-dom": "19.1.2",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
     "react-hook-form": "^7.69.0",
     "react-markdown": "^10.1.0",
     "react-stately": "^3.40.0",
@@ -55,15 +55,15 @@
     "@types/accept-language-parser": "^1.5.8",
     "@types/bcrypt": "^6.0.0",
     "@types/cookie": "^1.0.0",
-    "@types/node": "^22.17.2",
+    "@types/node": "^22.19.3",
     "@types/nodemailer": "^6.4.19",
     "@types/qrcode": "^1.5.5",
-    "@types/react": "19.1.11",
-    "@types/react-dom": "19.1.7",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
     "@types/url-join": "^5.0.0",
     "cpx": "^1.5.0",
-    "eslint": "9.34.0",
-    "eslint-config-next": "15.4.5",
+    "eslint": "9.39.2",
+    "eslint-config-next": "16.1.1",
     "prettier": "^3.6.2",
     "prettier-plugin-organize-imports": "^4.2.0",
     "prettier-plugin-tailwindcss": "^0.6.14",
@@ -73,5 +73,9 @@
   "exclude": [
     "./prisma/seed.ts"
   ],
-  "packageManager": "yarn@4.12.0"
+  "packageManager": "yarn@4.12.0",
+  "resolutions": {
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3"
+  }
 }

@@ -63,7 +63,7 @@ const middlewareWithAuth = withAuth(
   },
 )
 
-export const middleware = (request: NextRequestWithAuth, event: NextFetchEvent) => {
+export const proxy = (request: NextRequestWithAuth, event: NextFetchEvent) => {
   console.debug('mw:start:', request.url, request.method)
 
   if (matchCondition(request.nextUrl.pathname, authProps.targetAuth)) {
