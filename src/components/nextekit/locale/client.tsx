@@ -1,7 +1,7 @@
 'use client'
 
 import acceptLanguageParser from 'accept-language-parser'
-import { FC, createContext, useCallback, useContext, useRef, useState } from 'react'
+import { FC, createContext, useCallback, useContext, useMemo, useState } from 'react'
 
 import { getCookie } from '../cookie/client'
 import { LocaleConfig } from './types'
@@ -36,18 +36,18 @@ const useLocaleContext = (
   }
 
   const [locale, setLocale] = useState(getLocale())
-  const lcConfig = useRef(localeConfig)
+  const lcConfig = useMemo(() => localeConfig, [localeConfig])
 
   return {
     locale,
-    lcConfig: lcConfig.current,
+    lcConfig: lcConfig,
     defaultLocale,
     setLocale: useCallback((current: string) => {
       setLocale(current)
     }, []),
     t: useCallback(
       (item, values) => {
-        const { resources } = lcConfig.current
+        const { resources } = lcConfig
         const lc = resources[locale] ? locale : defaultLocale
 
         const template = resources[lc][item] || resources[defaultLocale][item] || ''
@@ -57,7 +57,7 @@ const useLocaleContext = (
               ...Object.values(values).map((value) => value ?? ''),
             )
       },
-      [defaultLocale, locale],
+      [defaultLocale, locale, lcConfig],
     ),
   }
 }

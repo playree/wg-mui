@@ -56,6 +56,7 @@ export const SignInClient: FC<{ ssr: SSResource; isError: boolean }> = ({
 
   useEffect(() => {
     if (isError) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAuthNg(true)
       parseAction(deleteSessionToken())
     }

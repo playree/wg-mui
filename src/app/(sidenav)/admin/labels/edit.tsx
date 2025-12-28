@@ -37,17 +37,11 @@ export const CreateLabelModal: FC<Omit<ModalProps, 'children'> & { updated: () =
     handleSubmit,
     formState: { errors },
     setError,
-    reset,
   } = useForm<CreateLabel>({
     resolver: zodResolver(scCreateLabel),
     mode: 'onChange',
     defaultValues: { name: '', explanation: '' },
   })
-
-  useEffect(() => {
-    setLoading(false)
-    reset()
-  }, [reset, props.isOpen])
 
   return (
     <Modal backdrop='blur' hideCloseButton {...nextProps}>
@@ -128,17 +122,11 @@ export const UpdateLabelModal: FC<Omit<ModalProps, 'children'> & { target?: Type
     setValue,
     formState: { errors },
     setError,
-    reset,
   } = useForm<UpdateLabel>({
     resolver: zodResolver(scUpdateLabel),
     mode: 'onChange',
     defaultValues: { id: '', name: '', explanation: '' },
   })
-
-  useEffect(() => {
-    setLoading(false)
-    reset()
-  }, [reset, props.isOpen])
 
   useEffect(() => {
     console.debug('target:', target?.id)
@@ -230,6 +218,7 @@ export const CreateLabelButtonWithModal: FC<{ updated: () => void }> = ({ update
       </ExButton>
       <CreateLabelModal
         size='xl'
+        key={editModal.isOpen ? 'CreateLabelModal_open' : 'CreateLabelModal_closed'}
         isOpen={editModal.isOpen}
         onOpenChange={editModal.onOpenChange}
         isDismissable={false}

@@ -7,7 +7,7 @@
     "dev": "PORT=63001 next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint",
     "prettier": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css}'",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",

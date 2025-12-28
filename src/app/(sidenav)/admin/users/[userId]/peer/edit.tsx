@@ -54,7 +54,6 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
     handleSubmit,
     formState: { errors },
     setValue,
-    reset,
   } = useForm<CreatePeerIn, unknown, CreatePeerOut>({
     resolver: zodResolver(scCreatePeer),
     mode: 'onChange',
@@ -67,10 +66,8 @@ const CreatePeerModal: FC<Omit<ModalProps, 'children'> & { user: TypeUser; updat
   })
 
   useEffect(() => {
-    setLoading(false)
-    reset()
     setValue('ip', freeAddressList.items[0])
-  }, [reset, props.isOpen, setValue, freeAddressList.items])
+  }, [setValue, freeAddressList.items])
 
   return (
     <Modal backdrop='blur' hideCloseButton {...nextProps}>
@@ -179,7 +176,6 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
     handleSubmit,
     formState: { errors },
     setValue,
-    reset,
   } = useForm<UpdatePeerIn, unknown, UpdatePeerOut>({
     resolver: zodResolver(scUpdatePeer),
     mode: 'onChange',
@@ -187,11 +183,6 @@ export const UpdatePeerModal: FC<Omit<ModalProps, 'children'> & { target?: TypeP
       remarks: '',
     },
   })
-
-  useEffect(() => {
-    setLoading(false)
-    reset()
-  }, [reset, props.isOpen, setValue, freeAddressList.items])
 
   useEffect(() => {
     console.debug('target:', target?.ip)
@@ -259,6 +250,7 @@ export const CreatePeerButtonWithModal: FC<{ user: TypeUser; updated: () => void
       </ExButton>
       <CreatePeerModal
         size='xl'
+        key={editModal.isOpen ? 'CreatePeerModal_open' : 'CreatePeerModal_closed'}
         isOpen={editModal.isOpen}
         onOpenChange={editModal.onOpenChange}
         isDismissable={false}

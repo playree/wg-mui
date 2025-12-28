@@ -315,6 +315,7 @@ export const UserListClient: FC<{ requiredPasswordScore: number }> = ({ required
       </div>
       <UpdateUserModal
         size='xl'
+        key={updateModal.isOpen ? 'UpdateUserModal_open' : 'UpdateUserModal_closed'}
         isOpen={updateModal.isOpen}
         onOpenChange={updateModal.onOpenChange}
         isDismissable={false}

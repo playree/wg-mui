@@ -172,6 +172,7 @@ export const PeerListClient: FC<{ user: TypeUser }> = ({ user }) => {
       </div>
       <UpdatePeerModal
         size='xl'
+        key={updateModal.isOpen ? 'UpdatePeerModal_open' : 'UpdatePeerModal_closed'}
         isOpen={updateModal.isOpen}
         onOpenChange={updateModal.onOpenChange}
         isDismissable={false}

@@ -63,12 +63,6 @@ const ConfModal: FC<Omit<ModalProps, 'children'> & { targetIp?: string }> = (pro
   const [mtu, setMtu] = useState(0)
   const [qr, setQr] = useState<string>()
 
-  useEffect(() => {
-    if (targetIp) {
-      setQr(undefined)
-    }
-  }, [targetIp, props.isOpen])
-
   return (
     <Modal backdrop='blur' hideCloseButton {...nextProps}>
       <ModalContent>
@@ -314,6 +308,7 @@ export const PeerViewClient: FC<{ peerList: (TypePeer & { status?: PeerStatus })
       />
       <ConfModal
         size='xl'
+        key={confModal.isOpen ? 'ConfModal_open' : 'ConfModal_closed'}
         isOpen={confModal.isOpen}
         onOpenChange={confModal.onOpenChange}
         isDismissable={false}
