@@ -1,6 +1,6 @@
 import { SortDescriptor } from '@heroui/react'
 import { AsyncListLoadFunction, useAsyncList } from '@react-stately/data'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { sortFunction } from './sort'
 
@@ -22,7 +22,6 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
   rowsPerPage?: number
 }) => {
   const [page, setPage] = useState(1)
-  const [listLen, setListLen] = useState(0)
   const sortFunc = sort?.proc || sortFunction
 
   const list = useAsyncList({
@@ -41,7 +40,7 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
   const [filters, setFilters] = useState(filter?.init)
   const [filterState] = useState(filter)
 
-  const items = useMemo(() => {
+  const { items, listLen } = useMemo(() => {
     console.debug('items update page:', page)
 
     // フィルタ
@@ -51,17 +50,12 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
     const start = (page - 1) * rowsPerPage
     const end = start + rowsPerPage
 
-    setListLen(tmpList.length)
-    return tmpList.slice(start, end) as T
+    return { items: tmpList.slice(start, end) as T, listLen: tmpList.length }
   }, [filterState, filters, list.items, page, rowsPerPage])
 
   const total = useMemo(() => {
     return Math.ceil(listLen / rowsPerPage) || 1
   }, [listLen, rowsPerPage])
-
-  useEffect(() => {
-    setPage(1)
-  }, [filters])
 
   return {
     items,
@@ -80,6 +74,7 @@ export const usePageingList = <T extends Record<string, unknown>[], F extends Re
           ...filters,
           ...filter,
         })
+        setPage(1)
       }
     },
   }

@@ -14,15 +14,16 @@ export const metadata: Metadata = {
 const EmailConfirmPage: FC<{ params: Promise<{ onetimeId: string }> }> = async (props) => {
   const params = await props.params
   const { onetimeId } = params
+  let email
 
   try {
-    const email = await parseAction(changeEmail({ onetimeId }))
+    email = await parseAction(changeEmail({ onetimeId }))
     if (!email) {
       return notFound()
     }
-    return <EmailChangeClient email={email}></EmailChangeClient>
   } catch {
     return notFound()
   }
+  return <EmailChangeClient email={email}></EmailChangeClient>
 }
 export default EmailConfirmPage

@@ -231,6 +231,7 @@ export const AccountViewClient: FC<{
       </Card>
       <ChangePasswordModal
         size='xl'
+        key={changePwdModal.isOpen ? 'ChangePasswordModal_open' : 'ChangePasswordModal_closed'}
         isOpen={changePwdModal.isOpen}
         onOpenChange={changePwdModal.onOpenChange}
         isDismissable={false}
@@ -242,6 +243,7 @@ export const AccountViewClient: FC<{
       />
       <ChangeEmailModal
         size='xl'
+        key={changeEmailModal.isOpen ? 'ChangeEmailModal_open' : 'ChangeEmailModal_closed'}
         isOpen={changeEmailModal.isOpen}
         onOpenChange={changeEmailModal.onOpenChange}
         isDismissable={false}

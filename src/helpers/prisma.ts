@@ -1,9 +1,10 @@
 import { Label, LastSignIn, Peer, Prisma, PrismaClient, User, UserLabel } from '@/generated/client'
+import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3'
 import { randomUUID } from 'crypto'
 
 import { OAuthType } from './env'
 import { hashPassword } from './password'
-import { CreateUser, TypeUser, UpdateUser } from './schema'
+import { CreateUserIn, TypeUser, UpdateUser } from './schema'
 
 export type AllOrCount = 'all' | 'count'
 
@@ -52,7 +53,10 @@ const convUser = (
 
 export type GetUserOption = { withLabel?: boolean; withPeer?: boolean; withLastSignIn?: boolean }
 
-export const prisma = new PrismaClient().$extends({
+const adapter = new PrismaBetterSqlite3({
+  url: process.env.DATABASE_URL || 'file:./db/wg-mui.sqlite',
+})
+export const prisma = new PrismaClient({ adapter }).$extends({
   model: {
     user: {
       async get(id: string) {
@@ -75,7 +79,7 @@ export const prisma = new PrismaClient().$extends({
         })
         return userList.map((value) => convUser(value))
       },
-      async createUser(data: CreateUser) {
+      async createUser(data: CreateUserIn) {
         const { password, labelList, ...input } = data
 
         // Labelの紐付け

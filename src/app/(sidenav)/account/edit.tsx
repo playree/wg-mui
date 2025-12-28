@@ -32,7 +32,6 @@ export const ChangePasswordModal: FC<
     control,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
     setError,
   } = useForm<UpdatePassword>({
@@ -40,12 +39,6 @@ export const ChangePasswordModal: FC<
     mode: 'onChange',
     defaultValues: { id: '', password: '' },
   })
-
-  useEffect(() => {
-    setLoading(false)
-    reset()
-    setPasswordScore(0)
-  }, [reset, props.isOpen])
 
   useEffect(() => {
     console.debug('target:', target)
@@ -139,7 +132,6 @@ export const ChangeEmailModal: FC<Omit<ModalProps, 'children'> & { target?: stri
     control,
     handleSubmit,
     formState: { errors },
-    reset,
     setValue,
     setError,
   } = useForm<UpdateEmail>({
@@ -147,11 +139,6 @@ export const ChangeEmailModal: FC<Omit<ModalProps, 'children'> & { target?: stri
     mode: 'onChange',
     defaultValues: { id: '', email: '' },
   })
-
-  useEffect(() => {
-    setLoading(false)
-    reset()
-  }, [reset, props.isOpen])
 
   useEffect(() => {
     console.debug('target:', target)

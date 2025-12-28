@@ -178,6 +178,7 @@ export const LabelListClient: FC = () => {
       </div>
       <UpdateLabelModal
         size='xl'
+        key={updateModal.isOpen ? 'UpdateLabelModal_open' : 'UpdateLabelModal_closed'}
         isOpen={updateModal.isOpen}
         onOpenChange={updateModal.onOpenChange}
         isDismissable={false}

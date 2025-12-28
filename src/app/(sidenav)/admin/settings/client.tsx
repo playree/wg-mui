@@ -22,8 +22,10 @@ import {
   DashboardSettings,
   LocaleForm,
   UserSettings,
-  WgConfForClients,
-  WgConfPostScript,
+  WgConfForClientsIn,
+  WgConfForClientsOut,
+  WgConfPostScriptIn,
+  WgConfPostScriptOut,
   getLocaleFormSchema,
   scDashboardSettings,
   scUserSettings,
@@ -89,7 +91,7 @@ const FormWgConfPostScript: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<WgConfPostScript>({
+  } = useForm<WgConfPostScriptIn, unknown, WgConfPostScriptOut>({
     resolver: zodResolver(scWgConfPostScript),
     mode: 'onChange',
     defaultValues: { postUp: safeWgConf.postUp || '', postDown: safeWgConf.postDown || '' },
@@ -182,7 +184,7 @@ const FormWgConfForClients: FC<{ safeWgConf: SystemInfo['safeWgConf'] }> = ({ sa
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<WgConfForClients>({
+  } = useForm<WgConfForClientsIn, unknown, WgConfForClientsOut>({
     resolver: zodResolver(scWgConfForClients),
     mode: 'onChange',
     defaultValues: {

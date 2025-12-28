@@ -6,7 +6,16 @@ import { InputCtrl } from '@/components/nextekit/ui/input'
 import { PasswordScore } from '@/components/password-score'
 import { gridStyles } from '@/components/styles'
 import { parseAction } from '@/helpers/action'
-import { CreateUser, scCreateUser, scUpdateUser, TypeLabel, TypeUser, UpdateUser } from '@/helpers/schema'
+import {
+  CreateUserIn,
+  CreateUserOut,
+  scCreateUser,
+  scUpdateUser,
+  TypeLabel,
+  TypeUser,
+  UpdateUserIn,
+  UpdateUserOut,
+} from '@/helpers/schema'
 import { intervalOperation } from '@/helpers/sleep'
 import { useLocale } from '@/locale/client'
 import {
@@ -55,19 +64,12 @@ const CreateUserModal: FC<
     handleSubmit,
     formState: { errors },
     setError,
-    reset,
     setValue,
-  } = useForm<CreateUser>({
+  } = useForm<CreateUserIn, unknown, CreateUserOut>({
     resolver: zodResolver(scCreateUser),
     mode: 'onChange',
     defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },
   })
-
-  useEffect(() => {
-    setLoading(false)
-    reset()
-    setPasswordScore(0)
-  }, [reset, props.isOpen])
 
   return (
     <Modal backdrop='blur' hideCloseButton {...nextProps}>
@@ -279,19 +281,11 @@ export const UpdateUserModal: FC<
     setValue,
     formState: { errors },
     setError,
-    reset,
-  } = useForm<UpdateUser>({
+  } = useForm<UpdateUserIn, unknown, UpdateUserOut>({
     resolver: zodResolver(scUpdateUser),
     mode: 'onChange',
     defaultValues: { name: '', password: '', isAdmin: false, email: '', labelList: new Set([]), remarks: '' },
   })
-
-  useEffect(() => {
-    setLoading(false)
-    reset()
-    setPasswordScore(0)
-    setUpdatePassword(false)
-  }, [reset, props.isOpen])
 
   useEffect(() => {
     console.debug('target:', target?.id)
@@ -510,6 +504,7 @@ export const CreateUserButtonWithModal: FC<{
       </ExButton>
       <CreateUserModal
         size='xl'
+        key={editModal.isOpen ? 'CreateUserModal_open' : 'CreateUserModal_closed'}
         isOpen={editModal.isOpen}
         onOpenChange={editModal.onOpenChange}
         isDismissable={false}
