@@ -2,6 +2,7 @@
 
 - [WireGuard Managenent UI](#wireguard-managenent-ui)
 - [はじめに](#はじめに)
+- [v1→v2 移行](#v1v2-移行)
 - [モジュール構成](#モジュール構成)
 - [推奨環境](#推奨環境)
 - [ビルド](#ビルド)
@@ -50,6 +51,13 @@ Next.jsの最新機能を率先して利用して開発しています。
 （Googleでログイン、GitLabでログイン、Linode連携、SendGridでメール送信など。
 
 ご利用は自由ですが、自己責任でお使いください。
+
+# v1→v2 移行
+
+各種利用パッケージのアップグレードに伴い、一部環境変数の変更が必要となります。
+
+- NEXTAUTH_SECRET → AUTH_SECRET
+- NEXTAUTH_URL → BASE_URL
 
 # モジュール構成
 
