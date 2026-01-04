@@ -1,7 +1,7 @@
 {
   "name": "wg-mui",
-  "version": "1.2.0",
-  "buildno": "2025122801",
+  "version": "2.0.0",
+  "buildno": "2026010401",
   "private": true,
   "scripts": {
     "dev": "PORT=63001 next dev --turbopack",

@@ -72,7 +72,7 @@ Next.jsの最新機能を率先して利用して開発しています。
   ベースのUIコンポーネント
 - [Prisma](https://www.prisma.io/) v7 \
   DB接続ORM
-- [Auth.js](https://authjs.dev/) \
+- [Auth.js](https://authjs.dev/) v5 \
   認証機能
 
 # 推奨環境
