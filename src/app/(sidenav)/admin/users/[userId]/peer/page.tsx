@@ -28,7 +28,7 @@ const PeerManagementPage: FC<{ params: Promise<{ userId: string }> }> = async (p
         <Title user={user} />
       </div>
 
-      <div className='flex min-h-[200px] w-full'>
+      <div className='flex min-h-50 w-full'>
         <PeerListClient user={user} />
       </div>
     </div>

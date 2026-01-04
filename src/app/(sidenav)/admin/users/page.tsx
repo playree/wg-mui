@@ -20,7 +20,7 @@ const UsersPage: FC = async () => {
         <Title />
       </div>
 
-      <div className='flex min-h-[200px] w-full'>
+      <div className='flex min-h-50 w-full'>
         <UserListClient requiredPasswordScore={requiredPasswordScore} />
       </div>
     </div>

@@ -30,12 +30,12 @@ const SettingsPage: FC = () => {
         <Title />
       </div>
 
-      <div className='flex min-h-[200px] w-full flex-wrap'>
+      <div className='flex min-h-50 w-full flex-wrap'>
         <Suspense fallback={<Loading />}>
           <StatusView />
         </Suspense>
       </div>
-      <div className='flex min-h-[200px] w-full flex-wrap'>
+      <div className='flex min-h-50 w-full flex-wrap'>
         <Suspense fallback={<Loading />}>
           <SettingsView />
         </Suspense>
