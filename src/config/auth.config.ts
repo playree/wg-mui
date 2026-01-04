@@ -8,26 +8,51 @@ import {
 } from '@/helpers/env'
 import { checkPassword } from '@/helpers/password'
 import { prisma } from '@/helpers/prisma'
-import { NextAuthOptions, Profile, Session } from 'next-auth'
-import { getServerSession } from 'next-auth/next'
+import type { NextAuthConfig } from 'next-auth'
+import { Profile, Session } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 
+import { matchCondition } from '@/components/nextekit/auth/utils'
 import { withinMinutes } from '@/helpers/day'
 import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
+import { authProps } from './auth-props'
 import { GitLabSelfProvider } from './gitlab-self-provider'
 
-const authOptions: NextAuthOptions = {
+const providers = []
+if (isEnvOAuthEnabled('google')) {
+  providers.push(GoogleProvider(getEnvOAuthConfig('google')))
+}
+if (isEnvOAuthEnabled('gitlab')) {
+  providers.push(GitLabSelfProvider(getEnvGitLabUrl(), getEnvOAuthConfig('gitlab')))
+}
+
+const requireSignIn = (origin: string, callbackUrl: string) => {
+  const url = new URL('/auth/signin', origin)
+  url.searchParams.append('callbackUrl', callbackUrl)
+  return Response.redirect(url)
+}
+
+export const authConfig = {
+  logger: {
+    error: (err) => {
+      if (err.name === 'CredentialsSignin') {
+        return
+      }
+      console.error(err)
+    },
+  },
   providers: [
     CredentialsProvider({
       credentials: {
         username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      authorize: async (credentials) => {
         console.debug('authorize:', credentials)
-        const name = credentials?.username || ''
-        const password = credentials?.password || ''
+        const name = (credentials?.username as string) || ''
+        const password = (credentials?.password as string) || ''
 
         // @を含む場合はメールアドレスとして認証
         const where = name.indexOf('@') > -1 ? { email: name } : { name }
@@ -43,10 +68,8 @@ const authOptions: NextAuthOptions = {
         return null
       },
     }),
+    ...providers,
   ],
-  session: {
-    maxAge: 86400,
-  },
   jwt: {
     maxAge: 86400,
   },
@@ -54,11 +77,13 @@ const authOptions: NextAuthOptions = {
     signIn: '/auth/signin',
   },
   callbacks: {
-    async signIn({ user, account }) {
+    signIn: async ({ user, account }) => {
       console.debug('callbacks:signIn:', { provider: account?.provider, id: user.id })
       return true
     },
-    async jwt(param) {
+    jwt: async (param) => {
+      console.debug('callbacks:jwt:', param)
+
       const { token, account } = param
 
       let user
@@ -66,20 +91,20 @@ const authOptions: NextAuthOptions = {
         const provider = account.provider
 
         if (param.profile) {
-          const profile: Profile & { email_verified?: boolean } = param.profile
+          const profile: Profile = param.profile
 
           if (profile.email_verified === undefined) {
             // email_verifiedが存在しない場合はtrueとみなす
             profile.email_verified = true
           }
 
-          if (token.sub && profile.email_verified && profile.email) {
+          if (profile.sub && profile.email_verified && profile.email) {
             if (isEnvOAuthSimpleLogin(provider)) {
               // 簡易連携の場合
               user = await prisma.user.findUnique({ where: { email: profile.email } })
             } else {
               // OAuth連携済みアカウントを検索
-              const linkOAuth = await prisma.linkOAuth.getEnabled(provider, token.sub)
+              const linkOAuth = await prisma.linkOAuth.getEnabled(provider, profile.sub)
               if (linkOAuth) {
                 // OAuth連携済みアカウントあり
                 user = linkOAuth.user
@@ -102,7 +127,7 @@ const authOptions: NextAuthOptions = {
                     withinMinutes(otLink.updatedAt, 15)
                   ) {
                     // 連携を有効化
-                    const linkOAuthOt = await prisma.linkOAuth.linkSub(onetimeId, otLink.type, token.sub)
+                    const linkOAuthOt = await prisma.linkOAuth.linkSub(onetimeId, otLink.type, profile.sub)
                     if (linkOAuthOt) {
                       user = linkOAuthOt.user
                     }
@@ -112,7 +137,7 @@ const authOptions: NextAuthOptions = {
                   const linkUser = await prisma.user.getUserLinkOAuth(provider, profile.email)
                   if (linkUser && !linkUser.linkOAuth?.enabled) {
                     // メールアドレスが一致、連携未登録の場合、OAuth連携情報(enabled=false)を登録
-                    const tmpLinkOAuth = await prisma.linkOAuth.registOneTime(provider, linkUser.id, token.sub)
+                    const tmpLinkOAuth = await prisma.linkOAuth.registOneTime(provider, linkUser.id, profile.sub)
                     // OAuth連携の認証に進む
                     token.oauth = {
                       type: provider,
@@ -161,11 +186,14 @@ const authOptions: NextAuthOptions = {
 
       return token
     },
-    async session(param) {
+    session: async (param) => {
+      console.debug('callbacks:session:', param)
+
       const { token, session } = param
       if (token.sub) {
         if (token.oauth) {
-          session.user = undefined
+          console.debug('callbacks:session:oauth:')
+          session.user = { id: '', name: '', isAdmin: false, email: '', emailVerified: null, oauth: token.oauth }
           return session
         }
 
@@ -174,10 +202,11 @@ const authOptions: NextAuthOptions = {
           session.user.name = token.name
           session.user.isAdmin = token.isAdmin
           session.user.locale = token.locale
-          session.user.email = token.email
+          session.user.email = token.email || ''
         }
         console.debug('set session:', JSON.stringify(session.user))
       } else {
+        console.debug('callbacks:session:error:', token.isError)
         if (token.isError) {
           return { isError: true } as Session
         }
@@ -185,17 +214,35 @@ const authOptions: NextAuthOptions = {
       }
       return session
     },
-  },
-}
-if (isEnvOAuthEnabled('google')) {
-  authOptions.providers.push(GoogleProvider(getEnvOAuthConfig('google')))
-}
-if (isEnvOAuthEnabled('gitlab')) {
-  authOptions.providers.push(GitLabSelfProvider(getEnvGitLabUrl(), getEnvOAuthConfig('gitlab')))
-}
-export { authOptions }
+    authorized: ({ request, auth }) => {
+      console.debug('callbacks:authorized:', request.nextUrl, auth)
 
-export const getSessionUser = async () => {
-  const session = await getServerSession(authOptions)
-  return session?.user
-}
+      if (auth?.user?.oauth?.onetime) {
+        // 連携シーケンスの場合は一旦通過
+        console.debug('callbacks:authorized:oauth:')
+        return true
+      }
+
+      // 認証対象外
+      if (!matchCondition(request.nextUrl.pathname, authProps.targetAuth)) {
+        return true
+      }
+
+      if (auth?.user?.id) {
+        // 認証済み
+
+        // 管理者権限の確認
+        if (matchCondition(request.nextUrl.pathname, authProps.targetAdmin)) {
+          console.debug('callbacks:authorized:admin:', auth?.user?.isAdmin)
+          if (auth?.user?.isAdmin) {
+            return true
+          }
+          return NextResponse.json(null, { status: 403 })
+        }
+
+        return true
+      }
+      return requireSignIn(request.nextUrl.origin, request.nextUrl.href)
+    },
+  },
+} satisfies NextAuthConfig

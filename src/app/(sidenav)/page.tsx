@@ -1,10 +1,9 @@
+import { getSessionUser } from '@/auth'
 import { gridStyles } from '@/components/styles'
-import { getSessionUser } from '@/config/auth-options'
 import { getEnabledReleaseNote } from '@/helpers/key-value'
 import { Metadata } from 'next'
 import { FC } from 'react'
 import { twMerge } from 'tailwind-merge'
-
 import {
   AppInfoViewClient,
   LinodeTransferInfoViewClient,

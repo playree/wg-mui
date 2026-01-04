@@ -2,9 +2,7 @@ import { parseAction } from '@/helpers/action'
 import { Metadata } from 'next'
 import { FC } from 'react'
 
-import { authOptions } from '@/config/auth-options'
-import { getServerSession } from 'next-auth/next'
-
+import { auth } from '@/auth'
 import { SignInClient } from './client'
 import { getSSResource } from './server-actions'
 
@@ -14,7 +12,7 @@ export const metadata: Metadata = {
 
 const SignIn: FC = async () => {
   const ssr = await parseAction(getSSResource())
-  const session = await getServerSession(authOptions)
+  const session = await auth()
 
   return <SignInClient ssr={ssr} isError={!!session?.isError} />
 }

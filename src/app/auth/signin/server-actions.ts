@@ -21,12 +21,12 @@ export const getSSResource = validAction('getSSResource', {
 export type SSResource = ActionResultType<typeof getSSResource>
 
 /**
- * Cookie(next-auth.session-token)削除
+ * Cookie(authjs.session-token)削除
  */
 export const deleteSessionToken = validAction('deleteSessionToken', {
   next: async () => {
     const cookieStore = await cookies()
-    cookieStore.delete('next-auth.session-token')
-    cookieStore.delete('__Secure-next-auth.session-token')
+    cookieStore.delete('authjs.session-token')
+    cookieStore.delete('__Secure-authjs.session-token')
   },
 })

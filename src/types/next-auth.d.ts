@@ -23,7 +23,12 @@ declare module 'next-auth' {
       name: string
       isAdmin: boolean
       locale?: string
-      email?: string | null
+      email?: string
+      oauth?: {
+        type: OAuthType
+        onetime: string
+        sub?: string
+      }
     }
     isError?: boolean
   }

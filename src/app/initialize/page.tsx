@@ -1,11 +1,10 @@
+import { getSessionUser } from '@/auth'
 import { RedirectComponent } from '@/components/nextekit/ui/redirect'
-import { getSessionUser } from '@/config/auth-options'
 import { parseAction } from '@/helpers/action'
+import { getEnvNextauthUrl } from '@/helpers/env'
 import { getWgVersion } from '@/server-actions/cmd'
 import { Metadata } from 'next'
 import { FC } from 'react'
-
-import { getEnvNextauthUrl } from '@/helpers/env'
 import { InitializeAdmin, InitializeSettings, SigninRedirect, WgNotInstall } from './client'
 import { existAdminUser, isInitialized } from './server-actions'
 

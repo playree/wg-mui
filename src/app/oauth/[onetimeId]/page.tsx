@@ -1,9 +1,8 @@
-import { getSessionUser } from '@/config/auth-options'
+import { getSessionUser } from '@/auth'
 import { parseAction } from '@/helpers/action'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { FC } from 'react'
-
 import { LinkOAuthClient, LinkedOAuthClient } from './client'
 import { enableLinkOAuth, getOnetimeUser } from './server-actions'
 

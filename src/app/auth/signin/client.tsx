@@ -58,8 +58,8 @@ export const SignInClient: FC<{ ssr: SSResource; isError: boolean }> = ({
     if (isError) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAuthNg(true)
-      parseAction(deleteSessionToken())
     }
+    parseAction(deleteSessionToken())
   }, [isError])
 
   const onSubmit: SubmitHandler<Signin> = async (data) => {

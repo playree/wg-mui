@@ -1,9 +1,9 @@
-import { getSessionUser } from '@/config/auth-options'
 import { Session } from 'next-auth'
 import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
+import { getSessionUser } from '@/auth'
 import { ClientError, errInvalidSession, errPermissionDenied, errSystemError, errValidation } from './error'
 
 export const ALLOW_ORIGIN_ALL = { 'Access-Control-Allow-Origin': '*' }

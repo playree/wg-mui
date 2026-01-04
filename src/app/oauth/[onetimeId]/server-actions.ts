@@ -1,6 +1,6 @@
 'use server'
 
-import { getSessionUser } from '@/config/auth-options'
+import { getSessionUser } from '@/auth'
 import { withinMinutes } from '@/helpers/day'
 import { OAuthType } from '@/helpers/env'
 import { errInvalidSession } from '@/helpers/error'
