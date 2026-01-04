@@ -51,8 +51,8 @@ export const SideNavbar: FC<{
       <nav // サイドメニュー
         id='side-menu'
         className={twMerge(
-          'fixed top-0 left-0 z-40 h-screen w-64 -translate-x-full transition-transform',
-          isOpen ? 'transform-none' : 'lg:translate-x-0',
+          'fixed top-0 left-0 z-40 h-screen w-64 transition-transform',
+          isOpen ? '' : '-translate-x-full',
         )}
       >
         <div className={twMerge('h-full overflow-y-auto bg-gray-100 px-3 py-4 dark:bg-gray-900', className)}>
@@ -64,7 +64,7 @@ export const SideNavbar: FC<{
         </div>
       </nav>
       <div
-        className={twMerge('bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-30 bg-gray-900', isOpen ? '' : 'hidden')}
+        className={twMerge('fixed inset-0 z-30 bg-gray-900 opacity-50 dark:opacity-80', isOpen ? '' : 'hidden')}
         onClick={closeMenu}
       ></div>
 
