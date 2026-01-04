@@ -10,9 +10,9 @@
   - [必須項目](#必須項目)
     - [APP\_NAME](#app_name)
       - [設定例](#設定例)
-    - [NEXTAUTH\_URL](#nextauth_url)
+    - [BASE\_URL](#base_url)
       - [設定例](#設定例-1)
-    - [NEXTAUTH\_SECRET](#nextauth_secret)
+    - [AUTH\_SECRET](#auth_secret)
       - [設定例](#設定例-2)
     - [DATABASE\_URL](#database_url)
       - [設定例](#設定例-3)
@@ -93,8 +93,8 @@ yarn build
 
 ```conf
 APP_NAME=sample VPN
-NEXTAUTH_URL=https://vpn.sample.dev
-NEXTAUTH_SECRET=xxx
+BASE_URL=https://vpn.sample.dev
+AUTH_SECRET=xxx
 DEFAULT_LOCALE=ja
 DATABASE_URL=file:./db/wg-mui.sqlite
 
@@ -128,17 +128,17 @@ SENDGRID_API_KEY=SG.xxx
 APP_NAME=sample VPN
 ```
 
-### NEXTAUTH_URL
+### BASE_URL
 
 運用するURLを指定してください。
 
 #### 設定例
 
 ```conf
-NEXTAUTH_URL=https://xxx.sample.dev
+BASE_URL=https://xxx.sample.dev
 ```
 
-### NEXTAUTH_SECRET
+### AUTH_SECRET
 
 暗号化に利用するシークレットを指定してください。
 
@@ -151,7 +151,7 @@ $ openssl rand -base64 32
 #### 設定例
 
 ```conf
-NEXTAUTH_SECRET=H/F+hWCWhXeX78paTLdm+Mo71JLinVlk68VWszlp1D8=
+AUTH_SECRET=H/F+hWCWhXeX78paTLdm+Mo71JLinVlk68VWszlp1D8=
 ```
 
 ### DATABASE_URL
@@ -227,9 +227,9 @@ SMTP_PASS=test_pass
 認証情報登録時の情報は下記になります。
 
 - 承認済みの JavaScript 生成元\
-  `NEXTAUTH_URL`と同値。
+  `BASE_URL`と同値。
 - 承認済みのリダイレクト URI\
-  `NEXTAUTH_URL` `/api/auth/callback/google`
+  `BASE_URL` `/api/auth/callback/google`
 
 #### 簡易認証
 
@@ -260,7 +260,7 @@ GOOGLE_CLIENT_SECRET=xxx
 アプリケーション登録時の情報は下記になります。
 
 - コールバックURL\
-  `NEXTAUTH_URL` `/api/auth/callback/gitlab`
+  `BASE_URL` `/api/auth/callback/gitlab`
 
 #### 簡易認証
 
@@ -324,7 +324,7 @@ pm2 start ./wg-mui.sh
 
 起動したら下記URLにアクセスし、初期設定を行ってください。
 
-`NEXTAUTH_URL /initialize` (例. `https://vpn.sample.dev/initialize`)
+`BASE_URL /initialize` (例. `https://vpn.sample.dev/initialize`)
 
 管理者ユーザーの作成とWiregurdの初期設定を行います。
 

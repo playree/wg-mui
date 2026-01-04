@@ -4,9 +4,9 @@ import { createTransport } from 'nodemailer'
 
 import {
   getEnvAppName,
+  getEnvBaseUrl,
   getEnvMailFrom,
   getEnvMailSend,
-  getEnvNextauthUrl,
   getEnvSendgridApiKey,
   getEnvSendmailPath,
   getEnvSmtpHost,
@@ -116,7 +116,7 @@ const sendEmail = async (param: Omit<SendEmail, 'from'>) => {
 export const sendEmailPasswordReset = async (param: { user: TypeUser; to: string; onetimeId: string }) => {
   const { user, to, onetimeId } = param
 
-  const url = new URL(`/pwreset/${onetimeId}`, getEnvNextauthUrl())
+  const url = new URL(`/pwreset/${onetimeId}`, getEnvBaseUrl())
   const locale = user.locale || ''
   console.debug('@mail:locale:', locale)
   await sendEmail({
@@ -134,7 +134,7 @@ export const sendEmailPasswordReset = async (param: { user: TypeUser; to: string
 export const sendEmailConfirm = async (param: { username: string; locale?: string; to: string; onetimeId: string }) => {
   const { username, locale = '', to, onetimeId } = param
 
-  const url = new URL(`/mlchange/${onetimeId}`, getEnvNextauthUrl())
+  const url = new URL(`/mlchange/${onetimeId}`, getEnvBaseUrl())
   console.debug('@mail:locale:', locale)
   await sendEmail({
     to,

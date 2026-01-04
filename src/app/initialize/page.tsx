@@ -1,7 +1,7 @@
 import { getSessionUser } from '@/auth'
 import { RedirectComponent } from '@/components/nextekit/ui/redirect'
 import { parseAction } from '@/helpers/action'
-import { getEnvNextauthUrl } from '@/helpers/env'
+import { getEnvBaseUrl } from '@/helpers/env'
 import { getWgVersion } from '@/server-actions/cmd'
 import { Metadata } from 'next'
 import { FC } from 'react'
@@ -18,7 +18,7 @@ const InitializePage: FC = async () => {
     return <RedirectComponent redirectUrl='/' />
   }
 
-  const hostname = new URL(getEnvNextauthUrl() || 'http://localhost').hostname
+  const hostname = new URL(getEnvBaseUrl() || 'http://localhost').hostname
   const exist = await parseAction(existAdminUser())
   if (exist) {
     const user = await getSessionUser()

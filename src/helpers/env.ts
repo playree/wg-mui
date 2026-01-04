@@ -9,7 +9,7 @@ const convBoolean = (value?: string) => {
 }
 
 export const getEnvAppName = () => process.env.APP_NAME || 'WG-MUI'
-export const getEnvNextauthUrl = () => process.env.NEXTAUTH_URL
+export const getEnvBaseUrl = () => process.env.BASE_URL
 export const getEnvDefaultLocale = () => process.env.DEFAULT_LOCALE
 
 export const isEnvOAuthEnabled = (type: OAuthType) => {
